@@ -58,9 +58,13 @@
 }
 
 .graph-previews-columns {
-	overflow: scroll;
+	overflow: hidden;
 	border-radius: 10px;
 	border: 1px solid #000;
+}
+
+.scrolling {
+	overflow: scroll;
 }
 
 .graph-feedback {
