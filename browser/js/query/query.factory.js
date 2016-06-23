@@ -8,8 +8,9 @@ app.factory('QueryFactory', function ($http) {
 			});
 		},
 		getDatasets: function(category){
-			return $http.get('https://api.us.socrata.com/api/catalog/v1?categories=' + category.category + '&only=datasets&limit=3000')
+			return $http.get('https://api.us.socrata.com/api/catalog/v1?categories=' + category + '&only=datasets&limit=3000')
 			.then(function(set){
+				//return set.data.results.map(r=>r.resource.name);
 				return set.data.results;
 			});
 				

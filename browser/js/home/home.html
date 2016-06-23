@@ -1,4 +1,25 @@
 <section id="home">
-    <fullstack-logo></fullstack-logo>
-    <rando-greeting></rando-greeting>
+  <div style="margin-left: 50px">
+<form>
+
+  Category:
+
+
+  <select ng-model="category" class="form-control" ng-options="category for category in categories" ng-change="getDatasets(category)"></select>
+  <br>
+
+  Dataset:
+  <input type="text" class="form-control" placeholder="Search for a dataset" ng-model="theDataset" typeahead="ds as ds.resource.name for ds in datasets | filter: $viewValue | limitTo: 10" typeahead-on-select="getColumns(theDataset)">
+
+  Column #1:
+  <select ng-model="column1"  class="form-control" ng-options="column1 for column1 in columns"></select>
+
+  Column #2: 
+   <select ng-model="column2" class="form-control" ng-options="column2 for column2 in columns"></select>
+
+  <input type="submit" ng-click="log()" value="Submit">
+
+
+</form>
+</div>
 </section>
