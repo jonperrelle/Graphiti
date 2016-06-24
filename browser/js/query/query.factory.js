@@ -15,14 +15,14 @@ app.factory('QueryFactory', function ($http) {
 				
 		},
 		getColumns: function(dataset){
-			console.log(dataset)
 			return dataset.resource.columns_field_name;
 		},
 		getData: function(dataset, arrOfColumns){
-			console.log(arrOfColumns)
-			return $http.get(dataset.permalink + '.json?$select=' + arrOfColumns.join(","))
+			return $http.put('api/soda',{dataset: dataset,arrOfColumns: arrOfColumns})
 			.then(function(set){
-				return set.data.results;
+
+				console.log(set.data);
+				return set.data;
 			});
 		}
 	}
