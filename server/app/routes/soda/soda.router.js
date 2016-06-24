@@ -18,7 +18,9 @@ router.put('/',function(req,res,next){
 	consumer.query().withDataset(datasetId)
 		.select(columns).limit(1000)
 		.getRows()
-		.on('success',function(rows){res.send(rows)})
+		.on('success',function(rows){
+			res.send({graphData: rows, columns: columns})
+		})
 		.on('error',next);
 
 });
