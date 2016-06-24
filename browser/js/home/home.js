@@ -13,7 +13,6 @@ app.controller('HomeCtrl', function($scope, QueryFactory) {
     });
 
     $scope.getDatasets = function (cat) {
-        console.log("cat",cat);
         QueryFactory.getDatasets(cat).then(dsets => {
             $scope.datasets = dsets;
         });
@@ -22,4 +21,13 @@ app.controller('HomeCtrl', function($scope, QueryFactory) {
     $scope.getColumns = function (ds) {
         $scope.columns = QueryFactory.getColumns(ds);
     };
+
+    $scope.getData = function (ds, colArr) {
+        QueryFactory.getData(ds, colArr)
+        .then(function(data) {
+            $scope.graphData = data;
+        })
+    }
 });
+
+
