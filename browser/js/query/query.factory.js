@@ -10,16 +10,17 @@ app.factory('QueryFactory', function ($http) {
 		getDatasets: function(category){
 			return $http.get('https://api.us.socrata.com/api/catalog/v1?categories=' + category + '&only=datasets&limit=3000')
 			.then(function(set){
-				//return set.data.results.map(r=>r.resource.name);
 				return set.data.results;
 			});
 				
 		},
 		getColumns: function(dataset){
-			return dataset.resource.columns_name;
+			console.log(dataset)
+			return dataset.resource.columns_field_name;
 		},
 		getData: function(dataset, arrOfColumns){
-			return $http.get(dataset.permalink + '.json?$select=' + arrofColumns.join(","))
+			console.log(arrOfColumns)
+			return $http.get(dataset.permalink + '.json?$select=' + arrOfColumns.join(","))
 			.then(function(set){
 				return set.data.results;
 			});
