@@ -65,10 +65,10 @@
         </div>
       </fieldset>
     </form>
-    {{data}}
     <div class="row">
       <div class="col-xs-12">
-        <graph-directive></graph-directive>
+        <graph-directive ng-if="graphData"></graph-directive>
+      {{graphData}}
       </div>
     </div>
     <!-- <div class="row">

@@ -1,7 +1,8 @@
 app.directive('graphDirective', function(d3Service, $window) {
     return {
       restrict: 'EA',
-      scope: {},
+      scope: {
+      },
       link: function(scope, ele, attrs) {
         d3Service.d3().then(function(d3) {
           var svg = d3.select(ele[0])
@@ -17,7 +18,8 @@ app.directive('graphDirective', function(d3Service, $window) {
             scope.$apply();
           };
  
-          // hard-code data
+
+          //hard-code data
           scope.data = [
             {name: "Greg", score: 98},
             {name: "Ari", score: 96},
@@ -47,7 +49,7 @@ app.directive('graphDirective', function(d3Service, $window) {
                 // our xScale
                 xScale = d3.scale.linear()
                   .domain([0, d3.max(data, function(d) {
-                    return d.score;
+                    return d;
                   })])
                   .range([0, width]);
          

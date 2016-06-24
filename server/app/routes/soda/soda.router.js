@@ -16,7 +16,7 @@ router.put('/',function(req,res,next){
 	let consumer = new soda.Consumer(domain,{'apiToken': env.socrata.apiToken});
 
 	consumer.query().withDataset(datasetId)
-		.select(columns)
+		.select(columns).limit(1000)
 		.getRows()
 		.on('success',function(rows){res.send(rows)})
 		.on('error',next);
