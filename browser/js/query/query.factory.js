@@ -20,8 +20,6 @@ app.factory('QueryFactory', function ($http) {
 		getData: function(dataset, arrOfColumns){
 			return $http.put('api/soda',{dataset: dataset,arrOfColumns: arrOfColumns})
 			.then(function(set){
-
-				console.log(set.data);
 				return set.data;
 			});
 		}
