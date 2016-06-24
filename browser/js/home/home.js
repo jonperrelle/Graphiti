@@ -25,9 +25,10 @@ app.controller('HomeCtrl', function($scope, QueryFactory) {
     $scope.getData = function (ds, colArr) {
         QueryFactory.getData(ds, colArr)
         .then(function(data) {
-            $scope.graphData = data;
-        })
-    }
+            $scope.graphData = data.graphData;
+            $scope.columns = data.columns;
+        });
+    };
 });
 
 

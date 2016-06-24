@@ -67,25 +67,8 @@
     </form>
     <div class="row">
       <div class="col-xs-12">
-        <line-graph ng-if="graphData" data="graphData"></line-graph>
+        <bar-chart ng-if="graphData" data="graphData" cols="columns"></bar-chart>
       </div>
     </div>
-    <!-- <div class="row">
-      <div class="col-xs-12" ng-repeat="graph in graphs">
-        <graph-directive data="data"></graph-directive>
-      </div>
-    </div> -->
   </div>
-
-
-
-
-
-
-
-
-
 </section>
-
-
-
