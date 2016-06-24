@@ -67,8 +67,7 @@
     </form>
     <div class="row">
       <div class="col-xs-12">
-        <graph-directive ng-if="graphData"></graph-directive>
-      {{graphData}}
+        <line-graph ng-if="graphData" data="graphData"></line-graph>
       </div>
     </div>
     <!-- <div class="row">
