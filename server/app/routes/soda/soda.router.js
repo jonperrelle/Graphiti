@@ -14,7 +14,6 @@ router.get('/',function(req,res,next){
 		let consumer = new soda.Consumer(domain,{'apiToken': env.socrata.apiToken});
 
 		consumer.query().withDataset(datasetId)
-			.limit(10)
 			.getRows()
 			.on('success',function(rows){
 				res.send(rows);
@@ -25,12 +24,6 @@ router.get('/',function(req,res,next){
 		res.sendStatus(404);
 	}
 });
-
-
-
-
-
-
 
 router.put('/',function(req,res,next){
 
@@ -45,7 +38,7 @@ router.put('/',function(req,res,next){
 		.select(columns).limit(1000)
 		.getRows()
 		.on('success',function(rows){
-			res.send({graphData: rows, columns: columns})
+			res.send({graphData: rows, columns: columns});
 		})
 		.on('error',next);
 

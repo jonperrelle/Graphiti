@@ -34,11 +34,7 @@ app.controller('SearchQueriedDatasetsCtrl', function($scope, QueryFactory, $stat
             $state.go('datasetDetails', {datasetId: dataset.resource.id, dataset: dataset, rows: rows});
         });
     };
-
-    
 });
-
-
 
 app.controller('SearchDatasetsCtrl', function($scope, QueryFactory, $state, $localStorage) {
 

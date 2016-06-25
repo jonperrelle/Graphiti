@@ -3,10 +3,22 @@
     <header class="text-center">
       <h2>{{ dataset.resource.name }}</h2>
     </header>   
-    <div class="row">
-    	<div ng-repeat="row in rows">
-    		<h5>{{row.absence_hours}}</h5>
-    	</div>
-    </div>
+    <div class="row table-responsive">
+      <table ng-table="tableParams" class="table table-condensed table-bordered table-striped">
+        <thead class="thead-inverse">
+          <tr>
+            <td ng-repeat="column in columns">
+              <strong>{{column}}</strong>
+            </td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="row in $data">
+            <td ng-repeat="column in columns">
+              {{row[column]}}
+            </td>
+          </tr>
+        </tbody>
+      </table>
   </div>
 </div>
