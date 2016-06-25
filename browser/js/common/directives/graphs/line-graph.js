@@ -7,7 +7,6 @@ app.directive('lineGraph', function(d3Service, $window) {
         },
         link: function(scope, ele, attrs) {
 
-
             function validateDate(str) {
 
                 if (Object.prototype.toString.call(d) === "[object Date]") {
@@ -22,17 +21,14 @@ app.directive('lineGraph', function(d3Service, $window) {
                 }
             }
 
-
-
             d3Service.d3().then(function(d3) {
                 let margin = { top: 20, right: 20, bottom: 30, left: 50 },
                     width = 960 - margin.left - margin.right,
                     height = 500 - margin.top - margin.bottom,
                     dataColumns = scope.cols.split(",");
 
-                var filteredData = scope.data.filter(obj => obj[dataColumns[0]] && obj[dataColumns[1]]);
+                let filteredData = scope.data.filter(obj => obj[dataColumns[0]] && obj[dataColumns[1]]);
 
-                console.log(filteredData);
                 //check if the data column header may contain date info ??
                 if (dataColumns[0] == 'year') {
                     //if so validate the format of the date
@@ -40,24 +36,8 @@ app.directive('lineGraph', function(d3Service, $window) {
                     //run date checking function
                     let commonDateFormats = ["%Y", "%Y-%y", "%x", "%xT%X"]
 
-                    var dateFormat = commonDateFormats.filter(f => d3.time.format(f).parse( filteredData[0][ dataColumns[0] ] )  ) [0]
-                    
-                    console.log(dateFormat);
-
+                    let dateFormat = commonDateFormats.filter(f => d3.time.format(f).parse( filteredData[0][ dataColumns[0] ] )  ) [0];
                 }
-
-
-
-
-
-
-
-               // .sort(function(a, b) {
-               //        return a[dataColumns[0]] - b[dataColumns[0]] })
-
-
-
-
 
                 let svg = d3.select(ele[0])
                     .append('svg')
@@ -66,9 +46,7 @@ app.directive('lineGraph', function(d3Service, $window) {
                     .append("g")
                     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-
                 let formatDate = d3.time.format(dateFormat); //d3.time.format("%Y-%y");
-                //console.log(  formatDate.parse( filteredData[0][dataColumns[0]]))
 
                 let x = d3.time.scale()
                     .range([0, width]);
@@ -97,9 +75,6 @@ app.directive('lineGraph', function(d3Service, $window) {
                     scope.$apply();
                 };
 
-
-
-
                 // Watch for resize event
                 scope.$watch(function() {
                     return angular.element($window)[0].innerWidth;
@@ -115,17 +90,10 @@ app.directive('lineGraph', function(d3Service, $window) {
                     // set the height based on the calculations above
                     svg.attr('height', height + margin.top + margin.bottom);
 
-                    //create the rectangles for the bar chart
-
-                    //x.domain([formatYear.parse('1900'),formatYear.parse('2020')]);
-
-
-
                     x.domain(d3.extent(data, function(d) { return formatDate.parse(d[dataColumns[0]]) }));
                     y.domain([0, d3.max(data, function(d) {
                         return +d[dataColumns[1]]
                     })]);
-
 
                     svg.append("g")
                         .attr("class", "x axis")
