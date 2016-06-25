@@ -19,6 +19,7 @@ app.controller('SearchQueriedDatasetsCtrl', function($scope, QueryFactory, $stat
     $scope.numDatasets = $localStorage.numDatasets;
     $scope.currentPage = $stateParams.page;
     $scope.allDatasets = $localStorage.datasets;
+
     if ($scope.allDatasets) {
         $scope.currentDatasets = $scope.allDatasets.filter( (ds, i) => {
             return  i >= (10 * ($scope.currentPage - 1)) && i < 10 * $scope.currentPage; 
@@ -40,6 +41,7 @@ app.controller('SearchQueriedDatasetsCtrl', function($scope, QueryFactory, $stat
 
 app.controller('SearchDatasetsCtrl', function($scope, QueryFactory, $state, $localStorage) {
     $scope.selectedCategories = [];
+    $scope.buttonText = {buttonDefaultText: 'Filter By Category'};
     QueryFactory.getCategories().then(cats => {
         $scope.categories = cats.map(cat => { 
             return {label: cat.category, id: cat.category.toUpperCase()}
