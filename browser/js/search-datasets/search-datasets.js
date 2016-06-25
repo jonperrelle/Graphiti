@@ -19,7 +19,7 @@ app.controller('SearchDatasetsCtrl', function($scope, QueryFactory, $state) {
 
     $scope.searchForDataset = function(query) {
         QueryFactory.searchForDataset(query)
-        .then( datasets => $scope.datasets = datasets)
+        .then( datasets => $scope.datasets = datasets);
     };
 
     $scope.getDataset = function (dataset) {

@@ -10,7 +10,14 @@ app.config(function ($stateProvider) {
     });
 });
 
-app.controller('DatasetDetailsCtrl', function ($scope, $stateParams) {
+app.controller('DatasetDetailsCtrl', function ($scope, $stateParams, NgTableParams) {
     $scope.dataset = $stateParams.dataset;
-    $scope.rows = $stateParams.rows;   
+    $scope.rows = $stateParams.rows;
+    $scope.columns = Object.keys($scope.rows[0]);
+    $scope.tableParams = new NgTableParams({
+        page: 1,
+        count: 10
+    }, {
+        dataset: $scope.rows
+    }); 
 });
