@@ -1,0 +1,20 @@
+{
+  "name": "FullstackGeneratedApp",
+  "description": "A generated project at Fullstack Academy",
+  "main": "server/start.js",
+  "authors": [
+    "Jon Perrelle <jonperrelle@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/jonperrelle/Google_Graphs",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angularjs-dropdown-multiselect": "^1.5.2"
+  }
+}

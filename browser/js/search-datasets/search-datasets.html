@@ -4,16 +4,7 @@
         <h2>Search the Socrata Open Data Bank</h2>
     </header>
     <aside class="col-xs-2">
-      <header>
-        <h5>Filter By Category</h5>
-      </header>
-      <ul class="list-group">
-        <li class="list-group-item" ng-repeat="category in categories">
-          <label class="checkbox-inline category-item">
-            <input type="checkbox" ng-model="selectedCategory">{{category}}
-          </label>
-        </li>
-      </ul>
+      <div ng-dropdown-multiselect="" options="categories" selected-model="selectedCategories"></div>
     </aside>
     <section class="col-xs-10">
       <div class="row dataset-search-box">

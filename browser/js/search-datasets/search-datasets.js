@@ -6,7 +6,7 @@ app.config(function ($stateProvider) {
     });
 
     $stateProvider.state('searchDatasets.query', {
-        url: '/?query/:page',
+        url: '/?query/:page/:categories',
         templateUrl: 'js/search-datasets/search-queried-datasets.html',
         controller: 'SearchQueriedDatasetsCtrl',
         params: {
@@ -39,17 +39,21 @@ app.controller('SearchQueriedDatasetsCtrl', function($scope, QueryFactory, $stat
 });
 
 app.controller('SearchDatasetsCtrl', function($scope, QueryFactory, $state, $localStorage) {
-
+    $scope.selectedCategories = [];
     QueryFactory.getCategories().then(cats => {
-        $scope.categories = cats.map(cat => cat.category.toUpperCase());
+        $scope.categories = cats.map(cat => { 
+            return {label: cat.category, id: cat.category.toUpperCase()}
+        });
     });
 
     $scope.searchForDataset = function(query) {
-        QueryFactory.searchForDataset(query)
+        var filteredCategories = "";
+        if ($scope.selectedCategories) { filteredCategories = $scope.selectedCategories.map( cat => "categories=" + cat.id).join("&")} 
+        QueryFactory.searchForDataset(query, filteredCategories)
         .then( datasets => {
             $localStorage.datasets = datasets;
             $localStorage.numDatasets = $localStorage.datasets.length || 0;
-            $state.go('searchDatasets.query', {query: query, page: 1});
+            $state.go('searchDatasets.query', {query: query, page: 1, categories: filteredCategories});
         });
     };
 
