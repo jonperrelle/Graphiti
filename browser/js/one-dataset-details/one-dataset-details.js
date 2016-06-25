@@ -10,14 +10,13 @@ app.config(function ($stateProvider) {
     });
 });
 
-app.controller('DatasetDetailsCtrl', function ($scope, $stateParams, NgTableParams) {
-    $scope.dataset = $stateParams.dataset;
-    $scope.rows = $stateParams.rows;
-    $scope.columns = Object.keys($scope.rows[0]);
-    $scope.tableParams = new NgTableParams({
-        page: 1,
-        count: 10
-    }, {
-        dataset: $scope.rows
+app.controller('DatasetDetailsCtrl', function ($scope, $stateParams, NgTableParams, $localStorage) {
+    $scope.dataset = $stateParams.dataset || $localStorage.dataset;
+    $localStorage.dataset = $scope.dataset;
+    $scope.rows = $stateParams.rows || $localStorage.rows;
+    $localStorage.rows = $scope.rows;
+    $scope.columns = Object.keys($localStorage.rows[0]);
+    $scope.tableParams = new NgTableParams({}, {
+        dataset: $localStorage.rows
     }); 
 });

@@ -19,7 +19,6 @@ app.controller('SearchQueriedDatasetsCtrl', function($scope, QueryFactory, $stat
     $scope.numDatasets = $localStorage.numDatasets;
     $scope.currentPage = $stateParams.page;
     $scope.allDatasets = $localStorage.datasets;
-    console.log($scope.allDatasets);
     if ($scope.allDatasets) {
         $scope.currentDatasets = $scope.allDatasets.filter( (ds, i) => {
             return  i >= (10 * ($scope.currentPage - 1)) && i < 10 * $scope.currentPage; 
@@ -27,7 +26,8 @@ app.controller('SearchQueriedDatasetsCtrl', function($scope, QueryFactory, $stat
     }
     $scope.changePage = function () {
         $state.go('searchDatasets.query', {query: $stateParams.query, page: $scope.currentPage});
-    }
+    };
+    
     $scope.getDataset = function (dataset) {
         QueryFactory.getOneDataset(dataset)
         .then( rows => {
