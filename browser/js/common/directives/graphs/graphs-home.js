@@ -1,9 +1,17 @@
+app.config(function ($stateProvider) {
+    $stateProvider.state('zach', {
+        url: '/zach',
+        templateUrl: 'js/home/zach.html'
+    });
+});
+
 app.directive('graphDirective', function(d3Service, $window) {
     return {
       restrict: 'EA',
       scope: {
       },
       link: function(scope, ele, attrs) {
+
         d3Service.d3().then(function(d3) {
           var svg = d3.select(ele[0])
             .append('svg')
@@ -13,6 +21,7 @@ app.directive('graphDirective', function(d3Service, $window) {
           var margin = parseInt(attrs.margin) || 20,
           barHeight = parseInt(attrs.barHeight) || 20,
           barPadding = parseInt(attrs.barPadding) || 5;
+         
           // Browser onresize event
           window.onresize = function() {
             scope.$apply();

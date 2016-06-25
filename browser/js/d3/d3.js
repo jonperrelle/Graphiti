@@ -2,8 +2,6 @@
 
     'use strict';
 
-    var app = angular.module('d3', []);
-
     app.factory('d3Service', ['$document', '$q', '$rootScope',
     function($document, $q, $rootScope) {
       var d = $q.defer();
@@ -17,7 +15,7 @@
       var scriptTag = $document[0].createElement('script');
       scriptTag.type = 'text/javascript'; 
       scriptTag.async = true;
-      scriptTag.src = 'http://d3js.org/d3.v3.min.js';
+      scriptTag.src = '/d3/d3.min.js';
       scriptTag.onreadystatechange = function () {
         if (this.readyState == 'complete') onScriptLoad();
       };
@@ -30,12 +28,5 @@
         d3: function() { return d.promise; }
       };
 }]);
-
- 
-    
-
- 
-
-   
 
 })();
