@@ -20,16 +20,14 @@ app.controller('SearchDatasetsCtrl', function($scope, QueryFactory, $state) {
     $scope.searchForDataset = function(query) {
         QueryFactory.searchForDataset(query)
         .then( datasets => $scope.datasets = datasets)
-    }
+    };
 
     $scope.getDataset = function (dataset) {
         QueryFactory.getOneDataset(dataset)
         .then( rows => {
-            console.log(dataset)
-            console.log(rows);
-            $state.go('datasetDetails', {datasetId: dataset.resource.id, dataset: dataset, rows: rows})
-        })
-    }
+            $state.go('datasetDetails', {datasetId: dataset.resource.id, dataset: dataset, rows: rows});
+        });
+    };
 
     // $scope.getDatasets = function (cat) {
     //     QueryFactory.getDatasets(cat).then(dsets => {
