@@ -56,13 +56,12 @@ app.directive('barChart', function(d3Service, $window) {
 
             var yAxis = d3.svg.axis()
                 .scale(y)
-                .orient("left")
-                // .ticks(10, "%");
+                .orient("left");
 
-            x.domain(filteredData.map(function(d) { return d.year_discovered; }));
+            x.domain(filteredData.map(function(d) { return d[dataColumns[0]]; }));
 
 
-            y.domain([0, d3.max(filteredData, function(d) { return +d.cumulative_production; })]);
+            y.domain([0, d3.max(filteredData, function(d) { return +d[dataColumns[1]]; })]);
 
             svg.append("g")
                 .attr("class", "x axis")
@@ -78,17 +77,16 @@ app.directive('barChart', function(d3Service, $window) {
                 .attr("y", 6)
                 .attr("dy", ".71em")
                 .style("text-anchor", "end")
-                .text("Frequency");
+                .text(dataColumns[1]);
 
             svg.selectAll(".bar")
                 .data(filteredData)
               .enter().append("rect")
                 .attr("class", "bar")
-                .attr("x", function(d) { return x(d.year_discovered); })
+                .attr("x", function(d) { return x(d[dataColumns[0]]); })
                 .attr("width", x.rangeBand())
-                .attr("y", function(d) { return y(d.cumulative_production); })
-                .attr("height", function(d) { return height - y(d.cumulative_production); });
-                //height - y(d.cumulative_production);
+                .attr("y", function(d) { return y(+d[dataColumns[1]]); })
+                .attr("height", function(d) { return height - y(+d[dataColumns[1]]); });
           };
         });
       }
