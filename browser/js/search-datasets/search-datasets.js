@@ -34,6 +34,8 @@ app.controller('SearchQueriedDatasetsCtrl', function($scope, QueryFactory, $stat
             $state.go('datasetDetails', {datasetId: dataset.resource.id, dataset: dataset, rows: rows});
         });
     };
+
+
 });
 
 app.controller('SearchDatasetsCtrl', function($scope, QueryFactory, $state, $localStorage) {
@@ -51,21 +53,9 @@ app.controller('SearchDatasetsCtrl', function($scope, QueryFactory, $state, $loc
         });
     };
 
-    // $scope.getDatasets = function (cat) {
-    //     QueryFactory.getDatasets(cat).then(dsets => {
-    //         $scope.datasets = dsets;
-    //     });
-    // };
-
-    // $scope.getColumns = function (ds) {
-    //     $scope.columns = QueryFactory.getColumns(ds);
-    // };
-
-    // $scope.getData = function (ds, colArr) {
-    //     QueryFactory.getData(ds, colArr)
-    //     .then(function(data) {
-    //         $scope.graphData = data.graphData;
-    //         $scope.columns = data.columns;
-    //     })
-    // }
+    angular.element(document).on('keyup', function (e) {
+        if (e.which === 13 && $scope.query) {
+            $scope.searchForDataset($scope.query);
+        }
+    });
 });
