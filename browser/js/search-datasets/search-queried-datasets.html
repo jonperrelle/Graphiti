@@ -1,0 +1,11 @@
+<section class="query-container">
+	<ul class="list-group">
+		<button ng-click="getDataset(dataset)" class="list-group-item" ng-repeat="dataset in currentDatasets">
+		  <h4>{{dataset.resource.name}}</h4>
+		  <p>{{dataset.resource.description}}</p>
+		</button>
+	</ul>
+	<div class="row text-center" ng-show="currentDatasets">
+		<pagination total-items="numDatasets" ng-model="currentPage" ng-change="changePage()"><pagination>
+	</div>
+</section>
