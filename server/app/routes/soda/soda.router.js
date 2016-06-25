@@ -14,7 +14,6 @@ router.get('/',function(req,res,next){
 		let consumer = new soda.Consumer(domain,{'apiToken': env.socrata.apiToken});
 
 		consumer.query().withDataset(datasetId)
-			.limit(10)
 			.getRows()
 			.on('success',function(rows){
 				res.send(rows);
