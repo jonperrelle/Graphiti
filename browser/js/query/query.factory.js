@@ -22,6 +22,20 @@ app.factory('QueryFactory', function ($http) {
 			.then(function(set){
 				return set.data;
 			});
+		},
+		searchForDataset: function(query) {
+			return $http.get('https://api.us.socrata.com/api/catalog/v1?only=datasets&limit=10&q=' + query)
+			.then(function(sets){
+				console.log(sets.data.results);
+				return sets.data.results;
+			});
+		},
+
+		getOneDataset: function(dataset) {
+			return $http.get('api/soda?datasetId=' + dataset.resource.id + "&domain=" + dataset.metadata.domain)
+			.then(function(set){
+				return set.data;
+			});
 		}
 	}
 
