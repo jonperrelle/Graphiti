@@ -11,8 +11,6 @@ app.config(function ($stateProvider) {
 });
 
 app.controller('DatasetDetailsCtrl', function ($scope, $stateParams) {
-    console.log($stateParams.dataset)
     $scope.dataset = $stateParams.dataset;
     $scope.rows = $stateParams.rows;   
 });
-
