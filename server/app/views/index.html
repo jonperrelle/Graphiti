@@ -7,88 +7,24 @@
   <link rel="stylesheet" type="text/css" href="/bootstrap/dist/css/bootstrap.css" />
   <link rel="stylesheet" type="text/css" href="/style.css" />
   <link rel="stylesheet" type="text/css" href="/nvd3/build/nv.d3.min.css">
-  
-  <script src="/lodash/index.js"></script>
 
- <!--  <script src="/d3/d3.min.js"></script> -->
+
+  <script src="/d3/d3.min.js"></script>
   <script src="/nvd3/build/nv.d3.min.js"></script>
-  <script src="/angular/angular.js"></script>
-  <script src="/angularjs-nvd3-directives/dist/angularjs-nvd3-directives.js"></script>
 
+  <script src="/lodash/index.js"></script>
+  <script src="/angular/angular.js"></script>
   <script src="/angular-animate/angular-animate.js"></script>
   <script src="/angular-ui-router/release/angular-ui-router.js"></script>
   <script src="/angular-ui-bootstrap/ui-bootstrap.js"></script>
   <script src="/angular-ui-bootstrap/ui-bootstrap-tpls.js"></script>
   <script src="/socket.io-client/socket.io.js"></script>
   <script src="/main.js"></script>
-
 </head>
 
-<body>
-  
-<div ng-controller="ExampleCtrl">
-    <nvd3-pie-chart
-        data="exampleData"
-        id="exampleId"
-        width="550"
-        height="350"
-        x="xFunction()"
-        y="yFunction()"
-        showLabels="true">
-        <svg></svg>
-
-    </nvd3-pie-chart>
-    {{exampleData}}
-</div>
-
-
-<script>
-
-
-
-
-// nv.addGraph(function(){
-
-//     var chart = nv.models.discreteBarChart()
-//                 .x(function(d) { return d.label })    //Specify the data accessors.
-//                 .y(function(d) { return d.value })
-//                 .yDomain([-100,800])
-
-//     d3.select('#chart1 svg')    //Select the <svg> element you want to render the chart in.   
-//       .datum(data)         //Populate the <svg> element with chart data...
-//       .call(chart); 
-
-//       return chart;
-// })
-
-
-
-// var chart2 = nv.models.pieChart();
-//             chart2.width(500);
-//             chart2.title('Taco').titleOffset(-10);
-//             chart2.options({height: 500, donut: true});
-
-// var testdata = [
-//         {year: "One", y: 5, color: "#5F5"},
-//         {year: "Two", y: 2},
-//         {year: "Three", y: 9},
-//         {year: "Four", y: 7},
-//         {year: "Five", y: 4},
-//         {year: "Six", y: 3},
-//         {year: "Seven", y: 0.5}
-//     ];
-
-//     d3.select('#chart1 svg')
-//         .datum(testdata)
-//         .attr("width",500)
-//         .attr("height",500)
-//         .call(chart2);
-</script>
-
-
+<body ng-app="FullstackGeneratedApp">
+  <navbar></navbar>
+  <div id="main" ui-view></div>
 </body>
-
-
-
 
 </html>

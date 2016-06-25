@@ -29,11 +29,6 @@ app.controller('HomeCtrl', function($scope, QueryFactory) {
             $scope.columns = data.columns;
         })
     }
-
-
-
-   
-
 });
 
 
