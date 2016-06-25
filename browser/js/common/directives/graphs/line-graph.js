@@ -34,7 +34,7 @@ app.directive('lineGraph', function(d3Service, $window) {
                     //if so validate the format of the date
 
                     //run date checking function
-                    let commonDateFormats = ["%Y", "%Y-%y", "%x", "%xT%X"]
+                    let commonDateFormats = ["%Y", "%Y-%y", "%x", "%xT%X"];
 
                     let dateFormat = commonDateFormats.filter(f => d3.time.format(f).parse( filteredData[0][ dataColumns[0] ] )  ) [0];
                 }
@@ -90,9 +90,10 @@ app.directive('lineGraph', function(d3Service, $window) {
                     // set the height based on the calculations above
                     svg.attr('height', height + margin.top + margin.bottom);
 
-                    x.domain(d3.extent(data, function(d) { return formatDate.parse(d[dataColumns[0]]) }));
+                    x.domain(d3.extent(data, function(d) { return formatDate.parse(d[dataColumns[0]]); 
+                    }));
                     y.domain([0, d3.max(data, function(d) {
-                        return +d[dataColumns[1]]
+                        return +d[dataColumns[1]];
                     })]);
 
                     svg.append("g")
