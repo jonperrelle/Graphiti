@@ -1,10 +1,3 @@
-app.config(function ($stateProvider) {
-    $stateProvider.state('zach', {
-        url: '/zach',
-        templateUrl: 'js/home/zach.html'
-    });
-});
-
 app.directive('graphDirective', function(d3Service, $window) {
     return {
       restrict: 'EA',
