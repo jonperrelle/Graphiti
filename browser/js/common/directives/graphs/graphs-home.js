@@ -4,7 +4,6 @@ app.directive('graphDirective', function(d3Service, $window) {
       scope: {
       },
       link: function(scope, ele, attrs) {
-
         d3Service.d3().then(function(d3) {
           var svg = d3.select(ele[0])
             .append('svg')
