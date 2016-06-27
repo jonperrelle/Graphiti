@@ -13,7 +13,6 @@ app.directive('graphDirective', function(d3Service, $window) {
           var margin = parseInt(attrs.margin) || 20,
           barHeight = parseInt(attrs.barHeight) || 20,
           barPadding = parseInt(attrs.barPadding) || 5;
-         
           // Browser onresize event
           window.onresize = function() {
             scope.$apply();
