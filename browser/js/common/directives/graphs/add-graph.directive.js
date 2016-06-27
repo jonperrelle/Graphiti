@@ -46,7 +46,7 @@ app.directive('addGraph', function($http) {
         	}
         	
         	scope.pieDisabled = function () {
-        		if (scope.column1 && !scope.column2 && validateNumber(scope.column1)) return false;
+        		if (scope.column1 && scope.column2 && (validateNumber(scope.column1) !== validateNumber(scope.column2)) return false;
         		else return true;
         	};
 
