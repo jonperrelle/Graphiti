@@ -1,4 +1,4 @@
-app.directive('barChart', function(d3Service, $window) {
+app.directive('barChart', function(d3Service, $window, DataFactory) {
     return {
       restrict: 'EA',
       templateUrl: 'js/common/directives/graphs/barChart.html',
@@ -28,6 +28,9 @@ app.directive('barChart', function(d3Service, $window) {
  
           scope.render = function(data) {
             if (!scope.category || !scope.metric) return;
+
+            let groupedData = DataFactory.groupByCategory(scope.data, scope.category, scope.metric);
+
             svg = svg || d3.select(ele[0])
             .append('svg')
             .style('width', '100%')
@@ -55,9 +58,9 @@ app.directive('barChart', function(d3Service, $window) {
                 .scale(y)
                 .orient("left");
 
-            x.domain(scope.data.map(function(d) { return d[scope.category]; }));
+            x.domain(groupedData.map(function(d) { return d.groupedCategory; }));
 
-            y.domain([0, d3.max(scope.data, function(d) { return +d[scope.metric]; })]);
+            y.domain([0, d3.max(groupedData, function(d) { return +d.value; })]);
 
             svg.append("g")
                 .attr("class", "xaxis")
@@ -85,16 +88,16 @@ app.directive('barChart', function(d3Service, $window) {
                 .text(scope.metric);
 
             svg.selectAll(".bar")
-                .data(scope.data)
+                .data(groupedData)
               .enter().append("rect")
                 .attr("class", "bar")
-                .attr("x", function(d) { return x(d[scope.category]); })
+                .attr("x", function(d) { return x(d.groupedCategory); })
                 .attr("width", x.rangeBand())
                 .attr("y", function(d) {
-                  return y(+d[scope.metric]);
+                  return y(+d.value);
                 })
                 .attr("height", function(d) {
-                  return height - y(+d[scope.metric]);
+                  return height - y(+d.value);
                 })
                 .attr("transform", "translate(100, 0)");
           };
