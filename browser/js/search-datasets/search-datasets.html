@@ -10,7 +10,7 @@
       <div class="row dataset-search-box">
         <div class="col-xs-2"></div>
         <div class="input-group col-xs-8">
-          <input type="text" name="dataset" class="form-control" placeholder="Search for a dataset" ng-model="query" ng-enter="searchForDataset(query)">
+          <input type="text" name="dataset" class="form-control" placeholder="Search for a dataset" ng-model="query" ng-keypress="($event.which === 13)?searchForDataset(query):0">
           <span class="input-group-btn">
             <button class="btn btn-default" type="button" ng-click="searchForDataset(query)">Search</button>
           </span>
