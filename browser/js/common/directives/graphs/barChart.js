@@ -31,6 +31,8 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
 
             let groupedData = DataFactory.groupByCategory(scope.data, scope.category, scope.metric);
 
+            groupedData = DataFactory.orderByCategory(groupedData, scope.category);
+
             svg = svg || d3.select(ele[0])
             .append('svg')
             .style('width', '100%')
@@ -44,23 +46,23 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
             svg.attr('height', height + margin.top + margin.bottom);
 
             //create the rectangles for the bar chart
-            var x = d3.scale.ordinal()
+            let x = d3.scale.ordinal()
                 .rangeRoundBands([0, width], 0.1);
 
-            var y = d3.scale.linear()
+            let y = d3.scale.linear()
                 .range([height, 0]);
 
-            var xAxis = d3.svg.axis()
+            let xAxis = d3.svg.axis()
                 .scale(x)
                 .orient("bottom");
 
-            var yAxis = d3.svg.axis()
+            let yAxis = d3.svg.axis()
                 .scale(y)
                 .orient("left");
 
-            x.domain(groupedData.map(function(d) { return d.groupedCategory; }));
+            x.domain(groupedData.map(function(d) { return d[scope.category]; }));
 
-            y.domain([0, d3.max(groupedData, function(d) { return +d.value; })]);
+            y.domain([0, d3.max(groupedData, function(d) { return +d[scope.metric]; })]);
 
             svg.append("g")
                 .attr("class", "xaxis")
@@ -91,13 +93,13 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                 .data(groupedData)
               .enter().append("rect")
                 .attr("class", "bar")
-                .attr("x", function(d) { return x(d.groupedCategory); })
+                .attr("x", function(d) { return x(d[scope.category]); })
                 .attr("width", x.rangeBand())
                 .attr("y", function(d) {
-                  return y(+d.value);
+                  return y(+d[scope.metric]);
                 })
                 .attr("height", function(d) {
-                  return height - y(+d.value);
+                  return height - y(+d[scope.metric]);
                 })
                 .attr("transform", "translate(100, 0)");
           };

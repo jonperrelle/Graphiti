@@ -12,14 +12,20 @@ app.factory('DataFactory', function () {
       });
       for (let key in groupedObj) {
         if (groupedObj.hasOwnProperty(key)) {
-          groupedData.push({
-            groupedCategory: key,
-            value: groupedObj[key]
-          });
+          let obj = {};
+          obj[category] = key;
+          obj[metric] = groupedObj[key];
+          groupedData.push(obj);
         }
       }
-      console.log(groupedData);
       return groupedData;
+    },
+
+    orderByCategory: function (data, category) {
+      return data.sort(function (a, b) {
+        if (a[category] < b[category]) return -1;
+        else return 1;
+      });
     }
   };
 });
