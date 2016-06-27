@@ -12,7 +12,8 @@ app.directive('barChart', function(d3Service, $window) {
           let margin = {top: 20, right: 20, bottom: 100, left: 50},
               width = 960 - margin.left - margin.right,
               height = 1000 - margin.top - margin.bottom,
-              svg;
+              svg,
+              barYs;
           
           // Browser onresize event
           window.onresize = function() {
@@ -39,8 +40,8 @@ app.directive('barChart', function(d3Service, $window) {
  
             // set the height based on the calculations above
             svg.attr('height', height + margin.top + margin.bottom);
-            //create the rectangles for the bar chart
 
+            //create the rectangles for the bar chart
             var x = d3.scale.ordinal()
                 .rangeRoundBands([0, width], 0.1);
 
@@ -70,9 +71,6 @@ app.directive('barChart', function(d3Service, $window) {
             svg.selectAll(".xaxis text")
                 .attr("transform", "rotate(-45)translate(-10, 0)")
                 .style("text-anchor", "end");
-                // .attr("transform", function (d) {
-                  // return "translate(" + this.getBBox().height*-2 + "," + this.getBBox().height + ")rotate(-45)";
-                  // });
             svg.select(".xlabel")
                 .attr("transform", "translate(" + width / 2 + ", 120)");
 
@@ -87,14 +85,25 @@ app.directive('barChart', function(d3Service, $window) {
                 .style("text-anchor", "end")
                 .text(scope.metric);
 
+            barHeights = {};
+
             svg.selectAll(".bar")
                 .data(scope.data)
               .enter().append("rect")
                 .attr("class", "bar")
                 .attr("x", function(d) { return x(d[scope.category]); })
                 .attr("width", x.rangeBand())
-                .attr("y", function(d) { return y(+d[scope.metric]); })
-                .attr("height", function(d) { return height - y(+d[scope.metric]); })
+                .attr("y", function(d) {
+                  // return y(d[scope.metric]);
+                  barHeights[d[scope.category]] = barHeights[d[scope.category]] ?
+                    barHeights[d[scope.category]] + (+d[scope.metric]) :
+                    +d[scope.metric];
+                  return y(barHeights[d[scope.category]]);
+                })
+                
+                .attr("height", function(d) {
+                  return height - y(+d[scope.metric]);
+                })
                 .attr("transform", "translate(100, 0)");
           };
         });
