@@ -1,0 +1,66 @@
+<section>
+	<form name="submitLineGraph" role="form" novalidate>
+	    <fieldset>
+			<div class="row">
+			  <div class="form-group col-xs-8">
+			  	<div class="row">
+		          <div class="form-group col-xs-12">
+		            <label for="column1" class="control-label">Column #1</label>
+		            <div>
+		              <select ng-model="column1.name"  name="column1" class="form-control" ng-options="col for col in columns"></select>
+		            </div>
+		          </div>
+		          <div class="form-group col-xs-12">
+		            <label for="column2" class="control-label">Column #2</label>
+		            <div>
+		              <select ng-model="column2.name"  name="column2" class="form-control" ng-options="col for col in columns"></select>
+		            </div>
+		          </div>
+		        </div>
+			  </div>
+			  <div class="form-group col-xs-4">
+			    <label>Choose Graph</label>
+			    <div>
+			      <button class="btn btn-primary" ng-disabled="barOrPlotDisabled()">Bar</button>
+			      <button class="btn btn-primary" ng-disabled="barOrPlotDisabled()">Scatter Plot</button>
+			      <button class="btn btn-primary" ng-disabled="pieDisabled()">Pie</button>
+			      <button class="btn btn-primary" ng-disabled="lineDisabled()">Line</button>
+			    </div>
+			  </div>
+			</div>
+		</fieldset>
+	</form>
+</section>
+
+<!-- <div class="col-xs-6">
+		<form name="submitLineGraph" role="form" novalidate>
+	      <fieldset>
+	        <div class="row">
+	          <div class="form-group col-xs-12">
+	            <label for="xAxis" class="control-label">X-axis</label>
+	            <div>
+	              <select ng-model="xAxis"  name="xAxis" class="form-control" ng-options="xAxis for xAxis in columns1"></select>
+	            </div>
+	          </div>
+	          <div class="form-group col-xs-12">
+	            <label for="yAxis" class="control-label">Y-axis</label>
+	            <div>
+	              <select ng-model="yAxis"  name="yAxis" class="form-control" ng-options="yAxis for yAxis in columns2"></select>
+	            </div>
+	          </div>
+	        </div>
+	        {{columns1}}
+	        <div class="row">
+	          <div class="form-group col-xs-12">
+	            <button class="btn btn-primary" ng-click="getData(info, [xAxis, yAxis])" type="submit">Add Line Graph</button>
+	          </div>
+	        </div>
+	      </fieldset>
+	    </form>
+	</div>
+	<div class="col-xs-6"></div>
+    <div class="row">
+      <div class="col-xs-12">
+        <line-graph ng-if="graphData" data="graphData" cols="graphColumns"></line-graph>
+      </div>
+    </div> -->
