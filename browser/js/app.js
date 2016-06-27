@@ -1,5 +1,4 @@
 'use strict';
-
 window.app = angular.module('FullstackGeneratedApp', ['fsaPreBuilt', 'ui.router', 'ui.bootstrap', 'ngAnimate', 'd3', 'ngCookies', 'ngStorage', 'ngTable', 'angularjs-dropdown-multiselect']);
 
 app.config(function ($urlRouterProvider, $locationProvider) {
