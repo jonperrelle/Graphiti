@@ -4,39 +4,24 @@
         <h2>Search the Socrata Open Data Bank</h2>
     </header>
     <aside class="col-xs-2">
-      <header>
-        <h5>Filter By Category</h5>
-      </header>
-      <ul class="list-group">
-        <li class="list-group-item" ng-repeat="category in categories">
-          <label class="checkbox-inline category-item">
-            <input type="checkbox" ng-model="selectedCategory">{{category}}
-          </label>
-        </li>
-      </ul>
+      <div ng-dropdown-multiselect="" options="categories" selected-model="selectedCategories" translation-texts="buttonText"></div>
     </aside>
     <section class="col-xs-10">
       <div class="row dataset-search-box">
         <div class="col-xs-2"></div>
         <div class="input-group col-xs-8">
-          <input type="text" name="dataset" class="form-control" placeholder="Search for a dataset" ng-model="query">
+          <input type="text" name="dataset" class="form-control" placeholder="Search for a dataset" ng-model="query" ng-enter="searchForDataset(query)">
           <span class="input-group-btn">
             <button class="btn btn-default" type="button" ng-click="searchForDataset(query)">Search</button>
           </span>
         </div>
-        <div ng-if="datasets">
-          <ul class="list-group">
-              <a ng-click="getDataset(dataset)" class="list-group-item" ng-repeat="dataset in datasets">
-                <h4>{{dataset.resource.name}}</h4>
-                <p>{{dataset.resource.description}}</p>
-              </a>
-          </ul>
-        </div>
         <div class="col-xs-2"></div>
+        <div class="row">
+          <ui-view></ui-view>
+        </div>
       </div>
         
     </section>
-
 
 
 

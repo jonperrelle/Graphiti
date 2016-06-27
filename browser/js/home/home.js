@@ -27,8 +27,8 @@ app.controller('HomeCtrl', function($scope, QueryFactory) {
         .then(function(data) {
             $scope.graphData = data.graphData;
             $scope.columns = data.columns;
-        })
-    }
+        });
+    };
 });
 
 
