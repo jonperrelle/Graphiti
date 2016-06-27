@@ -59,9 +59,4 @@ app.controller('SearchDatasetsCtrl', function($scope, QueryFactory, $state, $loc
         });
     };
 
-    angular.element(document).on('keyup', function (e) {
-        if (e.which === 13 && $scope.query) {
-            $scope.searchForDataset($scope.query);
-        }
-    });
 });
