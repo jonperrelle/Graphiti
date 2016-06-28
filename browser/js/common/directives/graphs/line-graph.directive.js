@@ -14,23 +14,16 @@ app.directive('lineGraph', function(d3Service, $window) {
                     columns = scope.cols,
                     dateFormat;
 
-
                 let filteredData = scope.graphData.filter(obj => obj[columns[0].name] && obj[columns[1].name]).sort((a,b) => a[columns[0].name] - b[columns[0].name]);
-                console.log(filteredData);
-
-
-
 
                 //check if the data column header may contain date info ??
                 if (columns[0].type === 'date') {
-                    console.log("Here");
                     //if so validate the format of the date
 
                     //run date checking function
                     let commonDateFormats = ["%Y", "%Y-%y", "%x", "%xT%X"];
 
                     dateFormat = commonDateFormats.filter(f => d3.time.format(f).parse(filteredData[0][columns[0].name]))[0];
-                    console.log(dateFormat)
                 }
 
                 let svg = d3.select(ele[0])
@@ -75,6 +68,18 @@ app.directive('lineGraph', function(d3Service, $window) {
                 }, function() {
                     scope.render(filteredData);
                 });
+
+                scope.$watch(function (scope) {
+                    return scope.cols[0].name;
+                  }, function () {
+                    scope.render(filteredData);
+                  });
+
+                  scope.$watch(function (scope) {
+                    return scope.cols[1].name;
+                  }, function () {
+                    scope.render(filteredData);
+                  });
 
                 scope.render = function(data) {
                     svg.selectAll('*').remove();
