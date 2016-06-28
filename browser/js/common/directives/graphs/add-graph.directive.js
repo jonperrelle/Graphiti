@@ -1,4 +1,4 @@
-app.directive('addGraph', function(AddGraphFactory) {
+app.directive('addGraph', function(AddGraphFactory, ValidationFactory) {
     return {
         restrict: 'E',
         templateUrl: 'js/common/directives/graphs/add-graph.directive.html',
@@ -10,7 +10,7 @@ app.directive('addGraph', function(AddGraphFactory) {
         link: function(scope, ele, attrs) {
 
             scope.assignColumnType = function (col) {
-                AddGraphFactory.assignColumnType(scope.data, col);
+                ValidationFactory.assignColumnType(scope.data, col);
             } 
         	
         	scope.pieDisabled = function () {
