@@ -1,4 +1,4 @@
-app.directive('barChart', function(d3Service, $window) {
+app.directive('barChart', function(d3Service, $window, DataFactory) {
     return {
       restrict: 'EA',
       templateUrl: 'js/common/directives/graphs/barChart.html',
@@ -28,6 +28,11 @@ app.directive('barChart', function(d3Service, $window) {
  
           scope.render = function(data) {
             if (!scope.category || !scope.metric) return;
+
+            let groupedData = DataFactory.groupByCategory(scope.data, scope.category, scope.metric);
+
+            groupedData = DataFactory.orderByCategory(groupedData, scope.category);
+
             svg = svg || d3.select(ele[0])
             .append('svg')
             .style('width', '100%')
@@ -41,23 +46,23 @@ app.directive('barChart', function(d3Service, $window) {
             svg.attr('height', height + margin.top + margin.bottom);
 
             //create the rectangles for the bar chart
-            var x = d3.scale.ordinal()
+            let x = d3.scale.ordinal()
                 .rangeRoundBands([0, width], 0.1);
 
-            var y = d3.scale.linear()
+            let y = d3.scale.linear()
                 .range([height, 0]);
 
-            var xAxis = d3.svg.axis()
+            let xAxis = d3.svg.axis()
                 .scale(x)
                 .orient("bottom");
 
-            var yAxis = d3.svg.axis()
+            let yAxis = d3.svg.axis()
                 .scale(y)
                 .orient("left");
 
-            x.domain(scope.data.map(function(d) { return d[scope.category]; }));
+            x.domain(groupedData.map(function(d) { return d[scope.category]; }));
 
-            y.domain([0, d3.max(scope.data, function(d) { return +d[scope.metric]; })]);
+            y.domain([0, d3.max(groupedData, function(d) { return +d[scope.metric]; })]);
 
             svg.append("g")
                 .attr("class", "xaxis")
@@ -85,7 +90,7 @@ app.directive('barChart', function(d3Service, $window) {
                 .text(scope.metric);
 
             svg.selectAll(".bar")
-                .data(scope.data)
+                .data(groupedData)
               .enter().append("rect")
                 .attr("class", "bar")
                 .attr("x", function(d) { return x(d[scope.category]); })
