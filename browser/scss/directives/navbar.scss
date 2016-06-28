@@ -37,12 +37,18 @@ navbar {
     }
   }
 
-  .login-button {
-    float: right;
-    border: 1px solid black;
+   .btn.navbar-button {
+    color: white;
+    background: #6A6762;
     margin-top: 10px;
-    background: none;
     outline: none !important;
+    margin-right: 30px;
+  }
+
+  .btn.navbar-button:hover {
+    background: white;
+    color: #6A6762;
+    border: 1px solid #6A6762;
   }
 
   .welcome {

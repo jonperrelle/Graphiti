@@ -18,8 +18,15 @@
         <h3>Upload Your Own Dataset</h3>
       </header>
       <div>
-        <label class="control-label">Select File</label>
-        <input id="input-1a" type="file" class="file" data-show-preview="false">
+        <form name="form">
+          <button class="btn btn-primary" ng-show="!file" ngf-select ng-model="file">Select</button>
+          <div ng-show="file">{{file.name}}</div>
+          <button class="btn btn-primary" type="submit" ng-click="uploadFile()">Upload</button>
+        </form>
+        <!-- <form encType="multipart/form-data" ng-submit="uploadFile()">
+          <input type="file" name="file"/>
+          <button type="submit" class="btn btn-primary">Upload File</button>
+        </form> -->
       </div>
     </div>
   </div>
