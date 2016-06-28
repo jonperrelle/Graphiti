@@ -23,7 +23,7 @@
 				    <label>Choose Graph</label>
 				    <div>
 				      <button class="btn btn-primary" ng-disabled="barOrPlotDisabled()">Bar</button>
-				      <button class="btn btn-primary" ng-disabled="barOrPlotDisabled()">Scatter Plot</button>
+				      <button class="btn btn-primary" ng-disabled="barOrPlotDisabled()" ng-click="scatterplotGraph=!scatterplotGraph">Scatter Plot</button>
 				      <button class="btn btn-primary" ng-disabled="pieDisabled()">Pie</button>
 				      <button class="btn btn-primary" ng-disabled="lineDisabled()" ng-click="lineGraph=!lineGraph">Line</button>
 				    </div>
@@ -34,5 +34,6 @@
 	</div>
 	<div class="row">
 		<line-graph ng-if="lineGraph" graph-data="data" cols="[column1,column2]"></line-graph>
+		<scatterplot-graph ng-if="scatterplotGraph" rows="data" columns="[column1,column2]"></scatterplot-graph>
 	</div>
 </section>

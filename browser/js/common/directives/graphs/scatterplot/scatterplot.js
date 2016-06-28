@@ -1,4 +1,4 @@
-app.directive('scatterplot', function(d3Service, $window) {
+app.directive('scatterplotGraph', function(d3Service, $window) {
     return {
       restrict: 'EA',
       scope: {
@@ -74,7 +74,7 @@ app.directive('scatterplot', function(d3Service, $window) {
                       .attr("x", width)
                       .attr("y", -6)
                       .style("text-anchor", "end")
-                      .text(scope.columns[0]);
+                      .text(scope.columns[0].name);
 
                   // y-axis
                   svg.append("g")
