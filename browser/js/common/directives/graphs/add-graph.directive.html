@@ -1,0 +1,41 @@
+<section>
+	<div class="row">
+		<form name="submitLineGraph" role="form" novalidate>
+		    <fieldset>
+				<div class="row">
+				  <div class="form-group col-xs-8">
+				  	<div class="row">
+			          <div class="form-group col-xs-12">
+			            <label for="column1" class="control-label">Column #1</label>
+			            <div>
+			              <select ng-model="column1.name"  name="column1" class="form-control" ng-options="col for col in columns" ng-change="assignColumnType(column1)"></select>
+			            </div>
+			          </div>
+			          <div class="form-group col-xs-12">
+			            <label for="column2" class="control-label">Column #2</label>
+			            <div>
+			              <select ng-model="column2.name"  name="column2" class="form-control" ng-options="col for col in columns" ng-change="assignColumnType(column2)"></select>
+			            </div>
+			          </div>
+			        </div>
+				  </div>
+				  <div class="form-group col-xs-4">
+				    <label>Choose Graph</label>
+				    <div>
+				      <button class="btn btn-primary" ng-disabled="barOrPlotDisabled()" ng-click="barChart = !barChart">Bar</button>
+				      <button class="btn btn-primary" ng-disabled="barOrPlotDisabled()" ng-click="scatterplotGraph=!scatterplotGraph">Scatter Plot</button>
+				      <button class="btn btn-primary" ng-disabled="pieDisabled()" ng-click="pieChart=!pieChart">Pie</button>
+				      <button class="btn btn-primary" ng-disabled="lineDisabled()" ng-click="lineGraph=!lineGraph">Line</button>
+				    </div>
+				  </div>
+				</div>
+			</fieldset>
+		</form>
+	</div>
+	<div class="row">
+		<line-graph ng-if="lineGraph" graph-data="data" cols="[column1,column2]"></line-graph>
+		<scatterplot-graph ng-if="scatterplotGraph" rows="data" columns="[column1,column2]"></scatterplot-graph>
+		<pie-chart ng-if="pieChart" data="data" cols="[column1,column2]" width="500" height="500"></pie-chart>
+		<bar-chart ng-if="barChart" data="data" category="column1.name" metric="column2.name"></bar-chart>
+	</div>
+</section>

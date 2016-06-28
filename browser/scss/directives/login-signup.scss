@@ -1,0 +1,29 @@
+.login-signup-form {
+	background: #ffffff;
+	margin-top: 40px;
+	padding: 30px;
+	color: #6A6762;
+	border: 1px solid #6A6762;
+	border-radius: 5px;
+	header {
+		margin: 40px 0;
+	}
+
+}
+
+.btn.login-signup-btn {
+	width: 100%;
+	margin-bottom: 20px;
+	color: white;
+    background: #6A6762;
+}
+
+.btn.login-signup-btn:hover {
+	background: white;
+	color: #6A6762;
+	border: 1px solid #6A6762;
+}
+
+p {
+	font-size: 1.2em;
+}

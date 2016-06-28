@@ -6,7 +6,17 @@ app.config(function ($stateProvider) {
     });
 });
 
-app.controller('HomeCtrl', function($scope, QueryFactory) {
+app.controller('HomeCtrl', function($scope, QueryFactory, UploadFactory) {
+
+    $scope.uploadFile = function() {
+      if ($scope.form.$valid && $scope.file) {
+        UploadFactory.uploadFile($scope.file)
+        .then(function(data) {
+            $scope.file = null;
+        })
+      }
+    };
+
 
     QueryFactory.getCategories().then(cats => {
         $scope.categories = cats.map(cat => cat.category.toUpperCase());
@@ -30,5 +40,3 @@ app.controller('HomeCtrl', function($scope, QueryFactory) {
         });
     };
 });
-
-

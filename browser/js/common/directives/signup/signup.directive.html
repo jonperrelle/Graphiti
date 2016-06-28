@@ -1,0 +1,49 @@
+<section class="dataset-container">
+	<div class="row text-center">
+      <div class="col-md-4 col-sm-3 col-xs-1"></div>
+      <div class="col-md-4 col-sm-6 col-xs-10 login-signup-form">
+      		<header class="text-center">
+		      <h3>Create an Account</h3>
+		    </header>
+			<form id="signup-form" name="signupForm" ng-submit="signupForm.$valid && sendSignup(signup)">
+				<fieldset>
+				    <alert type="danger" ng-show="error">
+				        {{ error }}
+				    </alert>
+				    <div ng-messages="signupForm.email.$error" ng-hide="signupForm.email.$pristine" role="alert">
+				        <div ng-message="required" class="alert alert-warning">Email is required</div>
+				        <div ng-message="email" ng-show="signupForm.$submitted" class="alert alert-warning">Please enter a valid email</div>
+				    </div>
+				    <div ng-messages="signupForm.password.$error" ng-hide="signupForm.password.$pristine" role="alert">
+				        <div ng-message="required" class="alert alert-warning">Password is required</div>
+				    </div>
+				    <div ng-messages="signupForm.firstName.$error" ng-hide="signupForm.firstName.$pristine" role="alert">
+				        <div ng-message="required" class="alert alert-warning">First Name is required</div>
+				    </div>
+				    <div ng-messages="signupForm.lastName.$error" ng-hide="signupForm.lastName.$pristine" role="alert">
+				        <div ng-message="required" class="alert alert-warning">Last Name is required</div>
+				    </div>
+				    <div class="form-group">
+				        <input type="firstName" name="firstName" ng-model="signup.firstName" class="form-control" id="signup-firstName" placeholder="First Name" required>
+				    </div>
+				    <div class="form-group">
+				        <input type="text" name="lastName" ng-model="signup.lastName" class="form-control" id="signup-lastName" placeholder="Last Name" required>
+				    </div>
+				    <div class="form-group">
+				        <input type="text" name="email" ng-model="signup.email" class="form-control" id="email" placeholder="Email Address" required>
+				    </div>
+				    <div class="form-group">
+				        <input type="password" name="password" ng-model="signup.password" class="form-control" id="signup-password" placeholder="Password" required>
+				    </div>
+				    <div class="text-center">
+		              <button type="submit" class="btn login-signup-btn">Create Account</button>
+		            </div>
+		          </fieldset>
+		        </form>
+		        <div class="row text-center">
+		          <p>Already have an account?  Please <a ui-sref="login">login</a></p>
+		        </div>
+		 </div>
+      <div class="col-md-4 col-sm-3 col-xs-1"></div>
+    </div> 
+</section>

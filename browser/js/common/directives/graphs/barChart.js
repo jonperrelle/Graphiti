@@ -1,7 +1,6 @@
 app.directive('barChart', function(d3Service, $window, DataFactory) {
     return {
       restrict: 'EA',
-      templateUrl: 'js/common/directives/graphs/barChart.html',
       scope: {
         data: "=",
         category: "=",
