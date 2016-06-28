@@ -8,6 +8,14 @@ app.factory('UploadFactory', function ($http, Upload) {
         .then(function(response) {
           return response.data;
         });
+      },
+
+      getUploadedDataset: function (fileName) {
+          return $http.get('/upload?fileName=' + fileName)
+          .then(function(response) {
+              return response.data;
+          });
       }
+
    };
 });
