@@ -22,10 +22,22 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
           scope.$watch(function() {
             return angular.element($window)[0].innerWidth;
           }, function() {
-            scope.render(scope.data);
+            scope.render();
+          });
+
+          scope.$watch(function (scope) {
+            return scope.category;
+          }, function () {
+            scope.render();
+          });
+
+          scope.$watch(function (scope) {
+            return scope.metric;
+          }, function () {
+            scope.render();
           });
  
-          scope.render = function(data) {
+          scope.render = function() {
             if (!scope.category || !scope.metric) return;
 
             let groupedData = DataFactory.groupByCategory(scope.data, scope.category, scope.metric);
