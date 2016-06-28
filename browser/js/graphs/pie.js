@@ -1,30 +1,3 @@
-app.config(function($stateProvider) {
-    $stateProvider.state('pie', {
-        url: '/pie',
-        controller: 'PieCtrl',
-        templateUrl: 'js/graphs/pie.html'
-    });
-});
-
-app.controller('PieCtrl', function($scope) {
-    $scope.width = 500;
-    $scope.height = 500;
-    $scope.data2 = [{ "label": "Category A", "value": 20 },
-        { "label": "Category B", "value": 50 },
-        { "label": "Category C", "value": 30 },
-        { "label": "Category D", "value": 1 },
-        { "label": "Category D", "value": 1 },
-        { "label": "Category D", "value": 1 }
-    ];
-
-    $scope.data = [{ "label": "Category A", "value": 20 },
-        { "label": "Category B", "value": 50 },
-        { "label": "Category C", "value": 30 }
-    ];
-
-});
-
-
 app.directive('pieChart', function(d3Service, $window) {
 
     return {
@@ -33,20 +6,14 @@ app.directive('pieChart', function(d3Service, $window) {
             data: "=",
             width: "=",
             height: "=",
-            num: "="
+            cols: "="
         },
 
         template: '<div><svg id="pie"></svg></div>',
 
         link: function(scope, ele, attrs) {
 
-            //figure out how to choose columns to graph
-            // let col1 = Object.keys(scope.data[0])[2]
-            // let col2 = Object.keys(scope.data[0])[5]
-
-            // var myData = scope.data.map(function(e) {
-            //     return { key: e[col1], y: e[col2] }
-            // });
+           
 
             var myData = scope.data
 
@@ -55,15 +22,13 @@ app.directive('pieChart', function(d3Service, $window) {
                 nv.addGraph(function() {
                     var chart = nv.models.pieChart()
                         .x(function(d) {
-                            return d.label;
+                            return d[scope.cols[0].name];
                         })
                         .y(function(d) {
-                            return d.value;
+                            return d[scope.cols[1].name];
                         })
                         .width(scope.width)
                         .height(scope.height);
-
-                    console.log(scope.data);
 
                     var svg = d3.select('svg#pie')
 
@@ -81,7 +46,7 @@ app.directive('pieChart', function(d3Service, $window) {
     };
 });
 
-app.directive('pieChart2', function(d3Service, $window) {
+app.directive('pieChartt', function(d3Service, $window) {
 
     return {
         restrict: 'E',
@@ -89,19 +54,11 @@ app.directive('pieChart2', function(d3Service, $window) {
             data: "=",
             width: "=",
             height: "=",
-            num: "="
+            cols: "="
         },
 
         template: '<div id="pie"></div>',
         link: function(scope, ele, attrs) {
-
-            //figure out how to  format data appropriately after choosing columns to graph!!!
-            // let col1 = Object.keys(scope.data[0])[2];
-            // let col2 = Object.keys(scope.data[0])[5];
-
-            // var myData = scope.data.map(function(e) {
-            //     return { label: e[col1], value: e[col2] }
-            // });
 
 
             var w = scope.width;
@@ -113,29 +70,28 @@ app.directive('pieChart2', function(d3Service, $window) {
                 //uses build in d3 method to create color scale
                 var color = d3.scale.category20c();
 
-                var vis = d3.select('directive#pie').append("svg:svg").data([scope.data]).attr("width", w).attr("height", h).append("svg:g").attr("transform", "translate(" + r + "," + r + ")");
+                var vis = d3.select('#pie').append("svg").data([scope.data]).attr("width", w).attr("height", h).append("g").attr("transform", "translate(" + r + "," + r + ")");
                 var pie = d3.layout.pie().value(function(d) {
-                    return d.value;
+                    return d[scope.cols[0].name];
                 });
 
                 // declare an arc generator function
                 var arc = d3.svg.arc().outerRadius(r);
 
                 // select paths, use arc generator to draw
-                var arcs = vis.selectAll("g.slice").data(pie).enter().append("svg:g").attr("class", "slice");
+                var arcs = vis.selectAll("g.slice").data(pie).enter().append("g").attr("class", "slice");
 
-                arcs.append("svg:path")
+                arcs.append("path")
                     .attr("fill", function(d, i) {
                         return color(i);
                     })
                     .attr("d", function(d) {
                         // log the result of the arc generator to show how cool it is :)
-                        console.log(arc(d));
-                        return arc(d);
+                        return arc(d[scope.cols[1].name]);
                     });
 
                 // add the text
-                arcs.append("svg:text").attr("transform", function(d) {
+                arcs.append("text").attr("transform", function(d) {
                     d.innerRadius = 0;
                     d.outerRadius = r;
                     return "translate(" + arc.centroid(d) + ")";
