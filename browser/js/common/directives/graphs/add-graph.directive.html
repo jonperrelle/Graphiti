@@ -22,9 +22,9 @@
 				  <div class="form-group col-xs-4">
 				    <label>Choose Graph</label>
 				    <div>
-				      <button class="btn btn-primary" ng-disabled="barOrPlotDisabled()">Bar</button>
-				      <button class="btn btn-primary" ng-disabled="barOrPlotDisabled()">Scatter Plot</button>
-				      <button class="btn btn-primary" ng-disabled="pieDisabled()">Pie</button>
+				      <button class="btn btn-primary" ng-disabled="barOrPlotDisabled()" ng-click="barChart = !barChart">Bar</button>
+				      <button class="btn btn-primary" ng-disabled="barOrPlotDisabled()" ng-click="scatterplotGraph=!scatterplotGraph">Scatter Plot</button>
+				      <button class="btn btn-primary" ng-disabled="pieDisabled()" ng-click="pieChart=!pieChart">Pie</button>
 				      <button class="btn btn-primary" ng-disabled="lineDisabled()" ng-click="lineGraph=!lineGraph">Line</button>
 				    </div>
 				  </div>
@@ -34,5 +34,8 @@
 	</div>
 	<div class="row">
 		<line-graph ng-if="lineGraph" graph-data="data" cols="[column1,column2]"></line-graph>
+		<scatterplot-graph ng-if="scatterplotGraph" rows="data" columns="[column1,column2]"></scatterplot-graph>
+		<pie-chart ng-if="pieChart" data="data" cols="[column1,column2]" width="500" height="500"></pie-chart>
+		<bar-chart ng-if="barChart" data="data" category="column1.name" metric="column2.name"></bar-chart>
 	</div>
 </section>

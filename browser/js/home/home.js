@@ -40,5 +40,3 @@ app.controller('HomeCtrl', function($scope, QueryFactory, UploadFactory) {
         });
     };
 });
-
-

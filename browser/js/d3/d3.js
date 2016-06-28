@@ -1,8 +1,7 @@
 (function () {
 
     'use strict';
-
-    var app = angular.module('d3', []);
+    var app = angular.module('d3',[])
 
     app.factory('d3Service', ['$document', '$q', '$rootScope',
     function($document, $q, $rootScope) {
@@ -30,12 +29,4 @@
         d3: function() { return d.promise; }
       };
 }]);
-
- 
-    
-
- 
-
-   
-
 })();

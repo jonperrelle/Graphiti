@@ -3,6 +3,7 @@ app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state) 
     return {
         restrict: 'E',
         templateUrl: 'js/common/directives/navbar/navbar.html',
+
         link: function (scope, element) { 
             scope.user = null;
             scope.guest = null
