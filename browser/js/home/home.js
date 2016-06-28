@@ -9,7 +9,6 @@ app.config(function ($stateProvider) {
 app.controller('HomeCtrl', function($scope, QueryFactory, UploadFactory) {
 
     $scope.uploadFile = function() {
-        console.log($scope.file);
       if ($scope.form.$valid && $scope.file) {
         UploadFactory.uploadFile($scope.file)
         .then(function(data) {

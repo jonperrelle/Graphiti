@@ -16,6 +16,7 @@
   ],
   "dependencies": {
     "angularjs-dropdown-multiselect": "^1.5.2",
-    "angular-upload": "^1.0.12"
+    "angular-upload": "^1.0.12",
+    "moment": "^2.13.0"
   }
 }
