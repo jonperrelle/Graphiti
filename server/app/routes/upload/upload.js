@@ -8,8 +8,6 @@ const s3fsImpl = new S3FS('graphitiDatasets', {
 	secretAccessKey: env.amazonaws.secretAccessKey
 });
 const Converter = require('csvtojson').Converter;
-const csvConverter = new Converter({});
-
 
 const multipart = require('connect-multiparty');
 const multipartMiddleware = multipart();
@@ -21,15 +19,21 @@ router.use('/', multipartMiddleware);
 router.post('/', function (req, res, next) {
 	//check to make sure file is .csv or .json
 	//use Date.now() to give a unique file path??
+	const csvConverter = new Converter({});
+
 	if (!req.files) {
 		res.send('No files were uploaded.');
 	}
 	let uploadedFile = req.files.file;
 	let stream = fs.createReadStream(uploadedFile.path);
 	csvConverter.on('end_parsed', function (jsonArray) {
-		res.send({fileName: uploadedFile.originalFilename, data: jsonArray});
+		let trimmedFile = uploadedFile.originalFilename.replace(/.csv/, "");
+		res.send({fileName: trimmedFile, data: jsonArray});
 	});
 	stream.pipe(csvConverter);
+	csvConverter.on('error', function (errMsg, errData) {
+		next(errMsg);
+	})
 	// return s3fsImpl.writeFile(uploadedFile.originalFilename, stream)
 	// 		.then(function() {
 	// 			return fs.unlink(uploadedFile.path, function (err) {

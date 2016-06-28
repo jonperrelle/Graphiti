@@ -11,7 +11,6 @@ app.config(function ($stateProvider) {
 
 app.controller('UploadedDatasetCtrl', function ($scope, $stateParams, NgTableParams, $localStorage) {
     $scope.fileName = $stateParams.fileName;
-    $scope.rows = $stateParams.dataset;
     $scope.rows = $stateParams.dataset || $localStorage.rows;
     $localStorage.rows = $scope.rows;
     $scope.columns = Object.keys($localStorage.rows[0]);
