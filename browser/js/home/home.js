@@ -8,15 +8,16 @@ app.config(function ($stateProvider) {
 
 app.controller('HomeCtrl', function($scope, QueryFactory, UploadFactory) {
 
-    $scope.submit = function(file) {
+    $scope.uploadFile = function() {
+        console.log($scope.file);
       if ($scope.form.$valid && $scope.file) {
-        UploadFactory.uploadFile($scope.file);
+        UploadFactory.uploadFile($scope.file)
+        .then(function(data) {
+            $scope.file = null;
+        })
       }
     };
 
-    $scope.uploadFile = function () {
-        UploadFactory.uploadFile();
-    }
 
     QueryFactory.getCategories().then(cats => {
         $scope.categories = cats.map(cat => cat.category.toUpperCase());
