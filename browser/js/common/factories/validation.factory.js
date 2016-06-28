@@ -22,15 +22,15 @@ app.factory('ValidationFactory', function () {
             assignColumnType: function (data, col) {
               if (this.validateDate(col)) {
                 col.type = 'date';
-                return true;
+                return;
               }
               else if (this.validateNumber(data, col)) {
                 col.type = 'number';
-                return true;
+                return;
               }
               else {
                 col.type = "string";
-                return false;
+                return;
               }
               
             },

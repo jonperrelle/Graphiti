@@ -9,9 +9,10 @@ app.directive('addGraph', function(AddGraphFactory, ValidationFactory) {
         },
         link: function(scope, ele, attrs) {
 
+
             scope.assignColumnType = function (col) {
                 ValidationFactory.assignColumnType(scope.data, col);
-            } 
+            }; 
         	
         	scope.pieDisabled = function () {
         		return AddGraphFactory.pieDisabled(scope.column1, scope.column2);
