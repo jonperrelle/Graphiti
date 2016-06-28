@@ -36,12 +36,12 @@ app.directive('scatterplot', function(d3Service, $window) {
             scope.render = function(data) {
                 svg.selectAll('*').remove();
 
-                var xValue = function(d) { return d[scope.columns[0]]}, // data -> value
+                var xValue = function(d) { return d[scope.columns[0].name]}, // data -> value
                     xScale = d3.scale.linear().range([margin.left, margin.left + width]), // value -> display
                     xMap = function(d) { return xScale(xValue(d))}, // data -> display
                     xAxis = d3.svg.axis().scale(xScale).orient("bottom");
 
-                var yValue = function(d) { return d[scope.columns[1]]}, // data -> value
+                var yValue = function(d) { return d[scope.columns[1].name]}, // data -> value
                     yScale = d3.scale.linear().range([height - margin.bottom, margin.top]), // value -> display
                     yMap = function(d) { return yScale(yValue(d))}, // data -> display
                     yAxis = d3.svg.axis().scale(yScale).orient("left");
@@ -55,8 +55,8 @@ app.directive('scatterplot', function(d3Service, $window) {
                 .style("opacity", 0);
 
                 data.forEach(function(d) {
-                    d[scope.columns[0]] = +d[scope.columns[0]];
-                    d[scope.columns[1]] = +d[scope.columns[1]];
+                    d[scope.columns[0].name] = +d[scope.columns[0].name];
+                    d[scope.columns[1].name] = +d[scope.columns[1].name];
                 });
 
                 xScale.domain([d3.min(data, xValue)-1, d3.max(data, xValue)+1]);
@@ -89,7 +89,7 @@ app.directive('scatterplot', function(d3Service, $window) {
                       .attr("y", 6)
                       .attr("dy", ".71em")
                       .style("text-anchor", "end")
-                      .text(scope.columns[1]);
+                      .text(scope.columns[1].name);
 
                   // draw dots
                   svg.selectAll(".dot")
@@ -104,7 +104,7 @@ app.directive('scatterplot', function(d3Service, $window) {
                           tooltip.transition()
                                .duration(200)
                                .style("opacity", .9);
-                          tooltip.html(d[scope.columns[0]] + "<br/> (" + xValue(d) 
+                          tooltip.html(d[scope.columns[0].name] + "<br/> (" + xValue(d) 
                           + ", " + yValue(d) + ")")
                                .style("left", (d3.event.pageX + 5) + "px")
                                .style("top", (d3.event.pageY - 28) + "px");
@@ -136,7 +136,7 @@ app.directive('scatterplot', function(d3Service, $window) {
                       .attr("dy", ".35em")
                       .style("text-anchor", "end")
                       //.text(function(d) { return d})
-                      .text(scope.columns[0]);
+                      .text(scope.columns[0].name);
             }
         })
       }
