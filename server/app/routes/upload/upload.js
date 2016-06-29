@@ -25,10 +25,11 @@ router.post('/', function (req, res, next) {
 		res.send('No files were uploaded.');
 	}
 	let uploadedFile = req.files.file;
+	console.log(req.files.file)
 	let stream = fs.createReadStream(uploadedFile.path);
 	csvConverter.on('end_parsed', function (jsonArray) {
 		let trimmedFile = uploadedFile.originalFilename.replace(/.csv/, "");
-		res.send({fileName: trimmedFile, data: jsonArray});
+		res.send({fileName: trimmedFile, data: jsonArray, dataset: {resource: {name: trimmedFile}}});
 	});
 	stream.pipe(csvConverter);
 	csvConverter.on('error', function (errMsg, errData) {

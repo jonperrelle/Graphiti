@@ -1,4 +1,4 @@
-app.directive('signupForm', function ($state, AuthService) {
+app.directive('signupForm', function ($state,$stateParams,AuthService,$localStorage) {
     return {
         restrict: 'E',
         templateUrl: 'js/common/directives/signup/signup.directive.html',
@@ -13,7 +13,8 @@ app.directive('signupForm', function ($state, AuthService) {
                     return AuthService.login({email: signupInfo.email, password: signupInfo.password});
                 })
                 .then(function (user) {
-                   $state.go('userHome', {userId: user.id});
+                    if($stateParams.dataset) $state.go('datasetDetails',{datasetId: $localStorage.datasetId});
+                    else $state.go('userHome', {userId: user.id});
                 })
                 .catch(function () {
                     scope.error = 'Invalid signup credentials.';

@@ -1,4 +1,4 @@
-app.directive('loginForm', function ($state, AuthService) {
+app.directive('loginForm', function ($state, AuthService,$stateParams,$localStorage) {
     return {
         restrict: 'E',
         templateUrl: 'js/common/directives/login/login.directive.html',
@@ -9,8 +9,8 @@ app.directive('loginForm', function ($state, AuthService) {
                 scope.error = null;
 
                 AuthService.login(loginInfo).then(function (user) {
-                    $state.go('userHome', {userId: user.id});
-
+                    if($stateParams.dataset) $state.go('datasetDetails',{datasetId: $localStorage.datasetId});
+                    else $state.go('userHome', {userId: user.id});
                 }).catch(function () {
                     scope.error = 'Invalid login credentials.';
                 });
