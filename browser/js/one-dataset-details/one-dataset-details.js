@@ -11,7 +11,7 @@ app.config(function ($stateProvider) {
 });
 
 app.controller('DatasetDetailsCtrl', function ($scope, $stateParams, NgTableParams, $localStorage) {
-    $scope.dataset = $stateParams.dataset || $localStorage.dataset;
+    $scope.dataset = $stateParams.dataset.resource || $localStorage.dataset;
     $localStorage.dataset = $scope.dataset;
     $scope.rows = $stateParams.rows || $localStorage.rows;
     $localStorage.rows = $scope.rows;

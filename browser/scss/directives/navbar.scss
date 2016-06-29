@@ -1,9 +1,12 @@
 navbar {
 
-  display: block;
-  background: white;
-  border-bottom: 1px solid black;
-  box-shadow: 1px 1px 14px -3px black;
+  nav {
+    display: block;
+    position: fixed;
+    width: 100%;
+    background: #6a6d70;
+    height: 80px;
+    }
 
   .container {
     width: 91%;
@@ -39,16 +42,16 @@ navbar {
 
    .btn.navbar-button {
     color: white;
-    background: #6A6762;
+    background: #599ad6;
     margin-top: 10px;
     outline: none !important;
     margin-right: 30px;
   }
 
   .btn.navbar-button:hover {
-    background: white;
-    color: #6A6762;
-    border: 1px solid #6A6762;
+    background: #e6e9ed;
+    color: #599ad6;
+    border: 1px solid #599ad6;
   }
 
   .welcome {

@@ -6,13 +6,14 @@ app.config(function ($stateProvider) {
     });
 });
 
-app.controller('HomeCtrl', function($scope, QueryFactory, UploadFactory) {
+app.controller('HomeCtrl', function($scope, QueryFactory, UploadFactory, $state) {
 
     $scope.uploadFile = function() {
       if ($scope.form.$valid && $scope.file) {
         UploadFactory.uploadFile($scope.file)
-        .then(function(data) {
+        .then(function(dataset) {
             $scope.file = null;
+            $state.go('uploadedDataset', {fileName: dataset.fileName, dataset: dataset.data});
         })
       }
     };

@@ -1,9 +1,11 @@
 * {
   box-sizing: border-box;
+  font-family: 'Oxygen', sans-serif;
+  color: #6a6d70
 }
 
 body {
-  background: #fdfdfd;
+  background: #e6e9ed;
 }
 
 @mixin clearfix {
@@ -12,6 +14,14 @@ body {
     display: table;
     clear: both;
   }
+}
+
+a {
+  color: #19d178;
+}
+a:hover {
+  text-decoration: none;
+  color: #599ad6;
 }
 
 #main {

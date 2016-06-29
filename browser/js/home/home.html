@@ -1,33 +1,42 @@
 <section id="home">
-  <div class="row home-container">
-    <header class="text-center">
-      <h2>Create Your Own Graphs</h2>
-    </header>
-    <div class="col-sm-5 col-xs-12 home-search-box">
-      <header class="text-center">
-          <h3>Search Our Available Datasets</h3>
-      </header>
-      
-      <ul class="list-group">
-        <a ui-sref="searchDatasets" class="list-group-item">Socrata Open Data Bank Datasets</a>
-      </ul>
-    </div>
-    <div class="col-sm-2"></div>
-    <div class="col-sm-5 col-xs-12 home-search-box">
-      <header class="text-center">
-        <h3>Upload Your Own Dataset</h3>
-      </header>
-      <div>
-        <form name="form">
-          <button class="btn btn-primary" ng-show="!file" ngf-select ng-model="file">Select</button>
-          <div ng-show="file">{{file.name}}</div>
-          <button class="btn btn-primary" type="submit" ng-click="uploadFile()">Upload</button>
-        </form>
-        <!-- <form encType="multipart/form-data" ng-submit="uploadFile()">
-          <input type="file" name="file"/>
-          <button type="submit" class="btn btn-primary">Upload File</button>
-        </form> -->
+  <div class="row">
+    <div class="home-container">
+      <div class="graph-home text-center">
+        <header class="text-center">
+          <h2>Graphiti</h2>
+          <h4>Build custom graphs</h4> 
+       </header>
       </div>
+    </div>
+    <div class="row dataset-options">
+      <div class="col-xs-1"></div>
+      <div class="col-xs-10">
+        <header class="text-center">
+          <h4>Search from our available datasets, or upload your own.  Select your data points, and choose your graph type and styles.</h4>
+        </header>
+        <hr />
+        <div class="col-sm-5 col-xs-12 home-search-box">
+          <header class="text-center">
+              <h3>Search Our Datasets</h3>
+          </header> 
+          <a ui-sref="searchDatasets">Socrata Open Data Bank Datasets</a>
+        </div>
+        <div class="col-sm-2"></div>
+        <div class="col-sm-5 col-xs-12 home-search-box">
+          <header class="text-center">
+            <h3>Upload Your Own Dataset</h3>
+          </header>
+          <div>
+            <form name="form" class="upload-form">
+              <button class="btn select-btn" ng-show="!file" ngf-select ng-model="file">Select file to upload</button>
+              <p class="file-upload" ng-show="file">{{file.name}}</p>
+              <button ng-show="file" class="btn btn-danger upload-btn" type="submit" ng-click="file=false">Cancel</button>
+              <button ng-show="file" class="btn btn-primary upload-btn" type="submit" ng-click="uploadFile()">Upload</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-1"></div>
     </div>
   </div>
 </section>
