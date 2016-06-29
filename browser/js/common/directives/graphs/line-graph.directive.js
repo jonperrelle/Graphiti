@@ -11,26 +11,18 @@ app.directive('lineGraph', function(d3Service, $window) {
                 let margin = { top: 20, right: 20, bottom: 30, left: 50 },
                     width = 960 - margin.left - margin.right,
                     height = 500 - margin.top - margin.bottom,
-                    columns = scope.cols,
                     dateFormat;
 
-
-                let filteredData = scope.graphData.filter(obj => obj[columns[0].name] && obj[columns[1].name]).sort((a,b) => a[columns[0].name] - b[columns[0].name]);
-                console.log(filteredData);
-
-
-
+                let filteredData = scope.graphData.filter(obj => obj[scope.cols[0].name] && obj[scope.cols[1].name]).sort((a,b) => a[scope.cols[0].name] - b[scope.cols[0].name]);
 
                 //check if the data column header may contain date info ??
-                if (columns[0].type === 'date') {
-                    console.log("Here");
+                if (scope.cols[0].type === 'date') {
                     //if so validate the format of the date
 
                     //run date checking function
                     let commonDateFormats = ["%Y", "%Y-%y", "%x", "%xT%X"];
 
-                    dateFormat = commonDateFormats.filter(f => d3.time.format(f).parse(filteredData[0][columns[0].name]))[0];
-                    console.log(dateFormat)
+                    dateFormat = commonDateFormats.filter(f => d3.time.format(f).parse(filteredData[0][scope.cols[0].name]))[0];
                 }
 
                 let svg = d3.select(ele[0])
@@ -58,10 +50,10 @@ app.directive('lineGraph', function(d3Service, $window) {
 
                 let line = d3.svg.line()
                     .x(function(d) {
-                        return x(formatDate.parse( d[ columns[0].name ] ));
+                        return x(formatDate.parse( d[scope.cols[0].name ] ));
                     })
                     .y(function(d) {
-                        return y(+d[columns[1].name]);
+                        return y(+d[scope.cols[1].name]);
                     });
 
                 // Browser onresize event
@@ -76,6 +68,18 @@ app.directive('lineGraph', function(d3Service, $window) {
                     scope.render(filteredData);
                 });
 
+                scope.$watch(function (scope) {
+                    return scope.cols[0].name;
+                  }, function () {
+                    scope.render(filteredData);
+                  });
+
+                  scope.$watch(function (scope) {
+                    return scope.cols[1].name;
+                  }, function () {
+                    scope.render(filteredData);
+                  });
+
                 scope.render = function(data) {
                     svg.selectAll('*').remove();
 
@@ -84,10 +88,10 @@ app.directive('lineGraph', function(d3Service, $window) {
                     // set the height based on the calculations above
                     svg.attr('height', height + margin.top + margin.bottom);
 
-                    x.domain(d3.extent(data, function(d) { return formatDate.parse(d[columns[0].name]); 
+                    x.domain(d3.extent(data, function(d) { return formatDate.parse(d[scope.cols[0].name]); 
                     }));
                     y.domain([0, d3.max(data, function(d) {
-                        return +d[columns[1].name];
+                        return +d[scope.cols[1].name];
                     })]);
 
                     svg.append("g")
@@ -103,7 +107,7 @@ app.directive('lineGraph', function(d3Service, $window) {
                         .attr("y", 6)
                         .attr("dy", ".71em")
                         .style("text-anchor", "end")
-                        .text(columns[1].name);
+                        .text(scope.cols[1].name);
 
                     svg.append("path")
                         .datum(data)
