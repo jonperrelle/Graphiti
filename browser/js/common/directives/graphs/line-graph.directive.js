@@ -25,26 +25,26 @@ app.directive('lineGraph', function(d3Service, $window) {
                     scope.$apply();
                 };
 
-                // Watch for resize event
-                // scope.$watch(function() {
-                //     return angular.element($window)[0].innerWidth;
-                // }, function() {
-                //     scope.render(filteredData);
-                // });
-
-                // scope.$watch(function (scope) {
-                //     return scope.columns[0].name;
-                //   }, function () {
-                //     scope.render(filteredData);
-                //   });
-
-                //   scope.$watch(function (scope) {
-                //     return scope.columns[1].name;
-                //   }, function () {
-                //     scope.render(filteredData);
-                //   });
-
                 let filteredData = scope.rows.filter(obj => obj[scope.columns[0].name] && obj[scope.columns[1].name]).sort((a,b) => a[scope.columns[0].name] - b[scope.columns[0].name]);
+
+                // Watch for resize event
+                scope.$watch(function() {
+                    return angular.element($window)[0].innerWidth;
+                }, function() {
+                    scope.render(filteredData);
+                });
+
+                scope.$watch(function (scope) {
+                    return scope.columns[0].name;
+                  }, function () {
+                    scope.render(filteredData);
+                  });
+
+                  scope.$watch(function (scope) {
+                    return scope.columns[1].name;
+                  }, function () {
+                    scope.render(filteredData);
+                  });
 
                 scope.render = function(predata) {
                     svg.selectAll('*').remove();
@@ -80,8 +80,6 @@ app.directive('lineGraph', function(d3Service, $window) {
                         return; 
                     }
 
-    
-
                     let y = d3.scale.linear()
                         .range([height, 0]);
 
@@ -103,7 +101,6 @@ app.directive('lineGraph', function(d3Service, $window) {
 
                     // If we don't pass any data, return out of the element
                     if (!data) return;
-                    // console.log('hey ther');
                     // set the height based on the calculations above
                     svg.attr('height', height + margin.top + margin.bottom);
 
@@ -133,7 +130,6 @@ app.directive('lineGraph', function(d3Service, $window) {
                         .attr("class", "line")
                         .attr("d", line);
                 };
-                scope.render(filteredData);
             });
         }
     };
