@@ -3,7 +3,7 @@ var Sequelize = require('sequelize');
 module.exports = function (db) {
 
     db.define('dataset', {
-        s3url: {
+        s3fileName: {
             type: Sequelize.TEXT
         }, 
         userUploaded: {
