@@ -69,6 +69,13 @@ app.directive('lineGraph', function(d3Service, $window) {
                         x = d3.time.scale().range([0, width]);
                     } else if (scope.columns[0].type === 'number'){
                         x = d3.scale.linear().range([0, width]);
+                        var data = [];
+                        predata.forEach(function(element){
+                            let obj = {};
+                            obj[scope.columns[0].name] = +(element[scope.columns[0].name]);
+                            obj[scope.columns[1].name] = element[scope.columns[1].name]
+                            data.push(obj);
+                        })
                     } else {
                         return; 
                     }
@@ -96,6 +103,7 @@ app.directive('lineGraph', function(d3Service, $window) {
 
                     // If we don't pass any data, return out of the element
                     if (!data) return;
+                    // console.log('hey ther');
                     // set the height based on the calculations above
                     svg.attr('height', height + margin.top + margin.bottom);
 
