@@ -14,17 +14,22 @@ app.directive('addGraph', function(AddGraphFactory, ValidationFactory) {
                 ValidationFactory.assignColumnType(scope.data, col);
             }; 
         	
-        	scope.pieDisabled = function () {
-        		return AddGraphFactory.pieDisabled(scope.column1, scope.column2);
-        	};
+            scope.pieEnabled = function(){
+                return AddGraphFactory.pieEnabled(scope.column1, scope.column2);
+            }
 
-        	scope.barOrPlotDisabled = function () {
-        		return AddGraphFactory.barOrPlotDisabled(scope.column1, scope.column2);
-        	};
+            scope.barEnabled = function(){
+                return AddGraphFactory.barEnabled(scope.column1, scope.column2);
+            }
 
-        	scope.lineDisabled = function () {
-        		return AddGraphFactory.lineDisabled(scope.column1, scope.column2);
-        	};
+            scope.scatterEnabled = function(){
+                return AddGraphFactory.scatterEnabled(scope.column1, scope.column2);
+            }
+
+            scope.lineEnabled = function(){
+                return AddGraphFactory.lineEnabled(scope.column1, scope.column2);
+            }
+
         }
     };
 });

@@ -16,7 +16,8 @@ app.controller('DatasetDetailsCtrl', function ($scope, $stateParams, NgTablePara
     $scope.rows = $stateParams.rows || $localStorage.rows;
     $localStorage.rows = $scope.rows;
     $scope.columns = Object.keys($localStorage.rows[0]);
-    $scope.tableParams = new NgTableParams({}, {
-        dataset: $localStorage.rows
+    $scope.tableParams = new NgTableParams({count: 1}, {
+        dataset: $localStorage.rows,
+        counts: [1, 5, 10, 25, 100]
     }); 
 });
