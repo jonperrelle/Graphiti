@@ -33,7 +33,7 @@
 		</form>
 	</div>
 	<div class="row">
-		<line-graph ng-if="lineGraph" graph-data="data" cols="[column1,column2]"></line-graph>
+		<line-graph ng-if="lineGraph" rows="data" columns="[column1,column2]"></line-graph>
 		<scatterplot-graph ng-if="scatterplotGraph" rows="data" columns="[column1,column2]"></scatterplot-graph>
 		<pie-chart ng-if="pieChart" rows="data" columns="[column1,column2]"></pie-chart>
 		<bar-chart ng-if="barChart" rows="data" columns="[column1,column2]"></bar-chart>
