@@ -13,10 +13,10 @@ app.directive('lineGraph', function(d3Service, $window) {
                     height = 500 - margin.top - margin.bottom,
                     dateFormat;
 
-                let filteredData = scope.graphData.filter(obj => obj[scope.cols[0].name] && obj[scope.cols[1].name]).sort((a,b) => a[columns[0].name] - b[columns[0].name]);
+                let filteredData = scope.graphData.filter(obj => obj[scope.cols[0].name] && obj[scope.cols[1].name]).sort((a,b) => a[scope.cols[0].name] - b[scope.cols[0].name]);
 
                 //check if the data column header may contain date info ??
-                if (columns[0].type === 'date') {
+                if (scope.cols[0].type === 'date') {
                     //if so validate the format of the date
 
                     //run date checking function
@@ -88,10 +88,10 @@ app.directive('lineGraph', function(d3Service, $window) {
                     // set the height based on the calculations above
                     svg.attr('height', height + margin.top + margin.bottom);
 
-                    x.domain(d3.extent(data, function(d) { return formatDate.parse(d[columns[0].name]); 
+                    x.domain(d3.extent(data, function(d) { return formatDate.parse(d[scope.cols[0].name]); 
                     }));
                     y.domain([0, d3.max(data, function(d) {
-                        return +d[columns[1].name];
+                        return +d[scope.cols[1].name];
                     })]);
 
                     svg.append("g")
@@ -107,7 +107,7 @@ app.directive('lineGraph', function(d3Service, $window) {
                         .attr("y", 6)
                         .attr("dy", ".71em")
                         .style("text-anchor", "end")
-                        .text(columns[1].name);
+                        .text(scope.cols[1].name);
 
                     svg.append("path")
                         .datum(data)
