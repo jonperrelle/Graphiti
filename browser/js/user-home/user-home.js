@@ -14,6 +14,11 @@ app.config(function ($stateProvider) {
 app.controller('UserHomeCtrl', function ($scope, Session, UserFactory) {
     $scope.user = Session.user;
 
+    UserFactory.getAllUserDatasets($scope.user)
+    .then(function(data) {
+        $scope.datasets = data;
+    });
+
     $scope.getDataset = function () {
         UserFactory.getDataset($scope.user)
         .then(function(res) {

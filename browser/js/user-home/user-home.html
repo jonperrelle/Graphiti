@@ -1,6 +1,12 @@
 <section class="user-home">
   <div class="home-container">
     <h2 class="text-center">Welcome</h2>
-    <button class="btn btn-primary" ng-if="user" ng-click="getDataset()">Get datasets</button>
+  </div>
+  <div class="row">
+  	<ul class="list-group">
+		<button class="list-group-item" ng-repeat="dataset in datasets">
+		  <h4>{{dataset.name}}</h4>
+		</button>
+	</ul>
   </div>
 </section>

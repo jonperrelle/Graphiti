@@ -17,6 +17,13 @@ app.factory('UserFactory', function($http) {
              return $http.get('/api/users/' + user.id + '/awsDataset')
                     .then(res => res.data)
                     .catch();
+        },
+
+        getAllUserDatasets: function(user) {
+
+            return $http.get('/api/users/' + user.id + '/allDatasets')
+                    .then(res => res.data)
+                    .catch();
         }
     }
 
