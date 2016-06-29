@@ -1,7 +1,7 @@
 <div>
   <header class="text-center">
-    <h2 ng-show="dataset.name">{{ dataset.name }}</h2>
-    <button class="btn btn-primary" ng-if="user">Add to my datasets</button>
+    <h2 ng-show="dataset.resource.name">{{ dataset.resource.name }}</h2>
+    <button class="btn btn-primary" ng-if="user" ng-click="addDataset()">Add to my datasets</button>
     <p ng-if="!user"><a ui-sref="login({dataset: true})">Login</a> or <a ui-sref="signup({dataset: true})">signup</a> to save dataset<p>
   </header>   
   <div class="row table-responsive">

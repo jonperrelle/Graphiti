@@ -11,6 +11,13 @@ app.config(function ($stateProvider) {
     });
 });
 
-app.controller('UserHomeCtrl', function ($scope) {
-    // $scope.user = User;
+app.controller('UserHomeCtrl', function ($scope, Session, UserFactory) {
+    $scope.user = Session.user;
+
+    $scope.getDataset = function () {
+        UserFactory.getDataset($scope.user)
+        .then(function(res) {
+            console.log(res);
+        });
+    }
 });

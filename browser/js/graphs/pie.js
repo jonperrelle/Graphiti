@@ -13,7 +13,7 @@ app.directive('pieChart', function(d3Service, $window) {
 
         link: function(scope, ele, attrs) {
 
-           
+
 
             var myData = scope.data
 
@@ -103,3 +103,71 @@ app.directive('pieChartt', function(d3Service, $window) {
         }
     };
 });
+
+
+
+
+function type(d) {
+    d.population = +d.population;
+    return d;
+}
+
+
+app.directive('pieCharttt', function(d3Service, $window) {
+
+    return {
+        restrict: 'E',
+        scope: {
+            data: "=",
+            width: "=",
+            height: "=",
+            cols: "="
+        },
+        template: '<div id="pie"></div>',
+        link: function(scope, ele, attrs) {
+
+
+            var radius = Math.min(scope.width, scope.height) / 2;
+
+            var color = d3.scale.ordinal()
+                .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+
+            var arc = d3.svg.arc()
+                .outerRadius(radius)
+                .innerRadius(0);
+
+            // var labelArc = d3.svg.arc()
+            //     .outerRadius(radius - 40)
+            //     .innerRadius(radius - 40);
+
+            var pie = d3.layout.pie()
+                .sort(null)
+                .value(function(d) {
+                    return d[scope.cols[1].name]; });
+
+            var svg = d3.select("#pie").append("svg")
+                .attr("width", scope.width)
+                .attr("height", scope.height)
+                .append("g")
+                .attr("transform", "translate(" + scope.width / 2 + "," + scope.height / 2 + ")");
+
+            
+                var g = svg.selectAll(".arc")
+                    .data(pie(data))
+                    .enter().append("g")
+                    .attr("class", "arc");
+
+                g.append("path")
+                    .attr("d", arc)
+                    .style("fill", function(d) {
+                        return color(d[scope.cols[1].name]); });
+
+                // g.append("text")
+                //     .attr("transform", function(d) {
+                //         return "translate(" + labelArc.centroid(d) + ")"; })
+                //     .attr("dy", ".35em")
+                //     .text(function(d) {
+                //         return d.data.age; });
+        },
+    }
+})
