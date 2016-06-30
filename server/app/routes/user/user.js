@@ -12,6 +12,20 @@ AWS.config.update( {
     secretAccessKey: env.amazonaws.secretAccessKey
 })
 AWS.config.setPromisesDependency(require('bluebird'));
+const Converter = require('csvtojson').Converter;
+
+
+router.get('/:userId', function (req, res, next) {
+    User.findById(req.params.userId)
+    .then(function (user) {
+        return user.getDatasets() 
+        .then(function(datasets) {
+            res.send({user, datasets});
+        })
+        .catch(next);
+    })
+    .catch(next);
+});
 
 router.post('/:userId/addSocrataDataset', function(req, res, next) {
 
@@ -65,36 +79,22 @@ router.post('/:userId/addUploadedDataset', function(req, res, next) {
   });
 });
 
-router.get('/:userId/allDatasets', function(req, res, next) {
-    User.findById(req.params.userId)
-    .then(function (user) {
-        return user.getDatasets() 
-    })
-    .then(function(datasets) {
-        res.send(datasets);
-    })
-    .catch(next);
-
-
-
-})
-
-router.get('/:userId/awsDataset/',function(req,res,next){
+router.get('/:userId/awsDataset/:datasetId',function(req,res,next){
 
     const s3 = new AWS.S3();
+    const csvConverter = new Converter({});
 
-    User.findOne({
-        include: [Dataset],
-        where: {
-            id: req.params.userId
-        }
-    })
-    .then(function (user) {
-        console.log(user.datasets);
-    	s3.getObject({Bucket: 'graphitiDatasets', Key: user.datasets[0].s3fileName},function(err, data){
+    Dataset.findById(req.params.datasetId)
+    .then(function (dataset) {
+    	s3.getObject({Bucket: 'graphitiDatasets', Key: dataset.s3fileName},function(err, data){
     		if(err) next(err);
-    		else console.log("Here", data);
-    		res.sendStatus(201);
+    		else {
+                let csvString = data.Body.toString('utf8');
+                csvConverter.fromString(csvString, function (err, jsonArray) {
+                    if (err) next(err);
+                    res.send({data: jsonArray, dataset: {resource: {name: dataset.name}}});
+                });
+            }
     	}); 
     })
     .catch(next);

@@ -18,7 +18,7 @@ router.get('/',function(req,res,next){
 			.on('success',function(rows){
 				res.send(rows);
 			})
-			.on('error',next);
+			.on('error', next);
 	}
 	else {
 		res.sendStatus(404);

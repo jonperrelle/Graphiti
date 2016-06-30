@@ -1,28 +1,43 @@
 app.factory('UserFactory', function($http) {
 
+    var successFunc = function(res) { return res.data};
+
     return {
+
+        fetchUser: function(userId) {
+            return $http.get('/api/users/' + userId)
+                .then(successFunc)
+                .catch();
+        },
+
         addDataset: function(user, dataset, domain) {
             if (domain) {
                 return $http.post('/api/users/' + user.id + '/addSocrataDataset', { dataset, domain })
-                    .then(res => res.data)
+                    .then(successFunc)
                     .catch();
             } else {
                 return $http.post('/api/users/' + user.id + '/addUploadedDataset', { dataset })
-                    .then(res => res.data)
+                    .then(successFunc)
                     .catch();
             }
         },
 
-        getDataset: function(user) {
-             return $http.get('/api/users/' + user.id + '/awsDataset')
-                    .then(res => res.data)
+        getOneUserDataset: function(dataset, user) {
+            if (dataset.userUploaded) { 
+                return $http.get('/api/users/' + user.id + '/awsDataset/' + dataset.id)
+                    .then(successFunc)
                     .catch();
+            }
+            else {
+                return $http.get('api/soda?datasetId=' + dataset.socrataId + "&domain=" + dataset.socrataDomain)
+                    .then(successFunc)
+                    .catch();
+            }
         },
 
         getAllUserDatasets: function(user) {
-
             return $http.get('/api/users/' + user.id + '/allDatasets')
-                    .then(res => res.data)
+                    .then(successFunc)
                     .catch();
         }
     }

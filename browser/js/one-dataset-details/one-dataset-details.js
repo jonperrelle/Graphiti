@@ -10,7 +10,8 @@ app.config(function ($stateProvider) {
     });
 });
 
-app.controller('DatasetDetailsCtrl', function ($scope, $stateParams, NgTableParams, $localStorage) {
+app.controller('DatasetDetailsCtrl', function ($scope, $stateParams, Session, UserFactory, NgTableParams, $localStorage) {
+
     $localStorage.datasetId = $stateParams.datasetId || $localStorage.datasetId;
     $scope.dataset = $stateParams.dataset || $localStorage.dataset;
     $localStorage.dataset = $scope.dataset;
@@ -20,4 +21,11 @@ app.controller('DatasetDetailsCtrl', function ($scope, $stateParams, NgTablePara
     $scope.tableParams = new NgTableParams({}, {
         dataset: $localStorage.rows
     }); 
+
+    if (Session.user) $scope.user = Session.user;
+    $scope.addDataset = function(){
+        var domain;
+        if ($scope.dataset.metadata) domain = $scope.dataset.metadata.domain;
+        UserFactory.addDataset($scope.user, $scope.dataset.resource, domain);
+    };
 });

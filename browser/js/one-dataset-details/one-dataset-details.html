@@ -1,4 +1,12 @@
 <div class="dataset-container">
-  <dataset-table dataset="dataset" rows="rows" columns="columns" table-params="tableParams"></dataset-table>
-  <add-graph data="rows" columns="columns" info="dataset"></add-line-graph>
+	<header class="text-center">
+	    <h2>{{ dataset.name || dataset.resource.name }}</h2>
+	    <div ng-if="user">
+		    <button class="btn btn-primary" ng-if="!addedDataset" ng-click="addDataset();addedDataset=!addedDataset">Add to my datasets</button>
+		    <button class="btn btn-danger" ng-if="addedDataset" ng-click="removeDataset();addedDataset=!addedDataset">Remove dataset</button>
+		</div>
+	    <p ng-if="!user"><a ui-sref="login({dataset: true})">Login</a> or <a ui-sref="signup({dataset: true})">signup</a> to save dataset<p>
+	</header> 
+	<dataset-table dataset="dataset" rows="rows" columns="columns" table-params="tableParams"></dataset-table>
+	<add-graph data="rows" columns="columns" info="dataset"></add-line-graph>
 </div>

@@ -1,10 +1,10 @@
 <section class="user-home">
   <div class="home-container">
-    <h2 class="text-center">Welcome</h2>
+    <h2 class="text-center">Hi {{user.fullName}}!</h2>
   </div>
   <div class="row">
   	<ul class="list-group">
-		<button class="list-group-item" ng-repeat="dataset in datasets">
+		<button class="list-group-item" ng-repeat="dataset in datasets" ng-click="goToDataset(dataset)">
 		  <h4>{{dataset.name}}</h4>
 		</button>
 	</ul>
