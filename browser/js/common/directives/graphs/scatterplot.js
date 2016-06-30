@@ -1,6 +1,6 @@
 app.directive('scatterplotGraph', function(d3Service, $window, GraphSettingsFactory) {
   return {
-    restrict: 'EA',
+    restrict: 'E',
     scope: {
       //comment this out during testing
       rows: '=',

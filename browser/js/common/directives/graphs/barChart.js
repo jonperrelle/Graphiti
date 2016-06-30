@@ -1,6 +1,6 @@
 app.directive('barChart', function(d3Service, $window, DataFactory) {
     return {
-      restrict: 'EA',
+      restrict: 'E',
       scope: {
         rows: "=",
         columns: "="

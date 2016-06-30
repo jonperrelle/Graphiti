@@ -1,6 +1,6 @@
 app.directive('lineGraph', function(d3Service, $window) {
     return {
-        restrict: 'EA',
+        restrict: 'E',
         scope: {
             rows: "=",
             columns: "="
