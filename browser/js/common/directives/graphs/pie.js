@@ -6,8 +6,7 @@ app.directive('pieChart', function(d3Service, $window, DataFactory) {
             rows: "=",
             columns: "="
         },
-
-        template: '<div id="pie"></div>',
+        
         link: function(scope, ele, attrs) {
 
             let w = 500;
@@ -22,7 +21,7 @@ app.directive('pieChart', function(d3Service, $window, DataFactory) {
                 //uses build in d3 method to create color scale
                 let color = d3.scale.category20c();
 
-                let vis = d3.select('#pie')
+                let vis = d3.select(ele[0])
                     .append("svg")
                     .data([groupedData])
                     .attr("width", w)

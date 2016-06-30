@@ -45,7 +45,8 @@ app.directive('scatterplotGraph', function(d3Service, $window, GraphSettingsFact
 
             let margin = {top: 20, right: 20, bottom: 30, left: 40},
             width = ele[0].parentNode.offsetWidth - margin.left - margin.right,
-            height = width - margin.top - margin.bottom;
+            height = width - margin.top - margin.bottom,
+            dotRadius = width / 150;
 
             svg = svg
             .append('svg')
@@ -113,7 +114,7 @@ app.directive('scatterplotGraph', function(d3Service, $window, GraphSettingsFact
                 .data(filteredData)
               .enter().append("circle")
                 .attr("class", "dot")
-                .attr("r", 3.5)
+                .attr("r", dotRadius)
                 .attr("cx", xMap)
                 .attr("cy", yMap)
                 .style("fill", function(d) { return color(cValue(d))}) 
