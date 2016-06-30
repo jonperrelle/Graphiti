@@ -4,9 +4,6 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
       scope: {
         rows: "=",
         columns: "="
-        // data: "=",
-        // category: "=",
-        // metric: "="
       },
       link: function(scope, ele, attrs) {
         d3Service.d3().then(function(d3) {
