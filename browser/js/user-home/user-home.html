@@ -9,6 +9,17 @@
     <div class="col-sm-5 col-xs-12">
       <h3>Your Graphs</h3>
       <h5>Add new graph button</h5>
+      <ul class="list-group">
+        <li class="list-group-item" ng-repeat="graph in graphs">
+          <div class="row">
+            <div class="col-xs-10">
+              <button class="btn btn-dataset" ng-click="goToUserGraph(graph)">{{graph.name}}</button>
+            </div>
+            <div class="col-xs-2">
+              <button type="button" class="btn-remove btn btn-default btn-circle"><i class="glyphicon glyphicon-remove"></i></button>
+            </div>
+          </div>
+      </ul>
     </div>
     <div class="col-sm-4 col-xs-12">
       <h3>Your Datasets</h3>

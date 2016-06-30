@@ -10,7 +10,7 @@ app.config(function ($stateProvider) {
     });
 });
 
-app.controller('UserDatasetDetailsCtrl', function ($scope, $stateParams, NgTableParams, $localStorage) {
+app.controller('UserDatasetDetailsCtrl', function ($scope, $stateParams, GraphFactory, NgTableParams, $localStorage) {
     $localStorage.datasetId = $stateParams.datasetId || $localStorage.datasetId;
     $scope.dataset = $stateParams.dataset || $localStorage.dataset;
     $localStorage.dataset = $scope.dataset;
@@ -23,4 +23,13 @@ app.controller('UserDatasetDetailsCtrl', function ($scope, $stateParams, NgTable
     }); 
 
     // need $scope.removeDataset
+
+    $scope.addUserGraph = function(graph, settings){
+        GraphFactory.addUserGraph($scope.user,$scope.dataset,graph,settings)
+        .then(function(g){
+            console.log(g);
+        });
+    }
+
+
 });
