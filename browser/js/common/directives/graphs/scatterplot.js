@@ -1,6 +1,6 @@
-app.directive('scatterplotGraph', function(d3Service, $window) {
+app.directive('scatterplotGraph', function(d3Service, $window, GraphSettingsFactory) {
   return {
-    restrict: 'EA',
+    restrict: 'E',
     scope: {
       //comment this out during testing
       rows: '=',
@@ -8,16 +8,7 @@ app.directive('scatterplotGraph', function(d3Service, $window) {
       //end testing stuff here
     },
     link: function(scope, ele, attrs) {
-      let margin = {top: 20, right: 20, bottom: 30, left: 40},
-      width = 960 - margin.left - margin.right,
-      height = 500 - margin.top - margin.bottom;
-
       d3Service.d3().then(function(d3) {
-        let svg = d3.select(ele[0])
-          .append('svg')
-          .attr('width', width + margin.left + margin.right)
-          .attr('height', height + margin.top + margin.bottom);
-          
           window.onresize = function() {
             scope.$apply();
           };
@@ -46,7 +37,20 @@ app.directive('scatterplotGraph', function(d3Service, $window) {
           //end testing info.
           
           scope.render = function() {
+            let filteredData = scope.rows.filter(obj => obj[scope.columns[0].name] && obj[scope.columns[1].name]).sort((a,b) => a[scope.columns[0].name] - b[scope.columns[0].name]);
+
+            let svg = d3.select(ele[0])
             svg.selectAll('*').remove();
+
+            let margin = {top: 20, right: 20, bottom: 30, left: 40},
+            width = ele[0].parentNode.offsetWidth - margin.left - margin.right,
+            height = width - margin.top - margin.bottom,
+            dotRadius = width / 150;
+
+            svg = svg
+            .append('svg')
+            .attr('width', width + margin.left + margin.right)
+            .attr('height', height + margin.top + margin.bottom);
 
             let xValue = function(d) { return d[scope.columns[0].name]}, // data -> value
                 xScale = d3.scale.linear()
@@ -55,7 +59,7 @@ app.directive('scatterplotGraph', function(d3Service, $window) {
                 xAxis = d3.svg.axis().scale(xScale).orient("bottom");
 
             let yValue = function(d) { return d[scope.columns[1].name]}, // data -> value
-                yScale = d3.scale.linear().range([height - margin.bottom, margin.top]), // value -> display
+                yScale = d3.scale.linear().range([height, margin.top]), // value -> display
                 yMap = function(d) { return yScale(yValue(d))}, // data -> display
                 yAxis = d3.svg.axis().scale(yScale).orient("left");
 
@@ -72,14 +76,14 @@ app.directive('scatterplotGraph', function(d3Service, $window) {
                 d[scope.columns[1].name] = +d[scope.columns[1].name];
             });
 
-            xScale.domain([d3.min(scope.rows, xValue)-1, d3.max(scope.rows, xValue)+1]);
-            yScale.domain([d3.min(scope.rows, yValue)-1, d3.max(scope.rows, yValue)+1]);
+            xScale.domain([d3.min(filteredData, xValue)-1, d3.max(filteredData, xValue)+1]);
+            yScale.domain([d3.min(filteredData, yValue)-1, d3.max(filteredData, yValue)+1]);
 
             // x-axis
             svg.append("g")
                 .attr("class", "x axis")
                 //.attr("transform", "translate(0," + height + ")")
-                .attr("transform", "translate(0,"+ (height - margin.bottom) +")")
+                .attr("transform", "translate(0,"+ (height) +")")
                 //.attr("transform", "translate(" + margin.left + "," + height + ")")
                 .call(xAxis)
               .append("text")
@@ -106,10 +110,10 @@ app.directive('scatterplotGraph', function(d3Service, $window) {
 
             // draw dots
             svg.selectAll(".dot")
-                .data(scope.rows)
+                .data(filteredData)
               .enter().append("circle")
                 .attr("class", "dot")
-                .attr("r", 3.5)
+                .attr("r", dotRadius)
                 .attr("cx", xMap)
                 .attr("cy", yMap)
                 .style("fill", function(d) { return color(cValue(d))}) 
