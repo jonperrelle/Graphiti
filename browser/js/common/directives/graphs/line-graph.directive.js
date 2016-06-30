@@ -8,49 +8,51 @@ app.directive('lineGraph', function(d3Service, $window) {
         link: function(scope, ele, attrs) {
 
             d3Service.d3().then(function(d3) {
-                let margin = { top: 20, right: 20, bottom: 30, left: 50 },
-                    width = 960 - margin.left - margin.right,
-                    height = 500 - margin.top - margin.bottom,
-                    dateFormat;
-
-                let svg = d3.select(ele[0])
-                        .append('svg')
-                        .style('width', '100%')
-                        .style('height', "1000px")
-                        .append("g")
-                        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
                 // Browser onresize event
                 window.onresize = function() {
                     scope.$apply();
                 };
 
-                let filteredData = scope.rows.filter(obj => obj[scope.columns[0].name] && obj[scope.columns[1].name]).sort((a,b) => a[scope.columns[0].name] - b[scope.columns[0].name]);
-
                 // Watch for resize event
                 scope.$watch(function() {
                     return angular.element($window)[0].innerWidth;
                 }, function() {
-                    scope.render(filteredData);
+                    scope.render();
                 });
 
                 scope.$watch(function (scope) {
                     return scope.columns[0].name;
                   }, function () {
-                    scope.render(filteredData);
+                    scope.render();
                   });
 
                   scope.$watch(function (scope) {
                     return scope.columns[1].name;
                   }, function () {
-                    scope.render(filteredData);
+                    scope.render();
                   });
 
-                scope.render = function(predata) {
+                scope.render = function() {
+                    let filteredData = scope.rows.filter(obj => obj[scope.columns[0].name] && obj[scope.columns[1].name]).sort((a,b) => a[scope.columns[0].name] - b[scope.columns[0].name]);
+
+                    let svg = d3.select(ele[0])
                     svg.selectAll('*').remove();
 
+                    let margin = {top: 20, right: 20, bottom: 30, left: 40},
+                    width = ele[0].parentNode.offsetWidth - margin.left - margin.right,
+                    height = width - margin.top - margin.bottom,
+                    dotRadius = width / 150;
+
+                    svg = svg
+                    .append('svg')
+                        .style('width', width + margin.left + margin.right)
+                        .style('height', height + margin.top + margin.bottom)
+                        .append("g")
+                        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
                     //check if the data column header may contain date info ??
-                    let x; 
+                    let x,
+                        dateFormat; 
                     if (scope.columns[0].type === 'date') {
                         //if so validate the format of the date
 
@@ -60,7 +62,7 @@ app.directive('lineGraph', function(d3Service, $window) {
                         dateFormat = commonDateFormats.filter(f => d3.time.format(f).parse(filteredData[0][scope.columns[0].name]))[0];
                         let formatDate = d3.time.format(dateFormat); //d3.time.format("%Y-%y");
                         var data = [];
-                        predata.forEach(function(element){
+                        filteredData.forEach(function(element){
                             let obj = {};
                             obj[scope.columns[0].name] = formatDate.parse(element[scope.columns[0].name]);
                             obj[scope.columns[1].name] = element[scope.columns[1].name]
@@ -70,7 +72,7 @@ app.directive('lineGraph', function(d3Service, $window) {
                     } else if (scope.columns[0].type === 'number'){
                         x = d3.scale.linear().range([0, width]);
                         var data = [];
-                        predata.forEach(function(element){
+                        filteredData.forEach(function(element){
                             let obj = {};
                             obj[scope.columns[0].name] = +(element[scope.columns[0].name]);
                             obj[scope.columns[1].name] = element[scope.columns[1].name]

@@ -7,11 +7,6 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
       },
       link: function(scope, ele, attrs) {
         d3Service.d3().then(function(d3) {
-          let margin = {top: 20, right: 20, bottom: 100, left: 50},
-              width = 960 - margin.left - margin.right,
-              height = 1000 - margin.top - margin.bottom,
-              svg;
-          
           // Browser onresize event
           window.onresize = function() {
             scope.$apply();
@@ -39,27 +34,32 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
           scope.render = function() {
             if (!scope.columns) return;
 
-            let groupedData = DataFactory.groupByCategory(scope.rows, scope.columns[0].name, scope.columns[1].name);
+            let filteredData = scope.rows.filter(obj => obj[scope.columns[0].name] && obj[scope.columns[1].name]).sort((a,b) => a[scope.columns[0].name] - b[scope.columns[0].name]);
+
+            let groupedData = DataFactory.groupByCategory(filteredData, scope.columns[0].name, scope.columns[1].name);
             groupedData = DataFactory.orderByCategory(groupedData, scope.columns[0].name);
 
-            svg = svg || d3.select(ele[0])
-            .append('svg')
-            .style('width', '100%')
-            .style('height', "1100px")
-            .append("g")
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
+            let svg = d3.select(ele[0])
             svg.selectAll('*').remove();
- 
-            // set the height based on the calculations above
-            svg.attr('height', height + margin.top + margin.bottom);
+
+            let margin = {top: 20, right: 20, bottom: 30, left: 40},
+                width = ele[0].parentNode.offsetWidth - margin.left - margin.right,
+                height = width - margin.top - margin.bottom,
+                barSpace = 0.1;
+
+            svg = svg
+            .append('svg')
+                .style('width', width + margin.left + margin.right)
+                .style('height', height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
             //create the rectangles for the bar chart
             let x = d3.scale.ordinal()
-                .rangeRoundBands([0, width], 0.1);
+                .rangeRoundBands([margin.left, width + margin.left], barSpace);
 
             let y = d3.scale.linear()
-                .range([height, 0]);
+                .range([height, margin.top]);
 
             let xAxis = d3.svg.axis()
                 .scale(x)
@@ -71,32 +71,41 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
 
             x.domain(groupedData.map(function(d) { return d[scope.columns[0].name]; }));
 
+            // y.domain([0, d3.max(groupedData, function(d) { return +d[scope.columns[1].name]; })]);
             y.domain([0, d3.max(groupedData, function(d) { return +d[scope.columns[1].name]; })]);
 
             svg.append("g")
                 .attr("class", "xaxis")
-                .attr("transform", "translate(100," + height + ")")
+                .attr("transform", "translate(0, " + height + ")")
                 .call(xAxis)
               .append("text")
                 .attr("class", "xlabel")
                 .text(scope.columns[0].name);
 
             svg.selectAll(".xaxis text")
-                .attr("transform", "rotate(-45)translate(-10, 0)")
+                .attr("transform", "rotate(-45)")
                 .style("text-anchor", "end");
             svg.select(".xlabel")
-                .attr("transform", "translate(" + width / 2 + ", 120)");
+                .attr("transform", "translate(" + width / 2 + ", 0)");
+
+            // svg.append("g")
+            //     .attr("class", "yaxis")
+            //     .attr("transform", "translate(" + margin.left + ")")
+            //     .call(yAxis)
+            //   .append("text")
+            //     .attr("transform", "rotate(-90)translate(" + -((height - margin.bottom) / 2) + ", -120)")
+            //     .attr("y", 6)
+            //     .attr("dy", ".71em")
+            //     .style("text-anchor", "end")
+            //     .text(scope.columns[1].name);
 
             svg.append("g")
-                .attr("class", "yaxis")
-                .attr("transform", "translate(100, 0)")
+                .attr("class", "y axis")
+                .attr("transform", "translate(" + margin.left + ",0)")
                 .call(yAxis)
               .append("text")
-                .attr("transform", "rotate(-90)translate(" + -((height - margin.bottom) / 2) + ", -120)")
-                .attr("y", 6)
-                .attr("dy", ".71em")
-                .style("text-anchor", "end")
-                .text(scope.columns[1].name);
+                .attr("class", "label")
+                .attr("transform", "rotate(-90)")
 
             svg.selectAll(".bar")
                 .data(groupedData)
@@ -110,7 +119,7 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                 .attr("height", function(d) {
                   return height - y(+d[scope.columns[1].name]);
                 })
-                .attr("transform", "translate(100, 0)");
+                // .attr("transform", "translate(100, 0)");
           };
         });
       }

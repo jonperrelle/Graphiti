@@ -60,7 +60,7 @@ app.directive('scatterplotGraph', function(d3Service, $window, GraphSettingsFact
                 xAxis = d3.svg.axis().scale(xScale).orient("bottom");
 
             let yValue = function(d) { return d[scope.columns[1].name]}, // data -> value
-                yScale = d3.scale.linear().range([height - margin.bottom, margin.top]), // value -> display
+                yScale = d3.scale.linear().range([height, margin.top]), // value -> display
                 yMap = function(d) { return yScale(yValue(d))}, // data -> display
                 yAxis = d3.svg.axis().scale(yScale).orient("left");
 
@@ -84,7 +84,7 @@ app.directive('scatterplotGraph', function(d3Service, $window, GraphSettingsFact
             svg.append("g")
                 .attr("class", "x axis")
                 //.attr("transform", "translate(0," + height + ")")
-                .attr("transform", "translate(0,"+ (height - margin.bottom) +")")
+                .attr("transform", "translate(0,"+ (height) +")")
                 //.attr("transform", "translate(" + margin.left + "," + height + ")")
                 .call(xAxis)
               .append("text")
