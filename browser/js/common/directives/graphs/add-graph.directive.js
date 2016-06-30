@@ -9,7 +9,6 @@ app.directive('addGraph', function(AddGraphFactory, ValidationFactory) {
         },
         link: function(scope, ele, attrs) {
 
-
             scope.assignColumnType = function (col) {
                 ValidationFactory.assignColumnType(scope.data, col);
             }; 
