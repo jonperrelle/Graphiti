@@ -2,9 +2,8 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
     return {
       restrict: 'EA',
       scope: {
-        data: "=",
-        category: "=",
-        metric: "="
+        rows: "=",
+        columns: "="
       },
       link: function(scope, ele, attrs) {
         d3Service.d3().then(function(d3) {
@@ -26,23 +25,22 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
           });
 
           scope.$watch(function (scope) {
-            return scope.category;
+            return scope.columns[0].name;
           }, function () {
             scope.render();
           });
 
           scope.$watch(function (scope) {
-            return scope.metric;
+            return scope.columns[1].name;
           }, function () {
             scope.render();
           });
  
           scope.render = function() {
-            if (!scope.category || !scope.metric) return;
+            if (!scope.columns) return;
 
-            let groupedData = DataFactory.groupByCategory(scope.data, scope.category, scope.metric);
-
-            groupedData = DataFactory.orderByCategory(groupedData, scope.category);
+            let groupedData = DataFactory.groupByCategory(scope.rows, scope.columns[0].name, scope.columns[1].name);
+            groupedData = DataFactory.orderByCategory(groupedData, scope.columns[0].name);
 
             svg = svg || d3.select(ele[0])
             .append('svg')
@@ -71,9 +69,9 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                 .scale(y)
                 .orient("left");
 
-            x.domain(groupedData.map(function(d) { return d[scope.category]; }));
+            x.domain(groupedData.map(function(d) { return d[scope.columns[0].name]; }));
 
-            y.domain([0, d3.max(groupedData, function(d) { return +d[scope.metric]; })]);
+            y.domain([0, d3.max(groupedData, function(d) { return +d[scope.columns[1].name]; })]);
 
             svg.append("g")
                 .attr("class", "xaxis")
@@ -81,7 +79,7 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                 .call(xAxis)
               .append("text")
                 .attr("class", "xlabel")
-                .text(scope.category);
+                .text(scope.columns[0].name);
 
             svg.selectAll(".xaxis text")
                 .attr("transform", "rotate(-45)translate(-10, 0)")
@@ -98,19 +96,19 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                 .attr("y", 6)
                 .attr("dy", ".71em")
                 .style("text-anchor", "end")
-                .text(scope.metric);
+                .text(scope.columns[1].name);
 
             svg.selectAll(".bar")
                 .data(groupedData)
               .enter().append("rect")
                 .attr("class", "bar")
-                .attr("x", function(d) { return x(d[scope.category]); })
+                .attr("x", function(d) { return x(d[scope.columns[0].name]); })
                 .attr("width", x.rangeBand())
                 .attr("y", function(d) {
-                  return y(+d[scope.metric]);
+                  return y(+d[scope.columns[1].name]);
                 })
                 .attr("height", function(d) {
-                  return height - y(+d[scope.metric]);
+                  return height - y(+d[scope.columns[1].name]);
                 })
                 .attr("transform", "translate(100, 0)");
           };
