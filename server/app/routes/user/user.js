@@ -27,7 +27,7 @@ router.get('/:userId', function (req, res, next) {
     .catch(next);
 });
 
-router.post('/:userId/addSocrataDataset', function(req, res, next) {
+router.post('/:userId/SocrataDataset', function(req, res, next) {
 
     User.findById(req.params.userId)
         .then(function(user) {
@@ -49,7 +49,7 @@ router.post('/:userId/addSocrataDataset', function(req, res, next) {
         .catch(next);
 });
 
-router.post('/:userId/addUploadedDataset', function(req, res, next) {
+router.post('/:userId/UploadedDataset', function(req, res, next) {
 
     let fileName = req.session.uploadedFile.originalFilename.replace(/.csv/, "");
     let s3bucket = new AWS.S3({params: {Bucket: 'graphitiDatasets'}});
