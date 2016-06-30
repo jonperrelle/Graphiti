@@ -6,6 +6,8 @@ const db = require('../../../db');
 const User = db.model('user');
 const Dataset = db.model('dataset');
 const AWS = require('aws-sdk');
+const Graph = db.model('graph');
+const Promise = require('bluebird');
 
 AWS.config.update( {
     accessKeyId: env.amazonaws.accessKeyId,
@@ -18,9 +20,9 @@ const Converter = require('csvtojson').Converter;
 router.get('/:userId', function (req, res, next) {
     User.findById(req.params.userId)
     .then(function (user) {
-        return user.getDatasets() 
-        .then(function(datasets) {
-            res.send({user, datasets});
+        return Promise.all([user.getDatasets(),user.getGraphs()]) 
+        .spread(function(datasets,graphs) {
+            res.send({user, datasets, graphs});
         })
         .catch(next);
     })
@@ -100,5 +102,7 @@ router.get('/:userId/awsDataset/:datasetId',function(req,res,next){
     .catch(next);
 
 });
+
+//router.use('/:userId/graphs',require('../graph/graph.js'));
 
 module.exports = router;

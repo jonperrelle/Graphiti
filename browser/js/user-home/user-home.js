@@ -11,14 +11,17 @@ app.config(function ($stateProvider) {
     });
 });
 
-app.controller('UserHomeCtrl', function ($scope, $state, Session, UserFactory, UserInfo) {
+app.controller('UserHomeCtrl', function ($scope, $state, Session, GraphFactory, UserFactory, UserInfo) {
     $scope.user = UserInfo.user;
     $scope.datasets = UserInfo.datasets;
+    $scope.graphs = UserInfo.graphs;
 
-    // UserFactory.getAllUserDatasets($scope.user)
-    // .then(function(data) {
-    //     $scope.datasets = data;
-    // });
+    $scope.getUserGraph = function(graph){
+        GraphFactory.getUserGraph($scope.user, graph)
+        .then(graph => {
+            $state.go('userGraph', {userId: $scope.user.id, graphId: graph.id, graph: graph, dataset: dataset});
+        }
+    }
 
     $scope.goToDataset = function (dataset) {
         UserFactory.getOneUserDataset(dataset, $scope.user)
