@@ -12,11 +12,11 @@ app.factory('UserFactory', function($http) {
 
         addDataset: function(user, dataset, domain) {
             if (domain) {
-                return $http.post('/api/users/' + user.id + '/addSocrataDataset', { dataset, domain })
+                return $http.post('/api/users/' + user.id + '/SocrataDataset', { dataset, domain })
                     .then(successFunc)
                     .catch();
             } else {
-                return $http.post('/api/users/' + user.id + '/addUploadedDataset', { dataset })
+                return $http.post('/api/users/' + user.id + '/UploadedDataset', { dataset })
                     .then(successFunc)
                     .catch();
             }
