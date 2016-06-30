@@ -1,4 +1,4 @@
-<div class="dataset-container">
+<!-- <div class="dataset-container">
 	<header class="text-center">
 		<h2>{{ dataset.name || dataset.resource.name }}</h2>
 	    <div>
@@ -9,3 +9,6 @@
   	<add-graph data="rows" columns="columns" info="dataset"></add-line-graph>
 </div>
 <button class="btn btn-default" ng-click="addUserGraph({name: 'graphsss'},{height: 500})">
+ -->
+
+ <dataset-details dataset="dataset" rows="rows" columns="columns" table-params="tableParams"></dataset-details>

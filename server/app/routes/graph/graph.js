@@ -14,6 +14,18 @@ const Promise = require('bluebird');
 // 	.then(graph => res.send(graph))
 // 	.catch(next)
 // })
+router.delete('/:graphId', function(req, res, next) {
+    Graph.findById(req.params.graphId)
+    .then(function(graph) {
+        return graph.destroy();
+    })
+    .then(function(gr) {
+        console.log(gr);
+        res.sendStatus(204);
+    })
+    .catch(next);
+})
+
 
 router.post('/',function(req,res,next){
 

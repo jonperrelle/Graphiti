@@ -1,0 +1,20 @@
+.alert-success {
+  margin: 0 auto;
+  transition: all linear 0.5s;
+  height: 50px;
+  width: 40%;
+  position: relative;
+  top: 0;
+  left: 0;
+  padding-top: 20px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+}
+
+.alert-success.ng-hide {
+  height: 0;
+  width: 0;
+  background-color: transparent;
+  top:-200px;
+  left: 200px;
+}

@@ -34,7 +34,13 @@ app.factory('DatasetFactory', function($http) {
             return $http.get('/api/users/' + user.id + '/allDatasets')
                     .then(successFunc)
                     .catch();
-        }
+        },
+
+        removeDataset: function(dataset, user) {
+            return $http.delete('/api/users/' + user.id + '/datasets/' + dataset.id)
+                    .then(successFunc)
+                    .catch();
+        },
     }
 
 
