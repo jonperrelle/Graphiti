@@ -3,8 +3,10 @@ var Sequelize = require('sequelize');
 module.exports = function (db) {
 
 	require('./settings')(db);
+	require('./dataset')(db);
 
 	var Settings = db.model('settings');
+	var Dataset = db.model('dataset');
 
 
     db.define('graph', {
@@ -17,6 +19,6 @@ module.exports = function (db) {
 
     },
     {
-    	defaultScope: {include: [Settings]}
+    	defaultScope: {include: [Settings,Dataset]}
     });
 };

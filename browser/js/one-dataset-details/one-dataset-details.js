@@ -10,7 +10,7 @@ app.config(function ($stateProvider) {
     });
 });
 
-app.controller('DatasetDetailsCtrl', function ($scope, $stateParams, Session, UserFactory, NgTableParams, $localStorage) {
+app.controller('DatasetDetailsCtrl', function ($scope, $stateParams, Session, DatasetFactory, NgTableParams, $localStorage) {
 
     $localStorage.datasetId = $stateParams.datasetId || $localStorage.datasetId;
     $scope.dataset = $stateParams.dataset || $localStorage.dataset;
@@ -27,7 +27,7 @@ app.controller('DatasetDetailsCtrl', function ($scope, $stateParams, Session, Us
     $scope.addDataset = function(){
         var domain;
         if ($scope.dataset.metadata) domain = $scope.dataset.metadata.domain;
-        UserFactory.addDataset($scope.user, $scope.dataset.resource, domain);
+        DatasetFactory.addDataset($scope.user, $scope.dataset.resource, domain);
     };
 
     //need $scope.removeDataset

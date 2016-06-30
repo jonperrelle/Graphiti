@@ -11,20 +11,18 @@ app.config(function ($stateProvider) {
     });
 });
 
-app.controller('UserHomeCtrl', function ($scope, $state, Session, GraphFactory, UserFactory, UserInfo) {
+app.controller('UserHomeCtrl', function ($scope, $state, Session, DatasetFactory, UserInfo) {
+    
     $scope.user = UserInfo.user;
     $scope.datasets = UserInfo.datasets;
     $scope.graphs = UserInfo.graphs;
 
-    $scope.getUserGraph = function(graph){
-        GraphFactory.getUserGraph($scope.user, graph)
-        .then(graph => {
-            $state.go('userGraph', {userId: $scope.user.id, graphId: graph.id, graph: graph, dataset: dataset});
-        }
+    $scope.goToUserGraph = function(graph){
+            $state.go('userGraph', {userId: $scope.user.id, graphId: graph.id, graph: graph});
     }
 
     $scope.goToDataset = function (dataset) {
-        UserFactory.getOneUserDataset(dataset, $scope.user)
+        DatasetFactory.getOneUserDataset(dataset, $scope.user)
         .then( rows => {
             if (dataset.socrataId) {
                 $state.go('userDatasetDetails', {userId: $scope.user.id, datasetId: dataset.id, dataset: dataset, rows: rows});
@@ -32,13 +30,6 @@ app.controller('UserHomeCtrl', function ($scope, $state, Session, GraphFactory, 
             else {
                 $state.go('userDatasetDetails', {userId: $scope.user.id, datasetId: dataset.name, dataset: rows.dataset, rows: rows.data});
             }
-        });
-    };
-
-    $scope.getDataset = function () {
-        UserFactory.getDataset($scope.user)
-        .then(function(res) {
-            console.log(res);
         });
     };
 
