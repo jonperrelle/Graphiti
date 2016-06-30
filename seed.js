@@ -43,8 +43,6 @@ var seedUsers = function () {
         return User.create(userObj);
     });
 
-
-
     return Promise.all(creatingUsers);
 
 };
@@ -67,9 +65,6 @@ db.sync({ force: true })
         return seedUsers();
     })
     .then(function(users){
-        console.log("userrr",users[0])
-
-        console.log(typeof users[0].addDataset)
 
         return Dataset.create({name: "newDS",userUploaded:true})
         .then(function(ds){
@@ -77,8 +72,6 @@ db.sync({ force: true })
             return users[0].addDataset(ds);
         })
 
-
-        // return users[0].addDataset();
     })
     .then(function(){
         return Promise.all([seedSet(),seedGraphs()]);
