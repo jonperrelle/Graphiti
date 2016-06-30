@@ -1,4 +1,4 @@
-app.directive('pieChart', function(d3Service, $window) {
+app.directive('pieChart', function(d3Service, $window, DataFactory) {
 
     return {
         restrict: 'E',
@@ -10,31 +10,33 @@ app.directive('pieChart', function(d3Service, $window) {
         template: '<div id="pie"></div>',
         link: function(scope, ele, attrs) {
 
-
-            var w = 500;
-            var h = 500;
-            var r = h / 2;
+            let w = 500;
+            let h = 500;
+            let r = h / 2;
             scope.rows = scope.rows.filter(obj => Number(obj[scope.columns[1].name]) > 0);
             d3Service.d3().then(function(d3) {
 
-                //uses build in d3 method to create color scale
-                var color = d3.scale.category20c();
+              let groupedData = DataFactory.groupByCategory(scope.rows, scope.columns[0].name, scope.columns[1].name);
+              groupedData = DataFactory.orderByCategory(groupedData, scope.columns[0].name);
 
-                var vis = d3.select('#pie')
+                //uses build in d3 method to create color scale
+                let color = d3.scale.category20c();
+
+                let vis = d3.select('#pie')
                     .append("svg")
-                    .data([scope.rows])
+                    .data([groupedData])
                     .attr("width", w)
                     .attr("height", h)
                     .append("g")
                     .attr("transform", "translate(" + r + "," + r + ")");
-                var pie = d3.layout.pie().value(function(d) {
+                let pie = d3.layout.pie().value(function(d) {
                     return +d[scope.columns[1].name];
                 });
 
                 // declare an arc generator function
-                var arc = d3.svg.arc().outerRadius(r);
+                let arc = d3.svg.arc().outerRadius(r);
                 // select paths, use arc generator to draw
-                var arcs = vis.selectAll("g.slice")
+                let arcs = vis.selectAll("g.slice")
                     .data(pie)
                     .enter()
                         .append("g")
@@ -52,7 +54,7 @@ app.directive('pieChart', function(d3Service, $window) {
                     d.outerRadius = r;
                     return "translate(" + arc.centroid(d) + ")";
                 }).attr("text-anchor", "middle").text(function(d, i) {
-                    return scope.rows[i][scope.columns[0].name];
+                    return groupedData[i][scope.columns[0].name];
                 });
 
               //     let legend = svg.selectAll(".legend")
