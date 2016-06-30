@@ -13,7 +13,6 @@ app.config(function ($stateProvider) {
 });
 
 app.controller('singleGraphCtrl', function($scope, $stateParams){
-	// console.log($stateParams)
 	$scope.graphType = $stateParams.graphType;
 	$scope.data = $stateParams.data;
 	$scope.columns = $stateParams.columns;
