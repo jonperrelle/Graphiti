@@ -17,9 +17,9 @@ const Promise = require('bluebird');
 
 router.post('/',function(req,res,next){
 
-	return Promise.all([Dataset.findById(req.body.dataset.id),
-	User.findById(req.params.userId),
-	Settings.create(req.body.settings)])
+	Promise.all([Dataset.findById(req.body.dataset.id),
+	        User.findById(req.params.userId),
+	        Settings.create(req.body.settings)])
 	.spread(function(dataset,user,settings){
 
 		return Graph.create(req.body.graph)
