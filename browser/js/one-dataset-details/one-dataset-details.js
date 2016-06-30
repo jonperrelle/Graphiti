@@ -28,4 +28,6 @@ app.controller('DatasetDetailsCtrl', function ($scope, $stateParams, Session, Us
         if ($scope.dataset.metadata) domain = $scope.dataset.metadata.domain;
         UserFactory.addDataset($scope.user, $scope.dataset.resource, domain);
     };
+
+    //need $scope.removeDataset
 });

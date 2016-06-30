@@ -38,4 +38,6 @@ app.controller('UserHomeCtrl', function ($scope, $state, Session, UserFactory, U
             console.log(res);
         });
     };
+
+    // $scope.removeDataset()
 });

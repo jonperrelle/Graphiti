@@ -1,4 +1,41 @@
 .user-home {
+	margin: 0 auto;
     margin-top: 50px;
+	width: 90%;
+
+	a {
+		font-size: 1.4em;
+	}
+
+	.btn-remove {
+	  margin-left: 3px;
+	  width: 24px;
+	  height: 24px;
+	  text-align: center;
+	  padding: 3px 0;
+	  font-size: 12px;
+	  line-height: 1.428571429;
+	  border-radius: 12px;
+	  float: right; 
+	}
+
+	.btn-dataset {
+		white-space: normal;
+		text-align: left;
+	    background-color: transparent;
+	    outline: none;
+	    font-size: 1.5em;
+	    padding: 0;
+	    color: #19d178;
+	  }
+	  .btn-dataset:hover {
+	    text-decoration: none;
+	    color: #599ad6;
+	  }
+	  .btn-dataset:focus {
+	    background-color: transparent;
+	    box-shadow: none;
+	    outline: none;
+	  }
 }
 

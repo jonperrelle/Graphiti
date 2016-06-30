@@ -20,4 +20,6 @@ app.controller('UserDatasetDetailsCtrl', function ($scope, $stateParams, NgTable
     $scope.tableParams = new NgTableParams({}, {
         dataset: $localStorage.rows
     }); 
+
+    // need $scope.removeDataset
 });

@@ -1,12 +1,29 @@
 <section class="user-home">
-  <div class="home-container">
-    <h2 class="text-center">Hi {{user.fullName}}!</h2>
-  </div>
   <div class="row">
-  	<ul class="list-group">
-		<button class="list-group-item" ng-repeat="dataset in datasets" ng-click="goToDataset(dataset)">
-		  <h4>{{dataset.name}}</h4>
-		</button>
-	</ul>
+    <header>
+      <h3>Hi {{user.fullName}}!</h3>
+    </header>
+    <div class="col-sm-3 col-xs-12">
+      <p>Editable account information</p>
+    </div>
+    <div class="col-sm-5 col-xs-12">
+      <h3>Your Graphs</h3>
+      <h5>Add new graph button</h5>
+    </div>
+    <div class="col-sm-4 col-xs-12">
+      <h3>Your Datasets</h3>
+      <h5>Add new dataset dropdown</h5>
+      <ul class="list-group">
+        <li class="list-group-item" ng-repeat="dataset in datasets">
+          <div class="row">
+            <div class="col-xs-10">
+              <button class="btn btn-dataset" ng-click="goToDataset(dataset)">{{dataset.name}}</button>
+            </div>
+            <div class="col-xs-2">
+              <button type="button" class="btn-remove btn btn-default btn-circle" ng-click="removeDataset()"><i class="glyphicon glyphicon-remove"></i></button>
+            </div>
+          </div>
+      </ul>
+    </div>
   </div>
 </section>
