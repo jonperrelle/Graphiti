@@ -13,7 +13,7 @@ app.controller('HomeCtrl', function($scope, QueryFactory, UploadFactory, $state)
         UploadFactory.uploadFile($scope.file)
         .then(function(dataset) {
             $scope.file = null;
-            $state.go('uploadedDataset', {fileName: dataset.fileName, dataset: dataset.data});
+            $state.go('datasetDetails', {datasetId: dataset.fileName, dataset: dataset.dataset ,rows: dataset.data});
         })
       }
     };

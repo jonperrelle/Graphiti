@@ -26,9 +26,13 @@ router.post('/', function (req, res, next) {
 	}
 	let uploadedFile = req.files.file;
 	let stream = fs.createReadStream(uploadedFile.path);
+
+	req.session.uploadedFile = uploadedFile;
+	req.session.stream = stream;
+	
 	csvConverter.on('end_parsed', function (jsonArray) {
 		let trimmedFile = uploadedFile.originalFilename.replace(/.csv/, "");
-		res.send({fileName: trimmedFile, data: jsonArray});
+		res.send({fileName: trimmedFile, data: jsonArray, dataset: {resource: {name: trimmedFile}}});
 	});
 	stream.pipe(csvConverter);
 	csvConverter.on('error', function (errMsg, errData) {

@@ -10,8 +10,10 @@ app.config(function ($stateProvider) {
     });
 });
 
-app.controller('DatasetDetailsCtrl', function ($scope, $stateParams, NgTableParams, $localStorage) {
-    $scope.dataset = $stateParams.dataset.resource || $localStorage.dataset;
+app.controller('DatasetDetailsCtrl', function ($scope, $stateParams, Session, UserFactory, NgTableParams, $localStorage) {
+
+    $localStorage.datasetId = $stateParams.datasetId || $localStorage.datasetId;
+    $scope.dataset = $stateParams.dataset || $localStorage.dataset;
     $localStorage.dataset = $scope.dataset;
     $scope.rows = $stateParams.rows || $localStorage.rows;
     $localStorage.rows = $scope.rows;
@@ -20,4 +22,13 @@ app.controller('DatasetDetailsCtrl', function ($scope, $stateParams, NgTablePara
         dataset: $localStorage.rows,
         counts: [1, 5, 10, 25, 100]
     }); 
+
+    if (Session.user) $scope.user = Session.user;
+    $scope.addDataset = function(){
+        var domain;
+        if ($scope.dataset.metadata) domain = $scope.dataset.metadata.domain;
+        UserFactory.addDataset($scope.user, $scope.dataset.resource, domain);
+    };
+
+    //need $scope.removeDataset
 });

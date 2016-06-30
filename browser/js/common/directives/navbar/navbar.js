@@ -8,6 +8,8 @@ app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state) 
             scope.user = null;
             scope.guest = null
             
+            scope.isCollapsed = true;
+
             scope.isLoggedIn = function () {
                 return AuthService.isAuthenticated();
             };

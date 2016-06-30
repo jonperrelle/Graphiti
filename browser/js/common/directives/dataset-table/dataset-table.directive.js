@@ -6,7 +6,7 @@ app.directive('datasetTable', function() {
             dataset: "=",
             rows: "=",
             columns: "=",
-            tableParams: "="
+            tableParams: "=",
         },
     };
 });
