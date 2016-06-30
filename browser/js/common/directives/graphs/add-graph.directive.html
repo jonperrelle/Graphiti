@@ -26,7 +26,7 @@
 		</form>
 	</div>
 	<div class="row">
-		<div class="col-xs-12 col-sm-6" ng-if="scatterEnabled()"><scatterplot-graph rows="data" columns="[column1,column2]"></scatterplot-graph></div>
+		<div class="col-xs-12 col-sm-6" ng-if="scatterEnabled()" ng-click="viewSingleGraph('scatterPlot')"><scatterplot-graph rows="data" columns="[column1,column2]"></scatterplot-graph></div>
 		<div class="col-xs-12 col-sm-6" ng-if="lineEnabled()"><line-graph rows="data" columns="[column1,column2]"></line-graph></div>
 		<div class="col-xs-12 col-sm-6" ng-if="pieEnabled()"><pie-chart rows="data" columns="[column1,column2]"></pie-chart></div>
 		<div class="col-xs-12 col-sm-6" ng-if="barEnabled()"><bar-chart rows="data" columns="[column1,column2]"></bar-chart></div>
