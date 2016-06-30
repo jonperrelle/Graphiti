@@ -8,7 +8,6 @@ app.directive('scatterplotGraph', function(d3Service, $window, GraphSettingsFact
       //end testing stuff here
     },
     link: function(scope, ele, attrs) {
-      console.log(ele);
       d3Service.d3().then(function(d3) {
           window.onresize = function() {
             scope.$apply();
