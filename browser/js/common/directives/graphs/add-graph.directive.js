@@ -8,7 +8,8 @@ app.directive('addGraph', function(AddGraphFactory, ValidationFactory, $state) {
             columns: "="
         },
         link: function(scope, ele, attrs) {
-
+            scope.settings = {};
+            
             scope.assignColumnType = function (col) {
                 ValidationFactory.assignColumnType(scope.data, col);
             }; 

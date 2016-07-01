@@ -4,10 +4,12 @@ app.directive('scatterplotGraph', function(d3Service, $window, GraphSettingsFact
     scope: {
       //comment this out during testing
       rows: '=',
-      columns: '='
+      columns: '=',
+      settings: '='
       //end testing stuff here
     },
     link: function(scope, ele, attrs) {
+      // scope.settings = scope.settings || {};
       d3Service.d3().then(function(d3) {
           window.onresize = function() {
             scope.$apply();
@@ -39,15 +41,17 @@ app.directive('scatterplotGraph', function(d3Service, $window, GraphSettingsFact
           scope.render = function() {
             let filteredData = scope.rows.filter(obj => obj[scope.columns[0].name] && obj[scope.columns[1].name]).sort((a,b) => a[scope.columns[0].name] - b[scope.columns[0].name]);
 
-            let svg = d3.select(ele[0])
-            svg.selectAll('*').remove();
+            let anchor = d3.select(ele[0])
+            anchor.selectAll('*').remove();
 
             let margin = {top: 20, right: 20, bottom: 30, left: 40},
-            width = ele[0].parentNode.offsetWidth - margin.left - margin.right,
-            height = width - margin.top - margin.bottom,
-            dotRadius = width / 150;
+            width = (scope.settings.width || ele[0].parentNode.offsetWidth) - margin.left - margin.right,
+            height = (scope.settings.height || width) - margin.top - margin.bottom,
+            dotRadius = width / 150,
+            xAxisLabel = scope.settings.xAxisLabel || scope.columns[0].name,
+            yAxisLabel = scope.settings.yAxisLabel || scope.columns[1].name;
 
-            svg = svg
+            let svg = anchor
             .append('svg')
             .attr('width', width + margin.left + margin.right)
             .attr('height', height + margin.top + margin.bottom);
@@ -63,16 +67,21 @@ app.directive('scatterplotGraph', function(d3Service, $window, GraphSettingsFact
                 yMap = function(d) { return yScale(yValue(d))}, // data -> display
                 yAxis = d3.svg.axis().scale(yScale).orient("left");
 
-            let cValue = function(d) { return d.Manufacturer},
-            color = d3.scale.category10();
+            let cValue = function(d) { return d},
+            color = scope.settings.color || d3.scale.category10(),
+            minX = scope.settings.minX || d3.min(filteredData, xValue)-1,
+            maxX = scope.settings.minX || d3.max(filteredData, xValue)+1,
+            minY = scope.settings.minY || d3.min(filteredData, yValue)-1,
+            maxY = scope.settings.maxY || d3.max(filteredData, yValue)+1;
+
 
               // add the tooltip area to the webpage
             let tooltip = d3.select("body").append("div")
             .attr("class", "tooltip")
             .style("opacity", 0);
 
-            xScale.domain([d3.min(filteredData, xValue)-1, d3.max(filteredData, xValue)+1]);
-            yScale.domain([d3.min(filteredData, yValue)-1, d3.max(filteredData, yValue)+1]);
+            xScale.domain([minX, maxX]);
+            yScale.domain([minY, maxY]);
 
             // x-axis
             svg.append("g")
@@ -111,7 +120,7 @@ app.directive('scatterplotGraph', function(d3Service, $window, GraphSettingsFact
                 .attr("r", dotRadius)
                 .attr("cx", xMap)
                 .attr("cy", yMap)
-                .style("fill", function(d) { return color(cValue(+d))}) 
+                .attr("fill", color) 
                 .on("mouseover", function(d) {
                     tooltip.transition()
                          .duration(200)

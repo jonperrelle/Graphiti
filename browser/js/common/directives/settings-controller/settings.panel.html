@@ -1,0 +1,116 @@
+<div>
+	<form name="settingsForm" novalidate ng-submit="saveGraph()">
+		<div id="general">
+		 	<h2><span class="label label-info">General Settings</span></h2>
+
+		 	<div class="row">
+	            <div class="form-group col-xs-12">
+	                <label for="title" class="control-label">Title</label>
+	                <div>
+	                  <input class="form-control" name="title" type="text" ng-model="settings.title" required>
+	             </div>
+	          </div>
+			</div>
+
+		 	<div class="row">
+	            <div class="form-group col-xs-12">
+	                <label for="width" class="control-label">Width</label>
+	                <div>
+	                  <input class="form-control" name="width" type="text" ng-model="settings.width" required>
+	             </div>
+	          </div>
+			</div>
+
+		 	<div class="row">
+	            <div class="form-group col-xs-12">
+	                <label for="height" class="control-label">Height</label>
+	                <div>
+	                  <input class="form-control" name="height" type="text" ng-model="settings.height" required>
+	             </div>
+	          </div>
+			</div>
+
+			<div class="row">
+				<div class="form-group col-xs-12">
+				    <label for="color" class="control-label">Color</label>
+				    <div>
+				      <select class="form-control" name="type" type="text" ng-model="settings.color" required>
+				        <option value="multi">Multi</option>
+				        <option value="red">Red</option>
+				        <option value="blue">Blue Dinner</option>
+				        <option value="green">Green</option>
+				      </select>
+				    </div>
+				</div>
+			</div>
+		</div>
+
+			<!-- X - axis  -->
+
+		<div id="general">
+		 	<h3><span class="label label-info">X-axis Settings</span></h3>
+
+		 	<div class="row">
+	            <div class="form-group col-xs-12">
+	                <label for="title" class="control-label">X-axis Title</label>
+	                <div>
+	                  <input class="form-control" name="xtitle" type="text" ng-model="settings.xtitle" required>
+	             </div>
+	          </div>
+			</div>
+
+		 	<div class="row">
+	            <div class="form-group col-xs-12">
+	                <label for="xmin" class="control-label">Minimum X-value</label>
+	                <div>
+	                  <input class="form-control" name="xmin" type="text" ng-model="settings.xmin" required>
+	             </div>
+	          </div>
+			</div>
+
+		 	<div class="row">
+	            <div class="form-group col-xs-12">
+	                <label for="xmax" class="control-label">Maximum X-value</label>
+	                <div>
+	                  <input class="form-control" name="xmax" type="text" ng-model="settings.xmax" required>
+	             </div>
+	          </div>
+			</div>
+			<!-- Ticks, font-style, x-stuff, -->
+		</div>
+
+		<!-- y stuff! -->
+
+			<div id="general">
+			 	<h3><span class="label label-info">Y-axis Settings</span></h3>
+
+			 	<div class="row">
+		            <div class="form-group col-xs-12">
+		                <label for="title" class="control-label">Y-axis Title</label>
+		                <div>
+		                  <input class="form-control" name="ytitle" type="text" ng-model="settings.ytitle" required>
+		             </div>
+		          </div>
+				</div>
+
+			 	<div class="row">
+		            <div class="form-group col-xs-12">
+		                <label for="ymin" class="control-label">Minimum Y-value</label>
+		                <div>
+		                  <input class="form-control" name="ymin" type="text" ng-model="settings.ymin" required>
+		             </div>
+		          </div>
+				</div>
+
+			 	<div class="row">
+		            <div class="form-group col-xs-12">
+		                <label for="ymax" class="control-label">Maximum Y-value</label>
+		                <div>
+		                  <input class="form-control" name="ymax" type="text" ng-model="settings.ymax" required>
+		             </div>
+		          </div>
+				</div>
+				<!-- Ticks, font-style, x-stuff, -->
+			</div>
+	</form>
+</div>
