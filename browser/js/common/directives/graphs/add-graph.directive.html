@@ -25,14 +25,30 @@
 			</fieldset>
 		</form>
 	</div>
-	<div class="row">
+	<div class="row graphPreviews">
 		<div class="column" ng-if="scatterEnabled()" ng-click="viewSingleGraph('scatterPlot')">
 			<div class="col-xs-12 col-sm-5" >
-				<scatterplot-graph settings="settings" rows="data" columns="[column1,column2]"></scatterplot-graph></div>
+				<scatterplot-graph settings="settings" rows="data" columns="[column1,column2]"></scatterplot-graph>
+			</div>
 			<div class="col-sm-1"></div>
 		</div>
-			<div class="col-xs-12 col-sm-6" ng-if="lineEnabled()" ng-click="viewSingleGraph('lineGraph')"><line-graph settings="settings" rows="data" columns="[column1,column2]"></line-graph></div>
-			<div class="col-xs-12 col-sm-6" ng-if="pieEnabled()" ng-click="viewSingleGraph('pieChart')"><pie-chart settings="settings" rows="data" columns="[column1,column2]"></pie-chart></div>
-			<div class="col-xs-12 col-sm-6" ng-if="barEnabled()" ng-click="viewSingleGraph('barChart')"><bar-chart settings="settings" rows="data" columns="[column1,column2]"></bar-chart></div>
+		<div class="column" ng-if="scatterEnabled()" ng-click="viewSingleGraph('lineGraph')">
+			<div class="col-xs-12 col-sm-5" >
+				<line-graph settings="settings" rows="data" columns="[column1,column2]"></line-graph>
+			</div>
+			<div class="col-sm-1"></div>
+		</div>
+		<div class="column" ng-if="pieEnabled()" ng-click="viewSingleGraph('pieChart')">
+			<div class="col-xs-12 col-sm-5" >
+				<pie-chart settings="settings" rows="data" columns="[column1,column2]"></pie-chart>
+			</div>
+			<div class="col-sm-1"></div>
+		</div>
+		<div class="column" ng-if="barEnabled()" ng-click="viewSingleGraph('barChart')">
+			<div class="col-xs-12 col-sm-5" >
+				<bar-chart settings="settings" rows="data" columns="[column1,column2]"></bar-chart>
+			</div>
+			<div class="col-sm-1"></div>
+		</div>
 	</div>
 </section>

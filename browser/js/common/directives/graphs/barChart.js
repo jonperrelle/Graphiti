@@ -132,6 +132,7 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                         .attr("height", function(d) {
                             return height - y(+d[scope.columns[1].name]);
                         })
+                        .attr("fill", color);
                         // .attr("transform", "translate(100, 0)");
                 };
             });
