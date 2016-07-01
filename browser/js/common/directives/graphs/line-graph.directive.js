@@ -57,7 +57,7 @@ app.directive('lineGraph', function(d3Service, $window) {
                         //if so validate the format of the date
 
                         //run date checking function
-                        let commonDateFormats = ["%Y", "%Y-%y", "%x", "%xT%X"];
+                        let commonDateFormats = ["%Y", "%Y-%y", "%x", "%xT%X", "%Y-%m-%dT%H:%M:%S"];
 
                         dateFormat = commonDateFormats.filter(f => d3.time.format(f).parse(filteredData[0][scope.columns[0].name]))[0];
                         let formatDate = d3.time.format(dateFormat); //d3.time.format("%Y-%y");

@@ -52,13 +52,13 @@ app.directive('scatterplotGraph', function(d3Service, $window, GraphSettingsFact
             .attr('width', width + margin.left + margin.right)
             .attr('height', height + margin.top + margin.bottom);
 
-            let xValue = function(d) { return d[scope.columns[0].name]}, // data -> value
+            let xValue = function(d) { return +d[scope.columns[0].name]}, // data -> value
                 xScale = d3.scale.linear()
                   .range([margin.left, margin.left + width]), // value -> display
                 xMap = function(d) { return xScale(xValue(d))}, // data -> display
                 xAxis = d3.svg.axis().scale(xScale).orient("bottom");
 
-            let yValue = function(d) { return d[scope.columns[1].name]}, // data -> value
+            let yValue = function(d) { return +d[scope.columns[1].name]}, // data -> value
                 yScale = d3.scale.linear().range([height, margin.top]), // value -> display
                 yMap = function(d) { return yScale(yValue(d))}, // data -> display
                 yAxis = d3.svg.axis().scale(yScale).orient("left");
@@ -70,11 +70,6 @@ app.directive('scatterplotGraph', function(d3Service, $window, GraphSettingsFact
             let tooltip = d3.select("body").append("div")
             .attr("class", "tooltip")
             .style("opacity", 0);
-
-            scope.rows.forEach(function(d) {
-                d[scope.columns[0].name] = +d[scope.columns[0].name];
-                d[scope.columns[1].name] = +d[scope.columns[1].name];
-            });
 
             xScale.domain([d3.min(filteredData, xValue)-1, d3.max(filteredData, xValue)+1]);
             yScale.domain([d3.min(filteredData, yValue)-1, d3.max(filteredData, yValue)+1]);
@@ -116,13 +111,13 @@ app.directive('scatterplotGraph', function(d3Service, $window, GraphSettingsFact
                 .attr("r", dotRadius)
                 .attr("cx", xMap)
                 .attr("cy", yMap)
-                .style("fill", function(d) { return color(cValue(d))}) 
+                .style("fill", function(d) { return color(cValue(+d))}) 
                 .on("mouseover", function(d) {
                     tooltip.transition()
                          .duration(200)
                          .style("opacity", .9);
-                    tooltip.html(d[scope.columns[0].name] + "<br/> (" + xValue(d) 
-                    + ", " + yValue(d) + ")")
+                    tooltip.html(d[scope.columns[0].name] + "<br/> (" + xValue(+d) 
+                    + ", " + yValue(+d) + ")")
                          .style("left", (d3.event.pageX + 5) + "px")
                          .style("top", (d3.event.pageY - 28) + "px");
                 })

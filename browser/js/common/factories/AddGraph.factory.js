@@ -7,11 +7,13 @@ app.factory('AddGraphFactory', function (ValidationFactory) {
             barEnabled: function(col1, col2){
               return col1 && col2 && (col1.type === 'number' || col2.type === 'number');
             },
+
             scatterEnabled: function(col1, col2){
-              return col1 && col2 && ((col1.type === 'number' || col1.type === 'date') && col2.type === 'number')
+              return col1 && col2 && col1.type === 'number' && col2.type === 'number';
             },
+
             lineEnabled: function(col1, col2){
-              return col1 && col2 && ((col1.type === 'number' || col1.type === 'date') && col2.type === 'number')
+              return col1 && col2 && ((col1.type === 'number' || col1.type === 'date') && col2.type === 'number');
             }
    };
 });
