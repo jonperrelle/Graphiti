@@ -101,8 +101,8 @@ function zooming() {
    zoom.translate([tx, ty]);
 
    dots.attr("transform", ["translate(" + [tx, ty] + ")", "scale(" + e.scale + ")"].join(" "));
-   xAxis.attr("transform", ["translate(" + [tx, ty] + ")", "scale(" + e.scale + ")"].join(" "));
-   yAxis.attr("transform", ["translate(" + [tx, ty] + ")", "scale(" + e.scale + ")"].join(" "));
+  // xAxis.attr("transform", ["translate(" + [tx, ty] + ")", "scale(" + e.scale + ")"].join(" "));
+  // yAxis.attr("transform", ["translate(" + [tx, ty] + ")", "scale(" + e.scale + ")"].join(" "));
    svg.attr("transform", ["translate(" + [tx, ty] + ")", "scale(" + e.scale + ")"].join(" "));
    // circles.attr("transform", ["translate(" + [tx, ty] + ")", "scale(" + e.scale + ")"].join(" "));
  }
@@ -121,7 +121,7 @@ function zooming() {
                 yScale.domain([minY, maxY]);
 
                 // x-axis
-                let xAxis = svg.append("g")
+                svg.append("g")
                     .attr("class", "x axis")
                     //.attr("transform", "translate(0," + height + ")")
                     .attr("transform", "translate(0," + (height) + ")")
@@ -135,7 +135,7 @@ function zooming() {
                     .text(xAxisLabel);
 
                 // y-axis
-                let yAxis = svg.append("g")
+                svg.append("g")
                     .attr("class", "y axis")
                     .attr("transform", "translate(" + margin.left + ",0)")
                     .call(yAxis)
