@@ -1,11 +1,6 @@
-<div class="dataset-container">
+<div>
 	<header class="text-center">
 	    <h2>{{ dataset.name || dataset.resource.name }}</h2>
-	    <div ng-if="user">
-	    	<div ng-show="datasetAdd" class="alert-success">You have successfully added this dataset!</div>
-		    <button class="btn btn-primary" ng-disabled="addedDataset" ng-click="addedDataset=!addedDataset; addDataset()" ng-show="!datasetAdd">Add to my datasets</button>
-		</div>
-	    <p ng-if="!user"><a ui-sref="login({dataset: true})">Login</a> or <a ui-sref="signup({dataset: true})">signup</a> to save dataset<p>
 	</header> 
 	<dataset-table dataset="dataset" rows="rows" columns="columns" table-params="tableParams"></dataset-table>
 	<add-graph data="rows" columns="columns" info="dataset"></add-line-graph>

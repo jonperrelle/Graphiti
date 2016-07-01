@@ -50,4 +50,8 @@ app.run(function ($rootScope, AuthService, $state) {
             }
         });
     });
+
+    $rootScope.$on('$stateChangeSuccess',function(){
+        document.querySelector("html").animate({ scrollTop: 0 }, 200);
+    })
 });

@@ -2,9 +2,6 @@
 const router = require('express').Router();
 const db = require('../../../db');
 const User = db.model('user');
-const Dataset = db.model('dataset');
-const AWS = require('aws-sdk');
-const Graph = db.model('graph');
 const Promise = require('bluebird');
 
 

@@ -1,6 +1,6 @@
 app.factory('DatasetFactory', function($http) {
 
-    var successFunc = function(res) { return res.data};
+    let successFunc = function(res) { return res.data};
 
     return {
 
@@ -18,7 +18,7 @@ app.factory('DatasetFactory', function($http) {
 
         getOneUserDataset: function(dataset, user) {
             
-            var route = ''
+            var route = '';
             if (dataset.userUploaded) { 
                 route = '/api/users/' + user.id + '/datasets/awsDataset/' + dataset.id;
             }
@@ -30,19 +30,11 @@ app.factory('DatasetFactory', function($http) {
                     .catch();
         },
 
-        getAllUserDatasets: function(user) {
-            return $http.get('/api/users/' + user.id + '/allDatasets')
-                    .then(successFunc)
-                    .catch();
-        },
-
         removeDataset: function(dataset, user) {
-            return $http.delete('/api/users/' + user.id + '/datasets/' + dataset.id)
+            var datasetId = dataset.id || dataset;
+            return $http.delete('/api/users/' + user.id + '/datasets/' + datasetId)
                     .then(successFunc)
                     .catch();
         },
-    }
-
-
-
+    };
 });

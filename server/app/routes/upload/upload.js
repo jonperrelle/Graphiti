@@ -38,15 +38,6 @@ router.post('/', function (req, res, next) {
 	csvConverter.on('error', function (errMsg, errData) {
 		next(errMsg);
 	})
-	// return s3fsImpl.writeFile(uploadedFile.originalFilename, stream)
-	// 		.then(function() {
-	// 			return fs.unlink(uploadedFile.path, function (err) {
-	// 				if (err) next(err);
-	// 			});
-	// 		})
-	// 		.then(function() {
-	// 			res.send();
-	// 		});
 });
 
 module.exports = router;

@@ -1,6 +1,25 @@
-.alert-success {
+header {
+  height: 40px;
+  a {
+    font-size: 150%;
+    font-weight: 700;
+  }
+  a#add-dataset {
+    float: right;
+  }
+  a#add-dataset:hover,
+  a#add-dataset:focus {
+    text-decoration: none;
+      color: #599ad6;
+  }
+  p {
+    float:right
+  }
+}
+
+.alert-success, 
+.alert-danger {
   margin: 0 auto;
-  transition: all linear 0.5s;
   height: 50px;
   width: 40%;
   position: relative;
@@ -11,10 +30,21 @@
   border-radius: 10px;
 }
 
-.alert-success.ng-hide {
-  height: 0;
-  width: 0;
-  background-color: transparent;
-  top:-200px;
-  left: 200px;
+
+.animate-show
+{
+  float:right;
+  transition:all 1s linear;
+}
+
+.animate-show.ng-hide-remove,
+.animate-hide.ng-hide-add.ng-hide-add-active {
+  opacity: 0;
+  display: block !important;
+}
+
+.animate-hide.ng-hide-add,
+.animate-show.ng-hide-remove.ng-hide-remove-active {
+  opacity: 1;
+  display: block !important;
 }

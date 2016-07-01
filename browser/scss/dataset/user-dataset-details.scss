@@ -1,0 +1,17 @@
+header {
+	margin-bottom: 10px;
+	a#back-home {
+		font-size: 150%;
+		font-weight: 700;
+	}
+	a#remove {
+		color: #f22015;
+		font-size: 150%;
+		font-weight: 700;
+		float: right;
+	}
+	a#remove:hover {
+		text-decoration: none;
+  		color: #599ad6;
+	}
+}
