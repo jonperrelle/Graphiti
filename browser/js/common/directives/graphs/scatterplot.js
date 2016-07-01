@@ -41,9 +41,9 @@ app.directive('scatterplotGraph', function(d3Service, $window, GraphSettingsFact
             scope.render = function() {
                 let filteredData = scope.rows.filter(obj => obj[scope.columns[0].name] && obj[scope.columns[1].name]).sort((a, b) => a[scope.columns[0].name] - b[scope.columns[0].name]);
 
-let zoom = d3.behavior.zoom()
-   .scaleExtent([1, 5])
-   .on("zoom", zooming);
+                let zoom = d3.behavior.zoom()
+                   .scaleExtent([1, 5])
+                   .on("zoom", zooming);
 
                 let anchor = d3.select(ele[0])
                 anchor.selectAll('*').remove();
@@ -89,23 +89,16 @@ let zoom = d3.behavior.zoom()
                 var maxY = (typeof scope.settings.maxY === 'number') ? scope.settings.maxY : d3.max(filteredData, yValue) - 1;
 
 
+            function zooming() {
+               let e = d3.event;
+               let tx = Math.min(0, Math.max(e.translate[0], width - width * e.scale));
+               let ty = Math.min(0, Math.max(e.translate[1], height - height * e.scale));
 
+               zoom.translate([tx, ty]);
 
-
-
-function zooming() {
-   let e = d3.event;
-   let tx = Math.min(0, Math.max(e.translate[0], width - width * e.scale));
-   let ty = Math.min(0, Math.max(e.translate[1], height - height * e.scale));
-
-   zoom.translate([tx, ty]);
-
-   dots.attr("transform", ["translate(" + [tx, ty] + ")", "scale(" + e.scale + ")"].join(" "));
-   xAxis.attr("transform", ["translate(" + [tx, ty] + ")", "scale(" + e.scale + ")"].join(" "));
-   yAxis.attr("transform", ["translate(" + [tx, ty] + ")", "scale(" + e.scale + ")"].join(" "));
-   svg.attr("transform", ["translate(" + [tx, ty] + ")", "scale(" + e.scale + ")"].join(" "));
-   // circles.attr("transform", ["translate(" + [tx, ty] + ")", "scale(" + e.scale + ")"].join(" "));
- }
+               dots.attr("transform", ["translate(" + [tx, ty] + ")", "scale(" + e.scale + ")"].join(" "));
+               // circles.attr("transform", ["translate(" + [tx, ty] + ")", "scale(" + e.scale + ")"].join(" "));
+             }
 
                 let cValue = function(d) {
                         return d
@@ -121,7 +114,7 @@ function zooming() {
                 yScale.domain([minY, maxY]);
 
                 // x-axis
-                let xAxis = svg.append("g")
+                svg.append("g")
                     .attr("class", "x axis")
                     //.attr("transform", "translate(0," + height + ")")
                     .attr("transform", "translate(0," + (height) + ")")
@@ -135,7 +128,7 @@ function zooming() {
                     .text(xAxisLabel);
 
                 // y-axis
-                let yAxis = svg.append("g")
+                svg.append("g")
                     .attr("class", "y axis")
                     .attr("transform", "translate(" + margin.left + ",0)")
                     .call(yAxis)
