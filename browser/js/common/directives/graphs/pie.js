@@ -4,7 +4,8 @@ app.directive('pieChart', function(d3Service, $window, DataFactory) {
         restrict: 'E',
         scope: {
             rows: "=",
-            columns: "="
+            columns: "=",
+            settings: "="
         },
         
         link: function(scope, ele, attrs) {
@@ -32,26 +33,21 @@ app.directive('pieChart', function(d3Service, $window, DataFactory) {
               });
 
               scope.render = function() {
-                //let filteredData = scope.rows.filter(obj => obj[scope.columns[0].name] && obj[scope.columns[1].name]).sort((a,b) => a[scope.columns[0].name] - b[scope.columns[0].name]);
-
                 let svg = d3.select(ele[0])
                 svg.selectAll('*').remove();
 
                 let margin = {top: 20, right: 20, bottom: 30, left: 40},
-                width = ele[0].parentNode.offsetWidth - margin.left - margin.right,
-                height = width - margin.top - margin.bottom,
+                width = (scope.settings.width || ele[0].parentNode.offsetWidth) - margin.left - margin.right,
+                height = (scope.settings.height || width) - margin.top - margin.bottom,
                 radius = height / 2;
 
-                // let w = 500;
-                // let h = 500;
-                // let r = h / 2;
                 let filteredData = scope.rows.filter(obj => Number(obj[scope.columns[1].name]) > 0);
 
                 let groupedData = DataFactory.groupByCategory(filteredData, scope.columns[0].name, scope.columns[1].name);
                 groupedData = DataFactory.orderByCategory(groupedData, scope.columns[0].name);
 
                   //uses build in d3 method to create color scale
-                  let color = d3.scale.category20c();
+                  let color = scope.settings.color || d3.scale.category20();
 
                   let vis = d3.select(ele[0])
                       .append('svg')
