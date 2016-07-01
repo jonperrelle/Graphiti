@@ -89,6 +89,8 @@ app.directive('scatterplotGraph', function(d3Service, $window, GraphSettingsFact
                 var maxY = (typeof scope.settings.maxY === 'number') ? scope.settings.maxY : d3.max(filteredData, yValue) - 1;
 
 
+
+
             function zooming() {
                let e = d3.event;
                let tx = Math.min(0, Math.max(e.translate[0], width - width * e.scale));
@@ -97,8 +99,12 @@ app.directive('scatterplotGraph', function(d3Service, $window, GraphSettingsFact
                zoom.translate([tx, ty]);
 
                dots.attr("transform", ["translate(" + [tx, ty] + ")", "scale(" + e.scale + ")"].join(" "));
+              // xAxis.attr("transform", ["translate(" + [tx, ty] + ")", "scale(" + e.scale + ")"].join(" "));
+              // yAxis.attr("transform", ["translate(" + [tx, ty] + ")", "scale(" + e.scale + ")"].join(" "));
+               svg.attr("transform", ["translate(" + [tx, ty] + ")", "scale(" + e.scale + ")"].join(" "));
                // circles.attr("transform", ["translate(" + [tx, ty] + ")", "scale(" + e.scale + ")"].join(" "));
              }
+
 
                 let cValue = function(d) {
                         return d
