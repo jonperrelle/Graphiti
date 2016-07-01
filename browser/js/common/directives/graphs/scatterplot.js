@@ -39,11 +39,15 @@ app.directive('scatterplotGraph', function(d3Service, $window, GraphSettingsFact
 
 
             scope.render = function() {
-                let filteredData = scope.rows.filter(obj => obj[scope.columns[0].name] && obj[scope.columns[1].name]).sort((a, b) => a[scope.columns[0].name] - b[scope.columns[0].name]);
+                let filteredData = scope.rows.filter(obj => obj[scope.columns[0].name] 
+                    && obj[scope.columns[1].name] 
+                    && (!!Number(obj[scope.columns[0].name]) || Number(obj[scope.columns[0].name]) === 0)
+                    && (!!Number(obj[scope.columns[1].name]) || Number(obj[scope.columns[1].name]) === 0))
+                .sort((a, b) => a[scope.columns[0].name] - b[scope.columns[0].name]);
 
-let zoom = d3.behavior.zoom()
-   .scaleExtent([1, 5])
-   .on("zoom", zooming);
+                let zoom = d3.behavior.zoom()
+                   .scaleExtent([1, 5])
+                   .on("zoom", zooming);
 
                 let anchor = d3.select(ele[0])
                 anchor.selectAll('*').remove();
