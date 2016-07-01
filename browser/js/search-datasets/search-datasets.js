@@ -22,7 +22,7 @@ app.controller('SearchQueriedDatasetsCtrl', function($scope, QueryFactory, $stat
 
     if ($scope.allDatasets) {
         $scope.currentDatasets = $scope.allDatasets.filter( (ds, i) => {
-            return  i >= (10 * ($scope.currentPage - 1)) && i < 10 * $scope.currentPage; 
+            return i >= (10 * ($scope.currentPage - 1)) && i < 10 * $scope.currentPage; 
         });
     }
     $scope.changePage = function () {
@@ -49,7 +49,7 @@ app.controller('SearchDatasetsCtrl', function($scope, QueryFactory, $state, $loc
     });
 
     $scope.searchForDataset = function(query) {
-        var filteredCategories = "";
+        let filteredCategories = "";
         if ($scope.selectedCategories) { filteredCategories = $scope.selectedCategories.map( cat => "categories=" + cat.id).join("&")} 
         QueryFactory.searchForDataset(query, filteredCategories)
         .then( datasets => {

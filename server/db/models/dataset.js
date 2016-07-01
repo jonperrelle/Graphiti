@@ -2,6 +2,10 @@ var Sequelize = require('sequelize');
 
 module.exports = function (db) {
 
+    require('./user')(db);
+
+    var User = db.model('user');
+
     db.define('dataset', {
         name: {
             type: Sequelize.STRING

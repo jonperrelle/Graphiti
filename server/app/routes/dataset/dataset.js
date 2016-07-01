@@ -6,7 +6,6 @@ const db = require('../../../db');
 const User = db.model('user');
 const Dataset = db.model('dataset');
 const AWS = require('aws-sdk');
-const Promise = require('bluebird');
 
 AWS.config.update( {
     accessKeyId: env.amazonaws.accessKeyId,
@@ -15,17 +14,17 @@ AWS.config.update( {
 AWS.config.setPromisesDependency(require('bluebird'));
 const Converter = require('csvtojson').Converter;
 
-
 router.delete('/:datasetId', function(req, res, next) {
     Dataset.findById(req.params.datasetId)
     .then(function(dataset) {
         return dataset.destroy();
     })
-    .then(function(ds) {
+    .then(function() {
         res.sendStatus(204)
     })
     .catch(next);
-})
+});
+
 
 router.post('/SocrataDataset', function(req, res, next) {
     User.findById(req.params.userId)
@@ -37,13 +36,14 @@ router.post('/SocrataDataset', function(req, res, next) {
                 socrataDomain: req.body.domain
             }
             return Dataset.findOrCreate({ where: ds })
-                .spread(function(ds, bool) {
-                    return user.addDataset(ds);
+                .spread(function(dataset) {
+                    return user.addDataset(dataset);
                 })
                 .catch(next);
         })
-        .then(function() {
-            res.sendStatus(201);
+        .then(function(ds) {
+            if (ds.length) res.sendStatus(201);
+            else (res.sendStatus(204));
         })
         .catch(next);
 });
@@ -60,12 +60,14 @@ router.post('/UploadedDataset', function(req, res, next) {
         } else {
           User.findById(req.params.userId)
             .then(function(user) {
-                return Dataset.create({ 
-                    name: fileName,
-                    s3fileName: req.session.uploadedFile.originalFilename, 
-                    userUploaded: true
+                return Dataset.findOrCreate({ 
+                    where: { 
+                        name: fileName,
+                        s3fileName: req.session.uploadedFile.originalFilename, 
+                        userUploaded: true
+                    }
                 })
-                .then(function(ds) {
+                .then(function(ds, bool) {
                     return user.addDataset(ds);
                 })
                 .catch(next);

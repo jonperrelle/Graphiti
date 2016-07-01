@@ -28,7 +28,7 @@ app.controller('UserHomeCtrl', function ($scope, $state, Session, DatasetFactory
                 $state.go('userDatasetDetails', {userId: $scope.user.id, datasetId: dataset.id, dataset: dataset, rows: rows});
             }
             else {
-                $state.go('userDatasetDetails', {userId: $scope.user.id, datasetId: dataset.name, dataset: rows.dataset, rows: rows.data});
+                $state.go('userDatasetDetails', {userId: $scope.user.id, datasetId: dataset.id, dataset: rows.dataset, rows: rows.data});
             }
         });
     };
