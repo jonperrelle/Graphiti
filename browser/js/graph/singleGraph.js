@@ -16,5 +16,5 @@ app.controller('singleGraphCtrl', function($scope, $stateParams){
 	$scope.graphType = $stateParams.graphType;
 	$scope.data = $stateParams.data;
 	$scope.columns = $stateParams.columns;
-	//$scope.settings = $stateParams.settings; 
+	$scope.settings = $stateParams.settings; 
 })

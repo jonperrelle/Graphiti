@@ -5,10 +5,10 @@
 	{{graphType}}
 	{{column1}}
 	{{column2}}
-  <scatterplot-graph ng-if="graphType === 'scatterPlot'" rows="data" columns="columns"></scatterplot-graph>
-  <line-graph ng-if="graphType === 'lineGraph'" rows="data" columns="columns"></line-graph>
-  <pie-chart rows="data" columns="columns" ng-if="graphType === 'pieChart'"></pie-chart>
-  <bar-chart rows="data" columns="columns" ng-if="graphType === 'barChart'"></bar-chart>
+  <scatterplot-graph settings="settings" ng-if="graphType === 'scatterPlot'" rows="data" columns="columns"></scatterplot-graph>
+  <line-graph settings="settings" ng-if="graphType === 'lineGraph'" rows="data" columns="columns"></line-graph>
+  <pie-chart settings="settings" rows="data" columns="columns" ng-if="graphType === 'pieChart'"></pie-chart>
+  <bar-chart settings="settings" rows="data" columns="columns" ng-if="graphType === 'barChart'"></bar-chart>
 </div>
 <div class="column col-xs-12 col-sm-3">
 	<settings-panel></settings-panel>

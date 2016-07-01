@@ -21,31 +21,31 @@ app.directive('lineGraph', function(d3Service, $window) {
                     scope.render();
                 });
 
-                scope.$watch(function (scope) {
-                    return scope.columns[0].name;
-                  }, function () {
+                scope.$watch(function(scope) {
+                    return scope.settings;
+                }, function() {
                     scope.render();
-                  });
+                }, true);
 
-                  scope.$watch(function (scope) {
-                    return scope.columns[1].name;
-                  }, function () {
+                scope.$watch(function(scope) {
+                    return scope.columns;
+                }, function() {
                     scope.render();
-                  });
+                }, true);
 
                 scope.render = function() {
-                    let filteredData = scope.rows.filter(obj => obj[scope.columns[0].name] && obj[scope.columns[1].name]).sort((a,b) => a[scope.columns[0].name] - b[scope.columns[0].name]);
+                    let filteredData = scope.rows.filter(obj => obj[scope.columns[0].name] && obj[scope.columns[1].name]).sort((a, b) => a[scope.columns[0].name] - b[scope.columns[0].name]);
 
                     let anchor = d3.select(ele[0])
                     anchor.selectAll('*').remove();
 
-                    let margin = {top: 20, right: 20, bottom: 30, left: 40},
-                    width = (scope.settings.width || ele[0].parentNode.offsetWidth) - margin.left - margin.right,
-                    height = (scope.settings.height || width) - margin.top - margin.bottom,
-                    xAxisLabel = scope.settings.xAxisLabel || scope.columns[0].name,
-                    yAxisLabel = scope.settings.yAxisLabel || scope.columns[1].name,
-                    svg = anchor
-                    .append('svg')
+                    let margin = { top: 20, right: 20, bottom: 30, left: 40 },
+                        width = (scope.settings.width || ele[0].parentNode.offsetWidth) - margin.left - margin.right,
+                        height = (scope.settings.height || width) - margin.top - margin.bottom,
+                        xAxisLabel = scope.settings.xAxisLabel || scope.columns[0].name,
+                        yAxisLabel = scope.settings.yAxisLabel || scope.columns[1].name,
+                        svg = anchor
+                        .append('svg')
                         .style('width', width + margin.left + margin.right)
                         .style('height', height + margin.top + margin.bottom)
                         .append("g")
@@ -64,24 +64,24 @@ app.directive('lineGraph', function(d3Service, $window) {
                         dateFormat = commonDateFormats.filter(f => d3.time.format(f).parse(filteredData[0][scope.columns[0].name]))[0];
                         let formatDate = d3.time.format(dateFormat); //d3.time.format("%Y-%y");
                         data = [];
-                        filteredData.forEach(function(element){
+                        filteredData.forEach(function(element) {
                             let obj = {};
-                            obj[xAxisLabel] = formatDate.parse(element[xAxisLabel]);
-                            obj[yAxisLabel] = element[yAxisLabel]
+                            obj[xAxisLabel] = formatDate.parse(element[scope.columns[0].name]);
+                            obj[yAxisLabel] = element[scope.columns[1].name]
                             data.push(obj);
                         });
                         x = d3.time.scale().range([0, width]);
-                    } else if (scope.columns[0].type === 'number'){
+                    } else if (scope.columns[0].type === 'number') {
                         x = d3.scale.linear().range([0, width]);
                         data = [];
-                        filteredData.forEach(function(element){
+                        filteredData.forEach(function(element) {
                             let obj = {};
-                            obj[xAxisLabel] = +(element[xAxisLabel]);
-                            obj[yAxisLabel] = element[yAxisLabel];
+                            obj[scope.columns[0].name] = +(element[scope.columns[0].name]);
+                            obj[scope.columns[1].name] = element[scope.columns[1].name];
                             data.push(obj);
                         });
                     } else {
-                        return; 
+                        return;
                     }
 
                     let y = d3.scale.linear()
@@ -97,20 +97,28 @@ app.directive('lineGraph', function(d3Service, $window) {
 
                     let line = d3.svg.line()
                         .x(function(d) {
-                            return x( d[xAxisLabel] );
+                            return x(d[xAxisLabel]);
                         })
                         .y(function(d) {
                             return y(+d[yAxisLabel]);
                         });
 
                     // If we don't pass any data, return out of the element
-                    if (!data) return; 
+                    if (!data) return;
 
                     let color = scope.settings.color || "steelblue",
-                        minX = scope.settings.minX || d3.min(data, function(d) { return d[xAxisLabel]; }),
-                        maxX = scope.settings.minX || d3.max(data, function(d) { return d[xAxisLabel]; }),
-                        minY = scope.settings.minY || d3.min(data, function(d) { return +d[yAxisLabel]; }),
-                        maxY = scope.settings.maxY || d3.max(data, function(d) { return +d[yAxisLabel]; });
+                        minX = scope.settings.minX || d3.min(data, function(d) {
+                            return d[scope.columns[0].name];
+                        }),
+                        maxX = scope.settings.minX || d3.max(data, function(d) {
+                            return d[scope.columns[0].name];
+                        }),
+                        minY = scope.settings.minY || d3.min(data, function(d) {
+                            return +d[scope.columns[1].name];
+                        }),
+                        maxY = scope.settings.maxY || d3.max(data, function(d) {
+                            return +d[scope.columns[1].name];
+                        });
 
                     // x.domain(d3.extent(data, function(d) { return d[xAxisLabel]; 
                     // }));
