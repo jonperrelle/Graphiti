@@ -1,5 +1,5 @@
-header {
-  margin-bottom: 10px;
+header.dataset-alert-header {
+  margin-bottom: 0;
   height: 50px;
   a {
     font-size: 150%;
@@ -14,7 +14,7 @@ header {
       color: #599ad6;
   }
   p {
-    float:right
+    float:right;
   }
 }
 
@@ -34,6 +34,7 @@ header {
 
 .animate-show
 {
+  text-align: center;
   float:right;
   transition:all 1s linear;
 }

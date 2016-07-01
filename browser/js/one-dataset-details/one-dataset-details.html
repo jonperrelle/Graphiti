@@ -1,5 +1,5 @@
 <section class="dataset-container">
-	<header class="row">
+	<header class="row dataset-alert-header">
     	<div ng-show="addedDataset" ng-class="{'alert-success': success, 'alert-danger': !success}" class="animate-show animate-hide">{{message}}</div>
 	    <a ng-show="user && !userDataset" id="add-dataset" href="" ng-click="addDataset()">Add to my datasets</button>
 	    <p ng-show="!user"><a ui-sref="login({dataset: true})">Login</a> or <a ui-sref="signup({dataset: true})">signup</a> to save dataset</p>
