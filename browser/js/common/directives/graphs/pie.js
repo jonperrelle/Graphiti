@@ -27,16 +27,10 @@ app.directive('pieChart', function(d3Service, $window, DataFactory) {
                 }, true);
 
                 scope.$watch(function(scope) {
-                    return scope.columns[0].name;
+                    return scope.columns;
                 }, function() {
                     scope.render();
-                });
-
-                scope.$watch(function(scope) {
-                    return scope.columns[1].name;
-                }, function() {
-                    scope.render();
-                });
+                }, true);
 
                 scope.render = function() {
                         let svg = d3.select(ele[0])

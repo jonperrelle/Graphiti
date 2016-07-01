@@ -27,19 +27,11 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                 }, true);
 
                 scope.$watch(function (scope) {
-                  return scope.columns[0].name;
+                  return scope.columns;
                 }, function () {
                   scope.render();
-                });
-
-                scope.$watch(function (scope) {
-                  return scope.columns[1].name;
-                }, function () {
-                  scope.render();
-                });
-
+                },true);
                 
-
                 scope.render = function() {
                     if (!scope.columns) return;
 

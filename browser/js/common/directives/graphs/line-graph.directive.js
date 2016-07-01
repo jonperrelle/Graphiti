@@ -28,16 +28,10 @@ app.directive('lineGraph', function(d3Service, $window) {
                 }, true);
 
                 scope.$watch(function(scope) {
-                    return scope.columns[0].name;
+                    return scope.columns;
                 }, function() {
                     scope.render();
-                });
-
-                scope.$watch(function(scope) {
-                    return scope.columns[1].name;
-                }, function() {
-                    scope.render();
-                });
+                }, true);
 
                 scope.render = function() {
                     let filteredData = scope.rows.filter(obj => obj[scope.columns[0].name] && obj[scope.columns[1].name]).sort((a, b) => a[scope.columns[0].name] - b[scope.columns[0].name]);

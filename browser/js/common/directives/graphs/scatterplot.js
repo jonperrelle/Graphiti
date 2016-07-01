@@ -28,16 +28,10 @@ app.directive('scatterplotGraph', function(d3Service, $window, GraphSettingsFact
                 }, true);
 
                 scope.$watch(function(scope) {
-                    return scope.columns[0].name;
+                    return scope.columns;
                 }, function() {
                     scope.render();
-                });
-
-                scope.$watch(function(scope) {
-                    return scope.columns[1].name;
-                }, function() {
-                    scope.render();
-                });
+                }, true);
 
                 //THIS IS FOR TESTING:
                 // scope.rows = [{age: 15, numPirates: 15},{age: 25, numPirates: 25}, {age: 37, numPirates: 40}]
@@ -65,18 +59,22 @@ app.directive('scatterplotGraph', function(d3Service, $window, GraphSettingsFact
                     console.log("++++++++++++", width, height)
 
                     let xValue = function(d) {
-                            return +d[scope.columns[0].name] }, // data -> value
+                            return +d[scope.columns[0].name]
+                        }, // data -> value
                         xScale = d3.scale.linear()
                         .range([margin.left, margin.left + width]), // value -> display
                         xMap = function(d) {
-                            return xScale(xValue(d)) }, // data -> display
+                            return xScale(xValue(d))
+                        }, // data -> display
                         xAxis = d3.svg.axis().scale(xScale).orient("bottom");
 
                     let yValue = function(d) {
-                            return +d[scope.columns[1].name] }, // data -> value
+                            return +d[scope.columns[1].name]
+                        }, // data -> value
                         yScale = d3.scale.linear().range([height, margin.top]), // value -> display
                         yMap = function(d) {
-                            return yScale(yValue(d)) }, // data -> display
+                            return yScale(yValue(d))
+                        }, // data -> display
                         yAxis = d3.svg.axis().scale(yScale).orient("left");
 
                     var minX = (typeof scope.settings.minX === 'number') ? scope.settings.minX : d3.min(filteredData, xValue) - 1;
@@ -86,7 +84,8 @@ app.directive('scatterplotGraph', function(d3Service, $window, GraphSettingsFact
 
 
                     let cValue = function(d) {
-                            return d },
+                            return d
+                        },
                         color = scope.settings.color || d3.scale.category10();
 
                     // add the tooltip area to the webpage
@@ -155,7 +154,8 @@ app.directive('scatterplotGraph', function(d3Service, $window, GraphSettingsFact
                         .enter().append("g")
                         .attr("class", "legend")
                         .attr("transform", function(d, i) {
-                            return "translate(" + (40) + "," + i * 20 + ")" });
+                            return "translate(" + (40) + "," + i * 20 + ")"
+                        });
 
                     // draw legend colored rectangles
                     legend.append("rect")
