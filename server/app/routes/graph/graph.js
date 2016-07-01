@@ -7,13 +7,14 @@ const Graph = db.model('graph');
 const Settings = db.model('settings');
 const Promise = require('bluebird');
 
-
+//Add security!
 // router.get('/:graphId',function(req,res,next){
 	
 // 	Graph.findById(req.params.graphId)
 // 	.then(graph => res.send(graph))
 // 	.catch(next)
 // })
+
 router.delete('/:graphId', function(req, res, next) {
     Graph.findById(req.params.graphId)
     .then(function(graph) {
