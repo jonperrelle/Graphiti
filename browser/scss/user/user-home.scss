@@ -3,20 +3,49 @@
     margin-top: 50px;
 	width: 90%;
 
-	.panel-group {
-		width: 80%;
+	h3 {
+		margin-top: 0;
+	}
 
-		h5 {
+	.panel-group {
+		position: relative;
+
+		h4 {
 		  display: inline-block;
 		}
 
-		a {
-		  margin-left: 4px;
-		  padding: 3px 0;
+		span {
+			position: absolute;
+			top: 25px;
+			right: 20px;
 		}
 
-		span {
-			margin-top: 5px;
+		.list-group-item {
+			padding: 10px;
+			color: #19d178;
+
+			p {
+				margin-top: 5px;
+				margin-left: 2px;
+			}
+			.upload-links {
+				margin-top: 5px;
+				float: right;
+
+				#upload {
+					color: #1976d2;
+				}
+
+				#cancel {
+					color: #e02121;
+					margin-left: 3px;
+				}
+			}
+		}
+
+		.list-group-item:hover {
+			text-decoration: none;
+			color: #599ad6;
 		}
 	}
 

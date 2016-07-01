@@ -60,6 +60,7 @@ router.post('/UploadedDataset', function(req, res, next) {
         } else {
           User.findById(req.params.userId)
             .then(function(user) {
+                console.log("here", user)
                 return Dataset.findOrCreate({ 
                     where: { 
                         name: fileName,
@@ -67,7 +68,7 @@ router.post('/UploadedDataset', function(req, res, next) {
                         userUploaded: true
                     }
                 })
-                .then(function(ds, bool) {
+                .spread(function(ds, bool) {
                     return user.addDataset(ds);
                 })
                 .catch(next);

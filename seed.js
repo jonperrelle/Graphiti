@@ -46,35 +46,11 @@ var seedUsers = function () {
     return Promise.all(creatingUsers);
 
 };
-var seedSet = function(){
 
-    var set = {height: 300}
-    return Setting.create(set);
-
-}
-
-var seedGraphs = function(){
-
-    var graph = {name: "newGraph",columns: ['col1','col2'],userId: 1,settingId: 1,datasetId: 1}
-
-    return Graph.create(graph);
-}
 
 db.sync({ force: true })
     .then(function () {
         return seedUsers();
-    })
-    .then(function(users){
-
-        return Dataset.create({name: "newDS",userUploaded:true})
-        .then(function(ds){
-
-            return users[0].addDataset(ds);
-        })
-
-    })
-    .then(function(){
-        return Promise.all([seedSet(),seedGraphs()]);
     })
     .then(function () {
         console.log(chalk.green('Seed successful!'));
