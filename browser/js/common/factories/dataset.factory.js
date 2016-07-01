@@ -18,7 +18,7 @@ app.factory('DatasetFactory', function($http) {
 
         getOneUserDataset: function(dataset, user) {
             
-            var route = '';
+            let route = '';
             if (dataset.userUploaded) { 
                 route = '/api/users/' + user.id + '/datasets/awsDataset/' + dataset.id;
             }
@@ -31,7 +31,7 @@ app.factory('DatasetFactory', function($http) {
         },
 
         removeDataset: function(dataset, user) {
-            var datasetId = dataset.id || dataset;
+            let datasetId = dataset.id || dataset;
             return $http.delete('/api/users/' + user.id + '/datasets/' + datasetId)
                     .then(successFunc)
                     .catch();
