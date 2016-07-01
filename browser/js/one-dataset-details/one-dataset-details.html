@@ -4,7 +4,7 @@
 	    <a ng-show="user && !userDataset" id="add-dataset" href="" ng-click="addDataset()">Add to my datasets</button>
 	    <p ng-show="!user"><a ui-sref="login({dataset: true})">Login</a> or <a ui-sref="signup({dataset: true})">signup</a> to save dataset</p>
 	</header>
-	<div class="row table-container">
+	<div class="row">
 		<dataset-details dataset="dataset" rows="rows" columns="columns" table-params="tableParams"></dataset-details>
 	</div>
 </section>
