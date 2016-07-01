@@ -35,7 +35,10 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                 scope.render = function() {
                     if (!scope.columns) return;
 
-                    let filteredData = scope.rows.filter(obj => obj[scope.columns[0].name] && obj[scope.columns[1].name]).sort((a, b) => a[scope.columns[0].name] - b[scope.columns[0].name]);
+                    let filteredData = scope.rows.filter(obj => obj[scope.columns[0].name] 
+                        && obj[scope.columns[1].name]
+                        && (!!Number(obj[scope.columns[1].name]) || Number(obj[scope.columns[1].name]) == 0))
+                        .sort((a, b) => a[scope.columns[0].name] - b[scope.columns[0].name]);
 
                     let groupedData = DataFactory.groupByCategory(filteredData, scope.columns[0].name, scope.columns[1].name);
                     groupedData = DataFactory.orderByCategory(groupedData, scope.columns[0].name);
