@@ -5,10 +5,7 @@ app.config(function($stateProvider) {
         controller: "DatasetDetailsCtrl",
         params: {
             dataset: null,
-            rows: null,
-            query: null,
-            page: null,
-            categories: null
+            rows: null
         }
     });
 });
@@ -24,10 +21,6 @@ app.controller('DatasetDetailsCtrl', function($scope, $timeout, $state, $statePa
         dataset: $localStorage.rows,
         counts: [1, 5, 10, 25, 100]
     });
-
-    $scope.categories = $stateParams.categories
-    $scope.query = $stateParams.query;
-    $scope.page = $stateParams.page;
 
     $scope.addedDataset = false;
     if (Session.user) $scope.user = Session.user;

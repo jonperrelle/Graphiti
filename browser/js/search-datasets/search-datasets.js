@@ -32,7 +32,7 @@ app.controller('SearchQueriedDatasetsCtrl', function($scope, QueryFactory, $stat
     $scope.getDataset = function (dataset) {
         QueryFactory.getOneDataset(dataset)
         .then( rows => {
-            $state.go('datasetDetails', {query: $stateParams.query, page: $scope.currentPage, categories: $scope.filteredCategories, datasetId: dataset.resource.id, dataset: dataset, rows: rows});
+            $state.go('datasetDetails', {datasetId: dataset.resource.id, dataset: dataset, rows: rows});
         });
     };
 
@@ -51,12 +51,12 @@ app.controller('SearchDatasetsCtrl', function($scope, QueryFactory, $state, $loc
 
     $scope.searchForDataset = function(query) {
         var filteredCategories = "";
-        if ($scope.selectedCategories) { $scope.filteredCategories = $scope.selectedCategories.map( cat => "categories=" + cat.id).join("&")} 
-        QueryFactory.searchForDataset(query, $scope.filteredCategories)
+        if ($scope.selectedCategories) { filteredCategories = $scope.selectedCategories.map( cat => "categories=" + cat.id).join("&")} 
+        QueryFactory.searchForDataset(query, filteredCategories)
         .then( datasets => {
             $localStorage.datasets = datasets;
             $localStorage.numDatasets = $localStorage.datasets.length || 0;
-            $state.go('searchDatasets.query', {query: query, page: 1, categories: $scope.filteredCategories});
+            $state.go('searchDatasets.query', {query: query, page: 1, categories: filteredCategories});
         });
     };
 
