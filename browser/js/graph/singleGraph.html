@@ -1,10 +1,6 @@
 <div class="row" id="navbar-clear"></div>
 <div class="column col-sm-1"></div>
 <div class="column col-xs-12 col-sm-8">
-	{{rows}}
-	{{graphType}}
-	{{column1}}
-	{{column2}}
   <scatterplot-graph settings="settings" ng-if="graphType === 'scatterPlot'" rows="data" columns="columns"></scatterplot-graph>
   <line-graph settings="settings" ng-if="graphType === 'lineGraph'" rows="data" columns="columns"></line-graph>
   <pie-chart settings="settings" rows="data" columns="columns" ng-if="graphType === 'pieChart'"></pie-chart>

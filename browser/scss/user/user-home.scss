@@ -3,6 +3,21 @@
     margin-top: 50px;
 	width: 90%;
 
+	.panel-group {
+		width: 80%;
+
+		h5 {
+		  display: inline-block;
+		}
+
+		a {
+		  margin-left: 2px;
+		  padding: 3px 0;
+		  font-size: 18px;
+		  line-height: 1.428571429;
+		}
+	}
+
 	a {
 		font-size: 1.4em;
 	}
