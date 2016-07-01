@@ -41,7 +41,6 @@ app.controller('SearchQueriedDatasetsCtrl', function($scope, QueryFactory, $stat
 
 app.controller('SearchDatasetsCtrl', function($scope, QueryFactory, $state, $localStorage) {
     $scope.selectedCategories = [];
-    $scope.filteredCategories;
     $scope.buttonText = {buttonDefaultText: 'Filter By Category'};
     QueryFactory.getCategories().then(cats => {
         $scope.categories = cats.map(cat => { 
@@ -50,7 +49,7 @@ app.controller('SearchDatasetsCtrl', function($scope, QueryFactory, $state, $loc
     });
 
     $scope.searchForDataset = function(query) {
-        var filteredCategories = "";
+        let filteredCategories = "";
         if ($scope.selectedCategories) { filteredCategories = $scope.selectedCategories.map( cat => "categories=" + cat.id).join("&")} 
         QueryFactory.searchForDataset(query, filteredCategories)
         .then( datasets => {
