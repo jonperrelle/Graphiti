@@ -16,13 +16,13 @@
 	            <div class="form-group col-xs-6">
 	                <label for="width" class="control-label">Width</label>
 	                <div>
-	                  <input class="form-control" name="width" type="text" ng-model="settings.width" required>
+	                  <input class="form-control" name="width" type="number" ng-model="settings.width" required>
 	             </div>
 	          </div>
 	            <div class="form-group col-xs-6">
 	                <label for="height" class="control-label">Height</label>
 	                <div>
-	                  <input class="form-control" name="height" type="text" ng-model="settings.height" required>
+	                  <input class="form-control" name="height" type="number" ng-model="settings.height" required>
 	             </div>
 	          </div>
 			</div>
@@ -49,25 +49,25 @@
 
 		 	<div class="row">
 	            <div class="form-group col-xs-12">
-	                <label for="title" class="control-label">X-axis Title</label>
+	                <label for="xAxisLabel" class="control-label">X-axis Title</label>
 	                <div>
-	                  <input class="form-control" name="xtitle" type="text" ng-model="settings.xtitle" required>
+	                  <input class="form-control" name="xAxisLabel" type="text" ng-model="settings.xAxisLabel" required>
 	             </div>
 	          </div>
 			</div>
 
 		 	<div class="row">
 	            <div class="form-group col-xs-6">
-	                <label for="xmin" class="control-label">Minimum X-value</label>
+	                <label for="minX" class="control-label">Minimum X-value</label>
 	                <div>
-	                  <input class="form-control" name="xmin" type="text" ng-model="settings.xmin" required>
+	                  <input class="form-control" name="minX" type="number" ng-model="settings.minX" required>
 	             </div>
 	          </div>
 			
 	            <div class="form-group col-xs-6">
-	                <label for="xmax" class="control-label">Maximum X-value</label>
+	                <label for="maxX" class="control-label">Maximum X-value</label>
 	                <div>
-	                  <input class="form-control" name="xmax" type="text" ng-model="settings.xmax" required>
+	                  <input class="form-control" name="maxX" type="number" ng-model="settings.maxX" required>
 	             </div>
 	          </div>
 			</div>
@@ -81,25 +81,25 @@
 
 			 	<div class="row">
 		            <div class="form-group col-xs-12">
-		                <label for="title" class="control-label">Y-axis Title</label>
+		                <label for="yAxisLabel" class="control-label">Y-axis Title</label>
 		                <div>
-		                  <input class="form-control" name="ytitle" type="text" ng-model="settings.ytitle" required>
+		                  <input class="form-control" name="yAxisLabel" type="text" ng-model="settings.yAxisLabel" required>
 		             </div>
 		          </div>
 				</div>
 
 			 	<div class="row">
 		            <div class="form-group col-xs-6">
-		                <label for="ymin" class="control-label">Minimum Y-value</label>
+		                <label for="minY" class="control-label">Minimum Y-value</label>
 		                <div>
-		                  <input class="form-control" name="ymin" type="text" ng-model="settings.ymin" required>
+		                  <input class="form-control" name="minY" type="number" ng-model="settings.minY" required>
 		             </div>
 		          </div>
 				
 		            <div class="form-group col-xs-6">
-		                <label for="ymax" class="control-label">Maximum Y-value</label>
+		                <label for="maxY" class="control-label">Maximum Y-value</label>
 		                <div>
-		                  <input class="form-control" name="ymax" type="text" ng-model="settings.ymax" required>
+		                  <input class="form-control" name="maxY" type="number" ng-model="settings.maxY" required>
 		             </div>
 		          </div>
 				</div>
