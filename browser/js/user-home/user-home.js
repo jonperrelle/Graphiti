@@ -34,7 +34,6 @@ app.controller('UserHomeCtrl', function ($scope, $state, Session, DatasetFactory
     };
 
     $scope.removeDataset = function (dataset) {
-        console.log(dataset);
         DatasetFactory.removeDataset(dataset, $scope.user)
         .then (function () {
             $scope.datasets = $scope.datasets.filter(ds => ds.id !== dataset.id);
