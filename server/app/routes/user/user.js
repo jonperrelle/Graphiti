@@ -4,6 +4,7 @@ const db = require('../../../db');
 const User = db.model('user');
 const Promise = require('bluebird');
 const HttpError = require('../../../utils/HttpError');
+var chalk = require('chalk');
 
 router.param('userId', function (req, res, next, id) {
   User.findById(id)
@@ -15,20 +16,16 @@ router.param('userId', function (req, res, next, id) {
   .catch(next);
 });
 
-function assertIsLoggedIn (req, res, next) {
-  if (req.user) next();
+function assertIsCorrectUser (req, res, next) {
+  if (req.user.id == req.requestedUser.id) next();
   else next(HttpError(401));
 }
 
-// function assertAdmin (req, res, next) {
-//   if (req.user && req.user.isAdmin) next();
-//   else next(HttpError(403));
-// }
+router.use('/:userId', assertIsCorrectUser);
 
-router.get('/:userId',assertIsLoggedIn, function (req, res, next) {
-    
-    	let user =  req.requestedUser;
-
+router.get('/:userId', function (req, res, next) {
+    	
+    	let user = req.requestedUser;
         Promise.all([user.getDatasets(),user.getGraphs()]) 
         .spread(function(datasets,graphs) {
             res.send({user, datasets, graphs});
@@ -36,8 +33,7 @@ router.get('/:userId',assertIsLoggedIn, function (req, res, next) {
         .catch(next);
 });
 
-
-router.use('/:userId/graphs', require('../graph/graph.js'));
+router.use('/:userId/graphs',require('../graph/graph.js'));
 router.use('/:userId/datasets',require('../dataset/dataset.js'));
 
 module.exports = router;
