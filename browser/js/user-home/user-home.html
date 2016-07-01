@@ -16,7 +16,7 @@
               <button class="btn btn-dataset" ng-click="goToUserGraph(graph)">{{graph.name}}</button>
             </div>
             <div class="col-xs-2">
-              <button type="button" class="btn-remove btn btn-default btn-circle"><i class="glyphicon glyphicon-remove"></i></button>
+              <button type="button" class="btn-remove btn btn-default btn-circle" ng-click="removeUserGraph(graph)"><i class="glyphicon glyphicon-remove"></i></button>
             </div>
           </div>
       </ul>
@@ -31,7 +31,7 @@
               <button class="btn btn-dataset" ng-click="goToDataset(dataset)">{{dataset.name}}</button>
             </div>
             <div class="col-xs-2">
-              <button type="button" class="btn-remove btn btn-default btn-circle" ng-click="removeDataset()"><i class="glyphicon glyphicon-remove"></i></button>
+              <button type="button" class="btn-remove btn btn-default btn-circle" ng-click="removeDataset(dataset)"><i class="glyphicon glyphicon-remove"></i></button>
             </div>
           </div>
       </ul>

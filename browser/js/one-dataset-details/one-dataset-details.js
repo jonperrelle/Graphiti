@@ -1,8 +1,8 @@
-app.config(function ($stateProvider) {
+app.config(function($stateProvider) {
     $stateProvider.state('datasetDetails', {
         url: '/datasetDetails/:datasetId',
         templateUrl: 'js/one-dataset-details/one-dataset-details.html',
-        controller:"DatasetDetailsCtrl",
+        controller: "DatasetDetailsCtrl",
         params: {
             dataset: null,
             rows: null,
@@ -10,25 +10,15 @@ app.config(function ($stateProvider) {
     });
 });
 
-app.controller('DatasetDetailsCtrl', function ($scope, $stateParams, Session, DatasetFactory, NgTableParams, $localStorage) {
-
+app.controller('DatasetDetailsCtrl', function($scope, $timeout, $stateParams, Session, DatasetFactory, NgTableParams, $localStorage) {
     $localStorage.datasetId = $stateParams.datasetId || $localStorage.datasetId;
     $scope.dataset = $stateParams.dataset || $localStorage.dataset;
     $localStorage.dataset = $scope.dataset;
     $scope.rows = $stateParams.rows || $localStorage.rows;
     $localStorage.rows = $scope.rows;
     $scope.columns = Object.keys($localStorage.rows[0]);
-    $scope.tableParams = new NgTableParams({count: 5}, {
+    $scope.tableParams = new NgTableParams({ count: 5 }, {
         dataset: $localStorage.rows,
         counts: [1, 5, 10, 25, 100]
-    }); 
-
-    if (Session.user) $scope.user = Session.user;
-    $scope.addDataset = function(){
-        var domain;
-        if ($scope.dataset.metadata) domain = $scope.dataset.metadata.domain;
-        DatasetFactory.addDataset($scope.user, $scope.dataset.resource, domain);
-    };
-
-    //need $scope.removeDataset
+    });
 });

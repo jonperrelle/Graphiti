@@ -16,6 +16,17 @@ AWS.config.setPromisesDependency(require('bluebird'));
 const Converter = require('csvtojson').Converter;
 
 
+router.delete('/:datasetId', function(req, res, next) {
+    Dataset.findById(req.params.datasetId)
+    .then(function(dataset) {
+        return dataset.destroy();
+    })
+    .then(function(ds) {
+        res.sendStatus(204)
+    })
+    .catch(next);
+})
+
 router.post('/SocrataDataset', function(req, res, next) {
     User.findById(req.params.userId)
         .then(function(user) {
@@ -86,7 +97,6 @@ router.get('/awsDataset/:datasetId',function(req,res,next){
     	}); 
     })
     .catch(next);
-
 });
 
 module.exports = router;

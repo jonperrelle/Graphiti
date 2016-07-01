@@ -11,7 +11,7 @@ app.config(function ($stateProvider) {
     });
 });
 
-app.controller('UserHomeCtrl', function ($scope, $state, Session, DatasetFactory, UserInfo) {
+app.controller('UserHomeCtrl', function ($scope, $state, Session, DatasetFactory, GraphFactory, UserInfo) {
     
     $scope.user = UserInfo.user;
     $scope.datasets = UserInfo.datasets;
@@ -33,5 +33,17 @@ app.controller('UserHomeCtrl', function ($scope, $state, Session, DatasetFactory
         });
     };
 
-    // $scope.removeDataset()
+    $scope.removeDataset = function (dataset) {
+        DatasetFactory.removeDataset(dataset, $scope.user)
+        .then (function () {
+            $scope.datasets = $scope.datasets.filter(ds => ds.id !== dataset.id);
+        })
+    };
+
+    $scope.removeUserGraph = function (graph) {
+        GraphFactory.removeUserGraph(graph, $scope.user)
+        .then (function () {
+            $scope.graphs = $scope.graphs.filter(gr => gr.id !== graph.id);
+        })
+    }
 });
