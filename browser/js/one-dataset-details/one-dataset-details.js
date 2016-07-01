@@ -44,11 +44,10 @@ app.controller('DatasetDetailsCtrl', function($scope, $timeout, $state, $statePa
                     $scope.addedDataset=false;
                 }, 2000);
             })
-            .catch();
+            .catch(); // HANDLE ERRS
     };
 
     $scope.removeDataset = function () {
-        console.log($localStorage.datasetId);
         DatasetFactory.removeDataset($localStorage.datasetId, $scope.user)
         .then (function () {
             $state.go('userHome', {userId: $scope.user.id});
