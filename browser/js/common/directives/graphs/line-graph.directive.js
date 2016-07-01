@@ -3,7 +3,8 @@ app.directive('lineGraph', function(d3Service, $window) {
         restrict: 'E',
         scope: {
             rows: "=",
-            columns: "="
+            columns: "=",
+            settings: "="
         },
         link: function(scope, ele, attrs) {
 
@@ -35,15 +36,15 @@ app.directive('lineGraph', function(d3Service, $window) {
                 scope.render = function() {
                     let filteredData = scope.rows.filter(obj => obj[scope.columns[0].name] && obj[scope.columns[1].name]).sort((a,b) => a[scope.columns[0].name] - b[scope.columns[0].name]);
 
-                    let svg = d3.select(ele[0])
-                    svg.selectAll('*').remove();
+                    let anchor = d3.select(ele[0])
+                    anchor.selectAll('*').remove();
 
                     let margin = {top: 20, right: 20, bottom: 30, left: 40},
-                    width = ele[0].parentNode.offsetWidth - margin.left - margin.right,
-                    height = width - margin.top - margin.bottom,
-                    dotRadius = width / 150;
-
-                    svg = svg
+                    width = (scope.settings.width || ele[0].parentNode.offsetWidth) - margin.left - margin.right,
+                    height = (scope.settings.height || width) - margin.top - margin.bottom,
+                    xAxisLabel = scope.settings.xAxisLabel || scope.columns[0].name,
+                    yAxisLabel = scope.settings.yAxisLabel || scope.columns[1].name,
+                    svg = anchor
                     .append('svg')
                         .style('width', width + margin.left + margin.right)
                         .style('height', height + margin.top + margin.bottom)
@@ -52,7 +53,8 @@ app.directive('lineGraph', function(d3Service, $window) {
 
                     //check if the data column header may contain date info ??
                     let x,
-                        dateFormat; 
+                        dateFormat,
+                        data;
                     if (scope.columns[0].type === 'date') {
                         //if so validate the format of the date
 
@@ -61,23 +63,23 @@ app.directive('lineGraph', function(d3Service, $window) {
 
                         dateFormat = commonDateFormats.filter(f => d3.time.format(f).parse(filteredData[0][scope.columns[0].name]))[0];
                         let formatDate = d3.time.format(dateFormat); //d3.time.format("%Y-%y");
-                        var data = [];
+                        data = [];
                         filteredData.forEach(function(element){
                             let obj = {};
-                            obj[scope.columns[0].name] = formatDate.parse(element[scope.columns[0].name]);
-                            obj[scope.columns[1].name] = element[scope.columns[1].name]
+                            obj[xAxisLabel] = formatDate.parse(element[xAxisLabel]);
+                            obj[yAxisLabel] = element[yAxisLabel]
                             data.push(obj);
-                        })
+                        });
                         x = d3.time.scale().range([0, width]);
                     } else if (scope.columns[0].type === 'number'){
                         x = d3.scale.linear().range([0, width]);
-                        var data = [];
+                        data = [];
                         filteredData.forEach(function(element){
                             let obj = {};
-                            obj[scope.columns[0].name] = +(element[scope.columns[0].name]);
-                            obj[scope.columns[1].name] = element[scope.columns[1].name]
+                            obj[xAxisLabel] = +(element[xAxisLabel]);
+                            obj[yAxisLabel] = element[yAxisLabel];
                             data.push(obj);
-                        })
+                        });
                     } else {
                         return; 
                     }
@@ -95,27 +97,38 @@ app.directive('lineGraph', function(d3Service, $window) {
 
                     let line = d3.svg.line()
                         .x(function(d) {
-                            return x( d[scope.columns[0].name ] );
+                            return x( d[xAxisLabel] );
                         })
                         .y(function(d) {
-                            return y(+d[scope.columns[1].name]);
+                            return y(+d[yAxisLabel]);
                         });
 
                     // If we don't pass any data, return out of the element
-                    if (!data) return;
-                    // set the height based on the calculations above
-                    svg.attr('height', height + margin.top + margin.bottom);
+                    if (!data) return; 
 
-                    x.domain(d3.extent(data, function(d) { return d[scope.columns[0].name]; 
-                    }));
-                    y.domain([0, d3.max(data, function(d) {
-                        return +d[scope.columns[1].name];
-                    })]);
+                    let color = scope.settings.color || "steelblue",
+                        minX = scope.settings.minX || d3.min(data, function(d) { return d[xAxisLabel]; }),
+                        maxX = scope.settings.minX || d3.max(data, function(d) { return d[xAxisLabel]; }),
+                        minY = scope.settings.minY || d3.min(data, function(d) { return +d[yAxisLabel]; }),
+                        maxY = scope.settings.maxY || d3.max(data, function(d) { return +d[yAxisLabel]; });
+
+                    // x.domain(d3.extent(data, function(d) { return d[xAxisLabel]; 
+                    // }));
+                    // y.domain([0, d3.max(data, function(d) {
+                    //     return +d[yAxisLabel];
+                    // })]);
+
+                    x.domain([minX, maxX]);
+                    y.domain([minY, maxY]);
 
                     svg.append("g")
                         .attr("class", "x axis")
                         .attr("transform", "translate(0," + height + ")")
-                        .call(xAxis);
+                        .call(xAxis)
+                        .append("text")
+                        .attr("dy", ".71em")
+                        .style("text-anchor", "end")
+                        .text(xAxisLabel);
 
                     svg.append("g")
                         .attr("class", "y axis")
@@ -125,7 +138,7 @@ app.directive('lineGraph', function(d3Service, $window) {
                         .attr("y", 6)
                         .attr("dy", ".71em")
                         .style("text-anchor", "end")
-                        .text(scope.columns[1].name);
+                        .text(yAxisLabel);
 
                     svg.append("path")
                         .datum(data)
