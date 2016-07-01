@@ -3,7 +3,8 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
       restrict: 'E',
       scope: {
         rows: "=",
-        columns: "="
+        columns: "=",
+        settings: "="
       },
       link: function(scope, ele, attrs) {
         d3Service.d3().then(function(d3) {
@@ -39,15 +40,17 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
             let groupedData = DataFactory.groupByCategory(filteredData, scope.columns[0].name, scope.columns[1].name);
             groupedData = DataFactory.orderByCategory(groupedData, scope.columns[0].name);
 
-            let svg = d3.select(ele[0])
-            svg.selectAll('*').remove();
+            let anchor = d3.select(ele[0])
+            anchor.selectAll('*').remove();
 
             let margin = {top: 20, right: 20, bottom: 30, left: 40},
-                width = ele[0].parentNode.offsetWidth - margin.left - margin.right,
-                height = width - margin.top - margin.bottom,
+                width = (scope.settings.width || ele[0].parentNode.offsetWidth) - margin.left - margin.right,
+                height = (scope.settings.height || width) - margin.top - margin.bottom,
+                xAxisLabel = scope.settings.xAxisLabel || scope.columns[0].name,
+                yAxisLabel = scope.settings.yAxisLabel || scope.columns[1].name,
                 barSpace = 0.1;
 
-            svg = svg
+            let svg = anchor
             .append('svg')
                 .style('width', width + margin.left + margin.right)
                 .style('height', height + margin.top + margin.bottom)
@@ -69,10 +72,14 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                 .scale(y)
                 .orient("left");
 
+            let color = scope.settings.color || d3.scale.category10(),
+            minY = scope.settings.minY || 0,
+            maxY = scope.settings.maxY || d3.max(groupedData, function(d) { return +d[scope.columns[1].name]; });
+
             x.domain(groupedData.map(function(d) { return d[scope.columns[0].name]; }));
 
             // y.domain([0, d3.max(groupedData, function(d) { return +d[scope.columns[1].name]; })]);
-            y.domain([0, d3.max(groupedData, function(d) { return +d[scope.columns[1].name]; })]);
+            y.domain([0, maxY]);
 
             svg.append("g")
                 .attr("class", "xaxis")

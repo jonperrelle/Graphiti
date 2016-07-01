@@ -49,9 +49,9 @@ app.directive('scatterplotGraph', function(d3Service, $window, GraphSettingsFact
             height = (scope.settings.height || width) - margin.top - margin.bottom,
             dotRadius = width / 150,
             xAxisLabel = scope.settings.xAxisLabel || scope.columns[0].name,
-            yAxisLabel = scope.settings.yAxisLabel || scope.columns[1].name;
+            yAxisLabel = scope.settings.yAxisLabel || scope.columns[1].name,
 
-            let svg = anchor
+            svg = anchor
             .append('svg')
             .attr('width', width + margin.left + margin.right)
             .attr('height', height + margin.top + margin.bottom);
