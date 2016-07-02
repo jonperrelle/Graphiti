@@ -1,49 +1,59 @@
 'use strict';
-const router = require('express').Router({mergeParams: true});
+const router = require('express').Router({ mergeParams: true });
 const fs = require('fs');
 const env = require('../../../env');
 const db = require('../../../db');
 const User = db.model('user');
 const Dataset = db.model('dataset');
 const AWS = require('aws-sdk');
+const Converter = require('csvtojson').Converter;
+const chalk = require('chalk')
 
-AWS.config.update( {
+AWS.config.update({
     accessKeyId: env.amazonaws.accessKeyId,
     secretAccessKey: env.amazonaws.secretAccessKey
 })
-AWS.config.setPromisesDependency(require('bluebird'));
-const Converter = require('csvtojson').Converter;
 
-router.delete('/:datasetId', function(req, res, next) {
+router.get('/:datasetId', function(req, res, next) {
+
     Dataset.findById(req.params.datasetId)
-    .then(function(dataset) {
-        return dataset.destroy();
-    })
-    .then(function() {
-        res.sendStatus(204)
-    })
-    .catch(next);
+        .then(function(dataset) {
+            res.send(dataset);
+        })
+        .catch(next);
 });
 
+//Security that validates user is authenticated and has proper access control is upstream in the user router
+router.delete('/:datasetId', function(req, res, next) {
+    Dataset.findById(req.params.datasetId)
+        .then(function(dataset) {
+            return dataset.destroy();
+        })
+        .then(function() {
+            res.sendStatus(204)
+        })
+        .catch(next);
+});
 
 router.post('/SocrataDataset', function(req, res, next) {
-    User.findById(req.params.userId)
-        .then(function(user) {
-            var ds = {
-                name: req.body.dataset.name,
-                userUploaded: false,
-                socrataId: req.body.dataset.id,
-                socrataDomain: req.body.domain
-            }
-            return Dataset.findOrCreate({ where: ds })
-                .spread(function(dataset) {
-                    return user.addDataset(dataset);
-                })
-                .catch(next);
+
+    let user = req.requestedUser;
+
+
+    let ds = {
+        name: req.body.dataset.name,
+        userUploaded: false,
+        socrataId: req.body.dataset.id,
+        socrataDomain: req.body.domain
+    }
+
+    Dataset.findOrCreate({ where: ds })
+        .then(function(dataset) {
+            return user.addDataset(dataset[0]);
         })
         .then(function(ds) {
             if (ds.length) res.sendStatus(201);
-            else (res.sendStatus(204));
+            else res.sendStatus(204);
         })
         .catch(next);
 });
@@ -51,54 +61,55 @@ router.post('/SocrataDataset', function(req, res, next) {
 router.post('/UploadedDataset', function(req, res, next) {
 
     let fileName = req.session.uploadedFile.originalFilename.replace(/.csv/, "");
-    let s3bucket = new AWS.S3({params: {Bucket: 'graphitiDatasets'}});
+    let s3bucket = new AWS.S3({ params: { Bucket: 'graphitiDatasets' } });
     let file = fs.createReadStream(req.session.uploadedFile.path);
-    let params = {Key:  req.session.uploadedFile.originalFilename, Body: file};
+    let params = { Key: req.session.uploadedFile.originalFilename, Body: file };
+
+
     s3bucket.upload(params, function(err, data) {
         if (err) {
-          next(err);
+            next(err);
         } else {
-          User.findById(req.params.userId)
-            .then(function(user) {
-                return Dataset.findOrCreate({ 
-                    where: { 
+
+            let user = req.requestedUser;
+
+            Dataset.findOrCreate({
+                    where: {
                         name: fileName,
-                        s3fileName: req.session.uploadedFile.originalFilename, 
+                        s3fileName: req.session.uploadedFile.originalFilename,
                         userUploaded: true
                     }
                 })
-                .spread(function(ds, bool) {
-                    return user.addDataset(ds);
+                .then(function(ds) {
+                    return user.addDataset(ds[0]);
+                })
+                .then(function() {
+                    res.sendStatus(201);
                 })
                 .catch(next);
-            })
-            .then(function() {
-                res.sendStatus(201);
-            })
-            .catch(next);
         }
-  });
+    });
 });
 
-router.get('/awsDataset/:datasetId',function(req,res,next){
+router.get('/awsDataset/:datasetId', function(req, res, next) {
 
     const s3 = new AWS.S3();
     const csvConverter = new Converter({});
 
     Dataset.findById(req.params.datasetId)
-    .then(function (dataset) {
-    	s3.getObject({Bucket: 'graphitiDatasets', Key: dataset.s3fileName},function(err, data){
-    		if(err) next(err);
-    		else {
-                let csvString = data.Body.toString('utf8');
-                csvConverter.fromString(csvString, function (err, jsonArray) {
-                    if (err) next(err);
-                    res.send({data: jsonArray, dataset: {resource: {name: dataset.name}}});
-                });
-            }
-    	}); 
-    })
-    .catch(next);
+        .then(function(dataset) {
+            s3.getObject({ Bucket: 'graphitiDatasets', Key: dataset.s3fileName }, function(err, data) {
+                if (err) next(err);
+                else {
+                    let csvString = data.Body.toString('utf8');
+                    csvConverter.fromString(csvString, function(err, jsonArray) {
+                        if (err) next(err);
+                        res.send({ data: jsonArray, dataset: { resource: { name: dataset.name } } });
+                    });
+                }
+            });
+        })
+        .catch(next);
 });
 
 module.exports = router;
