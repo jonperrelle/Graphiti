@@ -20,19 +20,19 @@
                <div class="form-group col-xs-6" ng-show="graphType==='pieChart'">
                   <label for="radius" class="control-label">Radius</label>
                   <div>
-                    <input class="form-control" name="radius" type="text" ng-model="settings.radius" required>
+                    <input class="form-control" name="radius" type="number" ng-model="settings.radius" required>
                   </div>
                 </div>
               <div class="form-group col-xs-6" ng-hide="graphType==='pieChart'">
                 <label for="width" class="control-label">Width</label>
                 <div>
-                  <input class="form-control" name="width" type="text" ng-model="settings.width" required>
+                  <input class="form-control" name="width" type="number" ng-model="settings.width" required>
                 </div>
               </div>
               <div class="form-group col-xs-6" ng-hide="graphType==='pieChart'">
                 <label for="height" class="control-label">Height</label>
                 <div>
-                  <input class="form-control" name="height" type="text" ng-model="settings.height" required>
+                  <input class="form-control" name="height" type="number" ng-model="settings.height" required>
                 </div>
               </div>
             </div>
@@ -68,13 +68,13 @@
               <div class="form-group col-xs-6">
                 <label for="maxX" class="control-label">Min X Value</label>
                 <div>
-                  <input class="form-control" name="maxX" type="text" ng-model="settings.minX" required>
+                  <input class="form-control" name="maxX" type="number" ng-model="settings.minX" required>
                 </div>
               </div>
               <div class="form-group col-xs-6">
                 <label for="minX" class="control-label">Max X Value</label>
                 <div>
-                  <input class="form-control" name="minX" type="text" ng-model="settings.maxX" required>
+                  <input class="form-control" name="minX" type="number" ng-model="settings.maxX" required>
                 </div>
               </div>
             </div>
@@ -105,13 +105,13 @@
               <div class="form-group col-xs-6">
                 <label for="minY" class="control-label">Min Y Value</label>
                 <div>
-                  <input class="form-control" name="minY" type="text" ng-model="settings.minY" required>
+                  <input class="form-control" name="minY" type="number" ng-model="settings.minY" required>
                 </div>
               </div>
               <div class="form-group col-xs-6">
                 <label for="maxY" class="control-label">Max Y Value</label>
                 <div>
-                  <input class="form-control" name="maxY" type="text" ng-model="settings.maxY" required>
+                  <input class="form-control" name="maxY" type="number" ng-model="settings.maxY" required>
                 </div>
               </div>
             </div>

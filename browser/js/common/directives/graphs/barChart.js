@@ -47,8 +47,8 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                     anchor.selectAll('*').remove();
 
                     let margin = { top: 20, right: 20, bottom: 30, left: 40 },
-                        width = (+scope.settings.width || ele[0].parentNode.offsetWidth) - margin.left - margin.right,
-                        height = (+scope.settings.height || width) - margin.top - margin.bottom,
+                        width = (scope.settings.width || ele[0].parentNode.offsetWidth) - margin.left - margin.right,
+                        height = (scope.settings.height || width) - margin.top - margin.bottom,
                         xAxisLabel = scope.settings.xAxisLabel || scope.columns[0].name,
                         yAxisLabel = scope.settings.yAxisLabel || scope.columns[1].name,
                         title = scope.settings.title || scope.columns[0].name + ' vs. ' + scope.columns[1].name,
@@ -77,8 +77,8 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                         .orient("left");
 
                     let color = scope.settings.color || d3.scale.category10(),
-                        minY = (typeof scope.settings.minY !== 'undefined') ? +scope.settings.minY : 0,
-                        maxY = (typeof scope.settings.maxY !== 'undefined') ? +scope.settings.maxY : d3.max(groupedData, function(d) {
+                        minY = (typeof scope.settings.minY === 'number') ? scope.settings.minY : 0,
+                        maxY = (typeof scope.settings.maxY === 'number') ? scope.settings.maxY : d3.max(groupedData, function(d) {
                             return +d[scope.columns[1].name]; });
 
 

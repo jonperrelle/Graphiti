@@ -1,30 +1,17 @@
 app.factory('DatasetFactory', function($http) {
 
-    let addDatasetFunction = function(res) { 
-        if (res.data[1]) {
-            return {
-                    success: true,
-                    message: 'You have successfully added this dataset!'
-            };
-        }
-        else {
-            return {
-                success: false,
-                message: 'You already have this dataset'
-            };
-        }
-    };
+    let successFunction = res => res.data;
 
     return {
 
         addDataset: function(user, dataset, domain) {
             if (domain)  {
                 return $http.post('/api/users/' + user.id + '/datasets/SocrataDataset', { dataset, domain })
-                    .then(addDatasetFunction)
+                    .then(successFunction)
                     .catch();
             } else {
                 return $http.post('/api/users/' + user.id + '/datasets/UploadedDataset', { dataset })
-                    .then(addDatasetFunction)
+                    .then(successFunction)
                     .catch();
             }
         },

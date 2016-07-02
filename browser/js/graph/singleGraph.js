@@ -12,8 +12,10 @@ app.config (function ($stateProvider) {
   });
 });
 
-app.controller('singleGraphCtrl', function ($scope, $stateParams, $timeout, $localStorage, GraphFactory, Session) {
-	$scope.graphType = $stateParams.graphType || $localStorage.graphType;
+app.controller('singleGraphCtrl', function ($scope, $stateParams, $timeout, $state, $localStorage, GraphFactory, Session) {
+	let domain;
+    $localStorage.graphId = $stateParams.graphId || $localStorage.graphId;
+    $scope.graphType = $stateParams.graphType || $localStorage.graphType;
     $localStorage.graphType = $scope.graphType;
 	$scope.data = $stateParams.data || $localStorage.data;
     $localStorage.data = $scope.data;
@@ -24,9 +26,9 @@ app.controller('singleGraphCtrl', function ($scope, $stateParams, $timeout, $loc
 
     $scope.addedGraph = false;
     if (Session.user) $scope.user = Session.user;
-
+    if ($localStorage.dataset.metadata) domain = $localStorage.dataset.metadata.domain;
     $scope.saveUserGraph = function () {
-        GraphFactory.saveUserGraph($scope.user, $localStorage.dataset, $scope.columns, $scope.graphType, $scope.settings)
+        GraphFactory.saveUserGraph($scope.user, $localStorage.dataset.resource, $scope.columns, $scope.graphType, $scope.settings, domain)
             .then(function(data) {
                 $scope.success = data.success;
                 $scope.message = data.message;
@@ -37,5 +39,12 @@ app.controller('singleGraphCtrl', function ($scope, $stateParams, $timeout, $loc
                 }, 2000);
             })
             .catch();
+    };
+
+    $scope.removeUserGraph = function () {
+        GraphFactory.removeUserGraph($localStorage.graphId, $scope.user)
+        .then (function () {
+            $state.go('userHome', {userId: $scope.user.id});
+        });
     };
 });

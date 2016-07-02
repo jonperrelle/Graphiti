@@ -55,8 +55,8 @@ app.directive('scatterplotGraph', function(d3Service, $window) {
 
 
                 let margin = { top: 20, right: 20, bottom: 30, left: 40 },
-                    width = (+scope.settings.width || ele[0].parentNode.offsetWidth - 20) - margin.left - margin.right,
-                    height = (+scope.settings.height || width) - margin.top - margin.bottom,
+                    width = (scope.settings.width || ele[0].parentNode.offsetWidth - 20) - margin.left - margin.right,
+                    height = (scope.settings.height || width) - margin.top - margin.bottom,
 
                     dotRadius = width / 150,
 
@@ -116,7 +116,7 @@ app.directive('scatterplotGraph', function(d3Service, $window) {
                 let cValue = function(d) {
                         return d
                     },
-                    color = scope.settings.color || d3.scale.category10();
+                    color = scope.settings.color || 'steelblue';
                 // add the tooltip area to the webpage
                 let tooltip = d3.select("body").append("div")
                     .attr("class", "tooltip")
@@ -184,29 +184,29 @@ app.directive('scatterplotGraph', function(d3Service, $window) {
                     .text(title);
 
                 // draw legend
-                let legend = svg.selectAll(".legend")
-                    .data(color.domain()) //color.domain() is not a function
-                    .enter().append("g")
-                    .attr("class", "legend")
-                    .attr("transform", function(d, i) {
-                        return "translate(" + (40) + "," + i * 20 + ")"
-                    });
+                // let legend = svg.selectAll(".legend")
+                //     .data(color) //color.domain() is not a function
+                //     .enter().append("g")
+                //     .attr("class", "legend")
+                //     .attr("transform", function(d, i) {
+                //         return "translate(" + (40) + "," + i * 20 + ")"
+                //     });
 
-                // draw legend colored rectangles
-                legend.append("rect")
-                    .attr("x", width - 18)
-                    .attr("width", 18)
-                    .attr("height", 18)
-                    .style("fill", color);
+                // // draw legend colored rectangles
+                // legend.append("rect")
+                //     .attr("x", width - 18)
+                //     .attr("width", 18)
+                //     .attr("height", 18)
+                //     .style("fill", color);
 
-                // draw legend text
-                legend.append("text")
-                    .attr("x", width - 24)
-                    .attr("y", 9)
-                    .attr("dy", ".35em")
-                    .style("text-anchor", "end")
-                    //.text(function(d) { return d})
-                    .text(scope.columns[0].name);
+                // // draw legend text
+                // legend.append("text")
+                //     .attr("x", width - 24)
+                //     .attr("y", 9)
+                //     .attr("dy", ".35em")
+                //     .style("text-anchor", "end")
+                //     //.text(function(d) { return d})
+                //     .text(scope.columns[0].name);
             };
         });
     };

@@ -4,7 +4,7 @@ module.exports = function (db) {
 
     db.define('settings', {
         width: {
-            type: Sequelize.INTEGER
+            type: Sequelize.INTEGER,
         },
         height: {
             type: Sequelize.INTEGER

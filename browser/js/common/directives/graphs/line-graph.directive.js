@@ -39,8 +39,8 @@ app.directive('lineGraph', function(d3Service, $window) {
                     anchor.selectAll('*').remove();
 
                     let margin = { top: 20, right: 20, bottom: 30, left: 40 },
-                        width = (+scope.settings.width || ele[0].parentNode.offsetWidth) - margin.left - margin.right,
-                        height = (+scope.settings.height || width) - margin.top - margin.bottom,
+                        width = (scope.settings.width || ele[0].parentNode.offsetWidth) - margin.left - margin.right,
+                        height = (scope.settings.height || width) - margin.top - margin.bottom,
                         xAxisLabel = scope.settings.xAxisLabel || scope.columns[0].name,
                         yAxisLabel = scope.settings.yAxisLabel || scope.columns[1].name,
                         title = scope.settings.title || scope.columns[0].name + ' vs. ' + scope.columns[1].name,
@@ -112,16 +112,16 @@ app.directive('lineGraph', function(d3Service, $window) {
 
 
                     let color = scope.settings.color || "steelblue",
-                        minX = (typeof scope.settings.minX !== 'undefined') ? +scope.settings.minX : d3.min(data, function(d) {
+                        minX = (typeof scope.settings.minX === 'number') ? scope.settings.minX : d3.min(data, function(d) {
                             return d[scope.columns[0].name];
                         }),
-                        maxX = (typeof scope.settings.maxX !== 'undefined') ? +scope.settings.maxX : d3.max(data, function(d) {
+                        maxX = (typeof scope.settings.maxX === 'number') ? scope.settings.maxX : d3.max(data, function(d) {
                             return d[scope.columns[0].name];
                         }),
-                        minY = (typeof scope.settings.minY !== 'undefined') ? +scope.settings.minY : d3.min(data, function(d) {
+                        minY = (typeof scope.settings.minY === 'number') ? +scope.settings.minY : d3.min(data, function(d) {
                             return +d[scope.columns[1].name];
                         }),
-                        maxY = (typeof scope.settings.maxY !== 'undefined') ? +scope.settings.maxY : d3.max(data, function(d) {
+                        maxY = (typeof scope.settings.maxY === 'number') ? +scope.settings.maxY : d3.max(data, function(d) {
                             return +d[scope.columns[1].name];
                         });
 
