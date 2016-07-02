@@ -22,7 +22,7 @@ app.controller('UserHomeCtrl', function ($scope, $state, UploadFactory, Session,
     $scope.goToUserGraph = function(graph){
             DatasetFactory.getOneUserDataset(graph.dataset, $scope.user)
             .then(rows => {
-                $state.go('userSingleGraph', {userId: $scope.user.id, graphId: graph.id, graphType: graph.graphType, settings: graph.settings, data: rows, columns: graph.columns});    
+                $state.go('userSingleGraph', {userId: $scope.user.id, graphId: graph.id, graphType: graph.graphType, settings: graph.setting, data: rows, columns: graph.columns});    
             })
             .catch();
     };
