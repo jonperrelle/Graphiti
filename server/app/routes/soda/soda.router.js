@@ -42,5 +42,4 @@ router.put('/',function(req,res,next){
 			res.send({graphData: rows, columns: columns});
 		})
 		.on('error',next);
-
 });
