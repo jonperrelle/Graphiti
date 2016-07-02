@@ -33,8 +33,7 @@ app.directive('pieChart', function(d3Service, $window, DataFactory) {
                 }, true);
 
                 scope.render = function() {
-                        let svg = d3.select(ele[0])
-                        svg.selectAll('*').remove();
+                        d3.select(ele[0]).selectAll('*').remove();
 
                         let margin = { top: 20, right: 20, bottom: 30, left: 40 },
                             width = scope.settings.width || ele[0].parentNode.offsetWidth,
@@ -75,36 +74,41 @@ app.directive('pieChart', function(d3Service, $window, DataFactory) {
                             })
                             .attr("d", arc);
 
-                        // add the text
-                        arcs.append("text").attr("transform", function(d) {
-                            d.innerRadius = 0;
-                            d.outerRadius = radius;
-                            return "translate(" + arc.centroid(d) + ")";
-                        }).attr("text-anchor", "middle").text(function(d, i) {
-                            return groupedData[i][scope.columns[0].name];
+                        arcs.forEach(function () {
+
                         });
+
+                        // // add the text
+                        // arcs.append("text").attr("transform", function(d) {
+                        //     d.innerRadius = 0;
+                        //     d.outerRadius = radius;
+                        //     return "translate(" + arc.centroid(d) + ")";
+                        // }).attr("text-anchor", "middle").text(function(d, i) {
+                        //     return groupedData[i][scope.columns[0].name];
+                        // });
+
+                        // let legend = svg.selectAll(".legend")
+                        //     .data(color.domain())
+                        //     .enter().append("g")
+                        //         .attr("class", "legend")
+                        //         .attr("transform", function(d, i) { return "translate(" + (40) + "," + i * 20 + ")" });
+
+                        // // draw legend colored rectangles
+                        // legend.append("rect")
+                        //     .attr("x", width - 18)
+                        //     .attr("width", 18)
+                        //     .attr("height", 18)
+                        //     .style("fill", color);
+
+                        // // draw legend text
+                        // legend.append("text")
+                        //     .attr("x", width - 24)
+                        //     .attr("y", 9)
+                        //     .attr("dy", ".35em")
+                        //     .style("text-anchor", "end")
+                        //     .text(function(d) { return d[scope.columns[0].name]});
                     }
-                    //     let legend = svg.selectAll(".legend")
-                    //     .data(color.domain())
-                    //   .enter().append("g")
-                    //     .attr("class", "legend")
-                    //     .attr("transform", function(d, i) { return "translate(" + (40) + "," + i * 20 + ")" });
-
-                // // draw legend colored rectangles
-                // legend.append("rect")
-                //     .attr("x", width - 18)
-                //     .attr("width", 18)
-                //     .attr("height", 18)
-                //     .style("fill", color);
-
-                // // draw legend text
-                // legend.append("text")
-                //     .attr("x", width - 24)
-                //     .attr("y", 9)
-                //     .attr("dy", ".35em")
-                //     .style("text-anchor", "end")
-                //     //.text(function(d) { return d})
-                //     .text(scope.columns[0].name);
+                    
             })
         }
     }
