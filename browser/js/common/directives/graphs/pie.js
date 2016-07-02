@@ -35,10 +35,11 @@ app.directive('pieChart', function(d3Service, $window, DataFactory) {
                 scope.render = function() {
                         d3.select(ele[0]).selectAll('*').remove();
 
-                        let margin = { top: 20, right: 20, bottom: 30, left: 40 },
-                            width = scope.settings.width || ele[0].parentNode.offsetWidth,
-                            height = scope.settings.height || width,
-                            radius = (height * 0.8) / 2;
+                        let margin = { top: 30, right: 20, bottom: 30, left: 40 },
+                            width = +scope.settings.width || ele[0].parentNode.offsetWidth,
+                            height = +scope.settings.height || width,
+                            radius = +scope.settings.radius || (height * 0.8) / 2,
+                            title = scope.settings.title || scope.columns[0].name + ' vs. ' + scope.columns[1].name;
 
                         let filteredData = scope.rows.filter(obj => Number(obj[scope.columns[1].name]) > 0);
 
@@ -48,7 +49,7 @@ app.directive('pieChart', function(d3Service, $window, DataFactory) {
                         //uses build in d3 method to create color scale
                         let color = scope.settings.color || d3.scale.category20();
 
-                        let vis = d3.select(ele[0])
+                        let svg = anchor
                             .append('svg')
                             .attr('width', width)
                             .attr('height', height)
@@ -62,7 +63,7 @@ app.directive('pieChart', function(d3Service, $window, DataFactory) {
                         // declare an arc generator function
                         let arc = d3.svg.arc().outerRadius(radius);
                         // select paths, use arc generator to draw
-                        let arcs = vis.selectAll("g.slice")
+                        let arcs = svg.selectAll("g.slice")
                             .data(pie)
                             .enter()
                             .append("g")
@@ -111,5 +112,5 @@ app.directive('pieChart', function(d3Service, $window, DataFactory) {
                     
             })
         }
-    }
+    };
 });

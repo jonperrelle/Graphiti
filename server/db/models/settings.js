@@ -8,27 +8,30 @@ module.exports = function (db) {
         },
         height: {
             type: Sequelize.INTEGER
-        }, 
+        },
+        radius: {
+            type: Sequelize.INTEGER
+        },
         xAxisLabel: {
-        	type: Sequelize.STRING,
+        	type: Sequelize.STRING
         },
         yAxisLabel: {
-        	type: Sequelize.STRING,
+        	type: Sequelize.STRING
         },
         color: {
-            type: Sequelize.ENUM('red','blue','green'),
+            type: Sequelize.STRING
         },
         minX: {
-            type: Sequelize.INTEGER,
+            type: Sequelize.INTEGER
         },
         maxX: {
-            type: Sequelize.INTEGER,
+            type: Sequelize.INTEGER
         },
         minY: {
-            type: Sequelize.INTEGER,
+            type: Sequelize.INTEGER
         },
         maxY: {
-            type: Sequelize.INTEGER,
+            type: Sequelize.INTEGER
         },
     });
 };

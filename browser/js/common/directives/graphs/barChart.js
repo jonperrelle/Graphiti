@@ -61,10 +61,11 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                         bottom: (xLabelLength + 6) * 4.5,
                         left: (yLabelLength + 6) * 7
                     },
-                        width = scope.settings.width || ele[0].parentNode.offsetWidth,
-                        height = scope.settings.height || width,
+                        width = +scope.settings.width || ele[0].parentNode.offsetWidth,
+                        height = +scope.settings.height || width,
                         xAxisLabel = scope.settings.xAxisLabel || scope.columns[0].name,
                         yAxisLabel = scope.settings.yAxisLabel || scope.columns[1].name,
+                        title = scope.settings.title || scope.columns[0].name + ' vs. ' + scope.columns[1].name,
                         barSpace = 0.1;
 
                     let svg = anchor
@@ -89,14 +90,15 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                         .orient("left");
 
                     let color = scope.settings.color || d3.scale.category10(),
-                        minY = scope.settings.minY || 0,
-                        maxY = scope.settings.maxY || d3.max(groupedData, function(d) {
+                        minY = (typeof scope.settings.minY !== 'undefined') ? +scope.settings.minY : 0,
+                        maxY = (typeof scope.settings.maxY !== 'undefined') ? +scope.settings.maxY : d3.max(groupedData, function(d) {
                             return +d[scope.columns[1].name]; });
 
                     x.domain(groupedData.map(function(d) {
                         return d[scope.columns[0].name]; }));
 
-                    y.domain([0, maxY]);
+                    // y.domain([0, d3.max(groupedData, function(d) { return +d[scope.columns[1].name]; })]);
+                    y.domain([minY, maxY]);
 
                     svg.append("g")
                         .attr("class", "x axis")
