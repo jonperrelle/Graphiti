@@ -18,7 +18,7 @@ router.param('userId', function (req, res, next, id) {
 });
 
 function assertIsCorrectUser (req, res, next) {
-  if (+req.user.id == +req.requestedUser.id) next();
+  if (+req.user.id === +req.requestedUser.id) next();
   else next(HttpError(401));
 }
 
