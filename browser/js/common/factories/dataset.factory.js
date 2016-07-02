@@ -1,7 +1,7 @@
 app.factory('DatasetFactory', function($http) {
 
     let addDatasetFunction = function(res) { 
-        if (res.data === 'Created') {
+        if (res.data[1]) {
             return {
                     success: true,
                     message: 'You have successfully added this dataset!'
