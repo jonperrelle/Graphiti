@@ -1,4 +1,4 @@
-app.directive('scatterplotGraph', function(d3Service, $window, GraphSettingsFactory) {
+app.directive('scatterplotGraph', function(d3Service, $window) {
     let directive = {};
 
     directive.restrict = 'E';
@@ -39,11 +39,6 @@ app.directive('scatterplotGraph', function(d3Service, $window, GraphSettingsFact
 
 
             scope.render = function() {
-                let filteredData = scope.rows.filter(obj => obj[scope.columns[0].name] 
-                    && obj[scope.columns[1].name] 
-                    && (!!Number(obj[scope.columns[0].name]) || Number(obj[scope.columns[0].name]) === 0)
-                    && (!!Number(obj[scope.columns[1].name]) || Number(obj[scope.columns[1].name]) === 0))
-                .sort((a, b) => a[scope.columns[0].name] - b[scope.columns[0].name]);
 
                 let zoom = d3.behavior.zoom()
                    .scaleExtent([1, 5])
@@ -52,21 +47,27 @@ app.directive('scatterplotGraph', function(d3Service, $window, GraphSettingsFact
                 let anchor = d3.select(ele[0])
                 anchor.selectAll('*').remove();
 
+                let filteredData = scope.rows.filter(obj => obj[scope.columns[0].name] 
+                    && obj[scope.columns[1].name] 
+                    && (!!Number(obj[scope.columns[0].name]) || Number(obj[scope.columns[0].name]) === 0)
+                    && (!!Number(obj[scope.columns[1].name]) || Number(obj[scope.columns[1].name]) === 0))
+                .sort((a, b) => a[scope.columns[0].name] - b[scope.columns[0].name]);
+
+
                 let margin = { top: 20, right: 20, bottom: 30, left: 40 },
-                    width = (scope.settings.width || ele[0].parentNode.offsetWidth) - margin.left - margin.right,
-                    height = (scope.settings.height || width) - margin.top - margin.bottom,
+                    width = (+scope.settings.width || ele[0].parentNode.offsetWidth - 20) - margin.left - margin.right,
+                    height = (+scope.settings.height || width) - margin.top - margin.bottom,
 
                     dotRadius = width / 150,
 
                     xAxisLabel = scope.settings.xAxisLabel || scope.columns[0].name,
                     yAxisLabel = scope.settings.yAxisLabel || scope.columns[1].name,
+                    title = scope.settings.title || scope.columns[0].name + ' vs. ' + scope.columns[1].name,
                     svg = anchor
                     .append('svg')
                     .attr('width', width + margin.left + margin.right)
                     .attr('height', height + margin.top + margin.bottom)
                     .call(zoom);
-                    
-
 
                 let xValue = function(d) {
                         return +d[scope.columns[0].name]
@@ -87,35 +88,35 @@ app.directive('scatterplotGraph', function(d3Service, $window, GraphSettingsFact
                     }, // data -> display
                     yAxis = d3.svg.axis().scale(yScale).orient("left");
 
-                var minX = (typeof scope.settings.minX === 'number') ? scope.settings.minX : d3.min(filteredData, xValue) - 1;
-                var maxX = (typeof scope.settings.maxX === 'number') ? scope.settings.maxX : d3.max(filteredData, xValue) - 1;
-                var minY = (typeof scope.settings.minY === 'number') ? scope.settings.minY : d3.min(filteredData, yValue) - 1;
-                var maxY = (typeof scope.settings.maxY === 'number') ? scope.settings.maxY : d3.max(filteredData, yValue) - 1;
+                let minX = (typeof scope.settings.minX === 'number') ? scope.settings.minX : d3.min(filteredData, xValue) - 1;
+                let maxX = (typeof scope.settings.maxX === 'number') ? scope.settings.maxX : d3.max(filteredData, xValue) - 1;
+                let minY = (typeof scope.settings.minY === 'number') ? scope.settings.minY : d3.min(filteredData, yValue) - 1;
+                let maxY = (typeof scope.settings.maxY === 'number') ? scope.settings.maxY : d3.max(filteredData, yValue) - 1;
 
+                filteredData = scope.rows.filter(obj => Number(obj[scope.columns[0].name]) >= minX 
+                    && Number(obj[scope.columns[0].name]) <= maxX
+                    && Number(obj[scope.columns[1].name]) >= minY
+                    && Number(obj[scope.columns[1].name]) <= maxY
+                    );
 
+            function zooming() {
+               let e = d3.event;
+               let tx = Math.min(0, Math.max(e.translate[0], width - width * e.scale));
+               let ty = Math.min(0, Math.max(e.translate[1], height - height * e.scale));
 
+               zoom.translate([tx, ty]);
 
-
-
-function zooming() {
-   let e = d3.event;
-   let tx = Math.min(0, Math.max(e.translate[0], width - width * e.scale));
-   let ty = Math.min(0, Math.max(e.translate[1], height - height * e.scale));
-
-   zoom.translate([tx, ty]);
-
-   dots.attr("transform", ["translate(" + [tx, ty] + ")", "scale(" + e.scale + ")"].join(" "));
-  // xAxis.attr("transform", ["translate(" + [tx, ty] + ")", "scale(" + e.scale + ")"].join(" "));
-  // yAxis.attr("transform", ["translate(" + [tx, ty] + ")", "scale(" + e.scale + ")"].join(" "));
-   svg.attr("transform", ["translate(" + [tx, ty] + ")", "scale(" + e.scale + ")"].join(" "));
-   // circles.attr("transform", ["translate(" + [tx, ty] + ")", "scale(" + e.scale + ")"].join(" "));
- }
+               dots.attr("transform", ["translate(" + [tx, ty] + ")", "scale(" + e.scale + ")"].join(" "));
+              // xAxis.attr("transform", ["translate(" + [tx, ty] + ")", "scale(" + e.scale + ")"].join(" "));
+              // yAxis.attr("transform", ["translate(" + [tx, ty] + ")", "scale(" + e.scale + ")"].join(" "));
+               svg.attr("transform", ["translate(" + [tx, ty] + ")", "scale(" + e.scale + ")"].join(" "));
+               // circles.attr("transform", ["translate(" + [tx, ty] + ")", "scale(" + e.scale + ")"].join(" "));
+             }
 
                 let cValue = function(d) {
                         return d
                     },
                     color = scope.settings.color || d3.scale.category10();
-
                 // add the tooltip area to the webpage
                 let tooltip = d3.select("body").append("div")
                     .attr("class", "tooltip")
@@ -176,9 +177,15 @@ function zooming() {
                             .style("opacity", 0);
                     });
 
+                svg.append("text")
+                    .attr("x", (width / 2))             
+                    .attr("y", margin.top)
+                    .attr("text-anchor", "middle")    
+                    .text(title);
+
                 // draw legend
                 let legend = svg.selectAll(".legend")
-                    .data(color.domain())
+                    .data(color.domain()) //color.domain() is not a function
                     .enter().append("g")
                     .attr("class", "legend")
                     .attr("transform", function(d, i) {

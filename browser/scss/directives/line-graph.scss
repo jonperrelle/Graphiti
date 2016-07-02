@@ -1,5 +1,5 @@
 line-graph {
-	font: 10px sans-serif;
+	font-size: 14px;
 	.axis path,
 	.axis line {
 	  fill: none;
@@ -9,11 +9,5 @@ line-graph {
 
 	.x.axis path {
 	  display: none;
-	}
-
-	.line {
-	  fill: none;
-	  stroke: steelblue;
-	  stroke-width: 1.5px;
 	}
 }

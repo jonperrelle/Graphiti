@@ -9,7 +9,8 @@ app.directive('loginForm', function ($state, AuthService,$stateParams,$localStor
                 scope.error = null;
 
                 AuthService.login(loginInfo).then(function (user) {
-                    if($stateParams.dataset) $state.go('datasetDetails',{datasetId: $localStorage.datasetId});
+                    if($stateParams.source === 'dataset') $state.go('datasetDetails',{datasetId: $localStorage.datasetId});
+                    else if ($stateParams.source === 'graph') $state.go('singleGraph');
                     else $state.go('userHome', {userId: user.id});
                 }).catch(function () {
                     scope.error = 'Invalid login credentials.';

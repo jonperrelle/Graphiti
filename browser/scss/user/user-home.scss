@@ -3,6 +3,56 @@
     margin-top: 50px;
 	width: 90%;
 
+	h3 {
+		margin-top: 0;
+	}
+
+	.panel-group {
+		position: relative;
+
+		h4 {
+		  display: inline-block;
+		}
+
+		span {
+			position: absolute;
+			top: 25px;
+			right: 20px;
+		}
+
+		.no-item {
+			font-size: 1.4em;
+		}
+
+		.list-group-item {
+			padding: 10px;
+			color: #19d178;
+
+			p {
+				margin-top: 5px;
+				margin-left: 2px;
+			}
+			.upload-links {
+				margin-top: 5px;
+				float: right;
+
+				#upload {
+					color: #1976d2;
+				}
+
+				#cancel {
+					color: #e02121;
+					margin-left: 3px;
+				}
+			}
+		}
+
+		.list-group-item:hover {
+			text-decoration: none;
+			color: #599ad6;
+		}
+	}
+
 	a {
 		font-size: 1.4em;
 	}

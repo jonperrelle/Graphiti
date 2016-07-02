@@ -13,7 +13,8 @@ app.directive('signupForm', function ($state,$stateParams,AuthService,$localStor
                     return AuthService.login({email: signupInfo.email, password: signupInfo.password});
                 })
                 .then(function (user) {
-                    if($stateParams.dataset) $state.go('datasetDetails',{datasetId: $localStorage.datasetId});
+                    if($stateParams.source = 'dataset') $state.go('datasetDetails',{datasetId: $localStorage.datasetId});
+                    else if ($stateParams.source === 'graph') $state.go('singleGraph');
                     else $state.go('userHome', {userId: user.id});
                 })
                 .catch(function () {
