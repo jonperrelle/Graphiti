@@ -67,7 +67,7 @@ router.post('/UploadedDataset', function(req, res, next) {
                         userUploaded: true
                     }
                 })
-                .then(function(ds, bool) {
+                .spread(function(ds, bool) {
                     return user.addDataset(ds);
                 })
                 .catch(next);

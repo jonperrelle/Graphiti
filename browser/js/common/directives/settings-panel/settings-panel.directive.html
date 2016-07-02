@@ -1,0 +1,232 @@
+<div>
+  <h3 class="graph-header">Adjust Graph Settings</h3>
+  <div class="row">
+    <div class="col-sm-3 col-xs-12 panel-group">
+      <div class="panel settings-panel">
+        <div class="panel-heading">     
+          <a data-toggle="collapse" data-target="#view-gensettings-collapse" href="#"><h5>Graph Settings</h5></a>
+        </div>
+        <div id="view-gensettings-collapse" class="panel-collapse collapse settings-collapse">
+          <div id="general">
+            <div class="row">
+              <div class="form-group col-xs-12">
+                <label for="title" class="control-label">Title</label>
+                <div>
+                  <input class="form-control" name="title" type="text" ng-model="settings.title" required>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+               <div class="form-group col-xs-6" ng-show="graphType==='pieChart'">
+                  <label for="radius" class="control-label">Radius</label>
+                  <div>
+                    <input class="form-control" name="radius" type="text" ng-model="settings.radius" required>
+                  </div>
+                </div>
+              <div class="form-group col-xs-6" ng-hide="graphType==='pieChart'">
+                <label for="width" class="control-label">Width</label>
+                <div>
+                  <input class="form-control" name="width" type="text" ng-model="settings.width" required>
+                </div>
+              </div>
+              <div class="form-group col-xs-6" ng-hide="graphType==='pieChart'">
+                <label for="height" class="control-label">Height</label>
+                <div>
+                  <input class="form-control" name="height" type="text" ng-model="settings.height" required>
+                </div>
+              </div>
+            </div>
+            <div class="row" ng-hide="graphType==='pieChart'">
+              <div class="form-group col-xs-12">
+                <label for="color" class="control-label">Color</label>
+                <div id="cp2" class="input-group colorpicker-component">
+                    <input type="text" name="color" value="#000000" class="form-control" />
+                    <span class="input-group-addon"><i></i></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-3 col-xs-12 panel-group">
+      <div class="panel settings-panel" ng-hide="graphType==='pieChart'">
+        <div class="panel-heading"> 
+          <a data-toggle="collapse" data-target="#view-xsettings-collapse" href="#"><h5>X Axis Settings</h5></a>
+        </div>
+        <div id="view-xsettings-collapse" class="panel-collapse collapse settings-collapse">
+          <div id="general">
+            <div class="row">
+              <div class="form-group col-xs-12">
+                <label for="xAxisLabel" class="control-label">X Axis Label</label>
+                <div>
+                  <input class="form-control" name="xAxisLabel" type="text" ng-model="settings.xAxisLabel" required>
+                </div>
+              </div>
+            </div>
+            <div class="row" ng-hide="graphType==='barChart'">
+              <div class="form-group col-xs-6">
+                <label for="maxX" class="control-label">Min X Value</label>
+                <div>
+                  <input class="form-control" name="maxX" type="text" ng-model="settings.minX" required>
+                </div>
+              </div>
+              <div class="form-group col-xs-6">
+                <label for="minX" class="control-label">Max X Value</label>
+                <div>
+                  <input class="form-control" name="minX" type="text" ng-model="settings.maxX" required>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-xs-12">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-3 col-xs-12 panel-group">
+      <div class="panel settings-panel" ng-hide="graphType==='pieChart'">
+        <div class="panel-heading">
+          <a data-toggle="collapse" data-target="#view-ysettings-collapse" href="#"><h5>Y Axis Settings</h5></a>
+        </div>
+        <div id="view-ysettings-collapse" class="panel-collapse collapse settings-collapse">
+          <div id="general">
+            <div class="row">
+              <div class="form-group col-xs-12">
+                <label for="yAxisLabel" class="control-label">Y Axis Label</label>
+                <div>
+                  <input class="form-control" name="yAxisLabel" type="text" ng-model="settings.yAxisLabel" required>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-xs-6">
+                <label for="minY" class="control-label">Min Y Value</label>
+                <div>
+                  <input class="form-control" name="minY" type="text" ng-model="settings.minY" required>
+                </div>
+              </div>
+              <div class="form-group col-xs-6">
+                <label for="maxY" class="control-label">Max Y Value</label>
+                <div>
+                  <input class="form-control" name="maxY" type="text" ng-model="settings.maxY" required>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <!-- <form name="settingsForm" novalidate ng-submit="saveGraph()">
+    <div id="general">
+      <h2><span class="label">General Settings</span></h2>
+      <div class="row">
+        <div class="form-group col-xs-12">
+          <label for="title" class="control-label">Title</label>
+          <div>
+            <input class="form-control" name="title" type="text" ng-model="settings.title" required>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-xs-6">
+          <label for="width" class="control-label">Width</label>
+          <div>
+            <input class="form-control" name="width" type="number" ng-model="settings.width" required>
+          </div>
+        </div>
+        <div class="form-group col-xs-6">
+          <label for="height" class="control-label">Height</label>
+          <div>
+            <input class="form-control" name="height" type="number" ng-model="settings.height" required>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-xs-12">
+          <label for="color" class="control-label">Color</label>
+          <div>
+            <select class="form-control" name="type" type="text" ng-model="settings.color" required>
+              <option value="multi">Multi</option>
+              <option value="red">Red</option>
+              <option value="blue">Blue Dinner</option>
+              <option value="green">Green</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div id="general">
+      <h3><span class="label label-info">X-axis Settings</span></h3>
+      <div class="row">
+        <div class="form-group col-xs-12">
+          <label for="xAxisLabel" class="control-label">X-axis Title</label>
+          <div>
+            <input class="form-control" name="xAxisLabel" type="text" ng-model="settings.xAxisLabel" required>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-xs-6">
+          <label for="minX" class="control-label">Minimum X-value</label>
+          <div>
+            <input class="form-control" name="minX" type="number" ng-model="settings.minX" required>
+          </div>
+        </div>
+        <div class="form-group col-xs-6">
+          <label for="maxX" class="control-label">Maximum X-value</label>
+          <div>
+            <input class="form-control" name="maxX" type="number" ng-model="settings.maxX" required>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div id="general">
+      <h3><span class="label label-info">Y-axis Settings</span></h3>
+      <div class="row">
+        <div class="form-group col-xs-12">
+          <label for="yAxisLabel" class="control-label">Y-axis Title</label>
+          <div>
+            <input class="form-control" name="yAxisLabel" type="text" ng-model="settings.yAxisLabel" required>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-xs-6">
+          <label for="minY" class="control-label">Minimum Y-value</label>
+          <div>
+            <input class="form-control" name="minY" type="number" ng-model="settings.minY" required>
+          </div>
+        </div>
+        <div class="form-group col-xs-6">
+          <label for="maxY" class="control-label">Maximum Y-value</label>
+          <div>
+            <input class="form-control" name="maxY" type="number" ng-model="settings.maxY" required>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </form> -->
+</div>
