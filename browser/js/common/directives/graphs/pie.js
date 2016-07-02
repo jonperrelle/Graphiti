@@ -37,9 +37,9 @@ app.directive('pieChart', function(d3Service, $window, DataFactory) {
                         svg.selectAll('*').remove();
 
                         let margin = { top: 20, right: 20, bottom: 30, left: 40 },
-                            width = (scope.settings.width || ele[0].parentNode.offsetWidth) - margin.left - margin.right,
-                            height = (scope.settings.height || width) - margin.top - margin.bottom,
-                            radius = height / 2;
+                            width = scope.settings.width || ele[0].parentNode.offsetWidth,
+                            height = scope.settings.height || width,
+                            radius = (height * 0.8) / 2;
 
                         let filteredData = scope.rows.filter(obj => Number(obj[scope.columns[1].name]) > 0);
 
@@ -51,11 +51,11 @@ app.directive('pieChart', function(d3Service, $window, DataFactory) {
 
                         let vis = d3.select(ele[0])
                             .append('svg')
-                            .attr('width', width + margin.left + margin.right)
-                            .attr('height', height + margin.top + margin.bottom)
+                            .attr('width', width)
+                            .attr('height', height)
                             .data([groupedData])
                             .append("g")
-                            .attr("transform", "translate(" + (margin.left + radius) + "," + (margin.top + radius) + ")");
+                            .attr("transform", "translate(" + (width / 2) + "," + (radius + margin.top) + ")");
                         let pie = d3.layout.pie().value(function(d) {
                             return +d[scope.columns[1].name];
                         });
