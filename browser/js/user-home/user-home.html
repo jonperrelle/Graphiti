@@ -45,7 +45,7 @@
               </a></li>
               <li class="list-group-item">
                 <form name="form" class="upload-form">
-                  <button class="btn select-btn" ng-show="!file" ngf-select ng-model="file">Upload Your Own</button>
+                  <a href ng-show="!file" ngf-select ng-model="file">Upload Your Own</a>
                   <p class="file-upload" ng-show="file">{{file.name}}</p>
                   <div class="upload-links">
                     <a href ng-show="file" id="upload" ng-click="uploadFile()">Upload</a>
