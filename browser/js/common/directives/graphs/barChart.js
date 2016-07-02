@@ -47,8 +47,8 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                     anchor.selectAll('*').remove();
 
                     let margin = { top: 20, right: 20, bottom: 30, left: 40 },
-                        width = (scope.settings.width || ele[0].parentNode.offsetWidth) - margin.left - margin.right,
-                        height = (scope.settings.height || width) - margin.top - margin.bottom,
+                        width = (+scope.settings.width || ele[0].parentNode.offsetWidth) - margin.left - margin.right,
+                        height = (+scope.settings.height || width) - margin.top - margin.bottom,
                         xAxisLabel = scope.settings.xAxisLabel || scope.columns[0].name,
                         yAxisLabel = scope.settings.yAxisLabel || scope.columns[1].name,
                         barSpace = 0.1;
@@ -79,6 +79,7 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                         minY = scope.settings.minY || 0,
                         maxY = scope.settings.maxY || d3.max(groupedData, function(d) {
                             return +d[scope.columns[1].name]; });
+
 
                     x.domain(groupedData.map(function(d) {
                         return d[scope.columns[0].name]; }));
@@ -132,6 +133,7 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                         .attr("height", function(d) {
                             return height - y(+d[scope.columns[1].name]);
                         })
+                        .attr("fill", color);
                         // .attr("transform", "translate(100, 0)");
                 };
             });

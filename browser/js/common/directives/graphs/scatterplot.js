@@ -54,8 +54,8 @@ app.directive('scatterplotGraph', function(d3Service, $window, GraphSettingsFact
                 anchor.selectAll('*').remove();
 
                 let margin = { top: 20, right: 20, bottom: 30, left: 40 },
-                    width = (scope.settings.width || ele[0].parentNode.offsetWidth) - margin.left - margin.right,
-                    height = (scope.settings.height || width) - margin.top - margin.bottom,
+                    width = (+scope.settings.width || ele[0].parentNode.offsetWidth - 20) - margin.left - margin.right,
+                    height = (+scope.settings.height || width) - margin.top - margin.bottom,
 
                     dotRadius = width / 150,
 
@@ -115,7 +115,6 @@ app.directive('scatterplotGraph', function(d3Service, $window, GraphSettingsFact
                         return d
                     },
                     color = scope.settings.color || d3.scale.category10();
-
                 // add the tooltip area to the webpage
                 let tooltip = d3.select("body").append("div")
                     .attr("class", "tooltip")
@@ -178,7 +177,7 @@ app.directive('scatterplotGraph', function(d3Service, $window, GraphSettingsFact
 
                 // draw legend
                 let legend = svg.selectAll(".legend")
-                    .data(color.domain())
+                    .data(color.domain()) //color.domain() is not a function
                     .enter().append("g")
                     .attr("class", "legend")
                     .attr("transform", function(d, i) {

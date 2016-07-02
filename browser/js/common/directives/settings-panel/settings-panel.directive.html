@@ -1,15 +1,147 @@
 <div>
+  <h4>Adjust Graph Settings</h4>
+  <div class="row">
+    <div class="col-sm-4 col-xs-12 panel-group">
+      <div class="panel general-settings-panel">
+        <div class="panel-heading">     
+          <a data-toggle="collapse" data-target="#view-gensettings-collapse" href="#"><h5>General Settings</h5></a>
+        </div>
+        <div id="view-gensettings-collapse" class="panel-collapse collapse">
+          <div id="general">
+            <div class="row">
+              <div class="form-group col-xs-12">
+                <label for="title" class="control-label">Title</label>
+                <div>
+                  <input class="form-control" name="title" type="text" ng-model="settings.title" required>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+               <div class="form-group col-xs-6" ng-show="graphType==='pieChart'">
+                  <label for="radius" class="control-label">Radius</label>
+                  <div>
+                    <input class="form-control" name="radius" type="text" ng-model="settings.radius" required>
+                  </div>
+                </div>
+              <div class="form-group col-xs-6" ng-hide="graphType==='pieChart'">
+                <label for="width" class="control-label">Width</label>
+                <div>
+                  <input class="form-control" name="width" type="text" ng-model="settings.width" required>
+                </div>
+              </div>
+              <div class="form-group col-xs-6" ng-hide="graphType==='pieChart'">
+                <label for="height" class="control-label">Height</label>
+                <div>
+                  <input class="form-control" name="height" type="text" ng-model="settings.height" required>
+                </div>
+              </div>
+            </div>
+            <div class="row" ng-hide="graphType==='pieChart'">
+              <div class="form-group col-xs-12">
+                <label for="color" class="control-label">Color</label>
+                <div id="cp2" class="input-group colorpicker-component">
+                    <input type="text" name="color" value="#000000" class="form-control" />
+                    <span class="input-group-addon"><i></i></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-4 col-xs-12 panel-group">
+      <div class="panel general-settings-panel">
+        <div class="panel-heading">
+          
+          <a data-toggle="collapse" data-target="#view-xsettings-collapse" href="#"><h5>X Axis Settings</h5></a>
+        </div>
+        <div id="view-xsettings-collapse" class="panel-collapse collapse">
+          <div id="general">
+            <div class="row">
+              <div class="form-group col-xs-12">
+                <label for="title" class="control-label">Title</label>
+                <div>
+                  <input class="form-control" name="title" type="text" ng-model="settings.title" required>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-xs-6">
+                <label for="width" class="control-label">Width</label>
+                <div>
+                  <input class="form-control" name="width" type="text" ng-model="settings.width" required>
+                </div>
+              </div>
+              <div class="form-group col-xs-6">
+                <label for="height" class="control-label">Height</label>
+                <div>
+                  <input class="form-control" name="height" type="text" ng-model="settings.height" required>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-xs-12">
+                <label for="color" class="control-label">Color</label>
+                <div id="cp2" class="input-group colorpicker-component">
+                    <input type="text" name="color" value="#000000" class="form-control" />
+                    <span class="input-group-addon"><i></i></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-4 col-xs-12 panel-group">
+      <div class="panel general-settings-panel">
+        <div class="panel-heading">
+          
+          <a data-toggle="collapse" data-target="#view-ysettings-collapse" href="#"><h5>Y Axis Settings</h5></a>
+        </div>
+        <div id="view-ysettings-collapse" class="panel-collapse collapse">
+          <div id="general">
+            <div class="row">
+              <div class="form-group col-xs-12">
+                <label for="title" class="control-label">Title</label>
+                <div>
+                  <input class="form-control" name="title" type="text" ng-model="settings.title" required>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-xs-6">
+                <label for="width" class="control-label">Width</label>
+                <div>
+                  <input class="form-control" name="width" type="text" ng-model="settings.width" required>
+                </div>
+              </div>
+              <div class="form-group col-xs-6">
+                <label for="height" class="control-label">Height</label>
+                <div>
+                  <input class="form-control" name="height" type="text" ng-model="settings.height" required>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-xs-12">
+                <label for="color" class="control-label">Color</label>
+                <div id="cp2" class="input-group colorpicker-component">
+                    <input type="text" name="color" value="#000000" class="form-control" />
+                    <span class="input-group-addon"><i></i></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-lineGraph - all current settings
-scatterPlot - no min/max x
-barChart - no min/max x
-pieChart - no x or y
-
-columns options
-add columns??
 
 
-  <form name="settingsForm" novalidate ng-submit="saveGraph()">
+
+
+  <!-- <form name="settingsForm" novalidate ng-submit="saveGraph()">
     <div id="general">
       <h2><span class="label">General Settings</span></h2>
       <div class="row">
@@ -48,7 +180,7 @@ add columns??
         </div>
       </div>
     </div>
-    <!-- X - axis  -->
+    
     <div id="general">
       <h3><span class="label label-info">X-axis Settings</span></h3>
       <div class="row">
@@ -73,9 +205,8 @@ add columns??
           </div>
         </div>
       </div>
-      <!-- Ticks, font-style, x-stuff, -->
     </div>
-    <!-- y stuff! -->
+    
     <div id="general">
       <h3><span class="label label-info">Y-axis Settings</span></h3>
       <div class="row">
@@ -100,7 +231,7 @@ add columns??
           </div>
         </div>
       </div>
-      <!-- Ticks, font-style, x-stuff, -->
+
     </div>
-  </form>
+  </form> -->
 </div>

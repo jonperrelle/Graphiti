@@ -40,8 +40,8 @@ app.directive('lineGraph', function(d3Service, $window) {
                     anchor.selectAll('*').remove();
 
                     let margin = { top: 20, right: 20, bottom: 30, left: 40 },
-                        width = (scope.settings.width || ele[0].parentNode.offsetWidth) - margin.left - margin.right,
-                        height = (scope.settings.height || width) - margin.top - margin.bottom,
+                        width = (+scope.settings.width || ele[0].parentNode.offsetWidth) - margin.left - margin.right,
+                        height = (+scope.settings.height || width) - margin.top - margin.bottom,
                         xAxisLabel = scope.settings.xAxisLabel || scope.columns[0].name,
                         yAxisLabel = scope.settings.yAxisLabel || scope.columns[1].name,
                         svg = anchor
@@ -150,8 +150,10 @@ app.directive('lineGraph', function(d3Service, $window) {
 
                     svg.append("path")
                         .datum(data)
-                        .attr("class", "line")
-                        .attr("d", line);
+                        .attr("d", line)
+                        .attr('fill', 'none')
+                        .attr("stroke", color)
+                        .attr("stroke-width", 2);
                 };
             });
         }

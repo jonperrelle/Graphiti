@@ -37,9 +37,9 @@ app.directive('pieChart', function(d3Service, $window, DataFactory) {
                         svg.selectAll('*').remove();
 
                         let margin = { top: 20, right: 20, bottom: 30, left: 40 },
-                            width = (scope.settings.width || ele[0].parentNode.offsetWidth) - margin.left - margin.right,
-                            height = (scope.settings.height || width) - margin.top - margin.bottom,
-                            radius = height / 2;
+                            width = (+scope.settings.width || ele[0].parentNode.offsetWidth) - margin.left - margin.right,
+                            height = (+scope.settings.height || width) - margin.top - margin.bottom,
+                            radius = +scope.settings.radius || height / 2;
 
                         let filteredData = scope.rows.filter(obj => Number(obj[scope.columns[1].name]) > 0);
 

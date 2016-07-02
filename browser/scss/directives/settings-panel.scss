@@ -1,0 +1,28 @@
+.general-settings-panel {
+	background: #599ad6;
+	.panel-heading {
+		padding: 5px;
+	}
+	a {
+		color: #ffffff;
+	}
+
+	a:hover,
+	a:focus {
+		text-decoration: none;
+		color: #000;
+	}
+
+	#view-gensettings-collapse	{
+		padding: 0 10px;
+
+		label {
+			color: #ffffff;
+		}
+
+		input {
+			height: auto;
+		}
+	}
+
+}
