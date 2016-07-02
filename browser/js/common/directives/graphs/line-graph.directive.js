@@ -35,7 +35,6 @@ app.directive('lineGraph', function(d3Service, $window) {
 
                 scope.render = function() {
                     let filteredData = scope.rows.filter(obj => obj[scope.columns[0].name] && obj[scope.columns[1].name]).sort((a, b) => a[scope.columns[0].name] - b[scope.columns[0].name]);
-
                     let anchor = d3.select(ele[0])
                     anchor.selectAll('*').remove();
 
@@ -48,6 +47,7 @@ app.directive('lineGraph', function(d3Service, $window) {
                         .append('svg')
                         .style('width', width + margin.left + margin.right)
                         .style('height', height + margin.top + margin.bottom)
+                        .attr('margin', '0 auto')
                         .append("g")
                         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
@@ -60,7 +60,7 @@ app.directive('lineGraph', function(d3Service, $window) {
 
                         //run date checking function
                         let commonDateFormats = ["%Y", "%Y-%y", "%x", "%xT%X", "%Y-%m-%dT%H:%M:%S"];
-
+                        console.log(filteredData);
                         dateFormat = commonDateFormats.filter(f => d3.time.format(f).parse(filteredData[0][scope.columns[0].name]))[0];
                         let formatDate = d3.time.format(dateFormat); //d3.time.format("%Y-%y");
                         data = [];

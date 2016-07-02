@@ -1,4 +1,20 @@
-.general-settings-panel {
+
+.save-graph-btn {
+	float: right;
+	background: #599ad6;
+	color: #ffffff;
+	margin: 10px 30px;
+}
+
+.save-graph-btn:hover {
+    background: #ffffff;
+    color: #599ad6;
+    border: 1px solid #599ad6;
+  }
+
+
+
+.settings-panel {
 	background: #599ad6;
 	.panel-heading {
 		padding: 5px;
@@ -13,7 +29,7 @@
 		color: #000;
 	}
 
-	#view-gensettings-collapse	{
+	.settings-collapse	{
 		padding: 0 10px;
 
 		label {
