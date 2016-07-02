@@ -39,7 +39,8 @@ app.directive('pieChart', function(d3Service, $window, DataFactory) {
                         let margin = { top: 20, right: 20, bottom: 30, left: 40 },
                             width = (+scope.settings.width || ele[0].parentNode.offsetWidth) - margin.left - margin.right,
                             height = (+scope.settings.height || width) - margin.top - margin.bottom,
-                            radius = +scope.settings.radius || height / 2;
+                            radius = +scope.settings.radius || height / 2,
+                            title = scope.settings.title || scope.columns[0].name + ' vs. ' + scope.columns[1].name;
 
                         let filteredData = scope.rows.filter(obj => Number(obj[scope.columns[1].name]) > 0);
 
@@ -76,14 +77,21 @@ app.directive('pieChart', function(d3Service, $window, DataFactory) {
                             .attr("d", arc);
 
                         // add the text
-                        arcs.append("text").attr("transform", function(d) {
-                            d.innerRadius = 0;
-                            d.outerRadius = radius;
-                            return "translate(" + arc.centroid(d) + ")";
-                        }).attr("text-anchor", "middle").text(function(d, i) {
-                            return groupedData[i][scope.columns[0].name];
-                        });
-                    }
+                        arcs.append("text")
+                            .attr("transform", function(d) {
+                                d.innerRadius = 0;
+                                d.outerRadius = radius;
+                                return "translate(" + arc.centroid(d) + ")";
+                            }).attr("text-anchor", "middle").text(function(d, i) {
+                                return groupedData[i][scope.columns[0].name];
+                            });
+
+                        svg.append("text")
+                        .attr("x", (width / 2))             
+                        .attr("y", 0 - margin.top)
+                        .attr("text-anchor", "middle")    
+                        .text(title);
+                    };
                     //     let legend = svg.selectAll(".legend")
                     //     .data(color.domain())
                     //   .enter().append("g")

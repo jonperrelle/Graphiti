@@ -1,18 +1,33 @@
-
-.save-graph-btn {
-	float: right;
-	background: #599ad6;
-	color: #ffffff;
-	margin: 10px 30px;
+header.graph-alert-header {
+  margin-bottom: 0;
+  height: 50px;
+  a {
+    font-size: 150%;
+    font-weight: 700;
+  }
+  a#add-graph {
+    float: right;
+    margin-right: 50px; 
+    
+  }
+  a#add-graph:hover,
+  a#add-graph:focus {
+    text-decoration: none;
+      color: #ffffff;
+  }
+  p {
+    float: right;
+  }
 }
 
-.save-graph-btn:hover {
-    background: #ffffff;
-    color: #599ad6;
-    border: 1px solid #599ad6;
-  }
 
 
+.graph-header {
+	font-weight: 700;
+	margin-bottom: 20px;
+	margin-left: 100px;
+	color: #ffffff;
+}
 
 .settings-panel {
 	background: #599ad6;

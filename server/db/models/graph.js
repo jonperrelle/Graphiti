@@ -13,6 +13,9 @@ module.exports = function (db) {
         name: {
         	type: Sequelize.STRING,
         },
+        type: {
+            type: Sequelize.STRING,
+        },
         columns: {
             type: Sequelize.ARRAY(Sequelize.STRING),
         },

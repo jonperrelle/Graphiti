@@ -1,4 +1,4 @@
-app.directive('scatterplotGraph', function(d3Service, $window, GraphSettingsFactory) {
+app.directive('scatterplotGraph', function(d3Service, $window) {
     let directive = {};
 
     directive.restrict = 'E';
@@ -61,6 +61,7 @@ app.directive('scatterplotGraph', function(d3Service, $window, GraphSettingsFact
 
                     xAxisLabel = scope.settings.xAxisLabel || scope.columns[0].name,
                     yAxisLabel = scope.settings.yAxisLabel || scope.columns[1].name,
+                    title = scope.settings.title || scope.columns[0].name + ' vs. ' + scope.columns[1].name,
                     svg = anchor
                     .append('svg')
                     .attr('width', width + margin.left + margin.right)
@@ -88,11 +89,11 @@ app.directive('scatterplotGraph', function(d3Service, $window, GraphSettingsFact
                     }, // data -> display
                     yAxis = d3.svg.axis().scale(yScale).orient("left");
 
-                var minX = (typeof scope.settings.minX === 'number') ? scope.settings.minX : d3.min(filteredData, xValue) - 1;
-                var maxX = (typeof scope.settings.maxX === 'number') ? scope.settings.maxX : d3.max(filteredData, xValue) - 1;
-                var minY = (typeof scope.settings.minY === 'number') ? scope.settings.minY : d3.min(filteredData, yValue) - 1;
-                var maxY = (typeof scope.settings.maxY === 'number') ? scope.settings.maxY : d3.max(filteredData, yValue) - 1;
-
+                var minX = (typeof scope.settings.minX !== 'undefined') ? +scope.settings.minX : d3.min(filteredData, xValue) - 1;
+                var maxX = (typeof scope.settings.maxX !== 'undefined') ? +scope.settings.maxX : d3.max(filteredData, xValue) - 1;
+                var minY = (typeof scope.settings.minY !== 'undefined') ? +scope.settings.minY : d3.min(filteredData, yValue) - 1;
+                var maxY = (typeof scope.settings.maxY !== 'undefined') ? +scope.settings.maxY : d3.max(filteredData, yValue) - 1;
+                
 
 
 
@@ -174,6 +175,12 @@ app.directive('scatterplotGraph', function(d3Service, $window, GraphSettingsFact
                             .duration(500)
                             .style("opacity", 0);
                     });
+
+                svg.append("text")
+                    .attr("x", (width / 2))             
+                    .attr("y", margin.top)
+                    .attr("text-anchor", "middle")    
+                    .text(title);
 
                 // draw legend
                 let legend = svg.selectAll(".legend")

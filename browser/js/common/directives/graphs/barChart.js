@@ -51,6 +51,7 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                         height = (+scope.settings.height || width) - margin.top - margin.bottom,
                         xAxisLabel = scope.settings.xAxisLabel || scope.columns[0].name,
                         yAxisLabel = scope.settings.yAxisLabel || scope.columns[1].name,
+                        title = scope.settings.title || scope.columns[0].name + ' vs. ' + scope.columns[1].name,
                         barSpace = 0.1;
 
                     let svg = anchor
@@ -76,8 +77,8 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                         .orient("left");
 
                     let color = scope.settings.color || d3.scale.category10(),
-                        minY = scope.settings.minY || 0,
-                        maxY = scope.settings.maxY || d3.max(groupedData, function(d) {
+                        minY = (typeof scope.settings.minY !== 'undefined') ? +scope.settings.minY : 0,
+                        maxY = (typeof scope.settings.maxY !== 'undefined') ? +scope.settings.maxY : d3.max(groupedData, function(d) {
                             return +d[scope.columns[1].name]; });
 
 
@@ -85,7 +86,7 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                         return d[scope.columns[0].name]; }));
 
                     // y.domain([0, d3.max(groupedData, function(d) { return +d[scope.columns[1].name]; })]);
-                    y.domain([0, maxY]);
+                    y.domain([minY, maxY]);
 
                     svg.append("g")
                         .attr("class", "xaxis")
@@ -135,6 +136,12 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                         })
                         .attr("fill", color);
                         // .attr("transform", "translate(100, 0)");
+
+                    svg.append("text")
+                        .attr("x", (width / 2))             
+                        .attr("y", 0 - (margin.top/4))
+                        .attr("text-anchor", "middle")    
+                        .text(title);
                 };
             });
         }

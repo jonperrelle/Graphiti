@@ -43,6 +43,7 @@ app.directive('lineGraph', function(d3Service, $window) {
                         height = (+scope.settings.height || width) - margin.top - margin.bottom,
                         xAxisLabel = scope.settings.xAxisLabel || scope.columns[0].name,
                         yAxisLabel = scope.settings.yAxisLabel || scope.columns[1].name,
+                        title = scope.settings.title || scope.columns[0].name + ' vs. ' + scope.columns[1].name,
                         svg = anchor
                         .append('svg')
                         .style('width', width + margin.left + margin.right)
@@ -60,7 +61,6 @@ app.directive('lineGraph', function(d3Service, $window) {
 
                         //run date checking function
                         let commonDateFormats = ["%Y", "%Y-%y", "%x", "%xT%X", "%Y-%m-%dT%H:%M:%S"];
-                        console.log(filteredData);
                         dateFormat = commonDateFormats.filter(f => d3.time.format(f).parse(filteredData[0][scope.columns[0].name]))[0];
                         let formatDate = d3.time.format(dateFormat); //d3.time.format("%Y-%y");
                         data = [];
@@ -106,17 +106,22 @@ app.directive('lineGraph', function(d3Service, $window) {
                     // If we don't pass any data, return out of the element
                     if (!data) return;
 
+                    //Need a better way to adjust minX and maxX if based on date
+
+
+
+
                     let color = scope.settings.color || "steelblue",
-                        minX = scope.settings.minX || d3.min(data, function(d) {
+                        minX = (typeof scope.settings.minX !== 'undefined') ? +scope.settings.minX : d3.min(data, function(d) {
                             return d[scope.columns[0].name];
                         }),
-                        maxX = scope.settings.minX || d3.max(data, function(d) {
+                        maxX = (typeof scope.settings.maxX !== 'undefined') ? +scope.settings.maxX : d3.max(data, function(d) {
                             return d[scope.columns[0].name];
                         }),
-                        minY = scope.settings.minY || d3.min(data, function(d) {
+                        minY = (typeof scope.settings.minY !== 'undefined') ? +scope.settings.minY : d3.min(data, function(d) {
                             return +d[scope.columns[1].name];
                         }),
-                        maxY = scope.settings.maxY || d3.max(data, function(d) {
+                        maxY = (typeof scope.settings.maxY !== 'undefined') ? +scope.settings.maxY : d3.max(data, function(d) {
                             return +d[scope.columns[1].name];
                         });
 
@@ -154,6 +159,12 @@ app.directive('lineGraph', function(d3Service, $window) {
                         .attr('fill', 'none')
                         .attr("stroke", color)
                         .attr("stroke-width", 2);
+
+                    svg.append("text")
+                        .attr("x", (width / 2))             
+                        .attr("y", 0 - (margin.top/4))
+                        .attr("text-anchor", "middle")    
+                        .text(title);
                 };
             });
         }

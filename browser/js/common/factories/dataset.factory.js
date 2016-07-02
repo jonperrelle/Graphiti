@@ -1,17 +1,30 @@
 app.factory('DatasetFactory', function($http) {
 
-    let successFunc = function(res) { return res.data};
+    let addDatasetFunction = function(res) { 
+        if (res.data === 'Created') {
+            return {
+                    success: true,
+                    message: 'You have successfully added this dataset!'
+            };
+        }
+        else {
+            return {
+                success: true,
+                message: 'You have successfully added this dataset!'
+            };
+        }
+    };
 
     return {
 
         addDataset: function(user, dataset, domain) {
             if (domain)  {
                 return $http.post('/api/users/' + user.id + '/datasets/SocrataDataset', { dataset, domain })
-                    .then(successFunc)
+                    .then(addDatasetFunction)
                     .catch();
             } else {
                 return $http.post('/api/users/' + user.id + '/datasets/UploadedDataset', { dataset })
-                    .then(successFunc)
+                    .then(addDatasetFunction)
                     .catch();
             }
         },
@@ -26,14 +39,14 @@ app.factory('DatasetFactory', function($http) {
                 route = 'api/soda?datasetId=' + dataset.socrataId + "&domain=" + dataset.socrataDomain;
             }
             return $http.get(route)
-                    .then(successFunc)
+                    .then(res => res.data)
                     .catch();
         },
 
         removeDataset: function(dataset, user) {
             let datasetId = dataset.id || dataset;
             return $http.delete('/api/users/' + user.id + '/datasets/' + datasetId)
-                    .then(successFunc)
+                    .then(res => res.data)
                     .catch();
         },
     };
