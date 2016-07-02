@@ -7,11 +7,21 @@ const User = db.model('user');
 const Dataset = db.model('dataset');
 const AWS = require('aws-sdk');
 const Converter = require('csvtojson').Converter;
+const chalk = require('chalk')
 
 AWS.config.update({
     accessKeyId: env.amazonaws.accessKeyId,
     secretAccessKey: env.amazonaws.secretAccessKey
 })
+
+router.get('/:datasetId', function(req, res, next) {
+
+    Dataset.findById(req.params.datasetId)
+        .then(function(dataset) {
+            res.send(dataset);
+        })
+        .catch(next);
+});
 
 //Security that validates user is authenticated and has proper access control is upstream in the user router
 router.delete('/:datasetId', function(req, res, next) {
@@ -29,6 +39,7 @@ router.post('/SocrataDataset', function(req, res, next) {
 
     let user = req.requestedUser;
 
+
     let ds = {
         name: req.body.dataset.name,
         userUploaded: false,
@@ -38,7 +49,7 @@ router.post('/SocrataDataset', function(req, res, next) {
 
     Dataset.findOrCreate({ where: ds })
         .then(function(dataset) {
-            return user.addDataset(dataset);
+            return user.addDataset(dataset[0]);
         })
         .then(function(ds) {
             if (ds.length) res.sendStatus(201);
@@ -54,6 +65,7 @@ router.post('/UploadedDataset', function(req, res, next) {
     let file = fs.createReadStream(req.session.uploadedFile.path);
     let params = { Key: req.session.uploadedFile.originalFilename, Body: file };
 
+
     s3bucket.upload(params, function(err, data) {
         if (err) {
             next(err);
@@ -68,8 +80,8 @@ router.post('/UploadedDataset', function(req, res, next) {
                         userUploaded: true
                     }
                 })
-                .then(function(ds, bool) {
-                    return user.addDataset(ds);
+                .then(function(ds) {
+                    return user.addDataset(ds[0]);
                 })
                 .then(function() {
                     res.sendStatus(201);

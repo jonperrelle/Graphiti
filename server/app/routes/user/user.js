@@ -7,6 +7,7 @@ const HttpError = require('../../../utils/HttpError');
 var chalk = require('chalk');
 
 router.param('userId', function (req, res, next, id) {
+
   User.findById(id)
   .then(function (user) {
     if (!user) throw HttpError(404);
@@ -17,14 +18,13 @@ router.param('userId', function (req, res, next, id) {
 });
 
 function assertIsCorrectUser (req, res, next) {
-  if (req.user.id == req.requestedUser.id) next();
+  if (+req.user.id == +req.requestedUser.id) next();
   else next(HttpError(401));
 }
 
-router.use('/:userId', assertIsCorrectUser);
+router.use(['/:userId/\*','/:userId'],assertIsCorrectUser);
 
 router.get('/:userId', function (req, res, next) {
-    	
     	let user = req.requestedUser;
         Promise.all([user.getDatasets(),user.getGraphs()]) 
         .spread(function(datasets,graphs) {
