@@ -23,14 +23,12 @@ router.delete('/:graphId', function(req, res, next) {
 router.post('/',function(req,res,next){
 
 	let user = req.requestedUser;
-	let title = req.body.settings.title || req.body.columns.map(col=> col.name).join(" .vs ");
-	if (!Object.keys(req.body.settings)) req.body.settings.defaultSettings = true;
-
+	req.body.settings.title = req.body.settings.title || req.body.columns.map(col=> col.name).join(" .vs ");
+	
 	Promise.all([Dataset.findById(req.body.dataset.id),
 	        Settings.create(req.body.settings)])
 	.spread(function(dataset,settings){
 		return Graph.create({
-			title: title,
 			graphType: req.body.type,
 			columns: req.body.columns 
 		})

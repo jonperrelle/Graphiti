@@ -4,6 +4,7 @@ app.config (function ($stateProvider) {
     controller: 'singleGraphCtrl',
     templateUrl: 'js/graph/singleGraph.html',
     params: {
+        dataset: null,
     	graphType: null,
     	settings: null,
     	data: null,
@@ -23,6 +24,7 @@ app.controller('singleGraphCtrl', function ($scope, $stateParams, $timeout, $sta
     $localStorage.columns = $scope.columns;
 	$scope.settings = $stateParams.settings || $localStorage.settings;
     $localStorage.settings = $scope.settings;
+    $scope.dataset = $stateParams.dataset;
 
     $scope.addedGraph = false;
     if (Session.user) $scope.user = Session.user;

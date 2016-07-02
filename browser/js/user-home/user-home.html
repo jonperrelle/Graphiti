@@ -19,7 +19,7 @@
               <li class="list-group-item" ng-repeat="graph in graphs">
                 <div class="row">
                   <div class="col-xs-10">
-                    <button class="btn btn-dataset" ng-click="goToUserGraph(graph)">{{graph.title}}</button>
+                    <button class="btn btn-dataset" ng-click="goToUserGraph(graph)">{{graph.setting.title}}</button>
                   </div>
                   <div class="col-xs-2">
                     <button type="button" class="btn-remove btn btn-default btn-circle" ng-click="removeUserGraph(graph)"><i class="glyphicon glyphicon-remove"></i></button>

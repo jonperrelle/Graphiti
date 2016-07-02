@@ -10,9 +10,6 @@ module.exports = function (db) {
 
 
     db.define('graph', {
-        title: {
-            type: Sequelize.STRING,
-        },
         graphType: {
             type: Sequelize.STRING,
         },
