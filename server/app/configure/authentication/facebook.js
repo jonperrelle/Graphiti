@@ -16,16 +16,22 @@ module.exports = function (app, db) {
 
     var verifyCallback = function (accessToken, refreshToken, profile, done) {
 
+
         User.findOne({
                 where: {
                     facebook_id: profile.id
                 }
             })
             .then(function (user) {
+
+                let name = profile.displayName.split(' ');
+
                 if (user) {
                     return user;
                 } else {
                     return User.create({
+                        firstName: name[0],
+                        lastName: name[1],
                         facebook_id: profile.id
                     });
                 }

@@ -23,10 +23,14 @@ module.exports = function (app, db) {
                 }
             })
             .then(function (user) {
+                console.log(profile);
+
                 if (user) {
                     return user;
                 } else {
                     return User.create({
+                        lastName: profile.name.familyName,
+                        firstName: profile.name.givenName,
                         google_id: profile.id
                     });
                 }

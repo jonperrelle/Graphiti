@@ -32,7 +32,7 @@ module.exports = function (app, db) {
                 if (user) { // If a user with this twitter id already exists.
                     return user;
                 } else { // If this twitter id has never been seen before and no user is attached.
-                    return createNewUser(token, tokenSecret, profile);
+                    return User(profile);
                 }
             })
             .then(function (user) {

@@ -1,36 +1,42 @@
 <section class="dataset-container">
-      <div class="col-md-4 col-sm-3 col-xs-1"></div>
-      <div class="col-md-4 col-sm-6 col-xs-10 login-signup-form">
-        <header class="text-center">
-            <h3>Thanks for coming back!</h3>
-        </header>
-        <form id="login-form" name="loginForm" ng-submit="loginForm.$valid && sendLogin(login)">
-          <fieldset>
-            <alert type="danger" ng-show="error">
-                {{ error }}
-            </alert>
-            <div ng-messages="loginForm.email.$error" ng-hide="loginForm.email.$pristine" role="alert">
-                <div ng-message="required" class="alert alert-warning">Email is required</div>
-                <div ng-message="email" ng-show="loginForm.$submitted" class="alert alert-warning">Please enter a valid email</div>
-            </div>
-            <div ng-messages="loginForm.password.$error" ng-hide="loginForm.password.$pristine" role="alert">
-                <div ng-message="required" class="alert alert-warning">Password is required</div>
-            </div>
-            <div class="form-group">
-                <input type="text" name="email" ng-model="login.email" class="form-control" id="email" placeholder="Email address" required>
-            </div>
-            <div class="form-group">
-                <input type="password" name="password" ng-model="login.password" class="form-control" id="login-password" placeholder="Password" required>
-            </div>
-            <div class="text-center">
-              <button type="submit" class="btn login-signup-btn">Login</button>
-            </div>
-          </fieldset>
-        </form>
-        <div class="row text-center">
-          <p>Not yet signed up?  Please <a ui-sref="signup">create an account</a> with us!</p>
+  <div class="col-md-4 col-sm-3 col-xs-1"></div>
+  <div class="col-md-4 col-sm-6 col-xs-10 login-signup-form">
+    <header class="text-center">
+      <h3>Thanks for coming back!</h3>
+    </header>
+    <form id="login-form" name="loginForm" ng-submit="loginForm.$valid && sendLogin(login)">
+      <fieldset>
+        <alert type="danger" ng-show="error">
+          {{ error }}
+        </alert>
+        <div ng-messages="loginForm.email.$error" ng-hide="loginForm.email.$pristine" role="alert">
+          <div ng-message="required" class="alert alert-warning">Email is required</div>
+          <div ng-message="email" ng-show="loginForm.$submitted" class="alert alert-warning">Please enter a valid email</div>
         </div>
-      </div>
-      <div class="col-md-4 col-sm-3 col-xs-1"></div>
-    </div> 
+        <div ng-messages="loginForm.password.$error" ng-hide="loginForm.password.$pristine" role="alert">
+          <div ng-message="required" class="alert alert-warning">Password is required</div>
+        </div>
+        <div class="form-group">
+          <input type="text" name="email" ng-model="login.email" class="form-control" id="email" placeholder="Email address" required>
+        </div>
+        <div class="form-group">
+          <input type="password" name="password" ng-model="login.password" class="form-control" id="login-password" placeholder="Password" required>
+        </div>
+        <div class="text-center">
+          <button type="submit" class="btn login-signup-btn">Login</button>
+        </div>
+        <div class="buffer oauth">
+          <oauth-button provider-name="Google"></oauth-button>
+          <oauth-button provider-name="Facebook"></oauth-button>
+          <oauth-button provider-name="Twitter"></oauth-button>
+          <oauth-button provider-name="GitHub"></oauth-button>
+        </div>
+      </fieldset>
+    </form>
+    <div class="row text-center">
+      <p>Not yet signed up? Please <a ui-sref="signup">create an account</a> with us!</p>
+    </div>
+  </div>
+  <div class="col-md-4 col-sm-3 col-xs-1"></div>
+  </div>
 </section>

@@ -1,13 +1,12 @@
-app.config(function ($stateProvider) {
+app.config(function($stateProvider,$urlRouterProvider) {
 
     $stateProvider.state('login', {
         url: '/login/:dataset',
         template: '<login-form></login-form>'
     });
-
 });
 
-app.config(function ($stateProvider) {
+app.config(function($stateProvider) {
 
     $stateProvider.state('signup', {
         url: '/signup/:dataset',
@@ -15,4 +14,3 @@ app.config(function ($stateProvider) {
     });
 
 });
-
