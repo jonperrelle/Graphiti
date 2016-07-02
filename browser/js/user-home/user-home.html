@@ -7,25 +7,35 @@
       <h5>Edit Account Information</h5>
     </div>
     <div class="col-sm-5 col-xs-12">
-      <h3>Your Graphs</h3>
-      <ul class="list-group">
-        <li class="list-group-item" ng-repeat="graph in graphs">
-          <div class="row">
-            <div class="col-xs-10">
-              <button class="btn btn-dataset" ng-click="goToUserGraph(graph)">{{graph.name}}</button>
-            </div>
-            <div class="col-xs-2">
-              <button type="button" class="btn-remove btn btn-default btn-circle" ng-click="removeUserGraph(graph)"><i class="glyphicon glyphicon-remove"></i></button>
-            </div>
-          </div>
-      </ul>
-    </div>
-    <div class="col-sm-4 col-xs-12">
-      <h3>Datasets</h3>
       <div class="panel-group">
         <div class="panel">
           <div class="panel-heading">
-            <h4>Add a new dataset</h4>
+            <h4>View Your Graphs</h4>
+            <a data-toggle="collapse" href="#view-graphs-collapse" ng-click="viewGraphsOpen=!viewGraphsOpen"><span class="glyphicon" ng-class="{'glyphicon-chevron-down': !viewGraphsOpen, 'glyphicon-chevron-up': viewGraphsOpen}"></span></a>
+          </div>
+          <div id="view-graphs-collapse" class="panel-collapse collapse">
+            <ul class="list-group">
+              <li class="list-group-item no-item" ng-hide="graphs.length">You have no graphs</li>
+              <li class="list-group-item" ng-repeat="graph in graphs">
+                <div class="row">
+                  <div class="col-xs-10">
+                    <button class="btn btn-dataset" ng-click="goToUserGraph(graph)">{{graph.name}}</button>
+                  </div>
+                  <div class="col-xs-2">
+                    <button type="button" class="btn-remove btn btn-default btn-circle" ng-click="removeUserGraph(graph)"><i class="glyphicon glyphicon-remove"></i></button>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-4 col-xs-12">
+      <div class="panel-group">
+        <div class="panel">
+          <div class="panel-heading">
+            <h4>Add a New Dataset</h4>
             <a data-toggle="collapse" href="#new-dataset-collapse" ng-click="newDatasetOpen=!newDatasetOpen"><span class="glyphicon" ng-class="{'glyphicon-chevron-down': !newDatasetOpen, 'glyphicon-chevron-up': newDatasetOpen}"></span></a>
           </div>
           <div id="new-dataset-collapse" class="panel-collapse collapse">
@@ -50,11 +60,12 @@
       <div class="panel-group">
         <div class="panel">
           <div class="panel-heading">
-            <h4>View your datasets</h4>
+            <h4>View Your Datasets</h4>
             <a data-toggle="collapse" href="#view-datasets-collapse" ng-click="viewDatasetsOpen=!viewDatasetsOpen"><span class="glyphicon" ng-class="{'glyphicon-chevron-down': !viewDatasetsOpen, 'glyphicon-chevron-up': viewDatasetsOpen}"></span></a>
           </div>
           <div id="view-datasets-collapse" class="panel-collapse collapse">
             <ul class="list-group">
+              <li class="list-group-item no-item" ng-hide="datasets.length">You have no datasets</li>
               <li class="list-group-item" ng-repeat="dataset in datasets">
                 <div class="row">
                   <div class="col-xs-10">
@@ -64,6 +75,7 @@
                     <button type="button" class="btn-remove btn btn-default btn-circle" ng-click="removeDataset(dataset)"><i class="glyphicon glyphicon-remove"></i></button>
                   </div>
                 </div>
+              </li>
             </ul>
           </div>
         </div>
