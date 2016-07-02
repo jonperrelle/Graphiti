@@ -7,7 +7,7 @@ app.factory('AddGraphFactory', function (ValidationFactory) {
             barEnabled: function(rows, col1, col2){
               return col1 && 
                 col2 && col2.type === 'number' &&
-                (col1.type !== 'number') // fix this: can be a number if limited quantity/no repeats
+                true// (col1.type !== 'number') // fix this: can be a number if limited quantity/no repeats
                 ;
             },
 
