@@ -40,18 +40,19 @@ app.directive('scatterplotGraph', function(d3Service, $window) {
 
             scope.render = function() {
 
-                let filteredData = scope.rows.filter(obj => obj[scope.columns[0].name] 
-                    && obj[scope.columns[1].name] 
-                    && (!!Number(obj[scope.columns[0].name]) || Number(obj[scope.columns[0].name]) === 0)
-                    && (!!Number(obj[scope.columns[1].name]) || Number(obj[scope.columns[1].name]) === 0))
-                .sort((a, b) => a[scope.columns[0].name] - b[scope.columns[0].name]);
-
                 let zoom = d3.behavior.zoom()
                    .scaleExtent([1, 5])
                    .on("zoom", zooming);
 
                 let anchor = d3.select(ele[0])
                 anchor.selectAll('*').remove();
+
+                let filteredData = scope.rows.filter(obj => obj[scope.columns[0].name] 
+                    && obj[scope.columns[1].name] 
+                    && (!!Number(obj[scope.columns[0].name]) || Number(obj[scope.columns[0].name]) === 0)
+                    && (!!Number(obj[scope.columns[1].name]) || Number(obj[scope.columns[1].name]) === 0))
+                .sort((a, b) => a[scope.columns[0].name] - b[scope.columns[0].name]);
+
 
                 let margin = { top: 20, right: 20, bottom: 30, left: 40 },
                     width = (+scope.settings.width || ele[0].parentNode.offsetWidth - 20) - margin.left - margin.right,
@@ -67,8 +68,6 @@ app.directive('scatterplotGraph', function(d3Service, $window) {
                     .attr('width', width + margin.left + margin.right)
                     .attr('height', height + margin.top + margin.bottom)
                     .call(zoom);
-                    
-
 
                 let xValue = function(d) {
                         return +d[scope.columns[0].name]
@@ -89,13 +88,16 @@ app.directive('scatterplotGraph', function(d3Service, $window) {
                     }, // data -> display
                     yAxis = d3.svg.axis().scale(yScale).orient("left");
 
-                var minX = (typeof scope.settings.minX !== 'undefined') ? +scope.settings.minX : d3.min(filteredData, xValue) - 1;
-                var maxX = (typeof scope.settings.maxX !== 'undefined') ? +scope.settings.maxX : d3.max(filteredData, xValue) - 1;
-                var minY = (typeof scope.settings.minY !== 'undefined') ? +scope.settings.minY : d3.min(filteredData, yValue) - 1;
-                var maxY = (typeof scope.settings.maxY !== 'undefined') ? +scope.settings.maxY : d3.max(filteredData, yValue) - 1;
-                
+                let minX = (typeof scope.settings.minX === 'number') ? scope.settings.minX : d3.min(filteredData, xValue) - 1;
+                let maxX = (typeof scope.settings.maxX === 'number') ? scope.settings.maxX : d3.max(filteredData, xValue) - 1;
+                let minY = (typeof scope.settings.minY === 'number') ? scope.settings.minY : d3.min(filteredData, yValue) - 1;
+                let maxY = (typeof scope.settings.maxY === 'number') ? scope.settings.maxY : d3.max(filteredData, yValue) - 1;
 
-
+                filteredData = scope.rows.filter(obj => Number(obj[scope.columns[0].name]) >= minX 
+                    && Number(obj[scope.columns[0].name]) <= maxX
+                    && Number(obj[scope.columns[1].name]) >= minY
+                    && Number(obj[scope.columns[1].name]) <= maxY
+                    );
 
             function zooming() {
                let e = d3.event;
@@ -110,7 +112,6 @@ app.directive('scatterplotGraph', function(d3Service, $window) {
                svg.attr("transform", ["translate(" + [tx, ty] + ")", "scale(" + e.scale + ")"].join(" "));
                // circles.attr("transform", ["translate(" + [tx, ty] + ")", "scale(" + e.scale + ")"].join(" "));
              }
-
 
                 let cValue = function(d) {
                         return d
