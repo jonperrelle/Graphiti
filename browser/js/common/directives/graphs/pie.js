@@ -33,7 +33,8 @@ app.directive('pieChart', function(d3Service, $window, DataFactory) {
                 }, true);
 
                 scope.render = function() {
-                        d3.select(ele[0]).selectAll('*').remove();
+                        let anchor = d3.select(ele[0]);
+                        anchor.selectAll('*').remove();
 
                         let margin = { top: 30, right: 20, bottom: 30, left: 40 },
                             width = +scope.settings.width || ele[0].parentNode.offsetWidth,

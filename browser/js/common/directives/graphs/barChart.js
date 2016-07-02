@@ -139,6 +139,12 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                         })
                         .attr("fill", color)
                         .attr("transform", "translate(" + margin.left + ", 0)");
+
+                    svg.append("text")
+                        .attr("x", (width / 2))             
+                        .attr("y", margin.top)
+                        .attr("text-anchor", "middle")    
+                        .text(title);
                 };
             });
         }
