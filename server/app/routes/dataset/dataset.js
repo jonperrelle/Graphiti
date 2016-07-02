@@ -13,8 +13,8 @@ AWS.config.update({
     secretAccessKey: env.amazonaws.secretAccessKey
 })
 
+//Security that validates user is authenticated and has proper access control is upstream in the user router
 router.delete('/:datasetId', function(req, res, next) {
-    
     Dataset.findById(req.params.datasetId)
         .then(function(dataset) {
             return dataset.destroy();
@@ -28,7 +28,6 @@ router.delete('/:datasetId', function(req, res, next) {
 router.post('/SocrataDataset', function(req, res, next) {
 
     let user = req.requestedUser;
-
 
     let ds = {
         name: req.body.dataset.name,
@@ -54,23 +53,23 @@ router.post('/UploadedDataset', function(req, res, next) {
     let s3bucket = new AWS.S3({ params: { Bucket: 'graphitiDatasets' } });
     let file = fs.createReadStream(req.session.uploadedFile.path);
     let params = { Key: req.session.uploadedFile.originalFilename, Body: file };
+
     s3bucket.upload(params, function(err, data) {
         if (err) {
             next(err);
         } else {
-            User.findById(req.params.userId)
-                .then(function(user) {
-                    return Dataset.findOrCreate({
-                            where: {
-                                name: fileName,
-                                s3fileName: req.session.uploadedFile.originalFilename,
-                                userUploaded: true
-                            }
-                        })
-                        .then(function(ds, bool) {
-                            return user.addDataset(ds);
-                        })
-                        .catch(next);
+
+            let user = req.requestedUser;
+
+            Dataset.findOrCreate({
+                    where: {
+                        name: fileName,
+                        s3fileName: req.session.uploadedFile.originalFilename,
+                        userUploaded: true
+                    }
+                })
+                .then(function(ds, bool) {
+                    return user.addDataset(ds);
                 })
                 .then(function() {
                     res.sendStatus(201);

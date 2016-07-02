@@ -7,13 +7,7 @@ const Graph = db.model('graph');
 const Settings = db.model('settings');
 const Promise = require('bluebird');
 
-//Add security!
-
-router.get('/:graphId',function(req,res,next){
-
-	res.send('taco');
-})
-
+//Security that validates user is authenticated and has proper access control is upstream in the user router
 router.delete('/:graphId', function(req, res, next) {
 
     Graph.findById(req.params.graphId)
