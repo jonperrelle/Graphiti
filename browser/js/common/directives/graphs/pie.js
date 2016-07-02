@@ -33,10 +33,10 @@ app.directive('pieChart', function(d3Service, $window, DataFactory) {
                 }, true);
 
                 scope.render = function() {
-                        let svg = d3.select(ele[0])
-                        svg.selectAll('*').remove();
+                        let anchor = d3.select(ele[0])
+                        anchor.selectAll('*').remove();
 
-                        let margin = { top: 20, right: 20, bottom: 30, left: 40 },
+                        let margin = { top: 30, right: 20, bottom: 30, left: 40 },
                             width = (+scope.settings.width || ele[0].parentNode.offsetWidth) - margin.left - margin.right,
                             height = (+scope.settings.height || width) - margin.top - margin.bottom,
                             radius = +scope.settings.radius || height / 2,
@@ -50,7 +50,7 @@ app.directive('pieChart', function(d3Service, $window, DataFactory) {
                         //uses build in d3 method to create color scale
                         let color = scope.settings.color || d3.scale.category20();
 
-                        let vis = d3.select(ele[0])
+                        let svg = anchor
                             .append('svg')
                             .attr('width', width + margin.left + margin.right)
                             .attr('height', height + margin.top + margin.bottom)
@@ -64,7 +64,7 @@ app.directive('pieChart', function(d3Service, $window, DataFactory) {
                         // declare an arc generator function
                         let arc = d3.svg.arc().outerRadius(radius);
                         // select paths, use arc generator to draw
-                        let arcs = vis.selectAll("g.slice")
+                        let arcs = svg.selectAll("g.slice")
                             .data(pie)
                             .enter()
                             .append("g")
@@ -85,10 +85,10 @@ app.directive('pieChart', function(d3Service, $window, DataFactory) {
                             }).attr("text-anchor", "middle").text(function(d, i) {
                                 return groupedData[i][scope.columns[0].name];
                             });
-
+                            
                         svg.append("text")
-                        .attr("x", (width / 2))             
-                        .attr("y", 0 - margin.top)
+                        .attr("x", 0)             
+                        .attr("y", -radius - margin.top/2 )
                         .attr("text-anchor", "middle")    
                         .text(title);
                     };
@@ -113,7 +113,7 @@ app.directive('pieChart', function(d3Service, $window, DataFactory) {
                 //     .style("text-anchor", "end")
                 //     //.text(function(d) { return d})
                 //     .text(scope.columns[0].name);
-            })
+            });
         }
-    }
+    };
 });

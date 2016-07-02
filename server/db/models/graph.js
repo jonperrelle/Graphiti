@@ -17,7 +17,7 @@ module.exports = function (db) {
             type: Sequelize.STRING,
         },
         columns: {
-            type: Sequelize.ARRAY(Sequelize.STRING),
+            type: Sequelize.ARRAY(Sequelize.JSONB),
         },
 
     },

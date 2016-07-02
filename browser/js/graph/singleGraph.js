@@ -12,7 +12,7 @@ app.config (function ($stateProvider) {
   });
 });
 
-app.controller('singleGraphCtrl', function ($scope, $stateParams, $localStorage, GraphFactory) {
+app.controller('singleGraphCtrl', function ($scope, $stateParams, $timeout, $localStorage, GraphFactory, Session) {
 	$scope.graphType = $stateParams.graphType || $localStorage.graphType;
     $localStorage.graphType = $scope.graphType;
 	$scope.data = $stateParams.data || $localStorage.data;
@@ -22,9 +22,11 @@ app.controller('singleGraphCtrl', function ($scope, $stateParams, $localStorage,
 	$scope.settings = $stateParams.settings || $localStorage.settings;
     $localStorage.settings = $scope.settings;
 
+    $scope.addedGraph = false;
+    if (Session.user) $scope.user = Session.user;
 
     $scope.saveUserGraph = function () {
-        GraphFactory.saveUserGraph($scope.user, $scope.data, $scope.columns, $scope.graphType, $scope.settings)
+        GraphFactory.saveUserGraph($scope.user, $localStorage.dataset, $scope.columns, $scope.graphType, $scope.settings)
             .then(function(data) {
                 $scope.success = data.success;
                 $scope.message = data.message;

@@ -17,4 +17,28 @@
 
 .settings-container {
 	margin-bottom: 20px;
+
+	header.graph-alert-header {
+	  margin-bottom: 0;
+	  height: 50px;
+	  a {
+	  	padding-top: 20px;
+	    font-size: 150%;
+	    font-weight: 700;
+	  }
+	  a#add-graph {
+	    float: right;
+	    margin-right: 50px; 
+	    
+	  }
+	  a#add-graph:hover,
+	  a#add-graph:focus {
+	    text-decoration: none;
+	      color: #ffffff;
+	  }
+	  p {
+	    float: right;
+	  }
+}
+
 }

@@ -9,8 +9,8 @@ app.factory('DatasetFactory', function($http) {
         }
         else {
             return {
-                success: true,
-                message: 'You have successfully added this dataset!'
+                success: false,
+                message: 'You already have this dataset'
             };
         }
     };

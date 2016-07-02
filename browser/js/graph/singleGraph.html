@@ -1,6 +1,13 @@
 <section class="row single-graph">	
 	<div class="row graphsettings-container">
 		<div class="col-xs-12 settings-container">
+			<div class="row">
+			    <header class="row graph-alert-header">
+			      <div ng-show="addedGraph" ng-class="{'alert-success': success, 'alert-danger': !success}" class="animate-show animate-hide">{{message}}</div>
+			      <a ng-show="user && !userGraph" id="add-graph" href="" ng-click="saveUserGraph()">Save Graph</button>
+			      <p ng-show="!user"><a ui-sref="login({source: 'graph'})">Login</a> or <a ui-sref="signup({source: 'graph'})">signup</a> to save graph</p>
+			    <header>
+			  </div>
 			<settings-panel></settings-panel>
 		</div>
 		<div class="graph-container col-xs-12">
