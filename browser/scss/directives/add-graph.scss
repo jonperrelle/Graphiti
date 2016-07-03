@@ -3,6 +3,7 @@
 
 	border: 2px solid white;
 	border-radius: 10px;
+	margin-bottom:20px;
 	label {
 		color: #ffffff;
 		font-size: 1.5em;
@@ -15,20 +16,28 @@
 }
 
 
-
-
-
-
 .graph-previews {
+	
 	svg {
 	  border-radius: 10px;
 	  background-color: #ffffff;
-	  margin-top: 50px;
-	  margin-bottom: 50px;
+	}
+
+	h4 {
+		color: #ffffff;
 	}
 
 	.graph-previews-columns {
 		padding-right: 0px;
 		padding-left: 0px;
+	  	margin-top: 50px;
+	  	margin-bottom: 50px;
 	}
+}
+
+.graph-feedback {
+	p {
+		color: #ffffff;
+	}
+	
 }

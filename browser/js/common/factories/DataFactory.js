@@ -21,11 +21,18 @@ app.factory('DataFactory', function () {
       return groupedData;
     },
 
-    orderByCategory: function (data, category) {
-      return data.sort(function (a, b) {
-        if (a[category] < b[category]) return -1;
-        else return 1;
-      });
+    orderByCategory: function (data, category, type) {
+      if (type === 'number') {
+        return data.sort(function (a, b) {
+          return +a[category] - +b[category];
+        });
+      }
+      else {
+        return data.sort(function (a, b) {
+          if (a[category] < b[category]) return -1;
+          else return 1;
+        });
+      }
     }
   };
 });

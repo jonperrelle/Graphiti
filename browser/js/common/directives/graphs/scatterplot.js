@@ -81,8 +81,6 @@ app.directive('scatterplotGraph', function(d3Service, $window) {
                     .attr('height', height)
                     .call(zoom);
 
-                    console.log(ele[0].parentNode)
-
                 let xValue = function(d) {
                         return +d[scope.columns[0].name]
                     }, // data -> value
@@ -162,7 +160,7 @@ app.directive('scatterplotGraph', function(d3Service, $window) {
                     .call(yAxis)
                     .append("text")
                     .attr("class", "ylabel")
-                    .attr("transform", "rotate(-90)translate(" + -((height + margin.bottom + margin.top) / 2) + ", " + -(margin.left - 10) + ")")
+                    .attr("transform", "rotate(-90)translate(" + -((height + margin.bottom + margin.top) / 2) + ", " + -(margin.left - 20) + ")")
                     .text(yAxisLabel);
 
                 // draw dots

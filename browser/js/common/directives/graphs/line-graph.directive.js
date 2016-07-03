@@ -34,7 +34,12 @@ app.directive('lineGraph', function(d3Service, $window) {
                 }, true);
 
                 scope.render = function() {
-                    let filteredData = scope.rows.filter(obj => obj[scope.columns[0].name] && obj[scope.columns[1].name]).sort((a, b) => a[scope.columns[0].name] - b[scope.columns[0].name]);
+                    let filteredData = scope.rows.filter(obj => obj[scope.columns[0].name] 
+                            && obj[scope.columns[1].name]
+                            && (!!Number(obj[scope.columns[0].name]) || Number(obj[scope.columns[0].name]) === 0)
+                            && (!!Number(obj[scope.columns[1].name]) || Number(obj[scope.columns[1].name]) === 0))
+                    .sort((a, b) => a[scope.columns[0].name] - b[scope.columns[0].name]);
+
                     let anchor = d3.select(ele[0])
                     anchor.selectAll('*').remove();
 
@@ -168,7 +173,7 @@ app.directive('lineGraph', function(d3Service, $window) {
                         .call(yAxis)
                         .append("text")
                         .attr("class", "ylabel")
-                        .attr("transform", "rotate(-90)translate(" + -((height + margin.bottom + margin.top) / 2) + ", " + -(margin.left - 10) + ")")
+                        .attr("transform", "rotate(-90)translate(" + -((height + margin.bottom + margin.top) / 2) + ", " + -(margin.left - 20) + ")")
                         .text(yAxisLabel);
 
                     svg.append("path")

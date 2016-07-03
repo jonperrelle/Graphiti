@@ -37,11 +37,12 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
 
                     let filteredData = scope.rows.filter(obj => obj[scope.columns[0].name] 
                         && obj[scope.columns[1].name]
-                        && (!!Number(obj[scope.columns[1].name]) || Number(obj[scope.columns[1].name]) === 0))
-                        .sort((a, b) => a[scope.columns[0].name] - b[scope.columns[0].name]);
+                        && (!!Number(obj[scope.columns[1].name]) || Number(obj[scope.columns[1].name]) === 0));
 
+                   
                     let groupedData = DataFactory.groupByCategory(filteredData, scope.columns[0].name, scope.columns[1].name);
-                    groupedData = DataFactory.orderByCategory(groupedData, scope.columns[0].name);
+                    groupedData = DataFactory.orderByCategory(groupedData, scope.columns[0].name, scope.columns[0].type);
+                    
 
                     let anchor = d3.select(ele[0])
                     anchor.selectAll('*').remove();
@@ -122,7 +123,7 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                         .call(yAxis)
                         .append("text")
                         .attr("class", "ylabel")
-                        .attr("transform", "rotate(-90)translate(" + -((height + margin.bottom + margin.top) / 2) + ", " + -(margin.left - 10) + ")")
+                        .attr("transform", "rotate(-90)translate(" + -((height + margin.bottom + margin.top) / 2) + ", " + -(margin.left-20) + ")")
                         .text(yAxisLabel);
 
                     svg.selectAll(".bar")
@@ -146,6 +147,7 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                         .attr("y", (margin.top / 2))
                         .attr("text-anchor", "middle")    
                         .text(title);
+
                 };
             });
         }
