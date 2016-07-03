@@ -47,8 +47,8 @@ app.directive('lineGraph', function(d3Service, $window) {
                         return currentLength > prev ? currentLength : prev;
                     }, 0);
 
-                    let formatColX = scope.columns[0].name.split("_").join(" "),
-                        formatColY = scope.columns[1].name.split("_").join(" "),    
+                    let formatColX = scope.columns[0].name.replace(/\_+/g, " "),
+                        formatColY = scope.columns[1].name.replace(/\_+/g, " "),
                         margin = { 
                             top: 30,
                             right: 20,
@@ -113,10 +113,10 @@ app.directive('lineGraph', function(d3Service, $window) {
 
                     let line = d3.svg.line()
                         .x(function(d) {
-                            return x(d[xAxisLabel]);
+                            return x(d[scope.columns[0].name]);
                         })
                         .y(function(d) {
-                            return y(+d[yAxisLabel]);
+                            return y(+d[scope.columns[1].name]);
                         });
 
                     // If we don't pass any data, return out of the element
@@ -155,7 +155,7 @@ app.directive('lineGraph', function(d3Service, $window) {
                         .append("text")
                         .attr("class", "label")
                         .attr("transform", "rotate(-90)translate(" + -((height - margin.bottom - margin.top) / 2) + ", " + -(margin.left - 10) + ")")
-                        .text(yAxisLabel);
+                        .text(xAxisLabel);
                         // .attr("dy", ".71em")
                         // .style("text-anchor", "end")
                         // .text(xAxisLabel);

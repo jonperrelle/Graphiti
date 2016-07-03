@@ -55,7 +55,9 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                             return currentLength > prev ? currentLength : prev;
                         }, 0);
 
-                    let margin = {
+                    let formatColX = scope.columns[0].name.replace(/\_+/g, " "),
+                        formatColY = scope.columns[1].name.replace(/\_+/g, " "),
+                        margin = {
                         top: 30,
                         right: 0,
                         bottom: (xLabelLength + 6) * 5,
@@ -63,9 +65,9 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                     },
                         width = scope.settings.width || ele[0].parentNode.offsetWidth,
                         height = scope.settings.height || width,
-                        xAxisLabel = scope.settings.xAxisLabel || scope.columns[0].name,
-                        yAxisLabel = scope.settings.yAxisLabel || scope.columns[1].name,
-                        title = scope.settings.title || scope.columns[0].name + ' vs. ' + scope.columns[1].name,
+                        xAxisLabel = scope.settings.xAxisLabel || formatColX,
+                        yAxisLabel = scope.settings.yAxisLabel || formatColY,
+                        title = scope.settings.title || formatColX + ' vs. ' + formatColY,
                         barSpace = 0.1;
 
                     let svg = anchor

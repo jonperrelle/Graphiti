@@ -40,7 +40,7 @@ app.directive('pieChart', function(d3Service, $window, DataFactory) {
                             width = scope.settings.width || ele[0].parentNode.offsetWidth,
                             height = scope.settings.height || width,
                             radius = scope.settings.radius || (height * 0.8) / 2,
-                            title = scope.settings.title || scope.columns[0].name.split("_").join(" ") + ' vs. ' + scope.columns[1].name.split("_").join(" ");
+                            title = scope.settings.title || scope.columns[0].name.replace(/\_+/g, " ")+ ' vs. ' + scope.columns[1].name.replace(/\_+/g, " ");
 
                         let filteredData = scope.rows.filter(obj => Number(obj[scope.columns[1].name]) > 0);
 
@@ -76,9 +76,17 @@ app.directive('pieChart', function(d3Service, $window, DataFactory) {
                             })
                             .attr("d", arc);
 
+
+
                         arcs.forEach(function () {
 
                         });
+
+                        svg.append("text")
+                            .attr("x", 0)             
+                            .attr("y", (-radius -margin.top/2))
+                            .attr("text-anchor", "middle")    
+                            .text(title);
 
                         // // add the text
                         // arcs.append("text").attr("transform", function(d) {

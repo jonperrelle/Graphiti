@@ -62,7 +62,9 @@ app.directive('scatterplotGraph', function(d3Service, $window) {
                         return currentLength > prev ? currentLength : prev;
                     }, 0);
 
-                let margin = { top: 30,
+                let formatColX = scope.columns[0].name.replace(/\_+/g, " "),
+                    formatColY = scope.columns[1].name.replace(/\_+/g, " "),
+                    margin = { top: 30,
                         bottom: (xLabelLength + 6) * 5,
                         left: (yLabelLength + 6) * 7,
                         right: 20
@@ -70,9 +72,9 @@ app.directive('scatterplotGraph', function(d3Service, $window) {
                     width = scope.settings.width || ele[0].parentNode.offsetWidth,
                     height = scope.settings.height || width,
                     dotRadius = width / 150,
-                    xAxisLabel = scope.settings.xAxisLabel || scope.columns[0].name,
-                    yAxisLabel = scope.settings.yAxisLabel || scope.columns[1].name,
-                    title = scope.settings.title || scope.columns[0].name + ' vs. ' + scope.columns[1].name,
+                    xAxisLabel = scope.settings.xAxisLabel || formatColX,
+                    yAxisLabel = scope.settings.yAxisLabel || formatColY,
+                    title = scope.settings.title || formatColX + ' vs. ' + formatColY,
                     svg = anchor
                     .append('svg')
                     .attr('width', width)
