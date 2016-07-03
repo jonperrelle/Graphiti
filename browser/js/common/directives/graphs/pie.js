@@ -54,6 +54,8 @@ app.directive('pieChart', function(d3Service, $window, DataFactory) {
                             .append('svg')
                             .attr('width', width)
                             .attr('height', height)
+                            .style('background-color', '#ffffff')
+                            .style('border-radius', '10px')
                             .data([groupedData])
                             .append("g")
                             .attr("transform", "translate(" + (width / 2) + "," + (radius + margin.top) + ")");

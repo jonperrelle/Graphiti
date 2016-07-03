@@ -75,6 +75,8 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                         .append('svg')
                         .style('width', width)
                         .style('height', height)
+                        .style('background-color', '#ffffff')
+                        .style('border-radius', '10px')
                         .append("g");
 
                     //create the rectangles for the bar chart

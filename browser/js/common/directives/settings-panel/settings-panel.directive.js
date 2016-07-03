@@ -10,7 +10,11 @@ app.directive('settingsPanel', function(){
 					scope.settings.color = cp2.colorpicker('getValue');
 					scope.$digest();
   				});
-            });            
+            });
+
+            scope.downloadGraph = function () {
+            	saveSvgAsPng(document.querySelector('.graph-container svg'), 'sample.png');
+            };           
 		}
 	};
 });
