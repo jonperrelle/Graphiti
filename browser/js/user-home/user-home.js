@@ -11,7 +11,7 @@ app.config(function ($stateProvider) {
     });
 });
 
-app.controller('UserHomeCtrl', function ($scope, $state, UploadFactory, Session, DatasetFactory, GraphFactory, UserInfo) {
+app.controller('UserHomeCtrl', function ($scope, $state, UploadFactory, Session, DatasetFactory, GraphFactory, UserInfo, $localStorage) {
     
     $scope.user = UserInfo.user;
     $scope.datasets = UserInfo.datasets;
@@ -28,6 +28,8 @@ app.controller('UserHomeCtrl', function ($scope, $state, UploadFactory, Session,
     };
 
     $scope.goToDataset = function (dataset) {
+        $localStorage.column1 = null;
+        $localStorage.column2 = null;
         DatasetFactory.getOneUserDataset(dataset, $scope.user)
         .then( rows => {
             if (dataset.socrataId) {

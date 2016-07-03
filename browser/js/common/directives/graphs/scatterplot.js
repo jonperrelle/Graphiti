@@ -53,27 +53,37 @@ app.directive('scatterplotGraph', function(d3Service, $window) {
                     && (!!Number(obj[scope.columns[1].name]) || Number(obj[scope.columns[1].name]) === 0))
                 .sort((a, b) => a[scope.columns[0].name] - b[scope.columns[0].name]);
 
+                let xLabelLength = filteredData.reduce(function (prev, current) {
+                            let currentLength = current[scope.columns[0].name].toString().length;
+                            return currentLength > prev ? currentLength : prev;
+                        }, 0),
+                    yLabelLength = filteredData.reduce(function (prev, current) {
+                        let currentLength = Math.floor(current[scope.columns[1].name]).toString().length;
+                        return currentLength > prev ? currentLength : prev;
+                    }, 0);
 
-                let margin = { top: 20, right: 20, bottom: 30, left: 40 },
-                    width = (scope.settings.width || ele[0].parentNode.offsetWidth - 20) - margin.left - margin.right,
-                    height = (scope.settings.height || width) - margin.top - margin.bottom,
-
+                let margin = { top: 30,
+                        bottom: (xLabelLength + 6) * 5,
+                        left: (yLabelLength + 6) * 7,
+                        right: 20
+                    },
+                    width = scope.settings.width || ele[0].parentNode.offsetWidth,
+                    height = scope.settings.height || width,
                     dotRadius = width / 150,
-
                     xAxisLabel = scope.settings.xAxisLabel || scope.columns[0].name,
                     yAxisLabel = scope.settings.yAxisLabel || scope.columns[1].name,
                     title = scope.settings.title || scope.columns[0].name + ' vs. ' + scope.columns[1].name,
                     svg = anchor
                     .append('svg')
-                    .attr('width', width + margin.left + margin.right)
-                    .attr('height', height + margin.top + margin.bottom)
+                    .attr('width', width)
+                    .attr('height', height)
                     .call(zoom);
 
                 let xValue = function(d) {
                         return +d[scope.columns[0].name]
                     }, // data -> value
                     xScale = d3.scale.linear()
-                    .range([margin.left, margin.left + width]), // value -> display
+                    .range([margin.left, width - margin.right]), // value -> display
                     xMap = function(d) {
                         return xScale(xValue(d))
                     }, // data -> display
@@ -82,16 +92,16 @@ app.directive('scatterplotGraph', function(d3Service, $window) {
                 let yValue = function(d) {
                         return +d[scope.columns[1].name]
                     }, // data -> value
-                    yScale = d3.scale.linear().range([height, margin.top]), // value -> display
+                    yScale = d3.scale.linear().range([height - margin.bottom, margin.top]), // value -> display
                     yMap = function(d) {
                         return yScale(yValue(d))
                     }, // data -> display
                     yAxis = d3.svg.axis().scale(yScale).orient("left");
 
-                let minX = (typeof scope.settings.minX === 'number') ? scope.settings.minX : d3.min(filteredData, xValue) - 1;
-                let maxX = (typeof scope.settings.maxX === 'number') ? scope.settings.maxX : d3.max(filteredData, xValue) - 1;
-                let minY = (typeof scope.settings.minY === 'number') ? scope.settings.minY : d3.min(filteredData, yValue) - 1;
-                let maxY = (typeof scope.settings.maxY === 'number') ? scope.settings.maxY : d3.max(filteredData, yValue) - 1;
+                let minX = (typeof scope.settings.minX === 'number') ? scope.settings.minX : d3.min(filteredData, xValue);
+                let maxX = (typeof scope.settings.maxX === 'number') ? scope.settings.maxX : d3.max(filteredData, xValue);
+                let minY = (typeof scope.settings.minY === 'number') ? scope.settings.minY : d3.min(filteredData, yValue);
+                let maxY = (typeof scope.settings.maxY === 'number') ? scope.settings.maxY : d3.max(filteredData, yValue);
 
                 filteredData = scope.rows.filter(obj => Number(obj[scope.columns[0].name]) >= minX 
                     && Number(obj[scope.columns[0].name]) <= maxX
@@ -128,16 +138,18 @@ app.directive('scatterplotGraph', function(d3Service, $window) {
                 // x-axis
                 svg.append("g")
                     .attr("class", "x axis")
-                    //.attr("transform", "translate(0," + height + ")")
-                    .attr("transform", "translate(0," + (height) + ")")
-                    //.attr("transform", "translate(" + margin.left + "," + height + ")")
+                    .attr("transform", "translate(0," + (height - margin.bottom) + ")")
                     .call(xAxis)
                     .append("text")
-                    .attr("class", "label")
-                    .attr("x", width)
-                    .attr("y", -6)
-                    .style("text-anchor", "end")
+                    .attr("class", "xlabel")
                     .text(xAxisLabel);
+
+                svg.selectAll(".x text")
+                    .attr("transform", "translate(-10, 0)rotate(-45)")
+                    .style("text-anchor", "end");
+
+                svg.select(".xlabel")
+                        .attr("transform", "translate(" + (width + margin.left + margin.right) / 2 + ", " + (margin.bottom - 10) + ")");
 
                 // y-axis
                 svg.append("g")
@@ -146,12 +158,7 @@ app.directive('scatterplotGraph', function(d3Service, $window) {
                     .call(yAxis)
                     .append("text")
                     .attr("class", "label")
-                    .attr("transform", "rotate(-90)")
-
-                //.attr("x", margin.left)
-                .attr("y", 6)
-                    .attr("dy", ".71em")
-                    .style("text-anchor", "end")
+                    .attr("transform", "rotate(-90)translate(" + -((height - margin.bottom - margin.top) / 2) + ", " + -(margin.left - 10) + ")")
                     .text(yAxisLabel);
 
                 // draw dots
@@ -179,34 +186,10 @@ app.directive('scatterplotGraph', function(d3Service, $window) {
 
                 svg.append("text")
                     .attr("x", (width / 2))             
-                    .attr("y", margin.top)
+                    .attr("y", (margin.top / 2))
                     .attr("text-anchor", "middle")    
                     .text(title);
 
-                // draw legend
-                // let legend = svg.selectAll(".legend")
-                //     .data(color) //color.domain() is not a function
-                //     .enter().append("g")
-                //     .attr("class", "legend")
-                //     .attr("transform", function(d, i) {
-                //         return "translate(" + (40) + "," + i * 20 + ")"
-                //     });
-
-                // // draw legend colored rectangles
-                // legend.append("rect")
-                //     .attr("x", width - 18)
-                //     .attr("width", 18)
-                //     .attr("height", 18)
-                //     .style("fill", color);
-
-                // // draw legend text
-                // legend.append("text")
-                //     .attr("x", width - 24)
-                //     .attr("y", 9)
-                //     .attr("dy", ".35em")
-                //     .style("text-anchor", "end")
-                //     //.text(function(d) { return d})
-                //     .text(scope.columns[0].name);
             };
         });
     };

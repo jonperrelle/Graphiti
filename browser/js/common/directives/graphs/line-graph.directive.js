@@ -38,19 +38,35 @@ app.directive('lineGraph', function(d3Service, $window) {
                     let anchor = d3.select(ele[0])
                     anchor.selectAll('*').remove();
 
-                    let margin = { top: 20, right: 20, bottom: 30, left: 40 },
-                        width = (scope.settings.width || ele[0].parentNode.offsetWidth) - margin.left - margin.right,
-                        height = (scope.settings.height || width) - margin.top - margin.bottom,
-                        xAxisLabel = scope.settings.xAxisLabel || scope.columns[0].name,
-                        yAxisLabel = scope.settings.yAxisLabel || scope.columns[1].name,
-                        title = scope.settings.title || scope.columns[0].name + ' vs. ' + scope.columns[1].name,
+                    let xLabelLength = filteredData.reduce(function (prev, current) {
+                            let currentLength = current[scope.columns[0].name].toString().length;
+                            return currentLength > prev ? currentLength : prev;
+                        }, 0),
+                    yLabelLength = filteredData.reduce(function (prev, current) {
+                        let currentLength = Math.floor(current[scope.columns[1].name]).toString().length;
+                        return currentLength > prev ? currentLength : prev;
+                    }, 0);
+
+                    let formatColX = scope.columns[0].name.split("_").join(" "),
+                        formatColY = scope.columns[1].name.split("_").join(" "),    
+                        margin = { 
+                            top: 30,
+                            right: 20,
+                            bottom: (xLabelLength + 6) * 5,
+                            left: (yLabelLength + 6) * 7,
+                        },
+                        width = scope.settings.width || ele[0].parentNode.offsetWidth,
+                        height = scope.settings.height || width,
+                        xAxisLabel = scope.settings.xAxisLabel || formatColX,
+                        yAxisLabel = scope.settings.yAxisLabel || formatColY,
+                        title = scope.settings.title || formatColX + " .vs " + formatColY,
                         svg = anchor
                         .append('svg')
-                        .style('width', width + margin.left + margin.right)
-                        .style('height', height + margin.top + margin.bottom)
+                        .style('width', width)
+                        .style('height', height)
                         .attr('margin', '0 auto')
                         .append("g")
-                        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+                        // .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
                     //check if the data column header may contain date info ??
                     let x,
@@ -70,9 +86,9 @@ app.directive('lineGraph', function(d3Service, $window) {
                             obj[yAxisLabel] = element[scope.columns[1].name]
                             data.push(obj);
                         });
-                        x = d3.time.scale().range([0, width]);
+                        x = d3.time.scale().range([margin.left, width - margin.right]);
                     } else if (scope.columns[0].type === 'number') {
-                        x = d3.scale.linear().range([0, width]);
+                        x = d3.scale.linear().range([margin.left, width - margin.right]);
                         data = [];
                         filteredData.forEach(function(element) {
                             let obj = {};
@@ -85,7 +101,7 @@ app.directive('lineGraph', function(d3Service, $window) {
                     }
 
                     let y = d3.scale.linear()
-                        .range([height, 0]);
+                        .range([height - margin.bottom, margin.top]);
 
                     let xAxis = d3.svg.axis()
                         .scale(x)
@@ -109,8 +125,6 @@ app.directive('lineGraph', function(d3Service, $window) {
                     //Need a better way to adjust minX and maxX if based on date
 
 
-
-
                     let color = scope.settings.color || "steelblue",
                         minX = (typeof scope.settings.minX === 'number') ? scope.settings.minX : d3.min(data, function(d) {
                             return d[scope.columns[0].name];
@@ -118,10 +132,10 @@ app.directive('lineGraph', function(d3Service, $window) {
                         maxX = (typeof scope.settings.maxX === 'number') ? scope.settings.maxX : d3.max(data, function(d) {
                             return d[scope.columns[0].name];
                         }),
-                        minY = (typeof scope.settings.minY === 'number') ? +scope.settings.minY : d3.min(data, function(d) {
+                        minY = (typeof scope.settings.minY === 'number') ? scope.settings.minY : d3.min(data, function(d) {
                             return +d[scope.columns[1].name];
                         }),
-                        maxY = (typeof scope.settings.maxY === 'number') ? +scope.settings.maxY : d3.max(data, function(d) {
+                        maxY = (typeof scope.settings.maxY === 'number') ? scope.settings.maxY : d3.max(data, function(d) {
                             return +d[scope.columns[1].name];
                         });
 
@@ -136,15 +150,19 @@ app.directive('lineGraph', function(d3Service, $window) {
 
                     svg.append("g")
                         .attr("class", "x axis")
-                        .attr("transform", "translate(0," + height + ")")
+                        .attr("transform", "translate(0," + (height - margin.bottom) + ")")
                         .call(xAxis)
                         .append("text")
-                        .attr("dy", ".71em")
-                        .style("text-anchor", "end")
-                        .text(xAxisLabel);
+                        .attr("class", "label")
+                        .attr("transform", "rotate(-90)translate(" + -((height - margin.bottom - margin.top) / 2) + ", " + -(margin.left - 10) + ")")
+                        .text(yAxisLabel);
+                        // .attr("dy", ".71em")
+                        // .style("text-anchor", "end")
+                        // .text(xAxisLabel);
 
                     svg.append("g")
                         .attr("class", "y axis")
+                        .attr("transform", "translate(" + margin.left + ",0)")
                         .call(yAxis)
                         .append("text")
                         .attr("transform", "rotate(-90)")

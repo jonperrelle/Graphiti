@@ -33,14 +33,14 @@ app.directive('pieChart', function(d3Service, $window, DataFactory) {
                 }, true);
 
                 scope.render = function() {
-                        let anchor = d3.select(ele[0])
+                        let anchor = d3.select(ele[0]);
                         anchor.selectAll('*').remove();
 
                         let margin = { top: 30, right: 20, bottom: 30, left: 40 },
-                            width = (scope.settings.width || ele[0].parentNode.offsetWidth) - margin.left - margin.right,
-                            height = (scope.settings.height || width) - margin.top - margin.bottom,
-                            radius = scope.settings.radius || height / 2,
-                            title = scope.settings.title || scope.columns[0].name + ' vs. ' + scope.columns[1].name;
+                            width = scope.settings.width || ele[0].parentNode.offsetWidth,
+                            height = scope.settings.height || width,
+                            radius = scope.settings.radius || (height * 0.8) / 2,
+                            title = scope.settings.title || scope.columns[0].name.split("_").join(" ") + ' vs. ' + scope.columns[1].name.split("_").join(" ");
 
                         let filteredData = scope.rows.filter(obj => Number(obj[scope.columns[1].name]) > 0);
 
@@ -52,11 +52,11 @@ app.directive('pieChart', function(d3Service, $window, DataFactory) {
 
                         let svg = anchor
                             .append('svg')
-                            .attr('width', width + margin.left + margin.right)
-                            .attr('height', height + margin.top + margin.bottom)
+                            .attr('width', width)
+                            .attr('height', height)
                             .data([groupedData])
                             .append("g")
-                            .attr("transform", "translate(" + (margin.left + radius) + "," + (margin.top + radius) + ")");
+                            .attr("transform", "translate(" + (width / 2) + "," + (radius + margin.top) + ")");
                         let pie = d3.layout.pie().value(function(d) {
                             return +d[scope.columns[1].name];
                         });
@@ -76,44 +76,42 @@ app.directive('pieChart', function(d3Service, $window, DataFactory) {
                             })
                             .attr("d", arc);
 
-                        // add the text
-                        arcs.append("text")
-                            .attr("transform", function(d) {
-                                d.innerRadius = 0;
-                                d.outerRadius = radius;
-                                return "translate(" + arc.centroid(d) + ")";
-                            }).attr("text-anchor", "middle").text(function(d, i) {
-                                return groupedData[i][scope.columns[0].name];
-                            });
-                            
-                        svg.append("text")
-                        .attr("x", 0)             
-                        .attr("y", -radius - margin.top/2 )
-                        .attr("text-anchor", "middle")    
-                        .text(title);
-                    };
-                    //     let legend = svg.selectAll(".legend")
-                    //     .data(color.domain())
-                    //   .enter().append("g")
-                    //     .attr("class", "legend")
-                    //     .attr("transform", function(d, i) { return "translate(" + (40) + "," + i * 20 + ")" });
+                        arcs.forEach(function () {
 
-                // // draw legend colored rectangles
-                // legend.append("rect")
-                //     .attr("x", width - 18)
-                //     .attr("width", 18)
-                //     .attr("height", 18)
-                //     .style("fill", color);
+                        });
 
-                // // draw legend text
-                // legend.append("text")
-                //     .attr("x", width - 24)
-                //     .attr("y", 9)
-                //     .attr("dy", ".35em")
-                //     .style("text-anchor", "end")
-                //     //.text(function(d) { return d})
-                //     .text(scope.columns[0].name);
-            });
+                        // // add the text
+                        // arcs.append("text").attr("transform", function(d) {
+                        //     d.innerRadius = 0;
+                        //     d.outerRadius = radius;
+                        //     return "translate(" + arc.centroid(d) + ")";
+                        // }).attr("text-anchor", "middle").text(function(d, i) {
+                        //     return groupedData[i][scope.columns[0].name];
+                        // });
+
+                        // let legend = svg.selectAll(".legend")
+                        //     .data(color.domain())
+                        //     .enter().append("g")
+                        //         .attr("class", "legend")
+                        //         .attr("transform", function(d, i) { return "translate(" + (40) + "," + i * 20 + ")" });
+
+                        // // draw legend colored rectangles
+                        // legend.append("rect")
+                        //     .attr("x", width - 18)
+                        //     .attr("width", 18)
+                        //     .attr("height", 18)
+                        //     .style("fill", color);
+
+                        // // draw legend text
+                        // legend.append("text")
+                        //     .attr("x", width - 24)
+                        //     .attr("y", 9)
+                        //     .attr("dy", ".35em")
+                        //     .style("text-anchor", "end")
+                        //     .text(function(d) { return d[scope.columns[0].name]});
+                    }
+                    
+            })
         }
     };
 });

@@ -30,6 +30,8 @@ app.controller('SearchQueriedDatasetsCtrl', function($scope, QueryFactory, $stat
     };
     
     $scope.getDataset = function (dataset) {
+        $localStorage.column1 = null;
+        $localStorage.column2 = null;
         QueryFactory.getOneDataset(dataset)
         .then( rows => {
             $state.go('datasetDetails', {datasetId: dataset.resource.id, dataset: dataset, rows: rows});
