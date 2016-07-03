@@ -153,22 +153,22 @@ app.directive('lineGraph', function(d3Service, $window) {
                         .attr("transform", "translate(0," + (height - margin.bottom) + ")")
                         .call(xAxis)
                         .append("text")
-                        .attr("class", "label")
-                        .attr("transform", "rotate(-90)translate(" + -((height - margin.bottom - margin.top) / 2) + ", " + -(margin.left - 10) + ")")
+                        .attr("class", "xlabel")
                         .text(xAxisLabel);
                         // .attr("dy", ".71em")
                         // .style("text-anchor", "end")
                         // .text(xAxisLabel);
+
+                    svg.select(".xlabel")
+                        .attr("transform", "translate(" + (width - margin.left - margin.right) / 2 + ", " + (margin.bottom - 10) + ")");
 
                     svg.append("g")
                         .attr("class", "y axis")
                         .attr("transform", "translate(" + margin.left + ",0)")
                         .call(yAxis)
                         .append("text")
-                        .attr("transform", "rotate(-90)")
-                        .attr("y", 6)
-                        .attr("dy", ".71em")
-                        .style("text-anchor", "end")
+                        .attr("class", "ylabel")
+                        .attr("transform", "rotate(-90)translate(" + -((height + margin.bottom + margin.top) / 2) + ", " + -(margin.left - 10) + ")")
                         .text(yAxisLabel);
 
                     svg.append("path")
@@ -180,7 +180,7 @@ app.directive('lineGraph', function(d3Service, $window) {
 
                     svg.append("text")
                         .attr("x", (width / 2))             
-                        .attr("y", 0 - (margin.top/4))
+                        .attr("y", margin.top/2)
                         .attr("text-anchor", "middle")    
                         .text(title);
                 };

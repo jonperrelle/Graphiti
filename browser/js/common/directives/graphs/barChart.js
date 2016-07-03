@@ -59,7 +59,7 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                         formatColY = scope.columns[1].name.replace(/\_+/g, " "),
                         margin = {
                         top: 30,
-                        right: 0,
+                        right: 20,
                         bottom: (xLabelLength + 6) * 5,
                         left: (yLabelLength + 6) * 7
                     },
@@ -78,7 +78,7 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
 
                     //create the rectangles for the bar chart
                     let x = d3.scale.ordinal()
-                        .rangeRoundBands([0, width - margin.left], barSpace);
+                        .rangeRoundBands([0, width - margin.left -margin.right], barSpace);
 
                     let y = d3.scale.linear()
                         .range([height - margin.bottom, margin.top]);
@@ -111,19 +111,18 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                         .text(xAxisLabel);
 
                     svg.selectAll(".x text")
-                        .attr("transform", "translate(-10, 0)rotate(-45)")
-                        .style("text-anchor", "end");
+                        .attr("transform", "translate(-10, 0)rotate(-45)");
 
                     svg.select(".xlabel")
-                        .attr("transform", "translate(" + (width - margin.left) / 2 + ", " + (margin.bottom - 10) + ")");
+                        .attr("transform", "translate(" + (width - margin.left - margin.right) / 2 + ", " + (margin.bottom - 10) + ")");
 
                     svg.append("g")
                         .attr("class", "y axis")
                         .attr("transform", "translate(" + margin.left + ",0)")
                         .call(yAxis)
                         .append("text")
-                        .attr("class", "label")
-                        .attr("transform", "rotate(-90)translate(" + -((height - margin.bottom - margin.top) / 2) + ", " + -(margin.left - 10) + ")")
+                        .attr("class", "ylabel")
+                        .attr("transform", "rotate(-90)translate(" + -((height + margin.bottom + margin.top) / 2) + ", " + -(margin.left - 10) + ")")
                         .text(yAxisLabel);
 
                     svg.selectAll(".bar")

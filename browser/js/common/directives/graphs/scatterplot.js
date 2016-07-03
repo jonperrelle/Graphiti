@@ -81,6 +81,8 @@ app.directive('scatterplotGraph', function(d3Service, $window) {
                     .attr('height', height)
                     .call(zoom);
 
+                    console.log(ele[0].parentNode)
+
                 let xValue = function(d) {
                         return +d[scope.columns[0].name]
                     }, // data -> value
@@ -146,12 +148,12 @@ app.directive('scatterplotGraph', function(d3Service, $window) {
                     .attr("class", "xlabel")
                     .text(xAxisLabel);
 
-                svg.selectAll(".x text")
-                    .attr("transform", "translate(-10, 0)rotate(-45)")
-                    .style("text-anchor", "end");
+                // svg.selectAll(".x text")
+                //     .attr("transform", "translate(-10, 0)rotate(-45)")
+                //     .style("text-anchor", "end");
 
                 svg.select(".xlabel")
-                        .attr("transform", "translate(" + (width + margin.left + margin.right) / 2 + ", " + (margin.bottom - 10) + ")");
+                        .attr("transform", "translate(" + (width - margin.left - margin.right) / 2 + ", " + (margin.bottom - 10) + ")");
 
                 // y-axis
                 svg.append("g")
@@ -159,8 +161,8 @@ app.directive('scatterplotGraph', function(d3Service, $window) {
                     .attr("transform", "translate(" + margin.left + ",0)")
                     .call(yAxis)
                     .append("text")
-                    .attr("class", "label")
-                    .attr("transform", "rotate(-90)translate(" + -((height - margin.bottom - margin.top) / 2) + ", " + -(margin.left - 10) + ")")
+                    .attr("class", "ylabel")
+                    .attr("transform", "rotate(-90)translate(" + -((height + margin.bottom + margin.top) / 2) + ", " + -(margin.left - 10) + ")")
                     .text(yAxisLabel);
 
                 // draw dots
@@ -188,7 +190,7 @@ app.directive('scatterplotGraph', function(d3Service, $window) {
 
                 svg.append("text")
                     .attr("x", (width / 2))             
-                    .attr("y", (margin.top / 2))
+                    .attr("y", (margin.top/2))
                     .attr("text-anchor", "middle")    
                     .text(title);
 

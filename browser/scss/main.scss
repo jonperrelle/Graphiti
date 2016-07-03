@@ -1,11 +1,15 @@
 * {
   box-sizing: border-box;
   font-family: 'Oxygen', sans-serif;
-  color: #6a6d70;
+  color: #000;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #ffffff;
 }
 
 body {
-  background: #e6e9ed;
+  background: #2a3233;
 }
 
 @mixin clearfix {

@@ -1,21 +1,24 @@
 <section>
 	<div class="row">
-		<form name="submitLineGraph" role="form" novalidate>
+		<form name="submitGraph" class="graph-form" role="form" novalidate>
+			<legend><h3 class="text-center">Select the Data Points to Graph</h3></legend>
 		    <fieldset>
 				<div class="row">
-				  <div class="form-group col-xs-8">
+				  <div class="form-group col-xs-12">
 				  	<div class="row">
-			          <div class="form-group col-xs-12">
-			            <label for="column1" class="control-label">Column #1</label>
-			            <div>
-			              <select ng-model="column1.name"  name="column1" class="form-control" ng-options="col for col in columns" ng-change="assignColumnType(column1)"></select>
+				  		<div class="col-sm-1"></div>
+			          	<div class="form-group col-sm-5 col-xs-12">
+				            <label for="column1" class="control-label">X Axis Data</label>
+				            <div>
+				              <select ng-model="column1.name"  name="column1" class="form-control" ng-options="col for col in columns" ng-change="assignColumnType(column1)"></select>
+				            </div>
+			          	</div>
+			          	<div class="form-group col-sm-5 col-xs-12">
+				            <label for="column2" class="control-label">Y Axis Data</label>
+				            <div>
+				              <select ng-model="column2.name"  name="column2" class="form-control" ng-options="col for col in columns" ng-change="assignColumnType(column2)"></select>
 			            </div>
-			          </div>
-			          <div class="form-group col-xs-12">
-			            <label for="column2" class="control-label">Column #2</label>
-			            <div>
-			              <select ng-model="column2.name"  name="column2" class="form-control" ng-options="col for col in columns" ng-change="assignColumnType(column2)"></select>
-			            </div>
+			            <div class="col-sm-1"></div>
 			          </div>
 			        </div>
 				  </div>
@@ -25,30 +28,30 @@
 			</fieldset>
 		</form>
 	</div>
-	<div class="row graphPreviews">
+	<div class="row graph-previews">
 		<div class="column" ng-if="scatterEnabled()" ng-click="viewSingleGraph('scatterPlot')">
-			<div class="col-xs-12 col-sm-5" >
+			<div class="col-xs-12 col-sm-5 graph-previews-columns">
 				<scatterplot-graph settings="settings" rows="data" columns="[column1,column2]"></scatterplot-graph>
 			</div>
 			<div class="col-sm-1"></div>
 		</div>
 		<div class="column" ng-if="scatterEnabled()" ng-click="viewSingleGraph('lineGraph')">
-			<div class="col-xs-12 col-sm-5" >
+			<div class="col-sm-1"></div>
+			<div class="col-xs-12 col-sm-5 graph-previews-columns">
 				<line-graph settings="settings" rows="data" columns="[column1,column2]"></line-graph>
 			</div>
-			<div class="col-sm-1"></div>
 		</div>
 		<div class="column" ng-if="pieEnabled()" ng-click="viewSingleGraph('pieChart')">
-			<div class="col-xs-12 col-sm-5" >
+			<div class="col-xs-12 col-sm-5 graph-previews-columns">
 				<pie-chart settings="settings" rows="data" columns="[column1,column2]"></pie-chart>
 			</div>
 			<div class="col-sm-1"></div>
 		</div>
 		<div class="column" ng-if="barEnabled()" ng-click="viewSingleGraph('barChart')">
-			<div class="col-xs-12 col-sm-5" >
+			<div class="col-sm-1"></div>
+			<div class="col-xs-12 col-sm-5 graph-previews-columns">
 				<bar-chart settings="settings" rows="data" columns="[column1,column2]"></bar-chart>
 			</div>
-			<div class="col-sm-1"></div>
 		</div>
 	</div>
 </section>

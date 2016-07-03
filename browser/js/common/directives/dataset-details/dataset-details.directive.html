@@ -3,7 +3,9 @@
 	    <h2>{{ dataset.name || dataset.resource.name }}</h2>
 	</div> 
 	<div class="row">
-		<dataset-table dataset="dataset" rows="rows" columns="columns" table-params="tableParams"></dataset-table>
-		<add-graph data="rows" columns="columns" info="dataset"></add-graph>
+		<div class="col-xs-12">
+			<dataset-table dataset="dataset" rows="rows" columns="columns" table-params="tableParams"></dataset-table>
+			<add-graph data="rows" columns="columns" info="dataset"></add-graph>
+		</div>
 	</div>
 </div>
