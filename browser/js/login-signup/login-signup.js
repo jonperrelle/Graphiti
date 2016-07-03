@@ -1,7 +1,7 @@
 app.config(function($stateProvider,$urlRouterProvider) {
 
     $stateProvider.state('login', {
-        url: '/login/:dataset',
+        url: '/login/:source',
         template: '<login-form></login-form>'
     });
 });
@@ -9,7 +9,7 @@ app.config(function($stateProvider,$urlRouterProvider) {
 app.config(function($stateProvider) {
 
     $stateProvider.state('signup', {
-        url: '/signup/:dataset',
+        url: '/signup/:source',
         template: '<signup-form></signup-form>'
     });
 

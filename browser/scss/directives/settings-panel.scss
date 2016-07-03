@@ -1,0 +1,36 @@
+
+.graph-header {
+	font-weight: 700;
+	margin-bottom: 20px;
+	margin-left: 100px;
+	color: #ffffff;
+}
+
+.settings-panel {
+	background: #599ad6;
+	.panel-heading {
+		padding: 5px;
+	}
+	a {
+		color: #ffffff;
+	}
+
+	a:hover,
+	a:focus {
+		text-decoration: none;
+		color: #000;
+	}
+
+	.settings-collapse	{
+		padding: 0 10px;
+
+		label {
+			color: #ffffff;
+		}
+
+		input {
+			height: auto;
+		}
+	}
+
+}

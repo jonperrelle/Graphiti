@@ -7,15 +7,9 @@ const Graph = db.model('graph');
 const Settings = db.model('settings');
 const Promise = require('bluebird');
 
-//Add security!
-// router.get('/:graphId',function(req,res,next){
-	
-// 	Graph.findById(req.params.graphId)
-// 	.then(graph => res.send(graph))
-// 	.catch(next)
-// })
-
+//Security that validates user is authenticated and has proper access control is upstream in the user router
 router.delete('/:graphId', function(req, res, next) {
+
     Graph.findById(req.params.graphId)
     .then(function(graph) {
         return graph.destroy();
@@ -26,13 +20,13 @@ router.delete('/:graphId', function(req, res, next) {
     .catch(next);
 });
 
-
 router.post('/',function(req,res,next){
 
+	let user = req.requestedUser;
+
 	Promise.all([Dataset.findById(req.body.dataset.id),
-	        User.findById(req.params.userId),
 	        Settings.create(req.body.settings)])
-	.spread(function(dataset,user,settings){
+	.spread(function(dataset,settings){
 		return Graph.create(req.body.graph)
 		.then(function(graph){
 			return Promise.all([
