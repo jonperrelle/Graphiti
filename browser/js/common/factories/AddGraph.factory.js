@@ -1,11 +1,14 @@
 app.factory('AddGraphFactory', function (ValidationFactory) {
    return {
-            pieEnabled: function(col1, col2){
+            pieEnabled: function(rows, col1, col2){
               return col1 && col2 && (col1.type === 'number' || col2.type === 'number');
             },
 
-            barEnabled: function(col1, col2){
-              return col1 && col2 && (col1.type === 'number' || col2.type === 'number');
+            barEnabled: function(rows, col1, col2){
+              return col1 && 
+                col2 && col2.type === 'number' &&
+                true// (col1.type !== 'number') // fix this: can be a number if limited quantity/no repeats
+                ;
             },
 
             scatterEnabled: function(col1, col2){

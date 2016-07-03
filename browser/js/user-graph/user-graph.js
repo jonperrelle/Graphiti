@@ -1,4 +1,4 @@
-app.config(function($stateProvider){
+app.config(function ($stateProvider) {
 	$stateProvider.state('userGraph',{
 		url: "/:userId/userGraph/:graphId",
 		templateUrl: "js/user-graph/user-graph.html",
@@ -6,13 +6,11 @@ app.config(function($stateProvider){
 		params: {
 			graph: null,
 		},
-	})
-
+	});
 });
 
-app.controller('userGraphController',function($scope,$stateParams){
+app.controller('userGraphController', function ($scope,$stateParams) {
 
 	$scope.graph = $stateParams.graph;
 
-})
-
+});
