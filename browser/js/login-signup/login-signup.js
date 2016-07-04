@@ -1,13 +1,12 @@
-app.config(function ($stateProvider) {
+app.config(function($stateProvider) {
 
     $stateProvider.state('login', {
         url: '/login/:source',
         template: '<login-form></login-form>'
     });
-
 });
 
-app.config(function ($stateProvider) {
+app.config(function($stateProvider) {
 
     $stateProvider.state('signup', {
         url: '/signup/:source',
@@ -15,4 +14,3 @@ app.config(function ($stateProvider) {
     });
 
 });
-
