@@ -19,11 +19,11 @@ app.directive('addGraph', function(AddGraphFactory, ValidationFactory, $state, $
             }; 
         	
             scope.pieEnabled = function(){
-                return AddGraphFactory.pieEnabled(scope.column1, scope.column2);
+                return AddGraphFactory.pieEnabled(scope.data, scope.column1, scope.column2);
             };
 
             scope.barEnabled = function(){
-                return AddGraphFactory.barEnabled(scope.column1, scope.column2);
+                return AddGraphFactory.barEnabled(scope.data, scope.column1, scope.column2);
             };
 
             scope.scatterEnabled = function(){
