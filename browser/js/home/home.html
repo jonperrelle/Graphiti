@@ -8,14 +8,13 @@
        </header>
       </div>
     </div>
-    <div class="row dataset-options">
+    <div class="row home-instructions">
       <div class="col-xs-1"></div>
       <div class="col-xs-10">
         <header class="text-center">
           <!-- <h3>Search from our available datasets, or upload your own.  Select your data points, and choose your graph type and styles.</h3> -->
           <h3>How it works</h3>
         </header>
-        <hr />
         <div class="row">
           <div class="col-sm-6 col-xs-12 home-search-box">
             <header class="text-center">
@@ -26,7 +25,6 @@
             Image/Gif
           </div>
         </div>
-        <hr />
         <div class="row">
           <div class="col-sm-6 col-xs-12 home-search-box">
             Image/Gif
@@ -37,7 +35,6 @@
             </header> 
           </div>
         </div>
-        <hr />
         <div class="row">
           <div class="col-sm-6 col-xs-12 home-search-box">
             <header class="text-center">
@@ -55,17 +52,21 @@
           </header> 
           <div class="col-sm-6 col-xs-12">  
             <div class="text-center">
-              <button class="btn home-search-btn" ui-sref="searchDatasets">Search our Available Datasets Datasets</button>
+              <button class="btn home-btn" ui-sref="searchDatasets">Search Our Datasets</button>
             </div>
           </div>
-          <div class="col-sm-6 col-xs-12 home-search-box">
-           
-            <form name="form" class="upload-form">
-              <button class="btn select-btn" ng-show="!file" ngf-select ng-model="file">Upload your own dataset</button>
-              <p class="file-upload" ng-show="file">{{file.name}}</p>
-              <button ng-show="file" class="btn btn-danger upload-btn" type="submit" ng-click="file=false">Cancel</button>
-              <button ng-show="file" class="btn btn-primary upload-btn" type="submit" ng-click="uploadFile()">Upload</button>
-            </form>
+          <div class="col-sm-6 col-xs-12">
+            <div class="text-center">
+              <button type="button" class="btn home-btn" ng-click="openFileUpload()">Upload Your Own Dataset</button>
+              <script type="text/ng-template" id="upload.modal.html" class="upload-modal">
+                <form name="form" class="upload-form">
+                  <button class="btn select-btn" ng-show="!file" ngf-select ng-model="file">Select Your File</button>
+                  <p class="file-upload" ng-show="file">{{file.name}}</p>
+                  <button ng-show="file" class="btn btn-primary upload-btn" type="submit" ng-click="submit()">Upload</button>
+                  <button class="btn btn-danger upload-btn" type="submit" ng-click="file=false" ng-click="cancel()">Cancel</button>
+                </form>
+              </script>
+            </div>
           </div>
         </div>
       </div>
