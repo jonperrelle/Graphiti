@@ -115,7 +115,8 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
 
                     console.log(xLabelLength)
                     svg.selectAll(".x text")
-                        .attr("transform", "translate(" + -(xLabelLength * 2) + "," + (xLabelLength * 2) + ")rotate(-45)")
+                        .attr("transform", "rotate(-45)")
+                        .style("text-anchor", "end")
 
                     svg.select(".xlabel")
                          .attr("transform", "translate(" + (width - margin.left - margin.right) / 2 + ", " + (margin.bottom - 10) + ")");
