@@ -1,4 +1,4 @@
-app.directive('addGraph', function(AddGraphFactory, ValidationFactory, $state, $localStorage) {
+app.directive('addGraph', function(AddGraphFactory, ValidationFactory, DataFactory, $state, $localStorage) {
     return {
         restrict: 'E',
         templateUrl: 'js/common/directives/graphs/add-graph.directive.html',
@@ -36,6 +36,12 @@ app.directive('addGraph', function(AddGraphFactory, ValidationFactory, $state, $
 
             scope.viewSingleGraph = function (graphType) {
                 $state.go('singleGraph', {graphType, data: scope.data, columns: [scope.column1, scope.column2], settings: scope.settings, allColumns: scope.columns});
+            };
+
+            scope.withinLength = function(){
+                let groupedData = DataFactory.groupByCategory(scope.data, scope.column1.name, scope.column2.name, 'total');
+                groupedData = DataFactory.orderByCategory(groupedData, scope.column1.name, scope.column1.type);
+                return DataFactory.withinLength(groupedData, scope.column1.name, 30);
             };
 
         }
