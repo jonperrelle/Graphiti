@@ -51,6 +51,23 @@
       </div>
     </div>
     <div class="col-sm-3 col-xs-12 panel-group">
+      <div class="panel settings-panel" ng-show="graphType==='pieChart'">
+        <div class="panel-heading"> 
+          <a data-toggle="collapse" data-target="#view-xsettings-collapse" href="#"><h5>Legend Settings</h5></a>
+        </div>
+        <div id="view-xsettings-collapse" class="panel-collapse collapse settings-collapse">
+          <div id="general">
+            <div class="row">
+              <div class="form-group col-xs-12">
+                <label for="pieDisplayType" class="control-label">Display Type</label>
+                <div>
+                  <input class="form-control" name="pieDisplayType" type="text" ng-model="settings.pieDisplayType" required>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="panel settings-panel" ng-hide="graphType==='pieChart'">
         <div class="panel-heading"> 
           <a data-toggle="collapse" data-target="#view-xsettings-collapse" href="#"><h5>X Axis Settings</h5></a>
@@ -77,10 +94,6 @@
                 <div>
                   <input class="form-control" name="minX" type="number" ng-model="settings.maxX" required>
                 </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="form-group col-xs-12">
               </div>
             </div>
           </div>
