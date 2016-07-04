@@ -1,7 +1,11 @@
 .user-home {
 	margin: 0 auto;
     margin-top: 50px;
-	width: 90%;
+
+    .dataset-account-info {
+    	background: #dee4e5;  
+    	padding-left: 30px; 	
+    }
 
 	h3 {
 		margin-top: 0;
@@ -10,13 +14,18 @@
 
 	.panel-group {
 		position: relative;
+	}
+
+	.home-panel {
+		background: #599ad6;
 
 		h4 {
 		  display: inline-block;
-		  color: #000;
+		  color: #ffffff;
 		}
 
 		span {
+			color: #ffffff;
 			position: absolute;
 			top: 25px;
 			right: 20px;
@@ -27,8 +36,9 @@
 		}
 
 		.list-group-item {
+			border: none;
+			background: #599ad6;
 			padding: 10px;
-			color: #19d178;
 
 			p {
 				margin-top: 5px;
@@ -61,11 +71,11 @@
 	}
 
 	a {
-		font-size: 1.4em;
+		color: #ffffff;
+		font-size: 1.1em;
 	}
 
 	.btn-remove {
-	  margin-left: 2px;
 	  width: 24px;
 	  height: 24px;
 	  text-align: center;
