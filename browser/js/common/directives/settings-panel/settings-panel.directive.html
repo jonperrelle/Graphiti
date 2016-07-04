@@ -18,22 +18,22 @@
               </div>
             </div>
             <div class="row">
-               <div class="form-group col-xs-6" ng-show="graphType==='pieChart'">
-                  <label for="radius" class="control-label">Radius</label>
-                  <div>
-                    <input class="form-control" name="radius" type="number" ng-model="settings.radius" required>
-                  </div>
-                </div>
-              <div class="form-group col-xs-6" ng-hide="graphType==='pieChart'">
+              <div class="form-group col-xs-4">
                 <label for="width" class="control-label">Width</label>
                 <div>
                   <input class="form-control" name="width" type="number" ng-model="settings.width" required>
                 </div>
               </div>
-              <div class="form-group col-xs-6" ng-hide="graphType==='pieChart'">
+              <div class="form-group col-xs-4">
                 <label for="height" class="control-label">Height</label>
                 <div>
                   <input class="form-control" name="height" type="number" ng-model="settings.height" required>
+                </div>
+              </div>
+              <div class="form-group col-xs-4" ng-show="graphType==='pieChart'">
+                <label for="radius" class="control-label">Radius</label>
+                <div>
+                  <input class="form-control" name="radius" type="number" ng-model="settings.radius" required>
                 </div>
               </div>
             </div>
@@ -43,6 +43,19 @@
                 <div id="cp2" class="input-group colorpicker-component">
                     <input type="text" name="color" value="#000000" class="form-control" />
                     <span class="input-group-addon"><i></i></span>
+                </div>
+              </div>
+            </div>
+            <div class="row" ng-show="graphType==='pieChart'">
+              <div class="form-group col-xs-12">
+                <label for="color" class="control-label">Color</label>
+                <div>
+                  <select class="form-control" name="color" type="text" ng-model="settings.color">
+                    <option value="10">Scale 10 Colors</option>
+                    <option value="20a">Scale 20 colors A</option>
+                    <option value="20b">Scale 20 colors B</option>
+                    <option value="20c">Scale 20 colors C</option>
+                  </select>
                 </div>
               </div>
             </div>

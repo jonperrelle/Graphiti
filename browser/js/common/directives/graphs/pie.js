@@ -50,7 +50,25 @@ app.directive('pieChart', function(d3Service, $window, DataFactory) {
                         let groupedTotal = 0;
                         groupedData.forEach( a => groupedTotal += a[scope.columns[1].name]);
                         //uses build in d3 method to create color scale
-                        let color = scope.settings.color || d3.scale.category20();
+                        let color;
+                        let setColor = colorScale => {
+                            switch (colorScale) {
+                                case '10':
+                                    color = d3.scale.category10();
+                                    break;
+                                case '20b':
+                                    color = d3.scale.category20b();
+                                    break;
+                                case '20c':
+                                    color = d3.scale.category20c();
+                                    break;
+                                default:
+                                    color = d3.scale.category20();
+                            }
+                        };
+
+                        setColor(scope.settings.color);
+                        console.log(color);
 
                         let svg = anchor
                             .append('svg')
