@@ -1,4 +1,4 @@
-app.directive('settingsPanel', function(ValidationFactory){
+app.directive('settingsPanel', function(ValidationFactory, $localStorage){
 	return {
 		restrict: 'E',
 		templateUrl: 'js/common/directives/settings-panel/settings-panel.directive.html',

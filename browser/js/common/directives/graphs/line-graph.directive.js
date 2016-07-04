@@ -1,4 +1,4 @@
-app.directive('lineGraph', function(d3Service, $window) {
+app.directive('lineGraph', function(d3Service, $window, $state) {
     return {
         restrict: 'E',
         scope: {
@@ -34,6 +34,9 @@ app.directive('lineGraph', function(d3Service, $window) {
                 }, true);
 
                 scope.render = function() {
+
+                    console.log($state.includes('home'));
+
                     let filteredData = scope.rows.filter(obj => obj[scope.columns[0].name] 
                             && obj[scope.columns[1].name]
                             && (!!Number(obj[scope.columns[0].name]) || Number(obj[scope.columns[0].name]) === 0)
@@ -82,7 +85,7 @@ app.directive('lineGraph', function(d3Service, $window) {
                         //if so validate the format of the date
 
                         //run date checking function
-                        let commonDateFormats = ["%Y", "%Y-%y", "%x", "%xT%X", "%Y-%m-%dT%H:%M:%S"];
+                        let commonDateFormats = ["%Y", "%Y-%y", "%x", "%m-%d-%Y", "%m.%d.%Y", "%m/%d/%y", "%m-%d-%y", "%m.%d.%y", "%Y/%m/%d", "%Y-%m-%d", "%Y.%m.%d", "%xT%X", "%m-%d-%YT%X", "%m.%d.%YT%X", "%m/%d/%yT%X", "%m-%d-%yT%X", "%m.%d.%yT%X", "%Y-%m-%dT%X", "%Y/%m/%dT%X", "%Y.%m.%dT%X", "%c"];
                         dateFormat = commonDateFormats.filter(f => d3.time.format(f).parse(filteredData[0][scope.columns[0].name]))[0];
                         let formatDate = d3.time.format(dateFormat); //d3.time.format("%Y-%y");
                         data = [];
