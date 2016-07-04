@@ -45,7 +45,9 @@ app.directive('pieChart', function(d3Service, $window, DataFactory) {
 
                         let filteredData = scope.rows.filter(obj => Number(obj[scope.columns[1].name]) > 0);
                         
-                        let groupedData = DataFactory.groupByCategory(filteredData, scope.columns[0].name, scope.columns[1].name);
+                        let groupType = scope.settings.groupType || 'total';
+
+                        let groupedData = DataFactory.groupByCategory(filteredData, scope.columns[0].name, scope.columns[1].name, groupType);
                         groupedData = DataFactory.orderByCategory(groupedData, scope.columns[0].name);
                         let groupedTotal = 0;
                         groupedData.forEach( a => groupedTotal += a[scope.columns[1].name]);

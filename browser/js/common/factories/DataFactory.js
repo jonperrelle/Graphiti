@@ -1,20 +1,23 @@
 app.factory('DataFactory', function () {
   return {
-    groupByCategory: function (data, category, metric) {
+    groupByCategory: function (data, category, metric, type) {
+      console.log(type);
       let groupedObj = {},
           groupedData = [];
       data.forEach(function (datum) {
         if (!groupedObj[datum[category]]) {
-          groupedObj[datum[category]] = +datum[metric];
+          groupedObj[datum[category]] = [1, +datum[metric]];
         } else {
-          groupedObj[datum[category]] += +datum[metric];
+          groupedObj[datum[category]][0]++;
+          groupedObj[datum[category]][1] += +datum[metric];
         }
       });
       for (let key in groupedObj) {
         if (groupedObj.hasOwnProperty(key)) {
           let obj = {};
           obj[category] = key;
-          obj[metric] = groupedObj[key];
+          if(type === 'total') obj[metric] = groupedObj[key][1]
+          else if(type === 'mean') obj[metric] = groupedObj[key][1] / groupedObj[key][0];
           groupedData.push(obj);
         }
       }
