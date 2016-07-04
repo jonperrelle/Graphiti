@@ -1,7 +1,7 @@
 app.factory('AddGraphFactory', function (ValidationFactory) {
    return {
             pieEnabled: function(rows, col1, col2){
-              return col1 && col2 && (col1.type === 'number' || col2.type === 'number');
+              return col1 && col2 && (col1.type === 'number' || col2.type === 'number') && ValidationFactory.withinLength(rows, col1, 30);
             },
 
             barEnabled: function(rows, col1, col2){

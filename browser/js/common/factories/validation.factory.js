@@ -40,13 +40,28 @@ app.factory('ValidationFactory', function () {
               return false;
             },
 
+            withinLength: function(data, col, length){
+                console.log('we made it.')
+                let repeatTable = {};
+                data.forEach(function(elem){
+                  let currentData = elem[col];
+                  repeatTable[currentData] = repeatTable[currentData] || 0;
+                  repeatTable[currentData]++; 
+                })
+                console.log(repeatTable);
+                for(var k in repeatTable){
+                  if(repeatTable[k] > length) return false;
+                }
+                return true; 
+            }
+
             // noRepeats: function(data, col){
             //   let repeats = false,
             //   repeatTable = {};
             //   data.forEach(function(elem){
             //     let currentData = elem[col];
             //     repeatTable[currentData] = repeatTable[currentData] || 0;
-                
+
             //   })
             // }
 
