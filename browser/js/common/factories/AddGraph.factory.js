@@ -1,7 +1,7 @@
 app.factory('AddGraphFactory', function (ValidationFactory) {
    return {
             pieEnabled: function(rows, col1, col2){
-              return col1 && col2 && (col1.type === 'number' || col2.type === 'number') && ValidationFactory.withinLength(rows, col1, 30);
+              return col1 && col2 && (col1.type === 'number' || col2.type === 'number');
             },
 
             barEnabled: function(rows, col1, col2){
@@ -21,6 +21,6 @@ app.factory('AddGraphFactory', function (ValidationFactory) {
 
             lineEnabled: function(col1, col2){
               return col1 && col2 && ((col1.type === 'number' || col1.type === 'date') && col2.type === 'number');
-            }
+            },
    };
 });

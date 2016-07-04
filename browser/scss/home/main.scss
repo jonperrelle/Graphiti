@@ -1,14 +1,9 @@
 #home {
-  fullstack-logo {
-    padding-top: 30px;
-    width: 150px;
-    margin: 0 auto;
-  }
+
   h1 {
     margin-top: 40px;
     text-align: center;
   }
-
 
   .home-container {
   	margin: 0 auto;
@@ -30,7 +25,10 @@
   }
 
   .home-instructions {
-    background-color: #ffffff;
+  
+    .odd-div {
+       background: #dee4e5;
+    }
 
     h3 {
       color: #000; 
@@ -56,7 +54,7 @@
     border: 1px solid #2a3233;
   }
 
-  .upload-form {
+/*  .upload-form {
     .upload-btn {
       float: right;
       margin-left: 10px;
@@ -84,5 +82,5 @@
       font-size: 1.3em;
     }
 
-  }
+  }*/
 }

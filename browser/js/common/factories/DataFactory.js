@@ -36,6 +36,26 @@ app.factory('DataFactory', function () {
           else return 1;
         });
       }
+    },
+
+    withinLength: function(data, col, length){
+      //console.log(arguments)
+        //console.log('we made it.')
+        let repeatTable = {};
+        data.forEach(function(elem){
+          let currentData = elem[col];
+          repeatTable[currentData] = repeatTable[currentData] || 0;
+          repeatTable[currentData]++; 
+        })
+        // console.log(repeatTable);
+        // console.log(Object.keys(repeatTable).length);
+        console.log('length', length);
+        if(Object.keys(repeatTable).length > length) return false;
+        else return true; 
+        // console.log(repeatTable);
+        // for(var k in repeatTable){
+        //   if(repeatTable[k] > length) return false;
+        // }
     }
   };
 });
