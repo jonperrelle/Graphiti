@@ -1,21 +1,30 @@
 #about {
-
+  padding-top: 50px;
   margin: 0 auto;
   width: 90%;
   @include clearfix;
 
   p {
-    width: 40%;
+    width: 100%;
     margin: 0 auto;
     text-align: justify;
     font-size: 22px;
     font-weight: 300;
-    float: left;
+    // float: left;
+  }
+
+  li {
+    width: 100%;
+    margin: 0 auto;
+    text-align: justify;
+    font-size: 12px;
+    font-weight: 300;
+    // float: left;
   }
 
   .carousel {
-    float: right;
-    width: 55%;
+    // float: right;
+    width: 100%;
     overflow: hidden;
     margin: 0 auto;
     .carousel-inner {

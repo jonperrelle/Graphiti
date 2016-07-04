@@ -1,11 +1,42 @@
 <section id="about">
-    <p>
-        This website--the very one at which you currently gaze--was created by a basic scaffolding
-        concocted at Fullstack Academy. Here are some of the people who make it all very real:
-    </p>
-    <carousel interval="2000">
-        <slide ng-repeat="image in images">
-            <img height="300" ng-src="{{ image }}" />
-        </slide>
-    </carousel>
+	<div class="container">
+		<div class="column col-sm-6">
+			<h2>Faster Graphs. Period. </h2>
+		    <p>
+		        Our intelligent graphing system allows you to create graphs in a fraction of the time. Search a topic, choose your data, and visualize!
+		    </p>
+		    <h3> A step-by-step comparison. </h3>
+	    	<div class= "column col-sm-6">
+	    		<h4> Graphiti </h4>
+	    		<ol>
+	    			<li> Search for your topic of interest! </li>
+	    			<li> Choose your dataset from the thousands available to you</li>
+	    			<li> Select the most pertinent data to plot </li>
+	    			<li> Be amazed! Feel free to customize your graphs further to add that "wow" factor. </li>
+	    		</ol>
+	    	</div>
+	    	<div class= "column col-sm-6">
+	    		<h4> Microsoft Excel </h4>
+	    		<ol>
+	    			<li> Search for your topic of interest! </li>
+	    			<li> Look through pages on your search engine until you find data you like</li>
+	    			<li> Hopefully...find a way to download the data </li>
+	    			<li> Place the date in proper rows and columns for plotting </li>
+	    			<li> Be sure that the data is cleaned up and there is no missing points </li>
+	    			<li> Do research to figure out what graph is best for the type of data you're working with </li>
+	    			<li> Actually graph your data. </li>
+	    			<li> Adjust your margins, set title headers, and make it look schnazzy. </li>
+	    			<li> Wish you had used Graphiti. 
+	    			</li>
+	    		</ol>
+	    	</div>
+	   	</div>
+	   	<div class="column col-sm-6">
+		    <carousel interval="2000">
+		        <slide ng-repeat="image in images">
+		            <img height="200" ng-src="{{ image }}" />
+		        </slide>
+		    </carousel>
+	   	</div>
+    </div>
 </section>
