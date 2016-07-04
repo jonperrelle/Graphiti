@@ -57,6 +57,15 @@
 				<bar-chart settings="settings" rows="data" columns="[column1,column2]"></bar-chart>
 			</div>
 		</div>
+		<!-- Include for testing histogram -->
+		<div class="column" ng-if="true" ng-click="viewSingleGraph('barChart')">
+			<div class="col-sm-1"></div>
+			<div class="col-xs-12 col-sm-5 graph-previews-columns">
+				<h4 class="text-center">Histogram</h4>
+				<histogram settings="settings" rows="data" column="column1"></histogram>
+			</div>
+		</div>
+		<!-- End histogram test -->
 	</div>
 	<div class="row graph-feedback" ng-if="column1 || column2">
 		<div class="col-xs-12">
