@@ -3,7 +3,6 @@
 	font-weight: 700;
 	margin-bottom: 20px;
 	margin-left: 100px;
-	color: #ffffff;
 }
 
 .download-btn {
@@ -22,6 +21,9 @@
 	background: #599ad6;
 	.panel-heading {
 		padding: 5px;
+		h5 {
+			color: #ffffff;
+		}
 	}
 	a {
 		color: #ffffff;
