@@ -108,7 +108,7 @@ app.directive('pieChart', function(d3Service, $window, DataFactory) {
                             .attr("x", 0)             
                             .attr("y", (radius * -1.5) + margin.top/2)
                             .attr("text-anchor", "middle")    
-                            .text(title);
+                            .text(title.toUpperCase());
 
                         //add the text
                         // arcs.append("text").attr("transform", function(d) {

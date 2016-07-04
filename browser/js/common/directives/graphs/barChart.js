@@ -149,7 +149,7 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                         .attr("x", (width / 2))             
                         .attr("y", (margin.top / 2))
                         .attr("text-anchor", "middle")    
-                        .text(title);
+                        .text(title.toUpperCase());
 
                 };
             });
