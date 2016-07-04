@@ -46,14 +46,7 @@
                 Search Available Datasets
               </a></li>
               <li class="list-group-item">
-                <form name="form" class="upload-form">
-                    <a href ng-show="!file" ngf-select ng-model="file">Upload Your Own</a>
-                    <p class="file-upload" ng-show="file">{{file.name}}</p>
-                  <div class="upload-links">
-                    <a href ng-show="file" id="upload" ng-click="uploadFile()">Upload</a>
-                    <a href ng-show="file" id="cancel" ng-click="file=false">Cancel</a>
-                  </div>
-                </form>
+                <upload-modal></upload-modal>
               </li>
             </ul>
           </div>

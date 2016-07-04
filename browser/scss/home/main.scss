@@ -40,6 +40,7 @@
       width: 70%;
       color: #599ad6;
     }
+
   }
 
   .btn.home-btn {
@@ -83,4 +84,18 @@
     }
 
   }*/
+}
+.modal-content {
+  margin-top: 200px;
+}
+
+.upload-modal .modal-dialog {
+  width: 300px;
+  height: 100px;
+  h4 {
+    margin: 20px 0;
+  }
+  .btn {
+    margin-top: 20px;
+  }
 }
