@@ -40,13 +40,15 @@ app.directive('pieChart', function(d3Service, $window, DataFactory) {
                             width = scope.settings.width || ele[0].parentNode.offsetWidth,
                             height = scope.settings.height || width,
                             radius = scope.settings.radius || height / 3,
-                            title = scope.settings.title || scope.columns[0].name.replace(/\_+/g, " ")+ ' vs. ' + scope.columns[1].name.replace(/\_+/g, " ");
+                            title = scope.settings.title || scope.columns[0].name.replace(/\_+/g, " ")+ ' vs. ' + scope.columns[1].name.replace(/\_+/g, " "),
+                            displayType = scope.settings.displayType || 'number';
 
                         let filteredData = scope.rows.filter(obj => Number(obj[scope.columns[1].name]) > 0);
-
+                        
                         let groupedData = DataFactory.groupByCategory(filteredData, scope.columns[0].name, scope.columns[1].name);
                         groupedData = DataFactory.orderByCategory(groupedData, scope.columns[0].name);
-
+                        let groupedTotal = 0;
+                        groupedData.forEach( a => groupedTotal += a[scope.columns[1].name]);
                         //uses build in d3 method to create color scale
                         let color = scope.settings.color || d3.scale.category20();
 
@@ -100,6 +102,12 @@ app.directive('pieChart', function(d3Service, $window, DataFactory) {
                         //     return groupedData[i][scope.columns[1].name];
                         // });
 
+                        let legendDisplay = (type, data) => {
+                            if (type === 'percentage') return ((data/groupedTotal) * 100).toFixed(2) + "%";
+                            else return data;
+                        };
+
+
                         let legend = svg.selectAll(".legend")
                             .data(color.domain())
                             .enter().append("g")
@@ -121,11 +129,11 @@ app.directive('pieChart', function(d3Service, $window, DataFactory) {
                             .attr("x", -width/2)
                             .attr("y", (radius * -1.5) + margin.top/2 + height/100)
                             .text(function(d, i) { 
-                                return groupedData[i][scope.columns[0].name] + " - " + groupedData[i][scope.columns[1].name];
+                                return groupedData[i][scope.columns[0].name] + " - " + legendDisplay(displayType, +groupedData[i][scope.columns[1].name]);
                             });
-                    }
+                    };
                     
-            })
+            });
         }
     };
 });

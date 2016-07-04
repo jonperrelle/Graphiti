@@ -61,7 +61,10 @@
               <div class="form-group col-xs-12">
                 <label for="displayType" class="control-label">Display Type</label>
                 <div>
-                  <input class="form-control" name="displayType" type="text" ng-model="settings.displayType" required>
+                  <select class="form-control" name="displayType" type="text" ng-model="settings.displayType">
+                    <option value="number">Number</option>
+                    <option value="percentage">Percentage</option>
+                  </select>
                 </div>
               </div>
             </div>
