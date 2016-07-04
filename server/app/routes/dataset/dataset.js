@@ -45,15 +45,14 @@ router.post('/SocrataDataset', function(req, res, next) {
         userUploaded: false,
         socrataId: req.body.dataset.id,
         socrataDomain: req.body.domain
-    }
+    };
 
     Dataset.findOrCreate({ where: ds })
-        .then(function(dataset) {
-            return user.addDataset(dataset[0]);
-        })
         .then(function(ds) {
-            if (ds.length) res.sendStatus(201);
-            else res.sendStatus(204);
+            user.addDataset(ds[0])
+                .then(function() {
+                    res.send(ds);  
+                });
         })
         .catch(next);
 });
@@ -81,10 +80,10 @@ router.post('/UploadedDataset', function(req, res, next) {
                     }
                 })
                 .then(function(ds) {
-                    return user.addDataset(ds[0]);
-                })
-                .then(function() {
-                    res.sendStatus(201);
+                    user.addDataset(ds[0])
+                        .then(function() {
+                            return res.send(ds);
+                    });
                 })
                 .catch(next);
         }

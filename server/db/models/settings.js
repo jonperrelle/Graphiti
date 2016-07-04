@@ -3,6 +3,9 @@ var Sequelize = require('sequelize');
 module.exports = function (db) {
 
     db.define('settings', {
+        title: {
+            type: Sequelize.STRING
+        },
         width: {
             type: Sequelize.INTEGER
         },

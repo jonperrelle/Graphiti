@@ -1,3 +1,18 @@
-.table-container {
-	margin-top: 10px;
+.dataset-table{
+	thead {
+		td {
+			color: #ffffff;
+			font-size: 1.2em;
+			font-weight: 700;
+		}
+	}
+
+	tbody {
+
+		tr:nth-child(even) td {
+			color: #ffffff;
+		}
+
+	}
 }
+

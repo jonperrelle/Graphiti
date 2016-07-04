@@ -7,11 +7,13 @@
 		margin-top: 0;
 	}
 
+
 	.panel-group {
 		position: relative;
 
 		h4 {
 		  display: inline-block;
+		  color: #000;
 		}
 
 		span {
@@ -58,7 +60,7 @@
 	}
 
 	.btn-remove {
-	  margin-left: 3px;
+	  margin-left: 2px;
 	  width: 24px;
 	  height: 24px;
 	  text-align: center;
@@ -66,7 +68,6 @@
 	  font-size: 12px;
 	  line-height: 1.428571429;
 	  border-radius: 12px;
-	  float: right; 
 	}
 
 	.btn-dataset {

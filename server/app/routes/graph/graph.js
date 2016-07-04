@@ -9,9 +9,9 @@ const Promise = require('bluebird');
 
 //Security that validates user is authenticated and has proper access control is upstream in the user router
 router.delete('/:graphId', function(req, res, next) {
-
     Graph.findById(req.params.graphId)
     .then(function(graph) {
+    	console.log(graph)
         return graph.destroy();
     })
     .then(function(gr) {
@@ -23,11 +23,15 @@ router.delete('/:graphId', function(req, res, next) {
 router.post('/',function(req,res,next){
 
 	let user = req.requestedUser;
-
+	req.body.settings.title = req.body.settings.title || req.body.columns.map(col=> col.name).join(" .vs ");
+	
 	Promise.all([Dataset.findById(req.body.dataset.id),
 	        Settings.create(req.body.settings)])
 	.spread(function(dataset,settings){
-		return Graph.create(req.body.graph)
+		return Graph.create({
+			graphType: req.body.type,
+			columns: req.body.columns 
+		})
 		.then(function(graph){
 			return Promise.all([
 				graph.setSetting(settings),
@@ -38,6 +42,7 @@ router.post('/',function(req,res,next){
 		.catch(next);
 	})
 	.then(function(graph){
+		console.log("HERERERE", graph)
 		res.sendStatus(201);
 	})
 	.catch(next);

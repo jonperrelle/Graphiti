@@ -1,16 +1,17 @@
 header.user-dataset-header {
 	margin-bottom: 0;
-	a#back-home {
+	a.goto {
 		font-size: 150%;
 		font-weight: 700;
+		margin-right: 20px;
 	}
-	a#remove {
+	a.remove {
 		color: #f22015;
 		font-size: 150%;
 		font-weight: 700;
 		float: right;
 	}
-	a#remove:hover {
+	a.remove:hover {
 		text-decoration: none;
   		color: #599ad6;
 	}

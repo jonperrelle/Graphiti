@@ -1,7 +1,43 @@
-.graphPreviews svg {
-  border: 1px solid;
-  border-radius: 10px;
-  background-color: #6a6d70;
-  margin-top: 50px;
-  margin-bottom: 50px;
+
+.graph-form {
+
+	border: 2px solid white;
+	border-radius: 10px;
+	margin-bottom:20px;
+	label {
+		color: #ffffff;
+		font-size: 1.5em;
+		font-weight: 800;
+	}
+
+	.form-group {
+		padding: 0 20px;
+	}
+}
+
+
+.graph-previews {
+	
+	svg {
+	  border-radius: 10px;
+	  background-color: #ffffff;
+	}
+
+	h4 {
+		color: #ffffff;
+	}
+
+	.graph-previews-columns {
+		padding-right: 0px;
+		padding-left: 0px;
+	  	margin-top: 50px;
+	  	margin-bottom: 50px;
+	}
+}
+
+.graph-feedback {
+	p {
+		color: #ffffff;
+	}
+	
 }

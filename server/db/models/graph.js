@@ -10,16 +10,12 @@ module.exports = function (db) {
 
 
     db.define('graph', {
-        name: {
-        	type: Sequelize.STRING,
-        },
-        type: {
+        graphType: {
             type: Sequelize.STRING,
         },
         columns: {
             type: Sequelize.ARRAY(Sequelize.JSONB),
         },
-
     },
     {
     	defaultScope: {include: [Settings,Dataset]}

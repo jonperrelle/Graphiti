@@ -17,8 +17,14 @@ app.controller('UserHomeCtrl', function ($scope, $state, UploadFactory, Session,
     $scope.datasets = UserInfo.datasets;
     $scope.graphs = UserInfo.graphs;
 
+    console.log($scope.graphs);
+
     $scope.goToUserGraph = function(graph){
-            $state.go('userGraph', {userId: $scope.user.id, graphId: graph.id, graph: graph});
+            DatasetFactory.getOneUserDataset(graph.dataset, $scope.user)
+            .then(rows => {
+                $state.go('userSingleGraph', {userId: $scope.user.id, graphId: graph.id, dataset: graph.dataset, graphType: graph.graphType, settings: graph.setting, data: rows, columns: graph.columns});    
+            })
+            .catch();
     };
 
     $scope.goToDataset = function (dataset) {
@@ -43,7 +49,7 @@ app.controller('UserHomeCtrl', function ($scope, $state, UploadFactory, Session,
     };
 
     $scope.removeUserGraph = function (graph) {
-        GraphFactory.removeUserGraph(graph, $scope.user)
+        GraphFactory.removeUserGraph(graph.id, $scope.user)
         .then (function () {
             $scope.graphs = $scope.graphs.filter(gr => gr.id !== graph.id);
         });

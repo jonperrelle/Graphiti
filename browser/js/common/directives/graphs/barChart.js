@@ -37,11 +37,12 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
 
                     let filteredData = scope.rows.filter(obj => obj[scope.columns[0].name] 
                         && obj[scope.columns[1].name]
-                        && (!!Number(obj[scope.columns[1].name]) || Number(obj[scope.columns[1].name]) === 0))
-                        .sort((a, b) => a[scope.columns[0].name] - b[scope.columns[0].name]);
+                        && (!!Number(obj[scope.columns[1].name]) || Number(obj[scope.columns[1].name]) === 0));
 
+                   
                     let groupedData = DataFactory.groupByCategory(filteredData, scope.columns[0].name, scope.columns[1].name);
-                    groupedData = DataFactory.orderByCategory(groupedData, scope.columns[0].name);
+                    groupedData = DataFactory.orderByCategory(groupedData, scope.columns[0].name, scope.columns[0].type);
+                    
 
                     let anchor = d3.select(ele[0])
                     anchor.selectAll('*').remove();
@@ -55,17 +56,19 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                             return currentLength > prev ? currentLength : prev;
                         }, 0);
 
-                    let margin = {
+                    let formatColX = scope.columns[0].name.replace(/\_+/g, " "),
+                        formatColY = scope.columns[1].name.replace(/\_+/g, " "),
+                        margin = {
                         top: 30,
-                        right: 0,
+                        right: 20,
                         bottom: (xLabelLength + 6) * 5,
                         left: (yLabelLength + 6) * 7
                     },
-                        width = +scope.settings.width || ele[0].parentNode.offsetWidth,
-                        height = +scope.settings.height || width,
-                        xAxisLabel = scope.settings.xAxisLabel || scope.columns[0].name,
-                        yAxisLabel = scope.settings.yAxisLabel || scope.columns[1].name,
-                        title = scope.settings.title || scope.columns[0].name + ' vs. ' + scope.columns[1].name,
+                        width = scope.settings.width || ele[0].parentNode.offsetWidth,
+                        height = scope.settings.height || width,
+                        xAxisLabel = scope.settings.xAxisLabel || formatColX,
+                        yAxisLabel = scope.settings.yAxisLabel || formatColY,
+                        title = scope.settings.title || formatColX + ' vs. ' + formatColY,
                         barSpace = 0.1;
 
                     let svg = anchor
@@ -76,7 +79,7 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
 
                     //create the rectangles for the bar chart
                     let x = d3.scale.ordinal()
-                        .rangeRoundBands([0, width - margin.left], barSpace);
+                        .rangeRoundBands([0, width - margin.left -margin.right], barSpace);
 
                     let y = d3.scale.linear()
                         .range([height - margin.bottom, margin.top]);
@@ -90,8 +93,8 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                         .orient("left");
 
                     let color = scope.settings.color || d3.scale.category10(),
-                        minY = (typeof scope.settings.minY !== 'undefined') ? +scope.settings.minY : 0,
-                        maxY = (typeof scope.settings.maxY !== 'undefined') ? +scope.settings.maxY : d3.max(groupedData, function(d) {
+                        minY = (typeof scope.settings.minY === 'number') ? scope.settings.minY : 0,
+                        maxY = (typeof scope.settings.maxY === 'number') ? scope.settings.maxY : d3.max(groupedData, function(d) {
                             return +d[scope.columns[1].name]; });
 
                     x.domain(groupedData.map(function(d) {
@@ -109,19 +112,18 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                         .text(xAxisLabel);
 
                     svg.selectAll(".x text")
-                        .attr("transform", "translate(-10, 0)rotate(-45)")
-                        .style("text-anchor", "end");
+                        .attr("transform", "translate(-10, 0)rotate(-45)");
 
                     svg.select(".xlabel")
-                        .attr("transform", "translate(" + (width - margin.left) / 2 + ", " + (margin.bottom - 10) + ")");
+                        .attr("transform", "translate(" + (width - margin.left - margin.right) / 2 + ", " + (margin.bottom - 10) + ")");
 
                     svg.append("g")
                         .attr("class", "y axis")
                         .attr("transform", "translate(" + margin.left + ",0)")
                         .call(yAxis)
                         .append("text")
-                        .attr("class", "label")
-                        .attr("transform", "rotate(-90)translate(" + -((height - margin.bottom - margin.top) / 2) + ", " + -(margin.left - 10) + ")")
+                        .attr("class", "ylabel")
+                        .attr("transform", "rotate(-90)translate(" + -((height + margin.bottom + margin.top) / 2) + ", " + -(margin.left-20) + ")")
                         .text(yAxisLabel);
 
                     svg.selectAll(".bar")
@@ -145,6 +147,7 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                         .attr("y", (margin.top / 2))
                         .attr("text-anchor", "middle")    
                         .text(title);
+
                 };
             });
         }
