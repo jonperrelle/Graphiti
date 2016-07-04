@@ -2,6 +2,7 @@
 
 var passport = require('passport');
 var TwitterStrategy = require('passport-twitter').Strategy;
+var chalk = require('chalk')
 
 module.exports = function (app, db) {
 
@@ -23,16 +24,16 @@ module.exports = function (app, db) {
 
     var verifyCallback = function (token, tokenSecret, profile, done) {
 
-        UserModel.findOne({
+        User.findOne({
             where: {
                 twitter_id: profile.id
             }
-        }).exec()
-            .then(function (user) {
+        })
+        .then(function (user) {
                 if (user) { // If a user with this twitter id already exists.
                     return user;
                 } else { // If this twitter id has never been seen before and no user is attached.
-                    return User(profile);
+                    return createNewUser(token, tokenSecret, profile);
                 }
             })
             .then(function (user) {
@@ -50,7 +51,7 @@ module.exports = function (app, db) {
     app.get('/auth/twitter', passport.authenticate('twitter'));
 
     app.get('/auth/twitter/callback',
-        passport.authenticate('twitter', {failureRedirect: '/login'}),
+    passport.authenticate('twitter', {failureRedirect: '/login'}),
         function (req, res) {
             res.redirect('/');
         });

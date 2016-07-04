@@ -23,8 +23,6 @@ module.exports = function (app, db) {
                 }
             })
             .then(function (user) {
-                console.log(profile);
-
                 if (user) {
                     return user;
                 } else {
