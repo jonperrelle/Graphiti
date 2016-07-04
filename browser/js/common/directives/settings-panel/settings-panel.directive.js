@@ -20,7 +20,7 @@ app.directive('settingsPanel', function(ValidationFactory, $localStorage){
 
             scope.downloadGraph = function () {
             	saveSvgAsPng(document.querySelector('.graph-container svg'), 'sample.png');
-            };           
-		}
+            };
+        }
 	};
 });

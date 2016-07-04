@@ -27,11 +27,17 @@
   .home-instructions {
   
     .odd-div {
-       background: #dee4e5;
+       background: #3a424c;
+       h4 {
+        color: #ffffff
+       }
     }
 
-    h3 {
-      color: #000; 
+    header { 
+      padding: 20px 0;
+      h3 {
+        color: #ffffff;
+      }
     }
 
     h4 {
@@ -45,14 +51,14 @@
 
   .btn.home-btn {
     color: #ffffff;
-    background: #2a3233;
+    background: #599ad6;
     outline: none !important;
   }
 
   .btn.home-btn:hover {
     background: #ffffff;
-    color: #2a3233;
-    border: 1px solid #2a3233;
+    color: #599ad6;
+    border: 1px solid #599ad6;
   }
 
 }

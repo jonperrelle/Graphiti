@@ -1,10 +1,11 @@
 .user-home {
 	margin: 0 auto;
     margin-top: 50px;
+    height: 100%;
 
     .dataset-account-info {
-    	background: #dee4e5;  
-    	padding-left: 30px; 	
+    	background: #dee4e5;
+    	padding-left: 30px; 
     }
 
 	h3 {
@@ -38,7 +39,7 @@
 		.list-group-item {
 			border: none;
 			background: #599ad6;
-			padding: 10px;
+			padding: 5px;
 
 			p {
 				margin-top: 5px;
