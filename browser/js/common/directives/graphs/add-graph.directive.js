@@ -40,7 +40,6 @@ app.directive('addGraph', function(AddGraphFactory, ValidationFactory, DataFacto
 
             scope.withinLength = function(){
                 let groupedData = DataFactory.groupByCategory(scope.data, scope.column1.name, scope.column2.name, 'total');
-                groupedData = DataFactory.orderByCategory(groupedData, scope.column1.name, scope.column1.type);
                 return DataFactory.withinLength(groupedData, scope.column1.name, 30);
             };
 
