@@ -44,15 +44,16 @@
     }
   }
 
-  .home-search-box {
-    padding-bottom: 50px;
-    header {
-      margin: 40px 0;
-    }
+  .btn.home-search-btn {
+    color: #ffffff;
+    background: #2a3233;
+    outline: none !important;
+  }
 
-    a {
-      font-size: 1.5em;
-    }
+  .btn.home-search-btn:hover {
+    background: #ffffff;
+    color: #2a3233;
+    border: 1px solid #2a3233;
   }
 
   .upload-form {
