@@ -68,7 +68,6 @@ app.directive('pieChart', function(d3Service, $window, DataFactory) {
                         };
 
                         setColor(scope.settings.color);
-                        console.log(color);
 
                         let svg = anchor
                             .append('svg')

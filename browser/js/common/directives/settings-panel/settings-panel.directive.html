@@ -63,8 +63,8 @@
         </div>
       </div>
     </div>
-    <div class="col-sm-3 col-xs-12 panel-group">
-      <div class="panel settings-panel" ng-show="graphType==='pieChart'">
+    <div class="col-sm-3 col-xs-12 panel-group" ng-show="graphType==='pieChart'">
+      <div class="panel settings-panel">
         <div class="panel-heading"> 
           <a data-toggle="collapse" data-target="#view-xsettings-collapse" href="#"><h5>Legend Settings</h5></a>
         </div>
@@ -84,7 +84,9 @@
           </div>
         </div>
       </div>
-      <div class="panel settings-panel" ng-hide="graphType==='pieChart'">
+    </div>
+    <div class="col-sm-3 col-xs-12 panel-group" ng-hide="graphType==='pieChart'">
+      <div class="panel settings-panel">
         <div class="panel-heading"> 
           <a data-toggle="collapse" data-target="#view-xsettings-collapse" href="#"><h5>X Axis Settings</h5></a>
         </div>
@@ -116,8 +118,8 @@
         </div>
       </div>
     </div>
-    <div class="col-sm-3 col-xs-12 panel-group">
-      <div class="panel settings-panel" ng-hide="graphType==='pieChart'">
+    <div class="col-sm-3 col-xs-12 panel-group" ng-hide="graphType==='pieChart'">
+      <div class="panel settings-panel">
         <div class="panel-heading">
           <a data-toggle="collapse" data-target="#view-ysettings-collapse" href="#"><h5>Y Axis Settings</h5></a>
         </div>
@@ -144,6 +146,33 @@
                   <input class="form-control" name="maxY" type="number" ng-model="settings.maxY" required>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-3 col-xs-12 panel-group">
+      <div class="panel settings-panel">
+        <div class="panel-heading">
+          <a data-toggle="collapse" data-target="#view-changedata-collapse" href="#"><h5>Change Data</h5></a>
+        </div>
+        <div id="view-changedata-collapse" class="panel-collapse collapse settings-collapse">
+          <div id="general">
+            <div class="row">
+              <div class="form-group col-xs-12">
+                <label for="xAxis" class="control-label">X Axis/Data Point #1</label>
+                <div>
+                  <select ng-model="columns[0].name"  name="column1" class="form-control" ng-options="col for col in allColumns" ng-change="assignColumnType(columns[0])"></select>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-xs-12">
+                <label for="yAxis" class="control-label">Y Axis/Data Point #2</label>
+                <div>
+                  <select ng-model="columns[1].name"  name="column2" class="form-control" ng-options="col for col in allColumns" ng-change="assignColumnType(columns[1])"></select>
+                </div>
+              </div
             </div>
           </div>
         </div>

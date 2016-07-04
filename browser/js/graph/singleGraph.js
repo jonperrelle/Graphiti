@@ -8,7 +8,8 @@ app.config (function ($stateProvider) {
     	graphType: null,
     	settings: null,
     	data: null,
-    	columns: null
+    	columns: null,
+        allColumns: null,
     }
   });
 });
@@ -25,6 +26,8 @@ app.controller('singleGraphCtrl', function ($scope, $stateParams, $timeout, $sta
 	$scope.settings = $stateParams.settings || $localStorage.settings;
     $localStorage.settings = $scope.settings;
     $scope.dataset = $stateParams.dataset;
+    $scope.allColumns = $stateParams.allColumns || $localStorage.allColumns;
+    $localStorage.allColumns = $scope.allColumns;
 
     $scope.addedGraph = false;
     if (Session.user) $scope.user = Session.user;

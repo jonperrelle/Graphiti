@@ -1,4 +1,4 @@
-app.directive('settingsPanel', function(){
+app.directive('settingsPanel', function(ValidationFactory){
 	return {
 		restrict: 'E',
 		templateUrl: 'js/common/directives/settings-panel/settings-panel.directive.html',
@@ -11,6 +11,12 @@ app.directive('settingsPanel', function(){
 					scope.$digest();
   				});
             });
+
+            scope.assignColumnType = function (col) {
+                ValidationFactory.assignColumnType(scope.data, col);
+                $localStorage.column1 = scope.column1;
+                $localStorage.column2 = scope.column2;
+            }; 
 
             scope.downloadGraph = function () {
             	saveSvgAsPng(document.querySelector('.graph-container svg'), 'sample.png');
