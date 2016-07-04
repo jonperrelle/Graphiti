@@ -17,12 +17,12 @@ app.controller('UserHomeCtrl', function ($scope, $state, UploadFactory, Session,
     $scope.datasets = UserInfo.datasets;
     $scope.graphs = UserInfo.graphs;
 
-    console.log($scope.graphs);
 
     $scope.goToUserGraph = function(graph){
             DatasetFactory.getOneUserDataset(graph.dataset, $scope.user)
             .then(rows => {
-                $state.go('userSingleGraph', {userId: $scope.user.id, graphId: graph.id, dataset: graph.dataset, graphType: graph.graphType, settings: graph.setting, data: rows, columns: graph.columns});    
+                let allColumns = Object.keys(rows[0]);
+                $state.go('userSingleGraph', {userId: $scope.user.id, graphId: graph.id, dataset: graph.dataset, graphType: graph.graphType, settings: graph.setting, data: rows, columns: graph.columns, allColumns: allColumns});    
             })
             .catch();
     };

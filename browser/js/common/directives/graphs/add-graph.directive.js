@@ -35,7 +35,7 @@ app.directive('addGraph', function(AddGraphFactory, ValidationFactory, $state, $
             };
 
             scope.viewSingleGraph = function (graphType) {
-                $state.go('singleGraph', {graphType, data: scope.data, columns: [scope.column1, scope.column2], settings: scope.settings});
+                $state.go('singleGraph', {graphType, data: scope.data, columns: [scope.column1, scope.column2], settings: scope.settings, allColumns: scope.columns});
             };
 
         }

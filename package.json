@@ -76,6 +76,7 @@
     "request": "^2.72.0",
     "run-sequence": "^1.0.2",
     "s3fs": "^2.4.7",
+    "save-svg-as-png": "^1.0.3",
     "sequelize": "^3.23.3",
     "serve-favicon": "^2.2.0",
     "sinon": "^1.13.0",

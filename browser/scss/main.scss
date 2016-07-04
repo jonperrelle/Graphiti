@@ -2,14 +2,15 @@
   box-sizing: border-box;
   font-family: 'Oxygen', sans-serif;
   color: #000;
+  font-size: 11px;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  color: #ffffff;
+  color: #000;
 }
 
 body {
-  background: #2a3233;
+  background: #ffffff;
 }
 
 @mixin clearfix {
@@ -23,6 +24,7 @@ body {
 a {
   color: #19d178;
 }
+
 a:hover {
   text-decoration: none;
   color: #599ad6;
