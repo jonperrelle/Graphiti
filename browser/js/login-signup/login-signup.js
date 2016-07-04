@@ -1,4 +1,4 @@
-app.config(function($stateProvider,$urlRouterProvider) {
+app.config(function($stateProvider) {
 
     $stateProvider.state('login', {
         url: '/login/:source',
