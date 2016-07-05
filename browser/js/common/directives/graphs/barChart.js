@@ -28,7 +28,7 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
 
                 scope.$watch(function (scope) {
                   return scope.columns;
-                }, function () {
+                }, function () {  
                   scope.render();
                 },true);
                 
@@ -113,7 +113,6 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                         .attr("class", "xlabel")
                         .text(xAxisLabel);
 
-                    console.log(xLabelLength)
                     svg.selectAll(".x text")
                         .attr("transform", "rotate(-45)")
                         .style("text-anchor", "end")

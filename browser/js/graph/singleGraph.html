@@ -2,7 +2,7 @@
 	<div class="row graphsettings-container">
 		<header class="row graph-alert-header">
 	      <div ng-show="addedGraph" ng-class="{'alert-success': success, 'alert-danger': !success}" class="animate-show animate-hide">{{message}}</div>
-	      <button ng-show="user && !userGraph" class="btn" ng-click="saveUserGraph()">Save Graph</button>
+	      <button ng-show="user" ng-disabled="unchanged" class="btn" ng-click="saveUserGraph()">Save Graph</button>
 	      <p ng-show="!user"><button class="btn" ui-sref="login({source: 'graph'})">Login</button> or <button class="btn" ui-sref="signup({source: 'graph'})">signup</button> to save graph</p>
 	    </header>
 	    <div class="row">

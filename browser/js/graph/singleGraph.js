@@ -29,26 +29,39 @@ app.controller('singleGraphCtrl', function ($scope, $stateParams, $timeout, $sta
     $scope.allColumns = $stateParams.allColumns || $localStorage.allColumns;
     $localStorage.allColumns = $scope.allColumns;
 
-
+    $scope.unchanged = false;
     $scope.addedGraph = false;
     if (Session.user) $scope.user = Session.user;
-    console.log($localStorage.dataset); //leave to check for bugs
-    if ($localStorage.dataset.metadata) domain = $localStorage.dataset.metadata.domain;
-    if ($localStorage.dataset.socrataDomain) domain = $localStorage.dataset.socrataDomain;
     $scope.saveUserGraph = function () {
-        GraphFactory.saveUserGraph($scope.user, $localStorage.dataset.resource, $scope.columns, $scope.graphType, $scope.settings, domain)
+        let graphToSave = {};
+        graphToSave.columns = $scope.columns;
+        graphToSave.graphType = $scope.graphType;
+        GraphFactory.saveUserGraph($scope.user, $localStorage.dataset, graphToSave, $scope.settings)
             .then(function(data) {
                 console.log(data);
                 $scope.success = data.success;
                 $scope.message = data.message;
                 $scope.userGraph=true;
                 $scope.addedGraph = true; 
+                $scope.unchanged = true;
                 $timeout(function () {
                     $scope.addedGraph=false;
                 }, 2000);
             })
             .catch();
     };
+
+    $scope.$watch(function($scope) {
+        return $scope.settings;
+    }, function() {
+        $scope.unchanged = false;
+    }, true);
+
+    $scope.$watch(function($scope) {
+        return $scope.columns;
+    }, function() {
+        $scope.unchanged = false;
+    }, true);
 
     $scope.removeUserGraph = function () {
         GraphFactory.removeUserGraph($localStorage.graphId, $scope.user)
