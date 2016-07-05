@@ -74,7 +74,7 @@ app.directive('scatterplotGraph', function(d3Service, $window) {
                     dotRadius = width / 150,
                     xAxisLabel = scope.settings.xAxisLabel || formatColX,
                     yAxisLabel = scope.settings.yAxisLabel || formatColY,
-                    title = scope.settings.title || formatColX + ' vs. ' + formatColY,
+                    title = scope.settings.title || (formatColX + ' vs. ' + formatColY).toUpperCase(),
                     svg = anchor
                     .append('svg')
                     .attr('width', width)
@@ -192,7 +192,7 @@ app.directive('scatterplotGraph', function(d3Service, $window) {
                     .attr("x", (width / 2))             
                     .attr("y", (margin.top/2))
                     .attr("text-anchor", "middle")    
-                    .text(title.toUpperCase());
+                    .text(title);
 
             };
         });
