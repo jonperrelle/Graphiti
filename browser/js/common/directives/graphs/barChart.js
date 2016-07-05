@@ -43,6 +43,8 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                     let orderType = scope.settings.orderType || 'none'; 
                     let groupedData = DataFactory.groupByCategory(filteredData, scope.columns[0].name, scope.columns[1].name, groupType);
                     groupedData = DataFactory.orderByCategory(groupedData, scope.columns[0].name, scope.columns[0].type, orderType);
+                    
+                    let tooMuchData = groupedData.length > 50;
                     let anchor = d3.select(ele[0])
                     anchor.selectAll('*').remove();
 
@@ -58,7 +60,6 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                     let formatColX = scope.columns[0].name.replace(/\_+/g, " "),
                         formatColY = scope.columns[1].name.replace(/\_+/g, " "),
                         graphColor = scope.settings.color || '10',
-                        width = scope.settings.width || ele[0].parentNode.offsetWidth,
                         height = scope.settings.height || 500,
                         titleSize = scope.settings.titleSize || height / 20,
                         xAxisLabelSize = scope.settings.xAxisLabelSize || height / 30,
@@ -68,7 +69,9 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                         right: 20,
                         bottom: ((xLabelLength + 6) * 5) + xAxisLabelSize,
                         left: ((yLabelLength + 6) * 7) + yAxisLabelSize
-                    },
+                        },
+                        width = scope.settings.width || tooMuchData ? margin.left + margin.right + groupedData.length * 15 : ele[0].parentNode.offsetWidth,
+                        
 
                         xAxisLabel = scope.settings.xAxisLabel || formatColX,
                         yAxisLabel = scope.settings.yAxisLabel || formatColY,
