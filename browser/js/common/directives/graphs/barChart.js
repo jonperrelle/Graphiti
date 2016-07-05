@@ -28,7 +28,7 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
 
                 scope.$watch(function (scope) {
                   return scope.columns;
-                }, function () {
+                }, function () {  
                   scope.render();
                 },true);
                 
@@ -40,11 +40,9 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                         && (!!Number(obj[scope.columns[1].name]) || Number(obj[scope.columns[1].name]) === 0));
 
                     let groupType = scope.settings.groupType || 'total';
+                    let orderType = scope.settings.orderType || 'none'; 
                     let groupedData = DataFactory.groupByCategory(filteredData, scope.columns[0].name, scope.columns[1].name, groupType);
-                    groupedData = DataFactory.orderByCategory(groupedData, scope.columns[0].name, scope.columns[0].type);
-
-                    let tooMuchData = groupedData.length > 50;
-
+                    groupedData = DataFactory.orderByCategory(groupedData, scope.columns[0].name, scope.columns[0].type, orderType);
                     let anchor = d3.select(ele[0])
                     anchor.selectAll('*').remove();
 
@@ -59,14 +57,19 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
 
                     let formatColX = scope.columns[0].name.replace(/\_+/g, " "),
                         formatColY = scope.columns[1].name.replace(/\_+/g, " "),
-                        margin = {
-                        top: 30,
-                        right: 20,
-                        bottom: (xLabelLength + 6) * 5,
-                        left: (yLabelLength + 6) * 7
-                    },
-                        width = scope.settings.width || tooMuchData ? margin.left + margin.right + groupedData.length * 15 : ele[0].parentNode.offsetWidth,
+                        graphColor = scope.settings.color || '10',
+                        width = scope.settings.width || ele[0].parentNode.offsetWidth,
                         height = scope.settings.height || 500,
+                        titleSize = scope.settings.titleSize || height / 20,
+                        xAxisLabelSize = scope.settings.xAxisLabelSize || height / 30,
+                        yAxisLabelSize = scope.settings.yAxisLabelSize || height / 30,
+                        margin = {
+                        top: titleSize + 20,
+                        right: 20,
+                        bottom: ((xLabelLength + 6) * 5) + xAxisLabelSize,
+                        left: ((yLabelLength + 6) * 7) + yAxisLabelSize
+                    },
+
                         xAxisLabel = scope.settings.xAxisLabel || formatColX,
                         yAxisLabel = scope.settings.yAxisLabel || formatColY,
                         title = scope.settings.title || (formatColX + ' vs. ' + formatColY).toUpperCase(),
@@ -94,9 +97,32 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                         .scale(y)
                         .orient("left");
 
-                    let color = scope.settings.color || d3.scale.category10(),
-                        minY = (typeof scope.settings.minY === 'number') ? scope.settings.minY : 0,
-                        maxY = (typeof scope.settings.maxY === 'number') ? scope.settings.maxY : d3.max(groupedData, function(d) {
+                  
+                    let color,
+                    setColor = colorScale => {
+                        switch (colorScale) {
+                            case '10':
+                                color = d3.scale.category10();
+                                break;
+                            case '20b':
+                                color = d3.scale.category20b();
+                                break;
+                            case '20c':
+                                color = d3.scale.category20c();
+                                break;
+                            case '20a':
+                                color = d3.scale.category20();
+                                break; 
+                            default: 
+                                color = colorScale;
+                                break;
+                        }
+                    };
+                        
+                        setColor(graphColor);
+
+                    let minY = (typeof scope.settings.minY === 'number') ? scope.settings.minY : 0,
+                    maxY = (typeof scope.settings.maxY === 'number') ? scope.settings.maxY : d3.max(groupedData, function(d) {
                             return +d[scope.columns[1].name]; });
 
                     x.domain(groupedData.map(function(d) {
@@ -117,7 +143,9 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                         .style("text-anchor", "end");
 
                     svg.select(".xlabel")
-                         .attr("transform", "translate(" + (width - margin.left - margin.right) / 2 + ", " + (margin.bottom - 10) + ")");
+                         .attr("transform", "translate(" + ((width - margin.left - margin.right) / 2) + ", " + (margin.bottom - xAxisLabelSize) + ")")
+                         .style("text-anchor", "middle")
+                         .style("font-size", xAxisLabelSize)
 
                     svg.append("g")
                         .attr("class", "y axis")
@@ -125,8 +153,10 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                         .call(yAxis)
                         .append("text")
                         .attr("class", "ylabel")
-                        .attr("transform", "rotate(-90)translate(" + -((height + margin.bottom + margin.top) / 2) + ", " + -(margin.left-20) + ")")
-                        .text(yAxisLabel);
+                        .attr("transform", "rotate(-90)translate(" + -((height - margin.bottom) / 2) + ", " + -(margin.left - yAxisLabelSize) + ")")
+                        .text(yAxisLabel)
+                        .style("text-anchor", "middle")
+                        .style("font-size", yAxisLabelSize)
 
                     svg.selectAll(".bar")
                         .data(groupedData)
@@ -141,13 +171,18 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                         .attr("height", function(d) {
                             return height - margin.bottom - y(+d[scope.columns[1].name]);
                         })
-                        .attr("fill", color)
+                        .attr("fill", function(d, i) {
+                                if(typeof color === 'function') return color(i)
+                                else return color;
+                            })
+                        //.attr("fill", color)
                         .attr("transform", "translate(" + margin.left + ", 0)");
 
                     svg.append("text")
                         .attr("x", (width / 2))             
                         .attr("y", (margin.top / 2))
-                        .attr("text-anchor", "middle")    
+                        .attr("text-anchor", "middle") 
+                        .style("font-size", titleSize)
                         .text(title);
                 };
             });

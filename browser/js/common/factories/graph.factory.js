@@ -16,24 +16,24 @@ app.factory('GraphFactory',function($http, DatasetFactory){
     };
        
 	return {
-		saveUserGraph: function(user, dataset, columns, type, settings, domain){
-            let imageSource,
-            n = document.querySelector('.graph-container svg');
-            svgAsDataUri(n, {}, function(uri) {
-                imageSource = uri;
-            });
-			return DatasetFactory.addDataset(user, dataset, domain)
-			       .then(function(data) {
-                        return $http.post('/api/users/'+user.id+'/graphs', {dataset: data[0], columns, type, settings, imageSource})
-                    })
-			        .then(addGraphFunction)
-			        .catch();
+	        saveUserGraph: function(user, dataset, graph, settings){ 
+                        let selector = document.querySelector('.graph-container svg');
+                        svgAsDataUri(selector, {}, function(uri) {
+                        graph.imageSource = uri;
+                        });
+
+			return DatasetFactory.addDataset(user, dataset)
+			.then(function(data) {
+                                return $http.post('/api/users/'+user.id+'/graphs', {dataset: data[0], graph, settings})
+                        })
+			.then(addGraphFunction)
+			.catch();
 		},
 		removeUserGraph: function(graphId, user) {
-            return $http.delete('/api/users/' + user.id + '/graphs/' + graphId)
-                    .then(res=>res.data)
-                    .catch();
-        },
+                        return $http.delete('/api/users/' + user.id + '/graphs/' + graphId)
+                        .then(res=>res.data)
+                        .catch();
+                },
 
 	};
 });

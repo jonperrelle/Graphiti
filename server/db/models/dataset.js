@@ -15,7 +15,7 @@ module.exports = function (db) {
         }, 
         userUploaded: {
         	type: Sequelize.BOOLEAN,
-        	allowNull: false
+            defaultValue: false
         },
         socrataId: {
         	type: Sequelize.STRING,
