@@ -71,9 +71,7 @@ app.directive('lineGraph', function(d3Service, $window, $state) {
                         .style('width', width)
                         .style('height', height)
                         .style('background-color', '#ffffff')
-                        .style('border-radius', '10px')
                         .append("g");
-                        // .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
                     //check if the data column header may contain date info ??
                     let x,

@@ -45,8 +45,6 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
 
                     let tooMuchData = groupedData.length > 50;
 
-
-
                     let anchor = d3.select(ele[0])
                     anchor.selectAll('*').remove();
 
@@ -79,14 +77,11 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                         .style('width', width)
                         .style('height', height)
                         .style('background-color', '#ffffff')
-                        .style('border-radius', '10px')
                         .append("g");
 
                     //create the rectangles for the bar chart
                     let x = d3.scale.ordinal()
                         .rangeRoundBands([0, width - margin.left - margin.right], barSpace);
-
-                    let barWidth = tooMuchData ? 10 : x.rangeBand();
 
                     let y = d3.scale.linear()
                         .range([height - margin.bottom, margin.top]);
@@ -107,7 +102,6 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                     x.domain(groupedData.map(function(d) {
                         return d[scope.columns[0].name]; }));
 
-                    // y.domain([0, d3.max(groupedData, function(d) { return +d[scope.columns[1].name]; })]);
                     y.domain([minY, maxY]);
 
                     svg.append("g")
@@ -119,7 +113,7 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                         .text(xAxisLabel);
 
                     svg.selectAll(".x text")
-                        .attr("transform", "rotate(-45)")
+                        .attr("transform", "translate(-7,0)rotate(-45)")
                         .style("text-anchor", "end");
 
                     svg.select(".xlabel")
@@ -140,7 +134,7 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                         .attr("class", "bar")
                         .attr("x", function(d) {
                             return x(d[scope.columns[0].name]); })
-                        .attr("width", barWidth)
+                        .attr("width", tooMuchData ? 10 : x.rangeBand())
                         .attr("y", function(d) {
                             return y(+d[scope.columns[1].name]);
                         })
