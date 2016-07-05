@@ -40,7 +40,7 @@ app.directive('pieChart', function(d3Service, $window, DataFactory) {
                             width = scope.settings.width || ele[0].parentNode.offsetWidth,
                             height = scope.settings.height || width,
                             radius = scope.settings.radius || height / 3,
-                            title = scope.settings.title || scope.columns[0].name.replace(/\_+/g, " ")+ ' vs. ' + scope.columns[1].name.replace(/\_+/g, " "),
+                            title = scope.settings.title || (scope.columns[0].name.replace(/\_+/g, " ")+ ' vs. ' + scope.columns[1].name.replace(/\_+/g, " ")).toUpperCase(),
                             displayType = scope.settings.displayType || 'number';
 
                         let filteredData = scope.rows.filter(obj => Number(obj[scope.columns[1].name]) > 0);
@@ -111,7 +111,7 @@ app.directive('pieChart', function(d3Service, $window, DataFactory) {
                             .attr("x", 0)             
                             .attr("y", (radius * -1.5) + margin.top/2)
                             .attr("text-anchor", "middle")    
-                            .text(title.toUpperCase());
+                            .text(title);
 
                         //add the text
                         // arcs.append("text").attr("transform", function(d) {
