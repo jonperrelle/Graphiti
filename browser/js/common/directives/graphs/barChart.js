@@ -59,18 +59,20 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
 
                     let formatColX = scope.columns[0].name.replace(/\_+/g, " "),
                         formatColY = scope.columns[1].name.replace(/\_+/g, " "),
+                        titleSize = scope.settings.titleSize || 32,
+                        xAxisLabelSize = scope.settings.xAxisLabelSize || 14,
+                        yAxisLabelSize = scope.settings.yAxisLabelSize || 14,
                         margin = {
-                        top: 30,
+                        top: titleSize + 20,
                         right: 20,
-                        bottom: (xLabelLength + 6) * 5,
-                        left: (yLabelLength + 6) * 7
+                        bottom: ((xLabelLength + 6) * 5) + xAxisLabelSize,
+                        left: ((yLabelLength + 6) * 7) + yAxisLabelSize
                     },
                         width = scope.settings.width || ele[0].parentNode.offsetWidth,
                         height = scope.settings.height || 500,
                         xAxisLabel = scope.settings.xAxisLabel || formatColX,
                         yAxisLabel = scope.settings.yAxisLabel || formatColY,
                         title = scope.settings.title || (formatColX + ' vs. ' + formatColY).toUpperCase(),
-                        titleSize = scope.settings.titleSize || 16,
                         barSpace = 0.1;
 
                     let svg = anchor
@@ -115,13 +117,14 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                         .attr("class", "xlabel")
                         .text(xAxisLabel);
 
-                    console.log(xLabelLength)
                     svg.selectAll(".x text")
                         .attr("transform", "rotate(-45)")
                         .style("text-anchor", "end")
 
                     svg.select(".xlabel")
-                         .attr("transform", "translate(" + ((width - margin.left - margin.right) / 2 + margin.left) + ", " + (margin.bottom - 10) + ")");
+                         .attr("transform", "translate(" + ((width - margin.left - margin.right) / 2) + ", " + (margin.bottom - xAxisLabelSize) + ")")
+                         .style("text-anchor", "middle")
+                         .style("font-size", xAxisLabelSize)
 
                     svg.append("g")
                         .attr("class", "y axis")
@@ -129,8 +132,10 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                         .call(yAxis)
                         .append("text")
                         .attr("class", "ylabel")
-                        .attr("transform", "rotate(-90)translate(" + -((height - margin.bottom + margin.top) / 2) + ", " + -(margin.left-20) + ")")
-                        .text(yAxisLabel);
+                        .attr("transform", "rotate(-90)translate(" + -((height - margin.bottom) / 2) + ", " + -(margin.left - yAxisLabelSize) + ")")
+                        .text(yAxisLabel)
+                        .style("text-anchor", "middle")
+                        .style("font-size", yAxisLabelSize)
 
                     svg.selectAll(".bar")
                         .data(groupedData)
