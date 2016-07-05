@@ -33,7 +33,6 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                 },true);
                 
                 scope.render = function() {
-                    console.log('called');
                     if (!scope.columns) return;
 
                     let filteredData = scope.rows.filter(obj => obj[scope.columns[0].name] 
