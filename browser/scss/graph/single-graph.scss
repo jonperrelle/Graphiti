@@ -1,7 +1,21 @@
 
 .graphsettings-container {
-	margin: 30px auto;
+	margin: 0 auto;
 	width: 90%;
+}
+
+header.graph-alert-header {
+	margin-top: 20px;
+	margin-bottom: 10px;
+  	height: 50px;
+	p {
+
+		font-size: 1.2em;
+	}
+
+	.remove {
+		float:right;
+	}
 }
 
 .graph-container {
@@ -12,28 +26,7 @@
 
 .settings-container {
 	margin-bottom: 20px;
-
-	header.graph-alert-header {
-	  margin-bottom: 0;
-	  height: 50px;
-	  a {
-	  	padding-top: 20px;
-	    font-size: 150%;
-	    font-weight: 700;
-	  }
-	  a#add-graph {
-	    float: right;
-	    margin-right: 50px; 
-	    
-	  }
-	  a#add-graph:hover,
-	  a#add-graph:focus {
-	    text-decoration: none;
-	      color: #ffffff;
-	  }
-	  p {
-	    float: right;
-	  }
 }
 
-}
+
+	  

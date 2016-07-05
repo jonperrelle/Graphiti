@@ -28,7 +28,7 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
 
                 scope.$watch(function (scope) {
                   return scope.columns;
-                }, function () {
+                }, function () {  
                   scope.render();
                 },true);
                 

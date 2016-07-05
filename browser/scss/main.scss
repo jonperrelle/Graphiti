@@ -30,6 +30,18 @@ a:hover {
   color: #599ad6;
 }
 
+button {
+    color: #ffffff;
+    background: #599ad6;
+    outline: none !important;
+}
+
+button:hover {
+  background: #ffffff;
+  color: #599ad6;
+  border: 1px solid #599ad6;
+}
+
 #main {
   padding-top: 60px;
   margin: 0 auto;
