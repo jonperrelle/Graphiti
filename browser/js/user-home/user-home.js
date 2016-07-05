@@ -30,7 +30,6 @@ app.controller('UserHomeCtrl', function($scope, $state, UploadFactory, Session, 
         $localStorage.column1 = null;
         $localStorage.column2 = null;
 
-        console.log(dataset);
         DatasetFactory.getOneUserDataset(dataset, $scope.user)
             .then(rows => {
                 $state.go('userDatasetDetails', { userId: $scope.user.id, datasetId: dataset.id, dataset: dataset, rows: rows });
