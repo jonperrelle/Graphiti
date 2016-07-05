@@ -30,7 +30,6 @@ app.controller('DatasetDetailsCtrl', function($scope, $timeout, $state, $statePa
         if ($scope.dataset.metadata) domain = $scope.dataset.metadata.domain;
         DatasetFactory.addDataset($scope.user, $scope.dataset.resource, domain)
             .then(function(data) {
-                console.log(data);
                 if (data[1]) {
                     $scope.success = true;
                     $scope.message = 'You have successfully added this dataset!';

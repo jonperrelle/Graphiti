@@ -35,8 +35,6 @@ app.directive('lineGraph', function(d3Service, $window, $state) {
 
                 scope.render = function() {
 
-                    console.log($state.includes('home'));
-
                     let filteredData = scope.rows.filter(obj => obj[scope.columns[0].name] 
                             && obj[scope.columns[1].name]
                             && (!!Number(obj[scope.columns[0].name]) || Number(obj[scope.columns[0].name]) === 0)
@@ -73,9 +71,7 @@ app.directive('lineGraph', function(d3Service, $window, $state) {
                         .style('width', width)
                         .style('height', height)
                         .style('background-color', '#ffffff')
-                        .style('border-radius', '10px')
                         .append("g");
-                        // .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
                     //check if the data column header may contain date info ??
                     let x,
