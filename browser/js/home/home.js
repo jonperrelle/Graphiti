@@ -29,7 +29,7 @@ app.controller('HomeCtrl', function($scope, QueryFactory, UploadFactory, $state,
             $scope.columns = data.columns;
         });
     };
-    let loadPage = Math.ceil(Math.random() * 3);
+    let loadPage = Math.ceil(Math.random() * 2);
     switch (loadPage){
         case 1:
             $scope.headType = 0; 
@@ -52,19 +52,19 @@ app.controller('HomeCtrl', function($scope, QueryFactory, UploadFactory, $state,
             $scope.headColumns = [{name: 'name'}, {name: 'data'}]
             $scope.headSettings = {title: 'GRAPHITI', height: 400, xAxisLabel: 'Activities', yAxisLabel: 'Hours in Day'};
             break;
-        case 3:
-            $scope.headType = 0;
-            $scope.headRows = [{name: 'G', data: 2.015}, 
-            {name: 'R', data: 5.987}, 
-            {name: 'A', data: 8.167}, 
-            {name: 'P', data: 1.929}, 
-            {name: 'H', data: 6.094}, 
-            {name: 'I', data: 6.966}, 
-            {name: 'T', data: 9.056}, 
-            {name: 'I', data: 6.966}]
-            $scope.headColumns = [{name: 'name'}, {name: 'data'}]
-            $scope.headSettings = {title: 'Build Graphs Faster.', height: 400, xAxisLabel: 'Letters of an Awesome Application', yAxisLabel: 'Frequency of Letter in English Language (%)', minY: 0, maxY: 20};
-            break;
+        // case 3:
+        //     $scope.headType = 0;
+        //     $scope.headRows = [{name: 'G', data: 2.015}, 
+        //     {name: 'R', data: 5.987}, 
+        //     {name: 'A', data: 8.167}, 
+        //     {name: 'P', data: 1.929}, 
+        //     {name: 'H', data: 6.094}, 
+        //     {name: 'I', data: 6.966}, 
+        //     {name: 'T', data: 9.056}, 
+        //     {name: 'I', data: 6.966}]
+        //     $scope.headColumns = [{name: 'name'}, {name: 'data'}]
+        //     $scope.headSettings = {title: 'Build Graphs Faster.', height: 400, xAxisLabel: 'Letters of an Awesome Application', yAxisLabel: 'Frequency of Letter in English Language (%)', minY: 0, maxY: 20};
+        //     break;
     }
     // $scope.defaultColumns =
 });
