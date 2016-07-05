@@ -35,8 +35,6 @@ app.directive('lineGraph', function(d3Service, $window, $state) {
 
                 scope.render = function() {
 
-                    console.log($state.includes('home'));
-
                     let filteredData = scope.rows.filter(obj => obj[scope.columns[0].name] 
                             && obj[scope.columns[1].name]
                             && (!!Number(obj[scope.columns[0].name]) || Number(obj[scope.columns[0].name]) === 0)
