@@ -39,7 +39,16 @@ app.controller('HomeCtrl', function($scope, QueryFactory, UploadFactory, $state,
             break;
         case 2:
             $scope.headType = 1;
-            $scope.headRows = [{name: 'Some', data: 10}, {name: 'Of', data: 42}, {name: 'The', data: 60}, {name: 'Cool', data: 88}, {name: 'Graphs', data: 33}, {name: 'You', data: 50}, {name: 'Can', data: 10}, {name: 'Build', data: 90}, {name: 'With', data: 40}, {name: 'Graphiti', data: 200}]
+            $scope.headRows = [{name: 'Some', data: 10}, 
+            {name: 'Of', data: 42}, 
+            {name: 'The', data: 60}, 
+            {name: 'Cool', data: 88}, 
+            {name: 'Graphs', data: 33}, 
+            {name: 'You', data: 50}, 
+            {name: 'Can', data: 10}, 
+            {name: 'Build', data: 90}, 
+            {name: 'With', data: 40}, 
+            {name: 'Graphiti', data: 200}]
             $scope.headColumns = [{name: 'name'}, {name: 'data'}]
             $scope.headSettings = {title: 'GRAPHITI', height: 400, xAxisLabel: 'Activities', yAxisLabel: 'Hours in Day'};
             break;
