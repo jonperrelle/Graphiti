@@ -33,6 +33,7 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                 },true);
                 
                 scope.render = function() {
+                    console.log('called');
                     if (!scope.columns) return;
 
                     let filteredData = scope.rows.filter(obj => obj[scope.columns[0].name] 
@@ -119,7 +120,7 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                         .style("text-anchor", "end")
 
                     svg.select(".xlabel")
-                         .attr("transform", "translate(" + (width - margin.left - margin.right) / 2 + ", " + (margin.bottom - 10) + ")");
+                         .attr("transform", "translate(" + ((width - margin.left - margin.right) / 2 + margin.left) + ", " + (margin.bottom - 10) + ")");
 
                     svg.append("g")
                         .attr("class", "y axis")
@@ -127,7 +128,7 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                         .call(yAxis)
                         .append("text")
                         .attr("class", "ylabel")
-                        .attr("transform", "rotate(-90)translate(" + -((height + margin.bottom + margin.top) / 2) + ", " + -(margin.left-20) + ")")
+                        .attr("transform", "rotate(-90)translate(" + -((height - margin.bottom + margin.top) / 2) + ", " + -(margin.left-20) + ")")
                         .text(yAxisLabel);
 
                     svg.selectAll(".bar")
