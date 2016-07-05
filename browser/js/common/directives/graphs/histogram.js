@@ -32,7 +32,9 @@ app.directive('histogram', function (d3Service, $window) {
         }, true);
 
         scope.render = function () {
+          //REPLACE W/ REAL DATA
           let data = d3.range(1000).map(d3.random.logNormal(Math.log(30), .4));
+          // console.log('data:', data);
 
           let anchor = d3.select(ele[0]);
           anchor.selectAll('*').remove();
@@ -58,22 +60,37 @@ app.directive('histogram', function (d3Service, $window) {
               .style('border-radius', '10px')
               .append("g");
 
+          let filteredData = scope.rows.filter(obj => obj[scope.column.name] 
+                    && (!!Number(obj[scope.column.name]) || Number(obj[scope.column.name]) === 0));
+
+          let histogram = d3.layout.histogram()
+            .value(d => d[scope.column.name])
+            // .range([300, 700])
+            (filteredData);
+          console.log(histogram);
+
           let xScale = d3.scale.linear()
                 // .rangeRound([0, width]),
-                .domain([0, 120])
+                .domain([d3.min(filteredData, d => d[scope.column.name]), d3.max(filteredData, d => d[scope.column.name])])
                 .range([0, width]),
-              bins = d3.layout.histogram()
-                .bins(xScale.ticks(20))
-                (data),
+              // bins = d3.layout.histogram()
+              //   .bins(xScale.ticks(20))
+              //   (data),
                 // .domain(xScale.domain())
               //   .thresholds(xScale.ticks(10))
               //   (data),
               yScale = d3.scale.linear()
-                .domain([0, d3.max(bins, d => d.y)])
+                .domain([0, d3.max(histogram, d => d.y)])
                 .range([height, 0]);
 
+          let xAxis = d3.svg.axis().scale(xScale).orient("bottom"),
+              yAxis = d3.svg.axis().scale(yScale).orient("left");
+
+          // console.log('bins:', bins);
+          // console.log('values:', values);
+
           let bar = svg.selectAll('.bar')
-                .data(bins)
+                .data(histogram)
               .enter()
                 .append('g')
                 .attr('class', 'bar')
@@ -86,6 +103,14 @@ app.directive('histogram', function (d3Service, $window) {
                 .attr('width', 10)
                 // .attr('width', xScale(bins[0].x1) - xScale(bins[0].x0) - 1)
                 .attr('height', d => height - yScale(d.y));
+
+              svg.append("g")
+                    .attr("class", "x axis")
+                    .attr("transform", "translate(0," + (height - margin.bottom) + ")")
+                    .call(xAxis)
+                    .append("text")
+                    .attr("class", "xlabel")
+                    .text(xAxisLabel);
         };
       });
     }
