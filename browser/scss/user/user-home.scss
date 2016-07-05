@@ -1,7 +1,15 @@
 .user-home {
 	margin: 0 auto;
-    margin-top: 50px;
     height: 100%;
+
+    header {
+    	padding-top: 30px;
+    	margin-bottom: 15px;
+    	h3 {
+    		color: #ffffff;
+    		margin-left: 40px;
+    	}
+    }
 
     .dataset-account-info {
     	background: #3a424c;
@@ -79,7 +87,18 @@
 		font-size: 1.1em;
 	}
 
+	.user-home-btn {
+		white-space: normal;
+		text-align: left;
+	}
+
+	.user-graphs-container {
+		margin-top: 30px;
+	}
+
 	.btn-remove {
+	  float:right;
+	  margin-right: 5px;
 	  width: 24px;
 	  height: 24px;
 	  text-align: center;
