@@ -6,7 +6,7 @@ module.exports = function (db) {
         title: {
             type: Sequelize.STRING
         },
-        titleSize: {
+        xAxisLabelSize: {
             type: Sequelize.INTEGER
         },
         width: {
