@@ -9,9 +9,8 @@ app.factory('AddGraphFactory', function (ValidationFactory) {
               // if(col1.type === 'number'){
               //   limited = ValidationFactory.noRepeats(rows, col1)
               // }
-              return col1 && 
-                col2 && col2.type === 'number' && true 
-               // true// (col1.type !== 'number') // fix this: can be a number if limited quantity/no repeats
+              return col1 && col2 && col2.type === 'number';
+               // (col1.type !== 'number') // fix this: can be a number if limited quantity/no repeats
                 ;
             },
 
