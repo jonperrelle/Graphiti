@@ -36,18 +36,15 @@ router.delete('/:datasetId', function(req, res, next) {
 });
 
 router.post('/SocrataDataset', function(req, res, next) {
-
+    
     let user = req.requestedUser;
-
-
-    let ds = {
-        name: req.body.dataset.name,
-        userUploaded: false,
-        socrataId: req.body.dataset.id,
-        socrataDomain: req.body.domain
+    let dataset = {
+        socrataId: req.body.dataset.socrataId,
+        socrataDomain: req.body.dataset.socrataDomain,
+        name: req.body.dataset.name
     };
 
-    Dataset.findOrCreate({ where: ds })
+    Dataset.findOrCreate({ where: dataset })
         .then(function(ds) {
             user.addDataset(ds[0])
                 .then(function() {
@@ -103,7 +100,7 @@ router.get('/awsDataset/:datasetId', function(req, res, next) {
                     let csvString = data.Body.toString('utf8');
                     csvConverter.fromString(csvString, function(err, jsonArray) {
                         if (err) next(err);
-                        res.send({ data: jsonArray, dataset: { resource: { name: dataset.name } } });
+                        res.send(jsonArray);
                     });
                 }
             });

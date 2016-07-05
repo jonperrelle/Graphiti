@@ -1,7 +1,7 @@
 <section class="dataset-container">
 	<header class="row user-dataset-header">
-		<a class="goto" ui-sref="userHome({userId: user.id})">Back to my account</a>
-		<a class="remove" href="" ng-click="removeDataset()">Remove dataset</a>
+		<button class="btn" ui-sref="userHome({userId: user.id})">Back to my account</button>
+		<button class="btn btn-danger remove" ng-click="removeDataset()">Remove dataset</button>
 	</header>
 	<div class="row">
 	 	<dataset-details dataset="dataset" rows="rows" columns="columns" table-params="tableParams"></dataset-details>

@@ -30,11 +30,15 @@ app.controller('SearchQueriedDatasetsCtrl', function($scope, QueryFactory, $stat
     };
     
     $scope.getDataset = function (dataset) {
+        let selectedDS = {}
+        selectedDS.socrataId = dataset.resource.id;
+        selectedDS.socrataDomain = dataset.metadata.domain;
+        selectedDS.name = dataset.resource.name;
         $localStorage.column1 = null;
         $localStorage.column2 = null;
-        QueryFactory.getOneDataset(dataset)
+        QueryFactory.getOneDataset(selectedDS)
         .then( rows => {
-            $state.go('datasetDetails', {datasetId: dataset.resource.id, dataset: dataset, rows: rows});
+            $state.go('datasetDetails', {datasetId: selectedDS.socrataId, dataset: selectedDS, rows: rows});
         });
     };
 
