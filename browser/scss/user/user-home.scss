@@ -1,7 +1,15 @@
 .user-home {
 	margin: 0 auto;
     margin-top: 50px;
-	width: 90%;
+    height: 100%;
+
+    .dataset-account-info {
+    	background: #3a424c;
+    	padding-left: 30px; 
+    	h5 {
+    		color: #ffffff;
+    	}
+    }
 
 	h3 {
 		margin-top: 0;
@@ -10,13 +18,18 @@
 
 	.panel-group {
 		position: relative;
+	}
+
+	.home-panel {
+		background: #599ad6;
 
 		h4 {
 		  display: inline-block;
-		  color: #000;
+		  color: #ffffff;
 		}
 
 		span {
+			color: #ffffff;
 			position: absolute;
 			top: 25px;
 			right: 20px;
@@ -27,8 +40,9 @@
 		}
 
 		.list-group-item {
-			padding: 10px;
-			color: #19d178;
+			border: none;
+			background: #599ad6;
+			padding: 5px;
 
 			p {
 				margin-top: 5px;
@@ -61,11 +75,11 @@
 	}
 
 	a {
-		font-size: 1.4em;
+		color: #ffffff;
+		font-size: 1.1em;
 	}
 
 	.btn-remove {
-	  margin-left: 2px;
 	  width: 24px;
 	  height: 24px;
 	  text-align: center;
@@ -93,5 +107,21 @@
 	    box-shadow: none;
 	    outline: none;
 	  }
+
+	.graphs-list {
+		li {
+			margin: 15px 0;
+			border: 1px solid #000;
+			border-radius: 10px;
+			list-style: none;
+			padding: 10px;
+		}
+	}
+	.graph-container {
+		img {
+			height: 50%;
+			width: 80%;
+		}
+	}
 }
 

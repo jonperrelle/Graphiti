@@ -65,7 +65,7 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                         left: (yLabelLength + 6) * 7
                     },
                         width = scope.settings.width || ele[0].parentNode.offsetWidth,
-                        height = scope.settings.height || width,
+                        height = scope.settings.height || 500,
                         xAxisLabel = scope.settings.xAxisLabel || formatColX,
                         yAxisLabel = scope.settings.yAxisLabel || formatColY,
                         title = scope.settings.title || (formatColX + ' vs. ' + formatColY).toUpperCase(),

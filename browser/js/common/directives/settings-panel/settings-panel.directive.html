@@ -1,6 +1,5 @@
 <div>
-  <button class="btn download-btn" type="button" ng-click="downloadGraph()">Download Image of Graph</button>
-  <h4 class="graph-header">Adjust Graph Settings</h4>
+  <h3 class="graph-header">Adjust Graph Settings</h3>
   <div class="row">
     <div class="col-xs-12 panel-group">
       <div class="panel settings-panel">
@@ -192,7 +191,7 @@
                 <div>
                   <select ng-model="columns[1].name"  name="column2" class="form-control" ng-options="col for col in allColumns" ng-change="assignColumnType(columns[1])"></select>
                 </div>
-              </div
+              </div>
             </div>
           </div>
         </div>
@@ -200,4 +199,5 @@
     </div>
   </div>
   <button class="btn download-btn" type="button" ng-click="downloadGraph()">Download Image of Graph</button>
+  <button class="btn download-btn" type="button" ng-click="embedGraph()">Embed Graph SVG</button>
 </div>

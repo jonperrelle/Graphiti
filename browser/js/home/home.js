@@ -8,31 +8,6 @@ app.config(function ($stateProvider) {
 
 app.controller('HomeCtrl', function($scope, QueryFactory, UploadFactory, $state, $uibModal) {
 
-    $scope.uploadFile = function() {
-      if ($scope.form.$valid && $scope.file) {
-        
-      }
-    };
-
-    $scope.openFileUpload = function () {
-
-        let modalInstance = $uibModal.open({
-            animation: true,
-            templateUrl: 'upload.modal.html',
-            controller: 'uploadModalInstanceCtrl',
-            $scope: $scope,
-            windowId: 'home'
-        });
-
-        modalInstance.result.then(function (file) {
-            UploadFactory.uploadFile(file)
-            .then(function(dataset) {
-                $scope.file = null;
-                $state.go('datasetDetails', {datasetId: dataset.fileName, dataset: dataset.dataset ,rows: dataset.data});
-            })
-        });   
-    };
-
     QueryFactory.getCategories().then(cats => {
         $scope.categories = cats.map(cat => cat.category.toUpperCase());
     });
@@ -81,3 +56,4 @@ app.controller('HomeCtrl', function($scope, QueryFactory, UploadFactory, $state,
 
 
 
+>>>>>>> master

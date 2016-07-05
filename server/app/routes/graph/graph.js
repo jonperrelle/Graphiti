@@ -29,7 +29,8 @@ router.post('/',function(req,res,next){
 	.spread(function(dataset,settings){
 		return Graph.create({
 			graphType: req.body.type,
-			columns: req.body.columns 
+			columns: req.body.columns,
+			imageSource: req.body.imageSource 
 		})
 		.then(function(graph){
 			return Promise.all([

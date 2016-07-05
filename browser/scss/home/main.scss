@@ -27,11 +27,17 @@
   .home-instructions {
   
     .odd-div {
-       background: #dee4e5;
+       background: #3a424c;
+       h4 {
+        color: #ffffff
+       }
     }
 
-    h3 {
-      color: #000; 
+    header { 
+      padding: 20px 0;
+      h3 {
+        color: #ffffff;
+      }
     }
 
     h4 {
@@ -40,47 +46,26 @@
       width: 70%;
       color: #599ad6;
     }
+
+  }
+
+  img {
+    margin: 1px;
+    width: 100%;
   }
 
   .btn.home-btn {
     color: #ffffff;
-    background: #2a3233;
+    background: #599ad6;
     outline: none !important;
+    margin-bottom: 50px;
   }
 
   .btn.home-btn:hover {
     background: #ffffff;
-    color: #2a3233;
-    border: 1px solid #2a3233;
+    color: #599ad6;
+    border: 1px solid #599ad6;
   }
 
-/*  .upload-form {
-    .upload-btn {
-      float: right;
-      margin-left: 10px;
-    }
-    .select-btn {
-      background-color: transparent;
-      outline: none;
-      font-size: 1.5em;
-      padding: 0;
-      color: #19d178;
-    }
-    .select-btn:hover {
-      text-decoration: none;
-      color: #599ad6;
-    }
-    .select-btn:focus {
-      background-color: transparent;
-      box-shadow: none;
-      outline: none;
-    }
-
-    .file-upload {
-      display: inline-block;
-      margin-left: 20px;
-      font-size: 1.3em;
-    }
-
-  }*/
 }
+
