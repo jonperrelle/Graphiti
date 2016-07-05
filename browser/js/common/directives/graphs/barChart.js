@@ -39,8 +39,8 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                         && obj[scope.columns[1].name]
                         && (!!Number(obj[scope.columns[1].name]) || Number(obj[scope.columns[1].name]) === 0));
 
-                   
-                    let groupedData = DataFactory.groupByCategory(filteredData, scope.columns[0].name, scope.columns[1].name);
+                    let groupType = scope.settings.groupType || 'total';
+                    let groupedData = DataFactory.groupByCategory(filteredData, scope.columns[0].name, scope.columns[1].name, groupType);
                     groupedData = DataFactory.orderByCategory(groupedData, scope.columns[0].name, scope.columns[0].type);
                     
 
@@ -65,10 +65,10 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                         left: (yLabelLength + 6) * 7
                     },
                         width = scope.settings.width || ele[0].parentNode.offsetWidth,
-                        height = scope.settings.height || width,
+                        height = scope.settings.height || 500,
                         xAxisLabel = scope.settings.xAxisLabel || formatColX,
                         yAxisLabel = scope.settings.yAxisLabel || formatColY,
-                        title = scope.settings.title || formatColX + ' vs. ' + formatColY,
+                        title = scope.settings.title || (formatColX + ' vs. ' + formatColY).toUpperCase(),
                         barSpace = 0.1;
 
                     let svg = anchor
@@ -115,7 +115,8 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
 
                     console.log(xLabelLength)
                     svg.selectAll(".x text")
-                        .attr("transform", "translate(" + -(xLabelLength * 2) + "," + (xLabelLength * 2) + ")rotate(-45)")
+                        .attr("transform", "rotate(-45)")
+                        .style("text-anchor", "end")
 
                     svg.select(".xlabel")
                          .attr("transform", "translate(" + (width - margin.left - margin.right) / 2 + ", " + (margin.bottom - 10) + ")");

@@ -6,18 +6,7 @@ app.config(function ($stateProvider) {
     });
 });
 
-app.controller('HomeCtrl', function($scope, QueryFactory, UploadFactory, $state) {
-
-    $scope.uploadFile = function() {
-      if ($scope.form.$valid && $scope.file) {
-        UploadFactory.uploadFile($scope.file)
-        .then(function(dataset) {
-            $scope.file = null;
-            $state.go('datasetDetails', {datasetId: dataset.fileName, dataset: dataset.dataset ,rows: dataset.data});
-        })
-      }
-    };
-
+app.controller('HomeCtrl', function($scope, QueryFactory, UploadFactory, $state, $uibModal) {
 
     QueryFactory.getCategories().then(cats => {
         $scope.categories = cats.map(cat => cat.category.toUpperCase());

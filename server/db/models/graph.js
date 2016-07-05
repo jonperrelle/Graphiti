@@ -16,6 +16,9 @@ module.exports = function (db) {
         columns: {
             type: Sequelize.ARRAY(Sequelize.JSONB),
         },
+        imageSource: {
+            type: Sequelize.TEXT,
+        }
     },
     {
     	defaultScope: {include: [Settings,Dataset]}
