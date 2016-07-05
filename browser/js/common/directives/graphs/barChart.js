@@ -81,7 +81,7 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
 
                     //create the rectangles for the bar chart
                     let x = d3.scale.ordinal()
-                        .rangeRoundBands([0, width - margin.left -margin.right], barSpace);
+                        .rangeRoundBands([0, width - margin.left - margin.right], barSpace);
 
                     let y = d3.scale.linear()
                         .range([height - margin.bottom, margin.top]);
