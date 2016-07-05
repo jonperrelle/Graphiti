@@ -2,19 +2,24 @@
   margin-top: 200px;
 }
 
+.embed-btn:hover {
+  color: white;
+}
+
 .embed-modal .modal-dialog {
-  width: 300px;
-  height: 100px;
+  width: 400px;
+  height: 150px;
   h4 {
-    margin: 20px 0;
+    margin: 0 auto;
+
   }
   .btn {
     margin-top: 20px;
   }
 
   textarea {
-  	margin: 10px auto 10px 50px;
-  	resize: none;
-
+    margin-top: 10px;
+    width: 200px;
+    resize: none;
   } 
 }
