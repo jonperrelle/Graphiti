@@ -4,8 +4,11 @@
     height: 100%;
 
     .dataset-account-info {
-    	background: #dee4e5;
+    	background: #3a424c;
     	padding-left: 30px; 
+    	h5 {
+    		color: #ffffff;
+    	}
     }
 
 	h3 {
@@ -104,5 +107,21 @@
 	    box-shadow: none;
 	    outline: none;
 	  }
+
+	.graphs-list {
+		li {
+			margin: 15px 0;
+			border: 1px solid #000;
+			border-radius: 10px;
+			list-style: none;
+			padding: 10px;
+		}
+	}
+	.graph-container {
+		img {
+			height: 50%;
+			width: 80%;
+		}
+	}
 }
 

@@ -17,9 +17,14 @@ app.factory('GraphFactory',function($http, DatasetFactory){
        
 	return {
 		saveUserGraph: function(user, dataset, columns, type, settings, domain){
+            let imageSource,
+            n = document.querySelector('.graph-container svg');
+            svgAsDataUri(n, {}, function(uri) {
+                imageSource = uri;
+            });
 			return DatasetFactory.addDataset(user, dataset, domain)
 			       .then(function(data) {
-                        return $http.post('/api/users/'+user.id+'/graphs', {dataset: data[0], columns, type, settings})
+                        return $http.post('/api/users/'+user.id+'/graphs', {dataset: data[0], columns, type, settings, imageSource})
                     })
 			        .then(addGraphFunction)
 			        .catch();

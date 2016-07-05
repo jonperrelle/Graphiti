@@ -3,7 +3,7 @@
     <header class="col-xs-12">
       <h3>Hi {{user.fullName}}!</h3>
     </header>
-    <div class="col-sm-3 col-xs-12 dataset-account-info">
+    <div class="col-sm-4 col-xs-12 dataset-account-info">
       <h5>Edit Account Information</h5>
       <div class="panel-group">
         <div class="panel home-panel">
@@ -51,11 +51,16 @@
         </div>
       </div>
     </div>
-    <div class="col-sm-9 col-xs-12">
-      <ul>
-        <li ng-repeat="graph in graphs">
-          <div class="graph-container">
-            PhantomJS
+    <div class="col-sm-7 col-xs-12">
+      <h3 class="text-center">My Graphs</h3>
+      <ul class="graphs-list">
+          <li ng-repeat="graph in graphs">
+            <a href ng-click="goToUserGraph(graph)"">
+              <div class="graph-container">
+                <h4>{{graph.setting.title}}</h4>
+                <img ng-src="{{graph.imageSource}}">
+              </div>
+            </a>
         </li>
       </ul>
       <!-- <div class="panel-group">
@@ -82,5 +87,6 @@
         </div>
       </div> -->
     </div>
+    <div class="col-sm-1"></div>
   </div>
 </section>
