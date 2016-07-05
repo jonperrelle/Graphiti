@@ -36,11 +36,13 @@ app.directive('pieChart', function(d3Service, $window, DataFactory) {
                         let anchor = d3.select(ele[0]);
                         anchor.selectAll('*').remove();
 
-                        let margin = { top: 30, right: 20, bottom: 30, left: 40 },
+                        let formatColX = scope.columns[0].name.replace(/\_+/g, " "),
+                            formatColY = scope.columns[1].name.replace(/\_+/g, " "),
+                            margin = { top: 30, right: 20, bottom: 30, left: 40 },
                             width = scope.settings.width || ele[0].parentNode.offsetWidth,
                             height = scope.settings.height || width,
                             radius = scope.settings.radius || height / 3,
-                            title = scope.settings.title || (scope.columns[0].name.replace(/\_+/g, " ")+ ' vs. ' + scope.columns[1].name.replace(/\_+/g, " ")).toUpperCase(),
+                            title = scope.settings.title || (formatColX ' vs. ' + formatColY)).toUpperCase(),
                             displayType = scope.settings.displayType || 'number';
 
                         let filteredData = scope.rows.filter(obj => Number(obj[scope.columns[1].name]) > 0);
