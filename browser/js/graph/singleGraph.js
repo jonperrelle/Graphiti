@@ -38,7 +38,6 @@ app.controller('singleGraphCtrl', function ($scope, $stateParams, $timeout, $sta
         graphToSave.graphType = $scope.graphType;
         GraphFactory.saveUserGraph($scope.user, $localStorage.dataset, graphToSave, $scope.settings)
             .then(function(data) {
-                console.log(data);
                 $scope.success = data.success;
                 $scope.message = data.message;
                 $scope.userGraph=true;
