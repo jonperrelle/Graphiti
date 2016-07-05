@@ -29,3 +29,4 @@ app.directive('uploadModal', function ($uibModal, $state, UploadFactory) {
     };
 
 });
+
