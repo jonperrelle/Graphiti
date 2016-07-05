@@ -40,9 +40,9 @@ app.directive('scatterplotGraph', function(d3Service, $window) {
 
             scope.render = function() {
 
-                let zoom = d3.behavior.zoom()
-                   .scaleExtent([1, 5])
-                   .on("zoom", zooming);
+                // let zoom = d3.behavior.zoom()
+                //    .scaleExtent([1, 5])
+                //    .on("zoom", zooming);
 
                 let anchor = d3.select(ele[0])
                 anchor.selectAll('*').remove();
@@ -74,14 +74,14 @@ app.directive('scatterplotGraph', function(d3Service, $window) {
                     dotRadius = width / 150,
                     xAxisLabel = scope.settings.xAxisLabel || formatColX,
                     yAxisLabel = scope.settings.yAxisLabel || formatColY,
-                    title = scope.settings.title || formatColX + ' vs. ' + formatColY,
+                    title = scope.settings.title || (formatColX + ' vs. ' + formatColY).toUpperCase(),
                     svg = anchor
                     .append('svg')
                     .attr('width', width)
                     .attr('height', height)
                     .style('background-color', '#ffffff')
                     .style('border-radius', '10px')
-                    .call(zoom);
+                    // .call(zoom);
 
                 let xValue = function(d) {
                         return +d[scope.columns[0].name]
@@ -113,19 +113,19 @@ app.directive('scatterplotGraph', function(d3Service, $window) {
                     && Number(obj[scope.columns[1].name]) <= maxY
                     );
 
-            function zooming() {
-               let e = d3.event;
-               let tx = Math.min(0, Math.max(e.translate[0], width - width * e.scale));
-               let ty = Math.min(0, Math.max(e.translate[1], height - height * e.scale));
+            // function zooming() {
+            //    let e = d3.event;
+            //    let tx = Math.min(0, Math.max(e.translate[0], width - width * e.scale));
+            //    let ty = Math.min(0, Math.max(e.translate[1], height - height * e.scale));
 
-               zoom.translate([tx, ty]);
+            //    zoom.translate([tx, ty]);
 
-               dots.attr("transform", ["translate(" + [tx, ty] + ")", "scale(" + e.scale + ")"].join(" "));
-              // xAxis.attr("transform", ["translate(" + [tx, ty] + ")", "scale(" + e.scale + ")"].join(" "));
-              // yAxis.attr("transform", ["translate(" + [tx, ty] + ")", "scale(" + e.scale + ")"].join(" "));
-               svg.attr("transform", ["translate(" + [tx, ty] + ")", "scale(" + e.scale + ")"].join(" "));
-               // circles.attr("transform", ["translate(" + [tx, ty] + ")", "scale(" + e.scale + ")"].join(" "));
-             }
+            //    dots.attr("transform", ["translate(" + [tx, ty] + ")", "scale(" + e.scale + ")"].join(" "));
+            //   // xAxis.attr("transform", ["translate(" + [tx, ty] + ")", "scale(" + e.scale + ")"].join(" "));
+            //   // yAxis.attr("transform", ["translate(" + [tx, ty] + ")", "scale(" + e.scale + ")"].join(" "));
+            //    svg.attr("transform", ["translate(" + [tx, ty] + ")", "scale(" + e.scale + ")"].join(" "));
+            //    // circles.attr("transform", ["translate(" + [tx, ty] + ")", "scale(" + e.scale + ")"].join(" "));
+            //  }
 
                 let cValue = function(d) {
                         return d

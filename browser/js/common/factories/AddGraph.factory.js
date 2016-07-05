@@ -5,9 +5,12 @@ app.factory('AddGraphFactory', function (ValidationFactory) {
             },
 
             barEnabled: function(rows, col1, col2){
-              return col1 && 
-                col2 && col2.type === 'number' &&
-                true// (col1.type !== 'number') // fix this: can be a number if limited quantity/no repeats
+              // let limited = true;
+              // if(col1.type === 'number'){
+              //   limited = ValidationFactory.noRepeats(rows, col1)
+              // }
+              return col1 && col2 && col2.type === 'number';
+               // (col1.type !== 'number') // fix this: can be a number if limited quantity/no repeats
                 ;
             },
 
@@ -17,6 +20,6 @@ app.factory('AddGraphFactory', function (ValidationFactory) {
 
             lineEnabled: function(col1, col2){
               return col1 && col2 && ((col1.type === 'number' || col1.type === 'date') && col2.type === 'number');
-            }
+            },
    };
 });
