@@ -42,7 +42,7 @@ app.directive('pieChart', function(d3Service, $window, DataFactory) {
                             width = scope.settings.width || ele[0].parentNode.offsetWidth,
                             height = scope.settings.height || 500,
                             radius = scope.settings.radius || height / 3,
-                            title = scope.settings.title || (formatColX ' vs. ' + formatColY)).toUpperCase(),
+                            title = scope.settings.title || (formatColX + ' vs. ' + formatColY).toUpperCase(),
                             displayType = scope.settings.displayType || 'number';
 
                         let filteredData = scope.rows.filter(obj => Number(obj[scope.columns[1].name]) > 0);
