@@ -29,12 +29,16 @@ app.controller('singleGraphCtrl', function ($scope, $stateParams, $timeout, $sta
     $scope.allColumns = $stateParams.allColumns || $localStorage.allColumns;
     $localStorage.allColumns = $scope.allColumns;
 
+
     $scope.addedGraph = false;
     if (Session.user) $scope.user = Session.user;
+    console.log($localStorage.dataset); //leave to check for bugs
     if ($localStorage.dataset.metadata) domain = $localStorage.dataset.metadata.domain;
+    if ($localStorage.dataset.socrataDomain) domain = $localStorage.dataset.socrataDomain;
     $scope.saveUserGraph = function () {
         GraphFactory.saveUserGraph($scope.user, $localStorage.dataset.resource, $scope.columns, $scope.graphType, $scope.settings, domain)
             .then(function(data) {
+                console.log(data);
                 $scope.success = data.success;
                 $scope.message = data.message;
                 $scope.userGraph=true;
