@@ -67,7 +67,7 @@ app.directive('lineGraph', function(d3Service, $window, $state) {
                         height = scope.settings.height || width,
                         xAxisLabel = scope.settings.xAxisLabel || formatColX,
                         yAxisLabel = scope.settings.yAxisLabel || formatColY,
-                        title = scope.settings.title || formatColX + " .vs " + formatColY,
+                        title = scope.settings.title || (formatColX + " .vs " + formatColY).toUpperCase(),
                         svg = anchor
                         .append('svg')
                         .style('width', width)
@@ -191,7 +191,7 @@ app.directive('lineGraph', function(d3Service, $window, $state) {
                         .attr("x", (width / 2))             
                         .attr("y", margin.top/2)
                         .attr("text-anchor", "middle")    
-                        .text(title.toUpperCase());
+                        .text(title);
                 };
             });
         }
