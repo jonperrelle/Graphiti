@@ -41,8 +41,9 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                         && (!!Number(obj[scope.columns[1].name]) || Number(obj[scope.columns[1].name]) === 0));
 
                     let groupType = scope.settings.groupType || 'total';
+                    let orderType = scope.settings.orderType || 'none'; 
                     let groupedData = DataFactory.groupByCategory(filteredData, scope.columns[0].name, scope.columns[1].name, groupType);
-                    groupedData = DataFactory.orderByCategory(groupedData, scope.columns[0].name, scope.columns[0].type);
+                    groupedData = DataFactory.orderByCategory(groupedData, scope.columns[0].name, scope.columns[0].type, orderType);
                     
 
                     let anchor = d3.select(ele[0])
