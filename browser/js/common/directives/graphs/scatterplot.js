@@ -80,7 +80,6 @@ app.directive('scatterplotGraph', function(d3Service, $window) {
                     .attr('width', width)
                     .attr('height', height)
                     .style('background-color', '#ffffff')
-                    .style('border-radius', '10px')
                     // .call(zoom);
 
                 let xValue = function(d) {
