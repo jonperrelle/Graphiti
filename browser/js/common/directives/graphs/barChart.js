@@ -68,7 +68,7 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                         height = scope.settings.height || width,
                         xAxisLabel = scope.settings.xAxisLabel || formatColX,
                         yAxisLabel = scope.settings.yAxisLabel || formatColY,
-                        title = scope.settings.title || formatColX + ' vs. ' + formatColY,
+                        title = scope.settings.title || (formatColX + ' vs. ' + formatColY).toUpperCase(),
                         barSpace = 0.1;
 
                     let svg = anchor
@@ -150,7 +150,7 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                         .attr("x", (width / 2))             
                         .attr("y", (margin.top / 2))
                         .attr("text-anchor", "middle")    
-                        .text(title.toUpperCase());
+                        .text(title);
 
                 };
             });
