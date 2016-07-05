@@ -43,7 +43,7 @@
 				<line-graph settings="settings" rows="data" columns="[column1,column2]"></line-graph>
 			</div>
 		</div>
-		<div class="column" ng-if="pieEnabled()" ng-click="viewSingleGraph('pieChart')">
+		<div class="column" ng-if="pieEnabled() && withinLength()" ng-click="viewSingleGraph('pieChart')">
 			<div class="col-xs-12 col-sm-5 graph-previews-columns">
 				<h4 class="text-center">Pie Chart</h4>
 				<pie-chart settings="settings" rows="data" columns="[column1,column2]"></pie-chart>

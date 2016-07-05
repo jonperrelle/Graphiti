@@ -67,7 +67,7 @@ app.directive('lineGraph', function(d3Service, $window, $state) {
                         height = scope.settings.height || 500,
                         xAxisLabel = scope.settings.xAxisLabel || formatColX,
                         yAxisLabel = scope.settings.yAxisLabel || formatColY,
-                        title = scope.settings.title || formatColX + " .vs " + formatColY,
+                        title = scope.settings.title || (formatColX + " .vs " + formatColY).toUpperCase(),
                         svg = anchor
                         .append('svg')
                         .style('width', width)
