@@ -70,7 +70,7 @@ app.directive('scatterplotGraph', function(d3Service, $window) {
                         right: 20
                     },
                     width = scope.settings.width || ele[0].parentNode.offsetWidth,
-                    height = scope.settings.height || width,
+                    height = scope.settings.height || 500,
                     dotRadius = width / 150,
                     xAxisLabel = scope.settings.xAxisLabel || formatColX,
                     yAxisLabel = scope.settings.yAxisLabel || formatColY,

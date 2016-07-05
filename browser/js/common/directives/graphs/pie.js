@@ -38,7 +38,7 @@ app.directive('pieChart', function(d3Service, $window, DataFactory) {
 
                         let margin = { top: 30, right: 20, bottom: 30, left: 40 },
                             width = scope.settings.width || ele[0].parentNode.offsetWidth,
-                            height = scope.settings.height || width,
+                            height = scope.settings.height || 500,
                             radius = scope.settings.radius || height / 3,
                             title = scope.settings.title || scope.columns[0].name.replace(/\_+/g, " ")+ ' vs. ' + scope.columns[1].name.replace(/\_+/g, " "),
                             displayType = scope.settings.displayType || 'number';
