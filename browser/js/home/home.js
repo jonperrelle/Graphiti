@@ -31,17 +31,6 @@ app.controller('HomeCtrl', function($scope, QueryFactory, UploadFactory, $state,
     };
 });
 
-
-
-
-
-
-
-
-
-
-
-
       //   <div class="settings-collapse">
       //     <div id="general">
       //       <div class="row">
@@ -100,29 +89,3 @@ app.controller('HomeCtrl', function($scope, QueryFactory, UploadFactory, $state,
       //       <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
       //   </div>
       // </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
