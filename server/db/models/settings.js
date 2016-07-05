@@ -6,6 +6,9 @@ module.exports = function (db) {
         title: {
             type: Sequelize.STRING
         },
+        xAxisLabelSize: {
+            type: Sequelize.INTEGER
+        },
         width: {
             type: Sequelize.INTEGER
         },
@@ -18,8 +21,14 @@ module.exports = function (db) {
         xAxisLabel: {
         	type: Sequelize.STRING
         },
+        xAxisLabelSize: {
+            type: Sequelize.INTEGER
+        },
         yAxisLabel: {
         	type: Sequelize.STRING
+        },
+        yAxisLabelSize: {
+            type: Sequelize.INTEGER
         },
         color: {
             type: Sequelize.STRING
