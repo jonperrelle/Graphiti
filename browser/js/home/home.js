@@ -35,7 +35,7 @@ app.controller('HomeCtrl', function($scope, QueryFactory, UploadFactory, $state,
             $scope.headType = 0; 
             $scope.headRows = [{name: 'Graphing', data: 30}, {name: 'Relaxing', data: 600}]
             $scope.headColumns = [{name: 'name'}, {name: 'data'}]
-            $scope.headSettings = {title: 'Graphiti: Build Graphs Faster.', height: 400, xAxisLabel: 'Software', yAxisLabel: 'Time Spent (s)'}
+            $scope.headSettings = {title: 'Build Custom Graphs Faster.', height: 400, xAxisLabel: 'Software', yAxisLabel: 'Time Spent (s)'}
             break;
         case 2:
             $scope.headType = 1;
