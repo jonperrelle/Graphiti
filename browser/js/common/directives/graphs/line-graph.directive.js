@@ -41,7 +41,6 @@ app.directive('lineGraph', function(d3Service, $window, $state) {
                             && (!!Number(obj[scope.columns[0].name]) || Number(obj[scope.columns[0].name]) === 0 || scope.columns[0].type === 'date')
                             && (!!Number(obj[scope.columns[1].name]) || Number(obj[scope.columns[1].name]) === 0))
                     
-                    console.log(filteredData[0][scope.columns[0].type])
                     if(scope.columns[0].type == 'number'){
                         filteredData = filteredData.sort((a, b) => a[scope.columns[0].name] - b[scope.columns[0].name]);
                     }
@@ -92,15 +91,13 @@ app.directive('lineGraph', function(d3Service, $window, $state) {
                         data = [];
                         filteredData.forEach(function(element) {
                             let obj = {};
-                           // console.log(element[scope.columns[0].name])
                             obj[scope.columns[0].name] = formatDate.parse(element[scope.columns[0].name]);
                             obj[scope.columns[1].name] = element[scope.columns[1].name];
                             data.push(obj);
                         });
 
                         data = data.sort((a, b) => a[scope.columns[0].name].getTime() - b[scope.columns[0].name].getTime());
-                        console.log(data[0]);
-
+                        
                         x = d3.time.scale().range([margin.left, width - margin.right]);
                     } else if (scope.columns[0].type === 'number') {
                         x = d3.scale.linear().range([margin.left, width - margin.right]);
