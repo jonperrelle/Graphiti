@@ -11,6 +11,33 @@
 	.form-group {
 		padding: 0 20px;
 	}
+
+	.column-select-form {
+
+		border: 1px solid black;
+		border-radius: 5px;
+		margin-right: 10px;
+		padding-bottom: 30px;
+		label {
+			margin-top: 20px;
+		}
+	}
+
+	.graph-options {
+
+		border: 1px solid black;
+		border-radius: 5px;
+		margin-left: 10px;
+		padding-bottom: 30px;
+		h4 {
+			margin-top: 20px;
+		}
+
+		li {
+			display: inline-block;
+			margin-left: 50px;
+		}
+	}
 }
 
 .graph-previews {
@@ -29,4 +56,10 @@
 	overflow: scroll;
 	border-radius: 10px;
 	border: 1px solid #000;
+}
+
+.graph-feedback {
+	p {
+		font-size: 1.2em;
+	}
 }

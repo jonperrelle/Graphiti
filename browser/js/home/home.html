@@ -5,8 +5,24 @@
         <header class="text-center">
           <h1>Graphiti</h1>
           <!-- <h4>Build custom graphs. Fast.</h4>  -->
-          <bar-chart ng-if="headType === 0" rows="headRows" columns="headColumns" settings="headSettings"></bar-chart>
-          <pie-chart ng-if="headType === 1" rows="headRows" columns="headColumns" settings="headSettings"></pie-chart>
+          <div class="graph-home">
+            <div class="home-action">
+              <div class="col-sm-6 col-xs-12">  
+                <div class="text-center">
+                  <button class="btn home-btn" ui-sref="searchDatasets">Search Our Datasets</button>
+                </div>
+              </div>
+              <div class="col-sm-6 col-xs-12">
+                <div class="text-center">
+                  <upload-modal></upload-modal>
+                </div>
+              </div>
+            </div>
+          
+
+            <!-- <bar-chart ng-if="headType === 0" rows="headRows" columns="headColumns" settings="headSettings"></bar-chart>
+            <pie-chart ng-if="headType === 1" rows="headRows" columns="headColumns" settings="headSettings"></pie-chart> -->
+          </div>
        </header>
       </div>
     </div>
