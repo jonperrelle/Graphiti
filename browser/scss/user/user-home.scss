@@ -1,7 +1,7 @@
 .user-home {
 	margin: 0 auto;
-    height: 100%;
-
+	background: #3a424c;
+	
     header {
     	padding-top: 30px;
     	margin-bottom: 15px;
@@ -12,8 +12,9 @@
     }
 
     .dataset-account-info {
-    	background: #3a424c;
-    	padding-left: 30px; 
+    	
+    	padding-left: 30px;
+
     	h5 {
     		color: #ffffff;
     	}
@@ -45,6 +46,7 @@
 
 		.no-item {
 			font-size: 1.4em;
+			color: #ffffff;
 		}
 
 		.list-group-item {
@@ -94,6 +96,11 @@
 
 	.user-graphs-container {
 		margin-top: 30px;
+		background: #ffffff;
+		padding-right: 100px;
+		h3 {
+			margin-top: 20px;
+		}
 	}
 
 	.btn-remove {
