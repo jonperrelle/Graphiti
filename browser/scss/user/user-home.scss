@@ -52,36 +52,10 @@
 		.list-group-item {
 			border: none;
 			background: #599ad6;
-			padding: 5px;
+			padding: 5px 5px 5px 15px;
 
-			p {
-				margin-top: 5px;
-				margin-left: 2px;
-			}
-
-			.file-upload {
-				display: inline-block;
-				font-size: 1.4em;
-			}
-			.upload-links {
-				margin-top: 5px;
-				float: right;
-
-				#upload {
-					color: #1976d2;
-				}
-
-				#cancel {
-					color: #e02121;
-					margin-left: 3px;
-				}
-			}
 		}
 
-		.list-group-item:hover {
-			text-decoration: none;
-			color: #599ad6;
-		}
 	}
 
 	a {
