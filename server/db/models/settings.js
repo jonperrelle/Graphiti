@@ -48,7 +48,7 @@ module.exports = function (db) {
             type: Sequelize.ENUM('percentage', 'number')
         },
         groupType: {
-            type: Sequelize.ENUM('total', 'mean')
+            type: Sequelize.ENUM('total', 'mean', 'none')
         }
     });
 };
