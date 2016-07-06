@@ -30,16 +30,16 @@ var seedUsers = function () {
 
     var users = [
         {
-            firstName: 'Testy',
-            lastName: 'McTesterson',
-            email: 'testing@fsa.com',
+            firstName: 'Corey',
+            lastName: 'Greenwald',
+            email: 'coreygreen1108@gmail.com',
             password: 'password'
         },
         {
-            firstName: 'Barack',
-            lastName: 'Obama',
-            email: 'obama@gmail.com',
-            password: 'potus'
+            firstName: 'Geoff',
+            lastName: 'Bass',
+            email: 'geoff.c.bass@gmail.com',
+            password: 'password'
         }
     ];
 
