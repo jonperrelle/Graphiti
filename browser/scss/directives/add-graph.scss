@@ -18,6 +18,7 @@
 		border-radius: 5px;
 		margin-right: 10px;
 		padding-bottom: 30px;
+		min-height: 200px;
 		label {
 			margin-top: 20px;
 		}
@@ -59,6 +60,11 @@
 }
 
 .graph-feedback {
+	margin-top: 20px;
+	span {
+		font-size: 1.3em;
+		font-weight: 700;
+	}
 	p {
 		font-size: 1.2em;
 	}
