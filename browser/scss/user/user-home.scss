@@ -1,11 +1,22 @@
 .user-home {
 	margin: 0 auto;
-    margin-top: 50px;
-    height: 100%;
+	
 
     .dataset-account-info {
-    	background: #3a424c;
-    	padding-left: 30px; 
+    	
+    	padding-left: 30px;
+    	hr {
+    		height: 1px;
+    		background: #3a424c;
+    		border: none;
+    	}
+	    header {
+	    	padding-top: 30px;
+	    	margin-bottom: 15px;
+	    	h3 {
+	    		text-align: center;
+	    	}
+	    }
     	h5 {
     		color: #ffffff;
     	}
@@ -28,6 +39,10 @@
 		  color: #ffffff;
 		}
 
+		.panel-heading {
+			padding: 5px 10px;
+		}
+
 		span {
 			color: #ffffff;
 			position: absolute;
@@ -37,41 +52,16 @@
 
 		.no-item {
 			font-size: 1.4em;
+			color: #ffffff;
 		}
 
 		.list-group-item {
 			border: none;
 			background: #599ad6;
-			padding: 5px;
+			padding: 5px 5px 5px 15px;
 
-			p {
-				margin-top: 5px;
-				margin-left: 2px;
-			}
-
-			.file-upload {
-				display: inline-block;
-				font-size: 1.4em;
-			}
-			.upload-links {
-				margin-top: 5px;
-				float: right;
-
-				#upload {
-					color: #1976d2;
-				}
-
-				#cancel {
-					color: #e02121;
-					margin-left: 3px;
-				}
-			}
 		}
 
-		.list-group-item:hover {
-			text-decoration: none;
-			color: #599ad6;
-		}
 	}
 
 	a {
@@ -79,7 +69,23 @@
 		font-size: 1.1em;
 	}
 
+	.user-home-btn {
+		white-space: normal;
+		text-align: left;
+	}
+
+	.user-graphs-container {
+		margin-top: 30px;
+		background: #ffffff;
+		padding-right: 100px;
+		h3 {
+			margin-top: 20px;
+		}
+	}
+
 	.btn-remove {
+	  float:right;
+	  margin-right: 5px;
 	  width: 24px;
 	  height: 24px;
 	  text-align: center;
@@ -111,7 +117,7 @@
 	.graphs-list {
 		li {
 			margin: 15px 0;
-			border: 1px solid #000;
+			border: 1px solid #c9c3c3;
 			border-radius: 10px;
 			list-style: none;
 			padding: 10px;
