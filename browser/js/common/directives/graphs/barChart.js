@@ -76,9 +76,6 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                         title = scope.settings.title || (formatColX + ' vs. ' + formatColY).toUpperCase(),
                         barSpace = 0.1;
 
-                    console.log('settings width:', scope.settings.width);
-                    console.log('width:', width);
-
                     let svg = anchor
                         .append('svg')
                         .style('width', width)
