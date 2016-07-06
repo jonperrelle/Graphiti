@@ -1,13 +1,10 @@
 app.directive('embedModal', function($uibModal) {
-
     return {
         restrict: 'E',
         templateUrl: 'js/common/directives/modals/embed.modal.html',
 
         link: function(scope, element) {
 
-            
-            
             scope.embed = function() {
 
                 let modalInstance = $uibModal.open({
@@ -18,9 +15,6 @@ app.directive('embedModal', function($uibModal) {
                     windowClass: 'embed-modal'
                 });
             };
-
         }
-
     };
-
 });

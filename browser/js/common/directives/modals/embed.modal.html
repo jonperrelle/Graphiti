@@ -7,7 +7,7 @@
         <textarea class="text-center" id="embedSVG">{{svgImg}}</textarea>
       </div>
       <div class="text-center">
-        <button class="btn btn-info" ngclipboard data-clipboard-action="copy" data-clipboard-target="#embedSVG"><i class="glyphicon glyphicon-paste"></i>Copy to clipboard</button>
+        <button class="btn btn-info" ngclipboard data-clipboard-action="copy" data-clipboard-target="#embedSVG" ng-click="copied()"><i class="glyphicon glyphicon-paste"></i>{{btnMsg}}</button>
         <button class="btn btn-danger" type="submit" ng-click="cancel()">Close</button>
       </div>
     </form>
