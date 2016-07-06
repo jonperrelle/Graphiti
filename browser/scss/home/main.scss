@@ -20,16 +20,20 @@
 
     .home-action {
       padding-top: 200px;
-      button {
-          color: #ffffff;
+      
+
+      .home-btn {
+          border: 3px solid #599ad6;
           background: #3a424c;
-          outline: none !important;
+          color: #ffffff;
+          padding: 25px 80px;
+          font-size: 1.4em;
       }
 
-      button:hover {
-        background: #ffffff;
-        color: #3a424c;
-        border: 1px solid #3a424c;
+      .home-btn:hover {
+        background: #599ad6;
+        color: #ffffff;
+        border: 3px solid #3a424c;
       }
     }
 
