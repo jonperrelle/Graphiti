@@ -29,7 +29,7 @@ app.controller('HomeCtrl', function($scope, QueryFactory, UploadFactory, $state,
             $scope.columns = data.columns;
         });
     };
-    let loadPage = Math.ceil(Math.random() * 3);
+    let loadPage = 3 //Math.ceil(Math.random() * 3);
     switch (loadPage){
         case 1:
             $scope.headType = 0; 
@@ -63,7 +63,7 @@ app.controller('HomeCtrl', function($scope, QueryFactory, UploadFactory, $state,
             {name: 'T', data: 9.056}, 
             {name: 'I', data: 6.966}]
             $scope.headColumns = [{name: 'name'}, {name: 'data'}]
-            $scope.headSettings = {title: 'Build Graphs Faster.', height: 400, xAxisLabel: 'Letters of an Awesome Application', yAxisLabel: 'Frequency of Letter in English Language (%)', minY: 0, maxY: 20};
+            $scope.headSettings = {title: 'Build Graphs Faster.', height: 400, xAxisLabel: 'Letters of an Awesome Application', yAxisLabel: 'Frequency of Letter in English Language (%)', minY: 0, maxY: 20, xAxisLabelSize: 12, yAxisLabelSize: 12, titleSize: 28, orderType: 'none', groupType: 'none'};
             break;
     }
     // $scope.defaultColumns =
