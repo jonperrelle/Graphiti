@@ -23,7 +23,8 @@ app.factory('DataFactory', function () {
       return groupedData;
     },
 
-    orderByCategory: function (data, category, type) {
+    orderByCategory: function (data, category, type, orderStyle = 'sort') {
+      if (orderStyle === 'none') return data;
       if (type === 'number') {
         return data.sort(function (a, b) {
           return +a[category] - +b[category];
