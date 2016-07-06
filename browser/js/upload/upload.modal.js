@@ -1,10 +1,10 @@
 app.controller('uploadModalInstanceCtrl', function($scope, $uibModal, $uibModalInstance) {
 
-    $scope.submit = function () {
+    $scope.submit = function() {
         $uibModalInstance.close($scope.file);
     };
 
-    $scope.cancel = function () {
+    $scope.cancel = function() {
         $uibModalInstance.dismiss('cancel');
     };
 });

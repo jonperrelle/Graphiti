@@ -1,0 +1,15 @@
+<section>
+  <button class="btn html-btn" ng-click="embed()"><i class="fa fa-file-code-o html-icon"></i></button>
+  <script type="text/ng-template" id="embed.modal.html">
+    <form name="form" class="upload-modal modal-dialog">
+      <div class="text-center">
+        <h4>Copy SVG element and paste into your site</h4>
+        <textarea class="text-center" id="embedSVG">{{svgImg}}</textarea>
+      </div>
+      <div class="text-center">
+        <button class="btn btn-info" ngclipboard data-clipboard-action="copy" data-clipboard-target="#embedSVG" ng-click="copied()"><i class="glyphicon glyphicon-paste"></i>{{btnMsg}}</button>
+        <button class="btn btn-danger" type="submit" ng-click="cancel()">Close</button>
+      </div>
+    </form>
+  </script>
+</section>

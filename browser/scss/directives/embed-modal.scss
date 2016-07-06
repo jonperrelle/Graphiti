@@ -1,0 +1,32 @@
+.modal-content {
+  margin-top: 200px;
+}
+
+.embed-modal .modal-dialog {
+  width: 400px;
+  height: 150px;
+  h4 {
+    margin: 0 auto;
+
+  }
+  .btn {
+    margin-top: 20px;
+  }
+
+  textarea {
+    margin-top: 10px;
+    width: 300px;
+    height: 75px;
+    resize: none;
+  } 
+}
+
+.html-icon {
+    color: white;
+}
+
+.html-btn:hover {
+    i {
+        color: black;
+    }
+}

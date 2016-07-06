@@ -41,7 +41,6 @@ module.exports = function (app, db) {
                 console.error('Error creating user from Google authentication', err);
                 done(err);
             });
-
     };
 
     passport.use(new GoogleStrategy(googleCredentials, verifyCallback));
@@ -58,5 +57,4 @@ module.exports = function (app, db) {
         function (req, res) {
             res.redirect('/');
         });
-
 };

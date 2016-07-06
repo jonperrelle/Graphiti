@@ -21,20 +21,6 @@ app.directive('settingsPanel', function(ValidationFactory, $localStorage) {
             scope.downloadGraph = function() {
                 saveSvgAsPng(document.querySelector('.graph-container svg'), 'sample.png');
             };
-
-
-            scope.embedGraph = function() {
-
-                let n = document.querySelector('.graph-container svg');
-
-                //save
-                svgAsDataUri(n, {}, function(uri) {
-
-                    let img = '<img src=' + uri + '>';
-                    //do something with the data uri for user
-                    console.log(img);
-                });
-            };
         }
     };
 });

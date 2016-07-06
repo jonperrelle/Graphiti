@@ -3,7 +3,7 @@
   <div class="row">
     <div class="col-xs-12 panel-group">
       <div class="panel settings-panel">
-        <div class="panel-heading">     
+        <div class="panel-heading">
           <a data-toggle="collapse" data-target="#view-gensettings-collapse" href="#"><h5>Graph Settings</h5></a>
         </div>
         <div id="view-gensettings-collapse" class="panel-collapse collapse settings-collapse">
@@ -40,8 +40,8 @@
               <div class="form-group col-xs-12">
                 <label for="singleColor" class="control-label">Single Color</label>
                 <div id="cp2" class="input-group colorpicker-component">
-                    <input type="text" name="singleColor" value="#000000" class="form-control" />
-                    <span class="input-group-addon"><i></i></span>
+                  <input type="text" name="singleColor" value="#000000" class="form-control" />
+                  <span class="input-group-addon"><i></i></span>
                 </div>
               </div>
             </div>
@@ -64,7 +64,7 @@
     </div>
     <div class="col-xs-12 panel-group" ng-show="graphType==='pieChart'">
       <div class="panel settings-panel">
-        <div class="panel-heading"> 
+        <div class="panel-heading">
           <a data-toggle="collapse" data-target="#view-piesettings-collapse" href="#"><h5>Legend Settings</h5></a>
         </div>
         <div id="view-piesettings-collapse" class="panel-collapse collapse settings-collapse">
@@ -95,7 +95,7 @@
     </div>
     <div class="col-xs-12 panel-group" ng-hide="graphType==='pieChart'">
       <div class="panel settings-panel">
-        <div class="panel-heading"> 
+        <div class="panel-heading">
           <a data-toggle="collapse" data-target="#view-xsettings-collapse" href="#"><h5>X Axis Settings</h5></a>
         </div>
         <div id="view-xsettings-collapse" class="panel-collapse collapse settings-collapse">
@@ -181,7 +181,7 @@
               <div class="form-group col-xs-12">
                 <label for="xAxis" class="control-label">X Axis/Data Point #1</label>
                 <div>
-                  <select ng-model="columns[0].name"  name="column1" class="form-control" ng-options="col for col in allColumns" ng-change="assignColumnType(columns[0])"></select>
+                  <select ng-model="columns[0].name" name="column1" class="form-control" ng-options="col for col in allColumns" ng-change="assignColumnType(columns[0])"></select>
                 </div>
               </div>
             </div>
@@ -189,7 +189,7 @@
               <div class="form-group col-xs-12">
                 <label for="yAxis" class="control-label">Y Axis/Data Point #2</label>
                 <div>
-                  <select ng-model="columns[1].name"  name="column2" class="form-control" ng-options="col for col in allColumns" ng-change="assignColumnType(columns[1])"></select>
+                  <select ng-model="columns[1].name" name="column2" class="form-control" ng-options="col for col in allColumns" ng-change="assignColumnType(columns[1])"></select>
                 </div>
               </div>
             </div>
@@ -197,7 +197,14 @@
         </div>
       </div>
     </div>
+    <div class="col-xs-12">
+    <div class="form-group col-xs-6">
+      <button class="btn download-btn" type="button" ng-click="downloadGraph()"><i class="fa fa-download download-icon"></i></button>
+    </div>
+
+    <div class="form-group col-xs-6">
+      <embed-modal></embed-modal>
+    </div>
+    </div>
   </div>
-  <button class="btn download-btn" type="button" ng-click="downloadGraph()">Download Image of Graph</button>
-  <button class="btn download-btn" type="button" ng-click="embedGraph()">Embed Graph SVG</button>
 </div>
