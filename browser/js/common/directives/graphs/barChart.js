@@ -38,13 +38,12 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                     let filteredData = scope.rows.filter(obj => obj[scope.columns[0].name] 
                         && obj[scope.columns[1].name]
                         && (!!Number(obj[scope.columns[1].name]) || Number(obj[scope.columns[1].name]) === 0));
-
                     let groupType = scope.settings.groupType || 'total';
-                    let orderType = scope.settings.orderType || 'none'; 
+                    let orderType = scope.settings.orderType || 'sort'; 
                     let groupedData = DataFactory.groupByCategory(filteredData, scope.columns[0].name, scope.columns[1].name, groupType);
                     groupedData = DataFactory.orderByCategory(groupedData, scope.columns[0].name, scope.columns[0].type, orderType);
                     
-                    let tooMuchData = groupedData.length > 50;
+                    let tooMuchData = groupedData.length > 50; //this can be replaced. 
                     let anchor = d3.select(ele[0])
                     anchor.selectAll('*').remove();
 
@@ -178,7 +177,6 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                                 if(typeof color === 'function') return color(i)
                                 else return color;
                             })
-                        //.attr("fill", color)
                         .attr("transform", "translate(" + margin.left + ", 0)");
 
                     svg.append("text")
