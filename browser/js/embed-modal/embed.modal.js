@@ -1,4 +1,4 @@
-app.controller('embedModalInstanceCtrl', function($scope, $uibModal, $uibModalInstance) {
+app.controller('embedModalInstanceCtrl', function($scope, $uibModal,$timeout, $uibModalInstance) {
 
     svgAsDataUri(document.querySelector('.graph-container svg'), {}, function(uri) {
             $scope.svgImg = '<img src=' + uri + '>';
@@ -8,7 +8,7 @@ app.controller('embedModalInstanceCtrl', function($scope, $uibModal, $uibModalIn
 
     $scope.copied = function() {
         $scope.btnMsg = "Copied!";
-        setTimeout($uibModalInstance.close(),2000);
+        $timeout(function(){$uibModalInstance.close()},2500);
     };
 
     $scope.cancel = function() {

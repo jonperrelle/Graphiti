@@ -40,8 +40,8 @@
               <div class="form-group col-xs-12">
                 <label for="singleColor" class="control-label">Single Color</label>
                 <div id="cp2" class="input-group colorpicker-component">
-                    <input type="text" name="singleColor" value="#000000" class="form-control" />
-                    <span class="input-group-addon"><i></i></span>
+                  <input type="text" name="singleColor" value="#000000" class="form-control" />
+                  <span class="input-group-addon"><i></i></span>
                 </div>
               </div>
             </div>
@@ -196,8 +196,15 @@
           </div>
         </div>
       </div>
-      <button class="btn download-btn" type="button" ng-click="downloadGraph()">Download Image of Graph</button>
-      <embed-modal class="btn download-btn" type="button">Embed html</embed-modal>
+    </div>
+    <div class="col-xs-12">
+    <div class="form-group col-xs-6">
+      <button class="btn download-btn" type="button" ng-click="downloadGraph()"><i class="fa fa-download download-icon"></i></button>
+    </div>
+
+    <div class="form-group col-xs-6">
+      <embed-modal></embed-modal>
+    </div>
     </div>
   </div>
 </div>

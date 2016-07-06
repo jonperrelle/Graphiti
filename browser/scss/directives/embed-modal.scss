@@ -2,10 +2,6 @@
   margin-top: 200px;
 }
 
-.embed-btn:hover {
-  color: white;
-}
-
 .embed-modal .modal-dialog {
   width: 400px;
   height: 150px;
@@ -19,7 +15,18 @@
 
   textarea {
     margin-top: 10px;
-    width: 200px;
+    width: 300px;
+    height: 75px;
     resize: none;
   } 
+}
+
+.html-icon {
+    color: white;
+}
+
+.html-btn:hover {
+    i {
+        color: black;
+    }
 }
