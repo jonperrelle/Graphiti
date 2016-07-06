@@ -79,7 +79,6 @@ app.directive('pieChart', function(d3Service, $window, DataFactory) {
                             .attr('width', width)
                             .attr('height', height)
                             .style('background-color', '#ffffff')
-                            .style('border-radius', '10px')
                             .data([groupedData])
                             .append("g")
                             .attr("transform", "translate(" + (width / 1.75) + "," + (radius *1.5) + ")");

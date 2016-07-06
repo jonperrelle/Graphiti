@@ -21,18 +21,8 @@ app.controller('UserHomeCtrl', function($scope, $state, UploadFactory, Session, 
     $scope.goToUserGraph = function(graph) {
         DatasetFactory.getOneUserDataset(graph.dataset, $scope.user)
             .then(rows => {
-
-                if (graph.dataset.socrataId) {
-                    let allColumns = Object.keys(rows[0]);
-                    $state.go('userSingleGraph', { userId: $scope.user.id, graphId: graph.id, dataset: graph.dataset, graphType: graph.graphType, settings: graph.setting, data: rows, columns: graph.columns, allColumns: allColumns });
-
-                } else {
-                    let allColumns = Object.keys(rows.data[0]);
-                    $state.go('userSingleGraph', { userId: $scope.user.id, graphId: graph.id, dataset: graph.dataset, graphType: graph.graphType, settings: graph.setting, data: rows.data, columns: graph.columns, allColumns: allColumns });
-                }
-
-
-
+                let allColumns = Object.keys(rows[0]);
+                $state.go('userSingleGraph', { userId: $scope.user.id, graphId: graph.id, dataset: graph.dataset, graphType: graph.graphType, settings: graph.setting, data: rows, columns: graph.columns, allColumns: allColumns });
             })
             .catch();
     };
@@ -40,13 +30,10 @@ app.controller('UserHomeCtrl', function($scope, $state, UploadFactory, Session, 
     $scope.goToDataset = function(dataset) {
         $localStorage.column1 = null;
         $localStorage.column2 = null;
+
         DatasetFactory.getOneUserDataset(dataset, $scope.user)
             .then(rows => {
-                if (dataset.socrataId) {
-                    $state.go('userDatasetDetails', { userId: $scope.user.id, datasetId: dataset.id, dataset: dataset, rows: rows });
-                } else {
-                    $state.go('userDatasetDetails', { userId: $scope.user.id, datasetId: dataset.id, dataset: rows.dataset, rows: rows.data });
-                }
+                $state.go('userDatasetDetails', { userId: $scope.user.id, datasetId: dataset.id, dataset: dataset, rows: rows });
             });
     };
 
@@ -62,15 +49,5 @@ app.controller('UserHomeCtrl', function($scope, $state, UploadFactory, Session, 
             .then(function() {
                 $scope.graphs = $scope.graphs.filter(gr => gr.id !== graph.id);
             });
-    };
-
-    $scope.uploadFile = function() {
-        if ($scope.form.$valid && $scope.file) {
-            UploadFactory.uploadFile($scope.file)
-                .then(function(dataset) {
-                    $scope.file = null;
-                    $state.go('datasetDetails', { datasetId: dataset.fileName, dataset: dataset.dataset, rows: dataset.data });
-                });
-        }
     };
 });

@@ -1,28 +1,28 @@
 'use strict';
 
-var passport = require('passport');
-var TwitterStrategy = require('passport-twitter').Strategy;
-var chalk = require('chalk')
+const passport = require('passport');
+const TwitterStrategy = require('passport-twitter').Strategy;
+const chalk = require('chalk')
 
 module.exports = function (app, db) {
 
-    var User = db.model('user');
+    const User = db.model('user');
 
-    var twitterConfig = app.getValue('env').TWITTER;
+    const twitterConfig = app.getValue('env').TWITTER;
 
-    var twitterCredentials = {
+    let twitterCredentials = {
         consumerKey: twitterConfig.consumerKey,
         consumerSecret: twitterConfig.consumerSecret,
         callbackUrl: twitterConfig.callbackUrl
     };
 
-    var createNewUser = function (token, tokenSecret, profile) {
+    let createNewUser = function (token, tokenSecret, profile) {
         return User.create({
             twitter_id: profile.id
         });
     };
 
-    var verifyCallback = function (token, tokenSecret, profile, done) {
+    let verifyCallback = function (token, tokenSecret, profile, done) {
 
         User.findOne({
             where: {

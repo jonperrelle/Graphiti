@@ -35,8 +35,7 @@ app.controller('HomeCtrl', function($scope, QueryFactory, UploadFactory, $state,
             $scope.headType = 0; 
             $scope.headRows = [{name: 'Graphing', data: 30}, {name: 'Relaxing', data: 600}]
             $scope.headColumns = [{name: 'name'}, {name: 'data'}]
-            $scope.headSettings = {title: 'Graphiti: Build Graphs Faster.', 
-            height: 400, 
+            $scope.headSettings = {height: 400, 
             xAxisLabel: 'Software', 
             yAxisLabel: 'Time Spent (s)',
             xAxisLabelSize: 12, 
@@ -54,8 +53,7 @@ app.controller('HomeCtrl', function($scope, QueryFactory, UploadFactory, $state,
             {name: 'T', data: 9.056}, 
             {name: 'I', data: 6.966}]
             $scope.headColumns = [{name: 'name'}, {name: 'data'}]
-            $scope.headSettings = {title: 'Graphiti: Build Graphs Faster.', 
-            height: 400, 
+            $scope.headSettings = {height: 400, 
             xAxisLabel: 'Letters of an Awesome Application', 
             yAxisLabel: 'Frequency of Letter in English Language (%)', 
             minY: 0, 

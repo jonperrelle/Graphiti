@@ -1,21 +1,21 @@
 'use strict';
-var passport = require('passport');
-var FacebookStrategy = require('passport-facebook').Strategy;
+const passport = require('passport');
+const FacebookStrategy = require('passport-facebook').Strategy;
 
 module.exports = function (app, db) {
 
-    var User = db.model('user');
+    const User = db.model('user');
 
-    var facebookConfig = app.getValue('env').FACEBOOK;
+    let facebookConfig = app.getValue('env').FACEBOOK;
 
-    var facebookCredentials = {
+    let facebookCredentials = {
         clientID: facebookConfig.clientID,
         clientSecret: facebookConfig.clientSecret,
         callbackURL: facebookConfig.callbackURL,
         profileFields: ['id', 'email', 'gender', 'link', 'locale', 'name', 'timezone', 'updated_time', 'verified']
     };
 
-    var verifyCallback = function (accessToken, refreshToken, profile, done) {
+    let verifyCallback = function (accessToken, refreshToken, profile, done) {
 
         
         User.findOne({
@@ -45,7 +45,7 @@ module.exports = function (app, db) {
             .catch(function (err) {
                 console.error('Error creating user from Facebook authentication', err);
                 done(err);
-            })
+            });
 
     };
 

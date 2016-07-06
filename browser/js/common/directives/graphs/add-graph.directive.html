@@ -29,33 +29,37 @@
 		</form>
 	</div>
 	<div class="row graph-previews">
-		<div class="column" ng-if="scatterEnabled()" ng-click="viewSingleGraph('scatterPlot')">
-			<div class="col-xs-12 col-sm-5 graph-previews-columns">
+		<div class="column col-sm-6" ng-if="scatterEnabled()" ng-click="viewSingleGraph('scatterPlot')">
+			<div class="col-sm-1"></div>
+			<div class="col-xs-12 col-sm-10 graph-previews-columns">
 				<h4 class="text-center">Scatterplot</h4>
 				<scatterplot-graph settings="settings" rows="data" columns="[column1,column2]"></scatterplot-graph>
 			</div>
 			<div class="col-sm-1"></div>
 		</div>
-		<div class="column" ng-if="lineEnabled()" ng-click="viewSingleGraph('lineGraph')">
+		<div class="column col-sm-6" ng-if="lineEnabled()" ng-click="viewSingleGraph('lineGraph')">
 			<div class="col-sm-1"></div>
-			<div class="col-xs-12 col-sm-5 graph-previews-columns">
+			<div class="col-xs-12 col-sm-10 graph-previews-columns">
 				<h4 class="text-center">Line Graph</h4>
 				<line-graph settings="settings" rows="data" columns="[column1,column2]"></line-graph>
 			</div>
+			<div class="col-sm-1"></div>
 		</div>
-		<div class="column" ng-if="pieEnabled() && withinLength()" ng-click="viewSingleGraph('pieChart')">
-			<div class="col-xs-12 col-sm-5 graph-previews-columns">
+		<div class="column col-sm-6" ng-if="pieEnabled() && withinLength()" ng-click="viewSingleGraph('pieChart')">
+			<div class="col-sm-1"></div>
+			<div class="col-xs-12 col-sm-10 graph-previews-columns">
 				<h4 class="text-center">Pie Chart</h4>
 				<pie-chart settings="settings" rows="data" columns="[column1,column2]"></pie-chart>
 			</div>
 			<div class="col-sm-1"></div>
 		</div>
-		<div class="column" ng-if="barEnabled()" ng-click="viewSingleGraph('barChart')">
+		<div class="column col-sm-6" ng-if="barEnabled()" ng-click="viewSingleGraph('barChart')">
 			<div class="col-sm-1"></div>
-			<div class="col-xs-12 col-sm-5 graph-previews-columns">
+			<div class="col-xs-12 col-sm-10 graph-previews-columns">
 				<h4 class="text-center">Bar Chart</h4>
 				<bar-chart settings="settings" rows="data" columns="[column1,column2]"></bar-chart>
 			</div>
+			<div class="col-sm-1"></div>
 		</div>
 	</div>
 	<div class="row graph-feedback" ng-if="column1 || column2">

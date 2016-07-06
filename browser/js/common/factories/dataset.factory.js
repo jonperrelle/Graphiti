@@ -4,9 +4,9 @@ app.factory('DatasetFactory', function($http) {
 
     return {
 
-        addDataset: function(user, dataset, domain) {
-            if (domain)  {
-                return $http.post('/api/users/' + user.id + '/datasets/SocrataDataset', { dataset, domain })
+        addDataset: function(user, dataset) {
+            if (dataset.socrataDomain)  {
+                return $http.post('/api/users/' + user.id + '/datasets/SocrataDataset', { dataset})
                     .then(successFunction)
                     .catch();
             } else {
@@ -26,7 +26,7 @@ app.factory('DatasetFactory', function($http) {
                 route = 'api/soda?datasetId=' + dataset.socrataId + "&domain=" + dataset.socrataDomain;
             }
             return $http.get(route)
-                    .then(res => res.data)
+                    .then(successFunction)
                     .catch();
         },
 

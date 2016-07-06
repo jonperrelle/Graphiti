@@ -1,10 +1,12 @@
-var Sequelize = require('sequelize');
+'use strict';
+
+const Sequelize = require('sequelize');
 
 module.exports = function (db) {
 
     require('./user')(db);
 
-    var User = db.model('user');
+    const User = db.model('user');
 
     db.define('dataset', {
         name: {
@@ -15,7 +17,7 @@ module.exports = function (db) {
         }, 
         userUploaded: {
         	type: Sequelize.BOOLEAN,
-        	allowNull: false
+            defaultValue: false
         },
         socrataId: {
         	type: Sequelize.STRING,
