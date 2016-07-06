@@ -65,5 +65,4 @@ app.controller('HomeCtrl', function($scope, QueryFactory, UploadFactory, $state,
             groupType: 'none'};
             break;
     }
-    // $scope.defaultColumns =
 });
