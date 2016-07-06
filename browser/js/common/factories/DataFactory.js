@@ -12,7 +12,6 @@ app.factory('DataFactory', function () {
           groupedObj[datum[category]][1] += +datum[metric];
         }
       });
-      console.log("in groupBy", groupedObj)
       for (let key in groupedObj) {
         if (groupedObj.hasOwnProperty(key)) {
           let obj = {};
