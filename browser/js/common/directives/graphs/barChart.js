@@ -69,8 +69,7 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                         bottom: ((xLabelLength + 6) * 5) + xAxisLabelSize,
                         left: ((yLabelLength + 6) * 7) + yAxisLabelSize
                         },
-                        width = scope.settings.width || tooMuchData ? margin.left + margin.right + groupedData.length * 15 : ele[0].parentNode.offsetWidth,
-                        
+                        width = scope.settings.width || (tooMuchData ? margin.left + margin.right + groupedData.length * 15 : ele[0].parentNode.offsetWidth),
 
                         xAxisLabel = scope.settings.xAxisLabel || formatColX,
                         yAxisLabel = scope.settings.yAxisLabel || formatColY,
@@ -86,7 +85,7 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
 
                     //create the rectangles for the bar chart
                     let x = d3.scale.ordinal()
-                        .rangeRoundBands([0, width - margin.left - margin.right], barSpace);
+                        .rangeBands([0, width - margin.left - margin.right], barSpace);
 
                     let y = d3.scale.linear()
                         .range([height - margin.bottom, margin.top]);
@@ -147,7 +146,7 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                     svg.select(".xlabel")
                          .attr("transform", "translate(" + ((width - margin.left - margin.right) / 2) + ", " + (margin.bottom - xAxisLabelSize) + ")")
                          .style("text-anchor", "middle")
-                         .style("font-size", xAxisLabelSize)
+                         .style("font-size", xAxisLabelSize);
 
                     svg.append("g")
                         .attr("class", "y axis")
@@ -158,7 +157,7 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                         .attr("transform", "rotate(-90)translate(" + -((height - margin.bottom) / 2) + ", " + -(margin.left - yAxisLabelSize) + ")")
                         .text(yAxisLabel)
                         .style("text-anchor", "middle")
-                        .style("font-size", yAxisLabelSize)
+                        .style("font-size", yAxisLabelSize);
 
                     svg.selectAll(".bar")
                         .data(groupedData)
