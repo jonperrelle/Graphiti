@@ -5,8 +5,9 @@
   font-size: 11px;
 }
 
-body {
+html, body {
   background: #ffffff;
+  height: 100%;
 }
 
 
@@ -47,6 +48,7 @@ button:hover {
 #main {
   padding-top: 60px;
   margin: 0 auto;
+  height: 100%;
 }
 
 @import 'directives/main';

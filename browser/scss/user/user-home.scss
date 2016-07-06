@@ -1,6 +1,10 @@
 .user-home {
-	margin: 0 auto;
 	background: #3a424c;
+	margin: 0 auto;
+
+	.user-home-container {
+		height: 100%;
+	}
 	
     header {
     	padding-top: 30px;
@@ -13,6 +17,7 @@
 
     .dataset-account-info {
     	
+    	min-height: 100vh;
     	padding-left: 30px;
 
     	h5 {
@@ -71,6 +76,7 @@
 	.user-graphs-container {
 		margin-top: 30px;
 		background: #ffffff;
+		min-height: 100vh;
 		padding-right: 100px;
 		h3 {
 			margin-top: 20px;
