@@ -1,10 +1,17 @@
 navbar {
 
+  .navbar-toggle {
+    border: 1px solid #599ad6;
+  }
+  .icon-bar {
+    background: #599ad6;
+  }
+
   nav {
     display: block;
     position: fixed;
     width: 100%;
-    background: #2a3233;
+    background: #3a424c;
     height: 70px;
     }
 
@@ -18,5 +25,9 @@ navbar {
     margin-top: 10px;
     outline: none !important;
     margin-right: 30px;
+  }
+
+  .navbar-collapse {
+    float:right;
   }
 }
