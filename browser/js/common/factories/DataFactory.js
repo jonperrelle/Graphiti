@@ -1,6 +1,7 @@
 app.factory('DataFactory', function () {
   return {
     groupByCategory: function (data, category, metric, type) {
+      if(type === 'none') return data; 
       let groupedObj = {},
           groupedData = [];
       data.forEach(function (datum) {
