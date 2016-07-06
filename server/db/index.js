@@ -1,5 +1,6 @@
 'use strict';
-var db = require('./_db');
+
+const db = require('./_db');
 module.exports = db;
 
 require('./models/user')(db);
@@ -14,9 +15,8 @@ const Graph = db.model('graph');
 const Dataset = db.model('dataset');
 
 User.belongsToMany(Dataset, {through : 'user_dataset'});
-Dataset.belongsToMany(User, {through : 'user_dataset'}); //put the userId on the graph table
-
+Dataset.belongsToMany(User, {through : 'user_dataset'}); 
 Graph.belongsTo(Dataset);
 Graph.belongsTo(User);
 User.hasMany(Graph);
-Graph.belongsTo(Settings); //put the userId on the graph table
+Graph.belongsTo(Settings); 

@@ -1,14 +1,14 @@
 'use strict';
-var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
 
 module.exports = function(app, db) {
 
-    var User = db.model('user');
+    const User = db.model('user');
 
     // When passport.authenticate('local') is used, this function will receive
     // the email and password to run the actual authentication logic.
-    var strategyFn = function(email, password, done) {
+    let strategyFn = function(email, password, done) {
         User.findOne({
                 where: {
                     email: email
@@ -31,12 +31,12 @@ module.exports = function(app, db) {
     // A POST /login route is created to handle login.
     app.post('/login', function(req, res, next) {
 
-        var authCb = function(err, user) {
+        let authCb = function(err, user) {
 
             if (err) return next(err);
 
             if (!user) {
-                var error = new Error('Invalid login credentials.');
+                const error = new Error('Invalid login credentials.');
                 error.status = 401;
                 return next(error);
             }
