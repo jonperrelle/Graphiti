@@ -156,6 +156,10 @@ app.directive('lineGraph', function(d3Service, $window, $state) {
                         .attr("class", "xlabel")
                         .text(xAxisLabel);
 
+                    svg.selectAll(".x text")
+                        .attr("transform", "translate(-7,0)rotate(-45)")
+                        .style("text-anchor", "end");
+
                     svg.select(".xlabel")
                         .attr("transform", "translate(" + (width - margin.left - margin.right) / 2 + ", " + (margin.bottom - 10) + ")");
 
