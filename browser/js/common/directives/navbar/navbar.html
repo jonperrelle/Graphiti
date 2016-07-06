@@ -1,11 +1,17 @@
 <nav class="navbar navbar-fixed-top">
     <div class="container">
-        <div class="navbar-header">
+        <div class="navbar-header">  
+            <button type="button" class="btn navbar-toggle" data-toggle="collapse" data-target="#navbarCollapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span> 
+            </button>
+            <button ui-sref-active="active" ui-sref="home" class="btn navbar-button">Home</button>
         </div>
         <ul class="nav navbar-nav">
-            <li><button ui-sref-active="active" ui-sref="home" class="btn navbar-button">Home</button></li>
             <li><button ui-sref-active="active" ui-sref="about" class="btn navbar-button">About Us</button></li>
         </ul>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class='nav navbar-right'>
                 <div ng-show="isLoggedIn()">
                     <button ui-sref="userHome({userId: user.id})" class="btn navbar-button">My Account</button>
@@ -14,6 +20,8 @@
                 <div ng-show="!isLoggedIn()">
                     <button ui-sref="login" class="btn navbar-button">Login</button>
                     <button ui-sref="signup" class="btn navbar-button">Sign Up</button>
+                </div>
             </ul>
+        </div>
     </div>
 </nav>
