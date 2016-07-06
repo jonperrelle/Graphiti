@@ -25,7 +25,7 @@ router.post('/',function(req,res,next){
 	req.body.settings.title = req.body.settings.title || req.body.graph.columns.map(col=> col.name).join(" .vs ");
 	
 	Promise.all([Dataset.findById(req.body.dataset.id),
-	        Settings.create(req.body.settings)])
+	    Settings.create(req.body.settings)])
 	.spread(function(dataset,settings){
 		return Graph.create(req.body.graph)
 		.then(function(graph){

@@ -9,13 +9,5 @@ app.factory('UploadFactory', function ($http, Upload) {
           return response.data;
         });
       },
-
-      getUploadedDataset: function (fileName) {
-          return $http.get('/upload?fileName=' + fileName)
-          .then(function(response) {
-              return response.data;
-          });
-      }
-
    };
 });

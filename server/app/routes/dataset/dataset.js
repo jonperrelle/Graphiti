@@ -7,12 +7,12 @@ const User = db.model('user');
 const Dataset = db.model('dataset');
 const AWS = require('aws-sdk');
 const Converter = require('csvtojson').Converter;
-const chalk = require('chalk')
+
 
 AWS.config.update({
     accessKeyId: env.amazonaws.accessKeyId,
     secretAccessKey: env.amazonaws.secretAccessKey
-})
+});
 
 router.get('/:datasetId', function(req, res, next) {
 
@@ -30,7 +30,7 @@ router.delete('/:datasetId', function(req, res, next) {
             return dataset.destroy();
         })
         .then(function() {
-            res.sendStatus(204)
+            res.sendStatus(204);
         })
         .catch(next);
 });
@@ -60,7 +60,6 @@ router.post('/UploadedDataset', function(req, res, next) {
     let s3bucket = new AWS.S3({ params: { Bucket: 'graphitiDatasets' } });
     let file = fs.createReadStream(req.session.uploadedFile.path);
     let params = { Key: req.session.uploadedFile.originalFilename, Body: file };
-
 
     s3bucket.upload(params, function(err, data) {
         if (err) {
