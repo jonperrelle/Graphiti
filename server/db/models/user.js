@@ -1,7 +1,8 @@
 'use strict';
-var crypto = require('crypto');
-var _ = require('lodash');
-var Sequelize = require('sequelize');
+
+const crypto = require('crypto');
+const _ = require('lodash');
+const Sequelize = require('sequelize');
 
 module.exports = function (db) {
 
@@ -51,7 +52,7 @@ module.exports = function (db) {
                 return crypto.randomBytes(16).toString('base64');
             },
             encryptPassword: function (plainText, salt) {
-                var hash = crypto.createHash('sha1');
+                const hash = crypto.createHash('sha1');
                 hash.update(plainText);
                 hash.update(salt);
                 return hash.digest('hex');

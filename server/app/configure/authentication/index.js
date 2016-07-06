@@ -1,10 +1,10 @@
 'use strict';
-var path = require('path');
-var session = require('express-session');
-var passport = require('passport');
-var SequelizeStore = require('connect-session-sequelize')(session.Store);
+const path = require('path');
+const session = require('express-session');
+const passport = require('passport');
+const SequelizeStore = require('connect-session-sequelize')(session.Store);
 
-var ENABLED_AUTH_STRATEGIES = [
+const ENABLED_AUTH_STRATEGIES = [
     'local',
     'google',
     'facebook',
@@ -13,11 +13,11 @@ var ENABLED_AUTH_STRATEGIES = [
 
 module.exports = function (app, db) {
 
-    var dbStore = new SequelizeStore({
+    const dbStore = new SequelizeStore({
         db: db
     });
 
-    var User = db.model('user');
+    const User = db.model('user');
 
     dbStore.sync();
 

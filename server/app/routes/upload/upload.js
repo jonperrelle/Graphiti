@@ -32,12 +32,12 @@ router.post('/', function (req, res, next) {
 	
 	csvConverter.on('end_parsed', function (jsonArray) {
 		let trimmedFile = uploadedFile.originalFilename.replace(/.csv/, "");
-		res.send({fileName: trimmedFile, data: jsonArray, dataset: {resource: {name: trimmedFile}}});
+		res.send({fileName: trimmedFile, data: jsonArray, dataset: {name: trimmedFile}});
 	});
 	stream.pipe(csvConverter);
 	csvConverter.on('error', function (errMsg, errData) {
 		next(errMsg);
-	})
+	});
 });
 
 module.exports = router;

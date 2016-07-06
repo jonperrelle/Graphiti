@@ -6,20 +6,19 @@ app.directive('uploadModal', function ($uibModal, $state, UploadFactory) {
 
         link: function (scope, element) { 
             scope.openFileUpload = function () {
-
-            let modalInstance = $uibModal.open({
-                animation: true,
-                templateUrl: 'upload.modal.html',
-                controller: 'uploadModalInstanceCtrl',
-                scope: scope,
-                windowClass: 'upload-modal'
+                let modalInstance = $uibModal.open({
+                    animation: true,
+                    templateUrl: 'upload.modal.html',
+                    controller: 'uploadModalInstanceCtrl',
+                    scope: scope,
+                    windowClass: 'upload-modal'
             });
 
             modalInstance.result.then(function (file) {
                 UploadFactory.uploadFile(file)
-                .then(function(dataset) {
+                .then(function(uploadedDS) {
                     scope.file = null;
-                    $state.go('datasetDetails', {datasetId: dataset.fileName, dataset: dataset.dataset ,rows: dataset.data});
+                    $state.go('datasetDetails', {datasetId: uploadedDS.fileName, dataset: uploadedDS.dataset, rows: uploadedDS.data});
                 })
             });   
         };
