@@ -69,13 +69,15 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                         bottom: ((xLabelLength + 6) * 5) + xAxisLabelSize,
                         left: ((yLabelLength + 6) * 7) + yAxisLabelSize
                         },
-                        width = scope.settings.width || tooMuchData ? margin.left + margin.right + groupedData.length * 15 : ele[0].parentNode.offsetWidth,
-                        
+                        width = scope.settings.width || (tooMuchData ? margin.left + margin.right + groupedData.length * 15 : ele[0].parentNode.offsetWidth),
 
                         xAxisLabel = scope.settings.xAxisLabel || formatColX,
                         yAxisLabel = scope.settings.yAxisLabel || formatColY,
                         title = scope.settings.title || (formatColX + ' vs. ' + formatColY).toUpperCase(),
                         barSpace = 0.1;
+
+                    console.log('settings width:', scope.settings.width);
+                    console.log('width:', width);
 
                     let svg = anchor
                         .append('svg')
