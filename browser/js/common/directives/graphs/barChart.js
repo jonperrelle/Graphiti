@@ -55,12 +55,19 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                             let currentLength = Math.floor(current[scope.columns[1].name]).toString().length;
                             return currentLength > prev ? currentLength : prev;
                         }, 0);
+                    let title = scope.settings.title || (formatColX + ' vs. ' + formatColY).toUpperCase(),
+                    titleSize = scope.settings.titleSize || height / 20;
+                    scope.settings.noTitle = true;
+                    if(scope.settings.noTitle){
+                        titleSize = 0;
+                        title = "";
+                    }
 
                     let formatColX = scope.columns[0].name.replace(/\_+/g, " "),
                         formatColY = scope.columns[1].name.replace(/\_+/g, " "),
                         graphColor = scope.settings.color || '10',
                         height = scope.settings.height || 500,
-                        titleSize = scope.settings.titleSize || height / 20,
+                        
                         xAxisLabelSize = scope.settings.xAxisLabelSize || height / 30,
                         yAxisLabelSize = scope.settings.yAxisLabelSize || height / 30,
                         margin = {
@@ -73,7 +80,6 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
 
                         xAxisLabel = scope.settings.xAxisLabel || formatColX,
                         yAxisLabel = scope.settings.yAxisLabel || formatColY,
-                        title = scope.settings.title || (formatColX + ' vs. ' + formatColY).toUpperCase(),
                         barSpace = 0.1;
 
                     let svg = anchor
