@@ -42,6 +42,10 @@ app.directive('lineGraph', function(d3Service, $window, $state) {
 
                 scope.render = function() {
                     let formatDate, dateFormat;
+                    // xLabelLength = scope.rows.reduce(function (prev, current) {
+                    //     let currentLength = current[scope.seriesx[0].name].toString().length;
+                    //     return currentLength > prev ? currentLength : prev;
+                    // }, 0);
                     if (scope.seriesx[0].type === 'date') {
                         let commonDateFormats = ["%Y", "%Y-%y", "%x", "%m-%d-%Y", "%m.%d.%Y", "%m/%d/%y", "%m-%d-%y", "%m.%d.%y", "%Y/%m/%d", "%Y-%m-%d", "%Y.%m.%d", "%xT%X", "%m-%d-%YT%X", "%m.%d.%YT%X", "%m/%d/%yT%X", "%m-%d-%yT%X", "%m.%d.%yT%X", "%Y-%m-%dT%X", "%Y/%m/%dT%X", "%Y.%m.%dT%X", "%c"];
                         dateFormat = commonDateFormats.filter(f => d3.time.format(f).parse(scope.rows[0][scope.seriesx[0].name]))[0];
@@ -78,13 +82,8 @@ app.directive('lineGraph', function(d3Service, $window, $state) {
 
                     let anchor = d3.select(ele[0])
                     anchor.selectAll('*').remove();
-
-                    let xLabelLength = dataObj[scope.seriesy[0].name].reduce(function (prev, current) {
-                            let currentLength = current[0].toString().length;
-                            return currentLength > prev ? currentLength : prev;
-                        }, 0),
-                    yLabelLength = 0;
-                    // yLabelLength = filteredData.reduce(function (prev, current) {
+                    let yLabelLength = 0,
+                    xLabelLength = 3;                    // yLabelLength = filteredData.reduce(function (prev, current) {
                     //     let currentLength = Math.floor(current[scope.columns[1].name]).toString().length;
                     //     return currentLength > prev ? currentLength : prev;
                     // }, 0);
@@ -136,11 +135,9 @@ app.directive('lineGraph', function(d3Service, $window, $state) {
 
                     let line = d3.svg.line()
                         .x(function(d) {
-                            console.log('XD', d[0]);
                             return x(d[0]);
                         })
                         .y(function(d) {
-                            console.log('yD', d[1]);
                             return y(d[1]);
                         });
 
