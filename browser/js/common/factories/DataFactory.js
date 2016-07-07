@@ -16,8 +16,9 @@ app.factory('DataFactory', function () {
         if (groupedObj.hasOwnProperty(key)) {
           let obj = {};
           obj[category] = key;
-          if(type === 'total') obj[metric] = groupedObj[key][1]
+          if(type === 'total') obj[metric] = groupedObj[key][1];
           else if(type === 'mean') obj[metric] = groupedObj[key][1] / groupedObj[key][0];
+          else if (type === 'number') obj.frequency = groupedObj[key][0];
           groupedData.push(obj);
         }
       }

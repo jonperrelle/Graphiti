@@ -1,4 +1,4 @@
-app.directive('histogram', function (d3Service, $window) {
+app.directive('histogram', function (d3Service, $window, DataFactory) {
   return {
     restrict: 'E',
     scope: {
@@ -38,12 +38,12 @@ app.directive('histogram', function (d3Service, $window) {
 
           let quantitative = scope.column.type === 'number';
 
-          let filteredData = quantitative ? 
+          let data = quantitative ? 
                 scope.rows.filter(obj => obj[scope.column.name] 
                   && (!!Number(obj[scope.column.name]) || Number(obj[scope.column.name]) === 0)) : 
-                scope.rows;
+                  DataFactory.groupByCategory(scope.rows, scope.column.name, 'frequency', 'number');
 
-          let xLabelLength = filteredData.reduce(function (prev, current) {
+          let xLabelLength = data.reduce(function (prev, current) {
                   let currentLength = current[scope.column.name].toString().length;
                   return currentLength > prev ? currentLength : prev;
               }, 0);
@@ -76,49 +76,70 @@ app.directive('histogram', function (d3Service, $window) {
               tickType;
           if (quantitative) {
             xScale = d3.scale.linear()
-                  .domain([d3.min(filteredData, d => +d[scope.column.name]), d3.max(filteredData, d => +d[scope.column.name])])
+                  .domain([d3.min(data, d => +d[scope.column.name]), d3.max(data, d => +d[scope.column.name])])
                   .range([0, width - margin.left - margin.right]);
             tickType = d3.format('.2f');
           } else {
             xScale = d3.scale.ordinal()
-                .rangeBands([0, width - margin.left - margin.right]);
+                .domain(data.map(function(d) {
+                          return d[scope.column.name]; 
+                        }))
+                .rangeBands([0, width - margin.left - margin.right], 0.1);
           }
 
-          console.log(filteredData);
-          console.log(scope.column.name);
-          let histogram = d3.layout.histogram()
-            .value(d => quantitative ? +d[scope.column.name] : d[scope.column.name])
-            .bins(30)
-            (filteredData);
+          data = quantitative ? 
+            d3.layout.histogram()
+              .value(d => +d[scope.column.name])
+              .bins(15)
+              (data) :
+            data;
 
-          console.log(histogram);
-
-          let tickVals = histogram.map(d => d.x);
+          let tickVals = data.map(d => d.x);
 
           let yScale = d3.scale.linear()
-                .domain([0, d3.max(histogram, d => d.y)])
+                // .domain([0, d3.max(data, d => d.y)])
                 .range([height - margin.bottom, margin.top]);
+
+          if (quantitative) {
+            yScale = yScale.domain([0, d3.max(data, d => d.y)]);
+          } else {
+            yScale = yScale.domain([0, d3.max(data, d => d.frequency)]);
+          }
 
           let xAxis = d3.svg.axis()
                         .scale(xScale)
-                        .orient("bottom")
-                        .tickFormat(tickType)
-                        .tickValues(tickVals),
+                        .orient("bottom"),
+                        // .tickFormat(tickType)
+                        // .tickValues(tickVals),
               yAxis = d3.svg.axis().scale(yScale).orient("left");
 
-          let bar = svg.selectAll('.bar')
-                .data(histogram)
-              .enter()
-                .append('g')
-                .attr('class', 'bar');
+          if (quantitative) {
+            xAxis = xAxis.tickFormat(tickType)
+              .tickValues(tickVals);
+          }
 
-              bar.append('rect')
-                .attr("x", d => xScale(d.x))
-                .attr("y", d => yScale(d.y))
-                .attr('width', d => quantitative ? 
-                  (xScale(d.dx + d3.min(histogram, d => d.x)) - 1) :
-                  (xScale.rangeBand()))
-                .attr('height', d => height - margin.bottom - yScale(d.y))
+          let bar = svg.selectAll('.bar')
+                .data(data)
+              .enter()
+                .append('rect')
+                .attr("class", "bar")
+                .attr("x", function(d) {
+                  if (quantitative) return xScale(d.x);
+                  else {
+                    return xScale(d[scope.column.name]);
+                  }
+                })
+                .attr("y", function(d) {
+                  return quantitative ? yScale(d.y) : yScale(d.frequency);
+                })
+                .attr('width', function (d) {
+                  return quantitative ? (xScale(d.dx + d3.min(data, function (e) {
+                    return e.x;
+                  })) - 1) : xScale.rangeBand();
+                })
+                .attr('height', function (d) {
+                  return quantitative ? (height - margin.bottom - yScale(d.y)) : (height - margin.bottom - yScale(d.frequency));
+                })
                 .attr("transform", "translate(" + margin.left + ", 0)");
 
               svg.append("g")
@@ -140,11 +161,11 @@ app.directive('histogram', function (d3Service, $window) {
 
               svg.append("g")
                   .attr("class", "y axis")
-                  .attr("transform", "translate(" + margin.left + ",0)")
+                  .attr("transform", "translate(" + margin.left + ", 0)")
                   .call(yAxis)
                   .append("text")
                   .attr("class", "ylabel")
-                  .attr("transform", "rotate(-90)translate(" + -((height + margin.bottom + margin.top) / 2) + ", " + -(margin.left-20) + ")")
+                  .attr("transform", "rotate(-90)translate(" + ((height + margin.bottom + margin.top) / -2) + ", " + -(margin.left-20) + ")")
                   .text(yAxisLabel);
         };
       });
