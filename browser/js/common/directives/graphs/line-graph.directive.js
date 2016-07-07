@@ -41,6 +41,12 @@ app.directive('lineGraph', function(d3Service, $window, $state) {
                 }, true);
 
                 scope.render = function() {
+                    let formatDate, dateFormat;
+                    if (scope.seriesx[0].type === 'date') {
+                        let commonDateFormats = ["%Y", "%Y-%y", "%x", "%m-%d-%Y", "%m.%d.%Y", "%m/%d/%y", "%m-%d-%y", "%m.%d.%y", "%Y/%m/%d", "%Y-%m-%d", "%Y.%m.%d", "%xT%X", "%m-%d-%YT%X", "%m.%d.%YT%X", "%m/%d/%yT%X", "%m-%d-%yT%X", "%m.%d.%yT%X", "%Y-%m-%dT%X", "%Y/%m/%dT%X", "%Y.%m.%dT%X", "%c"];
+                        dateFormat = commonDateFormats.filter(f => d3.time.format(f).parse(scope.rows[0][scope.seriesx[0].name]))[0];
+                        formatDate = d3.time.format(dateFormat); //d3.time.format("%Y-%y");
+                    }
 
                     let dataObj = {};
 
@@ -53,8 +59,8 @@ app.directive('lineGraph', function(d3Service, $window, $state) {
                             if (dataObj[k]) {
                                 if (row[scope.seriesx[0].name] && row[k] && (!!Number(row[scope.seriesx[0].name]) || Number(row[scope.seriesx[0].name]) === 0 || scope.seriesx[0].type === 'date')
                                         && (!!Number(row[k]) || Number(row[k]) === 0)) {
-
-                                        dataObj[k].push([row[scope.seriesx[0].name], row[k]]);
+                                        if(formatDate)  dataObj[k].push([formatDate.parse(row[scope.seriesx[0].name]), +row[k]]);
+                                        else dataObj[k].push([+row[scope.seriesx[0].name], +row[k]]);
                                 }
                             };
                         }
@@ -64,9 +70,11 @@ app.directive('lineGraph', function(d3Service, $window, $state) {
                         for (let k in dataObj) {
                             dataObj[k] = dataObj[k].sort((a, b) => a[0] - b[0]);
                         }
+                    } else {
+                        for (let k in dataObj) {
+                            dataObj[k] = dataObj[k].sort((a, b) => a[0].getTime() - b[0].getTime());
+                        }
                     }
-
-                    
 
                     let anchor = d3.select(ele[0])
                     anchor.selectAll('*').remove();
@@ -87,10 +95,8 @@ app.directive('lineGraph', function(d3Service, $window, $state) {
                         })
                     }
 
-                    console.log(xLabelLength, yLabelLength)
-
-                    let formatColX = scope.columns[0].name.replace(/\_+/g, " "),
-                        formatColY = scope.columns[1].name.replace(/\_+/g, " "),
+                    let formatColX = scope.seriesx[0].name.replace(/\_+/g, " "),
+                        formatColY = "y-axis", //scope.columns[1].name.replace(/\_+/g, " ")
                         margin = { 
                             top: 30,
                             right: 20,
@@ -110,39 +116,39 @@ app.directive('lineGraph', function(d3Service, $window, $state) {
                         .append("g");
 
                     //check if the data column header may contain date info ??
-                    let x,
-                        dateFormat,
-                        data;
+                    let x;                        // dateFormat,
+                        // data;
 
-                    if (scope.columns[0].type === 'date') {
-                        //if so validate the format of the date
-                        //run date checking function
-                        let commonDateFormats = ["%Y", "%Y-%y", "%x", "%m-%d-%Y", "%m.%d.%Y", "%m/%d/%y", "%m-%d-%y", "%m.%d.%y", "%Y/%m/%d", "%Y-%m-%d", "%Y.%m.%d", "%xT%X", "%m-%d-%YT%X", "%m.%d.%YT%X", "%m/%d/%yT%X", "%m-%d-%yT%X", "%m.%d.%yT%X", "%Y-%m-%dT%X", "%Y/%m/%dT%X", "%Y.%m.%dT%X", "%c"];
-                        dateFormat = commonDateFormats.filter(f => d3.time.format(f).parse(filteredData[0][scope.columns[0].name]))[0];
-                        let formatDate = d3.time.format(dateFormat); //d3.time.format("%Y-%y");
-                        data = [];
-                        filteredData.forEach(function(element) {
-                            let obj = {};
-                            obj[scope.columns[0].name] = formatDate.parse(element[scope.columns[0].name]);
-                            obj[scope.columns[1].name] = element[scope.columns[1].name];
-                            data.push(obj);
-                        });
 
-                        data = data.sort((a, b) => a[scope.columns[0].name].getTime() - b[scope.columns[0].name].getTime());
+                        // for(let k in dataObj){
+                        //     dataObj[k].forEach(function(dataSet){
+
+                        //     })
+                        // }
+
+                    //     data = [];
+                    //     filteredData.forEach(function(element) {
+                    //         let obj = {};
+                    //         obj[scope.seriesx[0].name] = formatDate.parse(element[scope.columns[0].name]);
+                    //         obj[scope.columns[1].name] = element[scope.columns[1].name];
+                    //         data.push(obj);
+                    //     });
+
+                    //     data = data.sort((a, b) => a[scope.columns[0].name].getTime() - b[scope.columns[0].name].getTime());
                         
-                        x = d3.time.scale().range([margin.left, width - margin.right]);
-                    } else if (scope.columns[0].type === 'number') {
-                        x = d3.scale.linear().range([margin.left, width - margin.right]);
-                        data = [];
-                        filteredData.forEach(function(element) {
-                            let obj = {};
-                            obj[scope.columns[0].name] = +(element[scope.columns[0].name]);
-                            obj[scope.columns[1].name] = element[scope.columns[1].name];
-                            data.push(obj);
-                        });
-                    } else {
-                        return;
-                    }
+                    //     x = d3.time.scale().range([margin.left, width - margin.right]);
+                    // } else if (scope.columns[0].type === 'number') {
+                    //     x = d3.scale.linear().range([margin.left, width - margin.right]);
+                    //     data = [];
+                    //     filteredData.forEach(function(element) {
+                    //         let obj = {};
+                    //         obj[scope.columns[0].name] = +(element[scope.columns[0].name]);
+                    //         obj[scope.columns[1].name] = element[scope.columns[1].name];
+                    //         data.push(obj);
+                    //     });
+                    // } else {
+                    //     return;
+                    // }
 
                     let y = d3.scale.linear()
                         .range([height - margin.bottom, margin.top]);
