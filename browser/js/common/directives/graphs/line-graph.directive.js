@@ -123,36 +123,6 @@ app.directive('lineGraph', function(d3Service, $window, $state) {
                     if(scope.seriesx[0].type == 'number') x = d3.scale.linear().range([margin.left, width - margin.right]);
                     else x = d3.time.scale().range([margin.left, width - margin.right]);  
 
-                        // for(let k in dataObj){
-                        //     dataObj[k].forEach(function(dataSet){
-
-                        //     })
-                        // }
-
-                    //     data = [];
-                    //     filteredData.forEach(function(element) {
-                    //         let obj = {};
-                    //         obj[scope.seriesx[0].name] = formatDate.parse(element[scope.columns[0].name]);
-                    //         obj[scope.columns[1].name] = element[scope.columns[1].name];
-                    //         data.push(obj);
-                    //     });
-
-                    //     data = data.sort((a, b) => a[scope.columns[0].name].getTime() - b[scope.columns[0].name].getTime());
-                        
-                    //     x = d3.time.scale().range([margin.left, width - margin.right]);
-                    // } else if (scope.columns[0].type === 'number') {
-                    //     x = d3.scale.linear().range([margin.left, width - margin.right]);
-                    //     data = [];
-                    //     filteredData.forEach(function(element) {
-                    //         let obj = {};
-                    //         obj[scope.columns[0].name] = +(element[scope.columns[0].name]);
-                    //         obj[scope.columns[1].name] = element[scope.columns[1].name];
-                    //         data.push(obj);
-                    //     });
-                    // } else {
-                    //     return;
-                    // }
-
                     let y = d3.scale.linear()
                         .range([height - margin.bottom, margin.top]);
 
@@ -166,31 +136,26 @@ app.directive('lineGraph', function(d3Service, $window, $state) {
 
                     let line = d3.svg.line()
                         .x(function(d) {
+                            console.log('XD', d[0]);
                             return x(d[0]);
                         })
                         .y(function(d) {
+                            console.log('yD', d[1]);
                             return y(d[1]);
                         });
 
-                    // If we don't pass any data, return out of the element
-                    
-
-                    //Need a better way to adjust minX and maxX if based on date
-                    // let minX;
-                    // var map = d3.values(dataObj).map(function (arr) {
-                    //     minX
-                    // });
                     let minX,
                     maxX,
                     minY,
-                    maxY;
-                    d3.values(dataObj).forEach(function (arr) {
+                    maxY,
+                    values = d3.values(dataObj);
+                    values.forEach(function (arr) {
                         let tempMin = d3.min(arr, function(d) {return d[0]});
                         let tempMax = d3.max(arr, function(d) {return d[0]});
                         if(tempMin < minX || typeof minX === 'undefined') minX = tempMin;
                         if(tempMax > maxX || typeof maxX === 'undefined') maxX = tempMax;
                     });
-                    d3.values(dataObj).forEach(function (arr) {
+                    values.forEach(function (arr) {
                         let tempMin = d3.min(arr, function(d) {return d[1]});
                         let tempMax = d3.max(arr, function(d) {return d[1]});
                         if(tempMin < minY || typeof minY === 'undefined') minY = tempMin;
@@ -199,7 +164,6 @@ app.directive('lineGraph', function(d3Service, $window, $state) {
 
                     x.domain([minX, maxX]);
                     y.domain([minY, maxY]);
-                   
 
                     svg.append("g")
                         .attr("class", "x axis")
@@ -221,18 +185,21 @@ app.directive('lineGraph', function(d3Service, $window, $state) {
                         .attr("transform", "rotate(-90)translate(" + -((height + margin.bottom + margin.top) / 2) + ", " + -(margin.left - 20) + ")")
                         .text(yAxisLabel);
 
+
                     let yData = svg.selectAll("yData")
-                        .data(dataObj)
+                        .data(values)
                         .enter().append("g")
                         .attr("class", "yData"); 
 
-                    console.log("Here", yData);
-
                     yData.append("path")
-                        .datum(dataObj)
-                        .attr("d", line)
+                        .attr("d", function(d){
+                                return line(d)
+                            })
                         .attr('fill', 'none')
-                        .attr("stroke", color.domain())
+                        .attr("stroke", function(d, i) {
+                                if(typeof color === 'function') return color(i)
+                                else return color;
+                        })//color.domain())
                         .attr("stroke-width", 2);
 
                     svg.append("text")
