@@ -8,7 +8,7 @@ app.directive('addGraph', function(AddGraphFactory, ValidationFactory, DataFacto
             columns: "="
         },
         link: function(scope, ele, attrs) {
-            scope.xSeries = [];
+            scope.zSeries = [];
             scope.ySeries = [];
             scope.settings = {};
             // scope.column1 = $localStorage.column1;
@@ -16,7 +16,7 @@ app.directive('addGraph', function(AddGraphFactory, ValidationFactory, DataFacto
             
             scope.assignColumnType = function (col) {
                 ValidationFactory.assignColumnType(scope.data, col);
-                console.log(scope.ySeries);
+                //console.log(scope.xSeries)
                 // $localStorage.column1 = scope.column1;
                 // $localStorage.column2 = scope.column2;
             }; 
@@ -34,7 +34,8 @@ app.directive('addGraph', function(AddGraphFactory, ValidationFactory, DataFacto
             };
 
             scope.lineEnabled = function(){
-                return AddGraphFactory.lineEnabled(scope.column1, scope.column2);
+                return true;
+                //return AddGraphFactory.lineEnabled(scope.column1, scope.column2);
             };
 
             scope.viewSingleGraph = function (graphType) {
