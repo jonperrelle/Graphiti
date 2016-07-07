@@ -1,13 +1,13 @@
 .dataset-table{
-	border: 1px solid #000;
+	border: 1px solid #f2efef;
 	padding: 10px;
 
 	table {
-		border: 1px solid #000;
+		border: 1px solid #f2efef;
 	}
 	thead {
 		tr td {
-			border: 1px solid #000;
+			border: 1px solid #f2efef;
 			background-color: #ffffff;
 			color: #000;
 			font-size: 1.2em;
@@ -18,14 +18,12 @@
 	tbody {
 
 		tr:nth-child(odd) td {
-			border: 1px solid #000;
-			background-color: #ffffff;
+			border: 1px solid #f2efef;
+			background-color: #f2efef;
 		}
 
 		tr:nth-child(even) td {
-			border: 1px solid #ffffff;
-			background-color: #000;
-			color: #ffffff;
+			background-color: #ffffff;
 		}
 
 	}
