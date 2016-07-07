@@ -15,6 +15,7 @@
         <ul class="nav navbar-nav">
           <li><a ui-sref="userHome({userId: user.id})" ng-show="isLoggedIn()">MY ACCOUNT</a></li>
           <li><a ui-sref="login" ng-show="!isLoggedIn()">LOGIN</a></li>
+          <li><a ui-sref="signup" ng-show="!isLoggedIn()">SIGN UP</a></li>
           <li>
             <a ng-click="logout()" ng-show="isLoggedIn()" id="navLogout">LOGOUT</a></li>
         </ul>

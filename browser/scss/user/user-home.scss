@@ -36,11 +36,11 @@
 	}
 
 	.home-panel {
-		background: #599ad6;
+		background: #3a424c;
 
 		h4 {
 		  display: inline-block;
-		  color: #ffffff;
+		  color: #eee;
 		}
 
 		.panel-heading {
@@ -48,7 +48,7 @@
 		}
 
 		span {
-			color: #ffffff;
+			color: #eee;
 			position: absolute;
 			top: 25px;
 			right: 20px;
@@ -56,12 +56,12 @@
 
 		.no-item {
 			font-size: 1.4em;
-			color: #ffffff;
+			color: #eee;
 		}
 
 		.list-group-item {
 			border: none;
-			background: #599ad6;
+			background: #3a424c;
 			padding: 5px 5px 5px 15px;
 
 		}
@@ -69,7 +69,7 @@
 	}
 
 	a {
-		color: #ffffff;
+		color: #eee;
 		font-size: 1.1em;
 	}
 
