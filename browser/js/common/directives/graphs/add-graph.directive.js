@@ -8,14 +8,17 @@ app.directive('addGraph', function(AddGraphFactory, ValidationFactory, DataFacto
             columns: "="
         },
         link: function(scope, ele, attrs) {
+            scope.xSeries = [];
+            scope.ySeries = [];
             scope.settings = {};
-            scope.column1 = $localStorage.column1;
-            scope.column2 = $localStorage.column2;
+            // scope.column1 = $localStorage.column1;
+            // scope.column2 = $localStorage.column2;
             
             scope.assignColumnType = function (col) {
                 ValidationFactory.assignColumnType(scope.data, col);
-                $localStorage.column1 = scope.column1;
-                $localStorage.column2 = scope.column2;
+                console.log(scope.ySeries);
+                // $localStorage.column1 = scope.column1;
+                // $localStorage.column2 = scope.column2;
             }; 
         	
             scope.pieEnabled = function(){

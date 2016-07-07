@@ -14,7 +14,10 @@ module.exports = function (db) {
         graphType: {
             type: Sequelize.STRING,
         },
-        columns: {
+        xSeries: {
+            type: Sequelize.ARRAY(Sequelize.JSONB),
+        },
+        ySeries: {
             type: Sequelize.ARRAY(Sequelize.JSONB),
         },
         imageSource: {
