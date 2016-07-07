@@ -3,10 +3,21 @@
     <div class="home-container">
       <div class="text-center">
         <header class="text-center">
-          <h2>Graphiti</h2>
-          <h4>Build custom graphs. Fast.</h4> 
-          <bar-chart ng-if="headType === 0" rows="headRows" columns="headColumns" settings="headSettings"></bar-chart>
-          <pie-chart ng-if="headType === 1" rows="headRows" columns="headColumns" settings="headSettings"></pie-chart>
+          <h1>Graphiti</h1>
+          <div class="graph-home">
+            <div class="home-action">
+              <div class="col-sm-6 col-xs-12">  
+                <div class="text-center">
+                  <button class="btn home-btn" ui-sref="searchDatasets">Search Our Datasets</button>
+                </div>
+              </div>
+              <div class="col-sm-6 col-xs-12">
+                <div class="text-center">
+                  <upload-modal></upload-modal>
+                </div>
+              </div>
+            </div>
+          </div>
        </header>
       </div>
     </div>
@@ -15,7 +26,6 @@
     <div class="col-xs-12">
       <div class="odd-div">
         <header class="text-center">
-        <!-- <h3>Search from our available datasets, or upload your own.  Select your data points, and choose your graph type and styles.</h3> -->
           <h3>How it works</h3>
         </header>
       </div>
