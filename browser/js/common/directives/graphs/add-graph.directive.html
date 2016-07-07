@@ -23,7 +23,7 @@
 					              <button class='btn btn-primary' type="button" ng-click="addMoreData=true">Add Another Data Point</button>
 					            </div>
 					            <div ng-repeat="data in ySeries" ng-show="addMoreData">
-								    <select ng-model="ySeries[$index].name"  name="yseries" class="form-control" ng-options="col for col in columns" ng-change="assignColumnType(ySeries[$index])"></select>
+								    <select ng-model="ySeries[$index+1].name"  name="yseries" class="form-control" ng-options="col for col in columns" ng-change="assignColumnType(ySeries[$index])"></select>
 					              	<button class='btn btn-primary' type="button" ng-click="addMoreData=true">Add Another Data Point</button>
 								</div>
 					        </div>
