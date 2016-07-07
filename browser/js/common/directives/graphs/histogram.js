@@ -36,18 +36,33 @@ app.directive('histogram', function (d3Service, $window) {
           let anchor = d3.select(ele[0]);
           anchor.selectAll('*').remove();
 
-          let //formatColX = scope.column.name.replace(/\_+/g, " "),
-              margin = {
-                        top: 30,
-                        right: 20,
-                        bottom: 40, //(xLabelLength + 6) * 5,
-                        left: 50 //(yLabelLength + 6) * 7
-                    },
+          let quantitative = scope.column.type === 'number';
+
+          let filteredData = quantitative ? 
+                scope.rows.filter(obj => obj[scope.column.name] 
+                  && (!!Number(obj[scope.column.name]) || Number(obj[scope.column.name]) === 0)) : 
+                scope.rows;
+
+          let xLabelLength = filteredData.reduce(function (prev, current) {
+                  let currentLength = current[scope.column.name].toString().length;
+                  return currentLength > prev ? currentLength : prev;
+              }, 0);
+
+          let formatColX = scope.column.name.replace(/\_+/g, " "),
               width = scope.settings.width || ele[0].parentNode.offsetWidth,
               height = scope.settings.height || width,
-              xAxisLabel = scope.settings.xAxisLabel || 'stuff' ,//formatColX,
+              titleSize = scope.settings.titleSize || height / 20,
+              xAxisLabelSize = scope.settings.xAxisLabelSize || height / 30,
+              yAxisLabelSize = scope.settings.yAxisLabelSize || height / 30,
+              margin = {
+                top: titleSize + 20,
+                right: 20,
+                bottom: ((xLabelLength + 6) * 5) + xAxisLabelSize,
+                left: 50
+              },
+              xAxisLabel = scope.settings.xAxisLabel || formatColX,
               yAxisLabel = scope.settings.yAxisLabel || 'frequency',
-              title = scope.settings.title || 'frequency for stuff'// + formatColX;
+              title = scope.settings.title || 'frequency for ' + formatColX;
 
           let svg = anchor
               .append('svg')
@@ -57,23 +72,38 @@ app.directive('histogram', function (d3Service, $window) {
               .style('border-radius', '10px')
               .append("g");
 
-          let filteredData = scope.rows.filter(obj => obj[scope.column.name] 
-                    && (!!Number(obj[scope.column.name]) || Number(obj[scope.column.name]) === 0));
+          let xScale,
+              tickType;
+          if (quantitative) {
+            xScale = d3.scale.linear()
+                  .domain([d3.min(filteredData, d => +d[scope.column.name]), d3.max(filteredData, d => +d[scope.column.name])])
+                  .range([0, width - margin.left - margin.right]);
+            tickType = d3.format('.2f');
+          } else {
+            xScale = d3.scale.ordinal()
+                .rangeBands([0, width - margin.left - margin.right]);
+          }
 
-          let xScale = d3.scale.linear()
-                .domain([d3.min(filteredData, d => d[scope.column.name]), d3.max(filteredData, d => d[scope.column.name])])
-                .range([0, width - margin.left]);
-
+          console.log(filteredData);
+          console.log(scope.column.name);
           let histogram = d3.layout.histogram()
-            .value(d => d[scope.column.name])
-            .bins(xScale.ticks(10))
+            .value(d => quantitative ? +d[scope.column.name] : d[scope.column.name])
+            .bins(30)
             (filteredData);
+
+          console.log(histogram);
+
+          let tickVals = histogram.map(d => d.x);
 
           let yScale = d3.scale.linear()
                 .domain([0, d3.max(histogram, d => d.y)])
                 .range([height - margin.bottom, margin.top]);
 
-          let xAxis = d3.svg.axis().scale(xScale).orient("bottom"),
+          let xAxis = d3.svg.axis()
+                        .scale(xScale)
+                        .orient("bottom")
+                        .tickFormat(tickType)
+                        .tickValues(tickVals),
               yAxis = d3.svg.axis().scale(yScale).orient("left");
 
           let bar = svg.selectAll('.bar')
@@ -85,16 +115,28 @@ app.directive('histogram', function (d3Service, $window) {
               bar.append('rect')
                 .attr("x", d => xScale(d.x))
                 .attr("y", d => yScale(d.y))
-                .attr('width', (histogram[0].dx - 1))
-                .attr('height', d => height - margin.bottom - yScale(d.y));
+                .attr('width', d => quantitative ? 
+                  (xScale(d.dx + d3.min(histogram, d => d.x)) - 1) :
+                  (xScale.rangeBand()))
+                .attr('height', d => height - margin.bottom - yScale(d.y))
+                .attr("transform", "translate(" + margin.left + ", 0)");
 
               svg.append("g")
                     .attr("class", "x axis")
-                    .attr("transform", "translate(0," + (height - margin.bottom) + ")")
+                    .attr("transform", "translate(" + margin.left + ", " + (height - margin.bottom) + ")")
                     .call(xAxis)
                     .append("text")
                     .attr("class", "xlabel")
                     .text(xAxisLabel);
+
+              svg.selectAll(".x text")
+                    .attr("transform", "translate(-7,0)rotate(-45)")
+                    .style("text-anchor", "end");
+
+              svg.select(".xlabel")
+                   .attr("transform", "translate(" + ((width - margin.left - margin.right) / 2) + ", " + (margin.bottom - xAxisLabelSize) + ")")
+                   .style("text-anchor", "middle")
+                   .style("font-size", xAxisLabelSize);
 
               svg.append("g")
                   .attr("class", "y axis")
