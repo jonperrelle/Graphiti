@@ -1,10 +1,9 @@
 <div>
-  <button class="btn download-btn" type="button" ng-click="downloadGraph()">Download Image of Graph</button>
   <h3 class="graph-header">Adjust Graph Settings</h3>
   <div class="row">
-    <div class="col-sm-3 col-xs-12 panel-group">
+    <div class="col-xs-12 panel-group">
       <div class="panel settings-panel">
-        <div class="panel-heading">     
+        <div class="panel-heading">
           <a data-toggle="collapse" data-target="#view-gensettings-collapse" href="#"><h5>Graph Settings</h5></a>
         </div>
         <div id="view-gensettings-collapse" class="panel-collapse collapse settings-collapse">
@@ -39,18 +38,18 @@
             </div>
             <div class="row" ng-hide="graphType==='pieChart'">
               <div class="form-group col-xs-12">
-                <label for="color" class="control-label">Color</label>
+                <label for="singleColor" class="control-label">Single Color</label>
                 <div id="cp2" class="input-group colorpicker-component">
-                    <input type="text" name="color" value="#000000" class="form-control" />
-                    <span class="input-group-addon"><i></i></span>
+                  <input type="text" name="singleColor" value="#000000" class="form-control" />
+                  <span class="input-group-addon"><i></i></span>
                 </div>
               </div>
             </div>
-            <div class="row" ng-show="graphType==='pieChart'">
+            <div class="row" ng-show="graphType==='pieChart' || graphType==='barChart'">
               <div class="form-group col-xs-12">
-                <label for="color" class="control-label">Color</label>
+                <label for="multiColor" class="control-label">Multi-Color</label>
                 <div>
-                  <select class="form-control" name="color" type="text" ng-model="settings.color">
+                  <select class="form-control" name="multiColor" type="text" ng-model="settings.color">
                     <option value="10">Scale 10 Colors</option>
                     <option value="20a">Scale 20 colors A</option>
                     <option value="20b">Scale 20 colors B</option>
@@ -63,15 +62,15 @@
         </div>
       </div>
     </div>
-    <div class="col-sm-3 col-xs-12 panel-group" ng-show="graphType==='pieChart'">
+    <div class="col-xs-12 panel-group" ng-show="graphType==='pieChart'">
       <div class="panel settings-panel">
-        <div class="panel-heading"> 
+        <div class="panel-heading">
           <a data-toggle="collapse" data-target="#view-piesettings-collapse" href="#"><h5>Legend Settings</h5></a>
         </div>
         <div id="view-piesettings-collapse" class="panel-collapse collapse settings-collapse">
           <div id="general">
             <div class="row">
-              <div class="form-group col-xs-12">
+              <div class="form-group col-xs-6">
                 <label for="displayType" class="control-label">Display Type</label>
                 <div>
                   <select class="form-control" name="displayType" type="text" ng-model="settings.displayType">
@@ -80,14 +79,23 @@
                   </select>
                 </div>
               </div>
+              <div class="form-group col-xs-6">
+                <label for="groupType" class="control-label">Group By Type</label>
+                <div>
+                  <select class="form-control" name="groupType" type="text" ng-model="settings.groupType">
+                    <option value="total">Total</option>
+                    <option value="mean">Mean</option>
+                  </select>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="col-sm-3 col-xs-12 panel-group" ng-hide="graphType==='pieChart'">
+    <div class="col-xs-12 panel-group" ng-hide="graphType==='pieChart'">
       <div class="panel settings-panel">
-        <div class="panel-heading"> 
+        <div class="panel-heading">
           <a data-toggle="collapse" data-target="#view-xsettings-collapse" href="#"><h5>X Axis Settings</h5></a>
         </div>
         <div id="view-xsettings-collapse" class="panel-collapse collapse settings-collapse">
@@ -97,6 +105,17 @@
                 <label for="xAxisLabel" class="control-label">X Axis Label</label>
                 <div>
                   <input class="form-control" name="xAxisLabel" type="text" ng-model="settings.xAxisLabel" required>
+                </div>
+              </div>
+            </div>
+            <div class="row" ng-show="graphType==='barChart'">
+              <div class="form-group col-xs-12">
+                <label for="groupType" class="control-label">Group By Type</label>
+                <div>
+                  <select class="form-control" name="groupType" type="text" ng-model="settings.groupType">
+                    <option value="total">Total</option>
+                    <option value="mean">Mean</option>
+                  </select>
                 </div>
               </div>
             </div>
@@ -118,7 +137,7 @@
         </div>
       </div>
     </div>
-    <div class="col-sm-3 col-xs-12 panel-group" ng-hide="graphType==='pieChart'">
+    <div class="col-xs-12 panel-group" ng-hide="graphType==='pieChart'">
       <div class="panel settings-panel">
         <div class="panel-heading">
           <a data-toggle="collapse" data-target="#view-ysettings-collapse" href="#"><h5>Y Axis Settings</h5></a>
@@ -151,7 +170,7 @@
         </div>
       </div>
     </div>
-    <div class="col-sm-3 col-xs-12 panel-group">
+    <div class="col-xs-12 panel-group">
       <div class="panel settings-panel">
         <div class="panel-heading">
           <a data-toggle="collapse" data-target="#view-changedata-collapse" href="#"><h5>Change Data</h5></a>
@@ -162,7 +181,7 @@
               <div class="form-group col-xs-12">
                 <label for="xAxis" class="control-label">X Axis/Data Point #1</label>
                 <div>
-                  <select ng-model="columns[0].name"  name="column1" class="form-control" ng-options="col for col in allColumns" ng-change="assignColumnType(columns[0])"></select>
+                  <select ng-model="columns[0].name" name="column1" class="form-control" ng-options="col for col in allColumns" ng-change="assignColumnType(columns[0])"></select>
                 </div>
               </div>
             </div>
@@ -170,13 +189,22 @@
               <div class="form-group col-xs-12">
                 <label for="yAxis" class="control-label">Y Axis/Data Point #2</label>
                 <div>
-                  <select ng-model="columns[1].name"  name="column2" class="form-control" ng-options="col for col in allColumns" ng-change="assignColumnType(columns[1])"></select>
+                  <select ng-model="columns[1].name" name="column2" class="form-control" ng-options="col for col in allColumns" ng-change="assignColumnType(columns[1])"></select>
                 </div>
-              </div
+              </div>
             </div>
           </div>
         </div>
       </div>
+    </div>
+    <div class="col-xs-12">
+    <div class="form-group col-xs-6">
+      <button class="btn download-btn" type="button" ng-click="downloadGraph()"><i class="fa fa-download download-icon"></i></button>
+    </div>
+
+    <div class="form-group col-xs-6">
+      <embed-modal></embed-modal>
+    </div>
     </div>
   </div>
 </div>

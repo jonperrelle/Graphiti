@@ -36,17 +36,22 @@ app.directive('pieChart', function(d3Service, $window, DataFactory) {
                         let anchor = d3.select(ele[0]);
                         anchor.selectAll('*').remove();
 
-                        let margin = { top: 30, right: 20, bottom: 30, left: 40 },
+                        let formatColX = scope.columns[0].name.replace(/\_+/g, " "),
+                            formatColY = scope.columns[1].name.replace(/\_+/g, " "),
+                            margin = { top: 30, right: 20, bottom: 30, left: 40 },
                             width = scope.settings.width || ele[0].parentNode.offsetWidth,
-                            height = scope.settings.height || width,
+                            height = scope.settings.height || 500,
                             radius = scope.settings.radius || height / 3,
-                            title = scope.settings.title || scope.columns[0].name.replace(/\_+/g, " ")+ ' vs. ' + scope.columns[1].name.replace(/\_+/g, " "),
+                            title = scope.settings.title || (formatColX + ' vs. ' + formatColY).toUpperCase(),
                             displayType = scope.settings.displayType || 'number';
 
                         let filteredData = scope.rows.filter(obj => Number(obj[scope.columns[1].name]) > 0);
                         
-                        let groupedData = DataFactory.groupByCategory(filteredData, scope.columns[0].name, scope.columns[1].name);
+                        let groupType = scope.settings.groupType || 'total';
+
+                        let groupedData = DataFactory.groupByCategory(filteredData, scope.columns[0].name, scope.columns[1].name, groupType);
                         groupedData = DataFactory.orderByCategory(groupedData, scope.columns[0].name);
+
                         let groupedTotal = 0;
                         groupedData.forEach( a => groupedTotal += a[scope.columns[1].name]);
                         //uses build in d3 method to create color scale
@@ -66,7 +71,7 @@ app.directive('pieChart', function(d3Service, $window, DataFactory) {
                                     color = d3.scale.category20();
                             }
                         };
-
+                        
                         setColor(scope.settings.color);
 
                         let svg = anchor
@@ -74,7 +79,6 @@ app.directive('pieChart', function(d3Service, $window, DataFactory) {
                             .attr('width', width)
                             .attr('height', height)
                             .style('background-color', '#ffffff')
-                            .style('border-radius', '10px')
                             .data([groupedData])
                             .append("g")
                             .attr("transform", "translate(" + (width / 1.75) + "," + (radius *1.5) + ")");

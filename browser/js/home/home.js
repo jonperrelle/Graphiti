@@ -6,18 +6,7 @@ app.config(function ($stateProvider) {
     });
 });
 
-app.controller('HomeCtrl', function($scope, QueryFactory, UploadFactory, $state) {
-
-    $scope.uploadFile = function() {
-      if ($scope.form.$valid && $scope.file) {
-        UploadFactory.uploadFile($scope.file)
-        .then(function(dataset) {
-            $scope.file = null;
-            $state.go('datasetDetails', {datasetId: dataset.fileName, dataset: dataset.dataset ,rows: dataset.data});
-        })
-      }
-    };
-
+app.controller('HomeCtrl', function($scope, QueryFactory, UploadFactory, $state, $uibModal) {
 
     QueryFactory.getCategories().then(cats => {
         $scope.categories = cats.map(cat => cat.category.toUpperCase());
@@ -40,4 +29,40 @@ app.controller('HomeCtrl', function($scope, QueryFactory, UploadFactory, $state)
             $scope.columns = data.columns;
         });
     };
+    let loadPage = Math.ceil(Math.random() * 2);
+    switch (loadPage){
+        case 1:
+            $scope.headType = 0; 
+            $scope.headRows = [{name: 'Graphing', data: 30}, {name: 'Relaxing', data: 600}]
+            $scope.headColumns = [{name: 'name'}, {name: 'data'}]
+            $scope.headSettings = {height: 400, 
+            xAxisLabel: 'Software', 
+            yAxisLabel: 'Time Spent (s)',
+            xAxisLabelSize: 12, 
+            yAxisLabelSize: 12, 
+            titleSize: 28}
+            break;
+        case 2:
+            $scope.headType = 0;
+            $scope.headRows = [{name: 'G', data: 2.015}, 
+            {name: 'R', data: 5.987}, 
+            {name: 'A', data: 8.167}, 
+            {name: 'P', data: 1.929}, 
+            {name: 'H', data: 6.094}, 
+            {name: 'I', data: 6.966}, 
+            {name: 'T', data: 9.056}, 
+            {name: 'I', data: 6.966}]
+            $scope.headColumns = [{name: 'name'}, {name: 'data'}]
+            $scope.headSettings = {height: 400, 
+            xAxisLabel: 'Letters of an Awesome Application', 
+            yAxisLabel: 'Frequency of Letter in English Language (%)', 
+            minY: 0, 
+            maxY: 20, 
+            xAxisLabelSize: 12, 
+            yAxisLabelSize: 12, 
+            titleSize: 28, 
+            orderType: 'none', 
+            groupType: 'none'};
+            break;
+    }
 });

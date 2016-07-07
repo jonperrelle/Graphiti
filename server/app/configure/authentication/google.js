@@ -1,23 +1,21 @@
 'use strict';
 
-var passport = require('passport');
-var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
 module.exports = function (app, db) {
 
-    var User = db.model('user');
+    const User = db.model('user');
 
-    var googleConfig = app.getValue('env').GOOGLE;
+    let googleConfig = app.getValue('env').GOOGLE;
 
-    var googleCredentials = {
+    let googleCredentials = {
         clientID: googleConfig.clientID,
         clientSecret: googleConfig.clientSecret,
         callbackURL: googleConfig.callbackURL
     };
 
-    var verifyCallback = function (accessToken, refreshToken, profile, done) {
-
-        console.log(profile)
+    let verifyCallback = function (accessToken, refreshToken, profile, done) {
 
         User.findOne({
                 where: {
@@ -43,7 +41,6 @@ module.exports = function (app, db) {
                 console.error('Error creating user from Google authentication', err);
                 done(err);
             });
-
     };
 
     passport.use(new GoogleStrategy(googleCredentials, verifyCallback));
@@ -60,5 +57,4 @@ module.exports = function (app, db) {
         function (req, res) {
             res.redirect('/');
         });
-
 };

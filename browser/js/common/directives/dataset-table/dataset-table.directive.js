@@ -8,5 +8,10 @@ app.directive('datasetTable', function() {
             columns: "=",
             tableParams: "=",
         },
+        link: function (scope, ele, attrs) {
+            scope.columns = scope.columns.filter(function (column) {
+                return column !== '$$hashKey';
+            });
+        }
     };
 });

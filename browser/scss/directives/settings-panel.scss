@@ -1,56 +1,47 @@
-
 .graph-header {
-	font-weight: 700;
-	margin-bottom: 20px;
-	margin-left: 100px;
+    font-weight: 700;
+    margin-bottom: 20px;
 }
 
-.download-btn {
-	float:right;
-	background: #ffffff;
-	border: 1px solid #000;
+.download-icon {
+    color: white;
 }
 
 .download-btn:hover {
-	color: #ffffff;
-	background: #2a3233;
-	border: 1px solid #ffffff;
+    i {
+        color: black;
+    }
 }
 
 .settings-panel {
-	background: #599ad6;
-	.panel-heading {
-		padding: 5px;
-		h5 {
-			color: #ffffff;
-		}
-	}
-	a {
-		color: #ffffff;
-	}
-
-	a:hover,
-	a:focus {
-		text-decoration: none;
-		color: #000;
-	}
-
-	.settings-collapse	{
-		padding: 0 10px;
-
-		label {
-			color: #ffffff;
-		}
-
-		input {
-			height: auto;
-		}
-	}
-
+    background: #599ad6;
+    .panel-heading {
+        padding: 5px;
+        h5 {
+            color: #ffffff;
+        }
+    }
+    a {
+        color: #ffffff;
+    }
+    a:hover,
+    a:focus {
+        text-decoration: none;
+        color: #000;
+    }
+    .settings-collapse {
+        padding: 0 10px;
+        label {
+            color: #ffffff;
+        }
+        
+        input {
+            height: auto;
+        }
+    }
 }
-
-input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { 
-  -webkit-appearance: none; 
-  margin: 0; 
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }

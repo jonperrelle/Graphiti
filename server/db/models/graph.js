@@ -1,13 +1,14 @@
-var Sequelize = require('sequelize');
+'use strict';
+
+const Sequelize = require('sequelize');
 
 module.exports = function (db) {
 
 	require('./settings')(db);
 	require('./dataset')(db);
 
-	var Settings = db.model('settings');
-	var Dataset = db.model('dataset');
-
+	const Settings = db.model('settings');
+	const Dataset = db.model('dataset');
 
     db.define('graph', {
         graphType: {
@@ -16,6 +17,9 @@ module.exports = function (db) {
         columns: {
             type: Sequelize.ARRAY(Sequelize.JSONB),
         },
+        imageSource: {
+            type: Sequelize.TEXT,
+        }
     },
     {
     	defaultScope: {include: [Settings,Dataset]}

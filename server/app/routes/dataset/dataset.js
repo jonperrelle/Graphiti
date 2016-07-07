@@ -7,12 +7,12 @@ const User = db.model('user');
 const Dataset = db.model('dataset');
 const AWS = require('aws-sdk');
 const Converter = require('csvtojson').Converter;
-const chalk = require('chalk')
+
 
 AWS.config.update({
     accessKeyId: env.amazonaws.accessKeyId,
     secretAccessKey: env.amazonaws.secretAccessKey
-})
+});
 
 router.get('/:datasetId', function(req, res, next) {
 
@@ -30,24 +30,21 @@ router.delete('/:datasetId', function(req, res, next) {
             return dataset.destroy();
         })
         .then(function() {
-            res.sendStatus(204)
+            res.sendStatus(204);
         })
         .catch(next);
 });
 
 router.post('/SocrataDataset', function(req, res, next) {
-
+    
     let user = req.requestedUser;
-
-
-    let ds = {
-        name: req.body.dataset.name,
-        userUploaded: false,
-        socrataId: req.body.dataset.id,
-        socrataDomain: req.body.domain
+    let dataset = {
+        socrataId: req.body.dataset.socrataId,
+        socrataDomain: req.body.dataset.socrataDomain,
+        name: req.body.dataset.name
     };
 
-    Dataset.findOrCreate({ where: ds })
+    Dataset.findOrCreate({ where: dataset })
         .then(function(ds) {
             user.addDataset(ds[0])
                 .then(function() {
@@ -63,7 +60,6 @@ router.post('/UploadedDataset', function(req, res, next) {
     let s3bucket = new AWS.S3({ params: { Bucket: 'graphitiDatasets' } });
     let file = fs.createReadStream(req.session.uploadedFile.path);
     let params = { Key: req.session.uploadedFile.originalFilename, Body: file };
-
 
     s3bucket.upload(params, function(err, data) {
         if (err) {
@@ -103,7 +99,7 @@ router.get('/awsDataset/:datasetId', function(req, res, next) {
                     let csvString = data.Body.toString('utf8');
                     csvConverter.fromString(csvString, function(err, jsonArray) {
                         if (err) next(err);
-                        res.send({ data: jsonArray, dataset: { resource: { name: dataset.name } } });
+                        res.send(jsonArray);
                     });
                 }
             });

@@ -1,7 +1,9 @@
-var path = require('path');
-var Sequelize = require('sequelize');
+'use strict';
 
-var env = require(path.join(__dirname, '../env'));
-var db = new Sequelize(env.DATABASE_URI);
+const path = require('path');
+const Sequelize = require('sequelize');
+
+const env = require(path.join(__dirname, '../env'));
+const db = new Sequelize(env.DATABASE_URI);
 
 module.exports = db;

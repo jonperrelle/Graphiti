@@ -1,7 +1,26 @@
 .user-home {
 	margin: 0 auto;
-    margin-top: 50px;
-	width: 90%;
+	
+
+    .dataset-account-info {
+    	
+    	padding-left: 30px;
+    	hr {
+    		height: 1px;
+    		background: #3a424c;
+    		border: none;
+    	}
+	    header {
+	    	padding-top: 30px;
+	    	margin-bottom: 15px;
+	    	h3 {
+	    		text-align: center;
+	    	}
+	    }
+    	h5 {
+    		color: #ffffff;
+    	}
+    }
 
 	h3 {
 		margin-top: 0;
@@ -10,13 +29,22 @@
 
 	.panel-group {
 		position: relative;
+	}
+
+	.home-panel {
+		background: #599ad6;
 
 		h4 {
 		  display: inline-block;
-		  color: #000;
+		  color: #ffffff;
+		}
+
+		.panel-heading {
+			padding: 5px 10px;
 		}
 
 		span {
+			color: #ffffff;
 			position: absolute;
 			top: 25px;
 			right: 20px;
@@ -24,48 +52,40 @@
 
 		.no-item {
 			font-size: 1.4em;
+			color: #ffffff;
 		}
 
 		.list-group-item {
-			padding: 10px;
-			color: #19d178;
+			border: none;
+			background: #599ad6;
+			padding: 5px 5px 5px 15px;
 
-			p {
-				margin-top: 5px;
-				margin-left: 2px;
-			}
-
-			.file-upload {
-				display: inline-block;
-				font-size: 1.4em;
-			}
-			.upload-links {
-				margin-top: 5px;
-				float: right;
-
-				#upload {
-					color: #1976d2;
-				}
-
-				#cancel {
-					color: #e02121;
-					margin-left: 3px;
-				}
-			}
 		}
 
-		.list-group-item:hover {
-			text-decoration: none;
-			color: #599ad6;
-		}
 	}
 
 	a {
-		font-size: 1.4em;
+		color: #ffffff;
+		font-size: 1.1em;
+	}
+
+	.user-home-btn {
+		white-space: normal;
+		text-align: left;
+	}
+
+	.user-graphs-container {
+		margin-top: 30px;
+		background: #ffffff;
+		padding-right: 100px;
+		h3 {
+			margin-top: 20px;
+		}
 	}
 
 	.btn-remove {
-	  margin-left: 2px;
+	  float:right;
+	  margin-right: 5px;
 	  width: 24px;
 	  height: 24px;
 	  text-align: center;
@@ -93,5 +113,21 @@
 	    box-shadow: none;
 	    outline: none;
 	  }
+
+	.graphs-list {
+		li {
+			margin: 15px 0;
+			border: 1px solid #c9c3c3;
+			border-radius: 10px;
+			list-style: none;
+			padding: 10px;
+		}
+	}
+	.graph-container {
+		img {
+			height: 50%;
+			width: 80%;
+		}
+	}
 }
 

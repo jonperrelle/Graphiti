@@ -1,4 +1,6 @@
-var Sequelize = require('sequelize');
+'use strict';
+
+const Sequelize = require('sequelize');
 
 module.exports = function (db) {
 
@@ -18,8 +20,14 @@ module.exports = function (db) {
         xAxisLabel: {
         	type: Sequelize.STRING
         },
+        xAxisLabelSize: {
+            type: Sequelize.INTEGER
+        },
         yAxisLabel: {
         	type: Sequelize.STRING
+        },
+        yAxisLabelSize: {
+            type: Sequelize.INTEGER
         },
         color: {
             type: Sequelize.STRING
@@ -38,6 +46,9 @@ module.exports = function (db) {
         },
         displayType: {
             type: Sequelize.ENUM('percentage', 'number')
+        },
+        groupType: {
+            type: Sequelize.ENUM('total', 'mean', 'none')
         }
     });
 };

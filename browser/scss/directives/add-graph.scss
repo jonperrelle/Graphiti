@@ -1,4 +1,3 @@
-
 .graph-form {
 
 	border: 2px solid white;
@@ -14,14 +13,20 @@
 	}
 }
 
-
 .graph-previews {
 	
 	.graph-previews-columns {
 		padding-right: 0px;
 		padding-left: 0px;
-	  	margin-top: 20px;
-	  	margin-bottom: 20px;
+	  margin-top: 20px;
+	  margin-bottom: 20px;
+	  cursor: pointer;
 	}
 	
+}
+
+.graph-previews-columns {
+	overflow: scroll;
+	border-radius: 10px;
+	border: 1px solid #000;
 }

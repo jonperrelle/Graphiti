@@ -5,13 +5,16 @@
   font-size: 11px;
 }
 
+html, body {
+  background: #ffffff;
+  height: 100%;
+}
+
+
 h1, h2, h3, h4, h5, h6 {
   color: #000;
 }
 
-body {
-  background: #ffffff;
-}
 
 @mixin clearfix {
   &:after {
@@ -30,9 +33,22 @@ a:hover {
   color: #599ad6;
 }
 
+button {
+    color: #ffffff;
+    background: #599ad6;
+    outline: none !important;
+}
+
+button:hover {
+  background: #ffffff;
+  color: #599ad6;
+  border: 1px solid #599ad6;
+}
+
 #main {
   padding-top: 60px;
   margin: 0 auto;
+  height: 100%;
 }
 
 @import 'directives/main';
