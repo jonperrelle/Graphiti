@@ -9,21 +9,21 @@
 				  		<div class="col-sm-1"></div>
 			          	<div class="column-select-form form-group col-sm-5 col-xs-12">
 				            <div>
-				            	<label for="zSeries" class="control-label">X Axis/Data Point #1</label>
+				            	<label for="seriesx" class="control-label">X Axis/Data Point #1</label>
 					            <div>
-					              <select ng-model="zSeries[0].name"  name="zSeries" class="form-control" ng-options="col for col in columns" ng-change="assignColumnType(zSeries[0])"></select>
+					              <select ng-model="seriesx[0].name"  name="seriesx" class="form-control" ng-options="col for col in columns" ng-change="assignColumnType(seriesx[0])"></select>
 					            </div>
 					        </div>
 					    </div>
 					    <div class="column-select-form form-group col-sm-5 col-xs-12">
 					        <div>
-				            	<label for="ySeries" class="control-label">Y Axis/Data Point #2</label>
+				            	<label for="seriesy" class="control-label">Y Axis/Data Point #2</label>
 					            <div>
-					              <select ng-model="ySeries[0].name"  name="yseries" class="form-control" ng-options="col for col in columns" ng-change="assignColumnType(ySeries[0])"></select>
+					              <select ng-model="seriesy[0].name"  name="seriesy" class="form-control" ng-options="col for col in columns" ng-change="assignColumnType(seriesy[0])"></select>
 					              <button class='btn btn-primary' type="button" ng-click="addMoreData=true">Add Another Data Point</button>
 					            </div>
-					            <div ng-repeat="data in ySeries" ng-show="addMoreData">
-								    <select ng-model="ySeries[$index + 1].name"  name="yseries" class="form-control" ng-options="col for col in columns" ng-change="assignColumnType(ySeries[$index + 1])"></select>
+					            <div ng-repeat="data in seriesy" ng-show="addMoreData">
+								    <select ng-model="seriesy[$index + 1].name"  name="yseries" class="form-control" ng-options="col for col in columns" ng-change="assignColumnType(seriesy[$index + 1])"></select>
 					              	<button class='btn btn-primary' type="button" ng-click="addMoreData=true">Add Another Data Point</button>
 								</div>
 					        </div>
@@ -76,7 +76,7 @@
 			<h4 class="text-center">Line Graph</h4>
 			<div class="col-sm-1"></div>
 			<div class="col-xs-12 col-sm-10 graph-previews-columns" ng-click="viewSingleGraph('lineGraph')">
-				<line-graph settings="settings" rows="data" x-series="zSeries" y-series="ySeries"></line-graph>
+				<line-graph rows="data" seriesy="seriesy" seriesx="seriesx" settings="settings" ></line-graph>
 			</div>
 			<div class="col-sm-1"></div>
 		</div>

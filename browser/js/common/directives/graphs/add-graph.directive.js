@@ -8,15 +8,15 @@ app.directive('addGraph', function(AddGraphFactory, ValidationFactory, DataFacto
             columns: "="
         },
         link: function(scope, ele, attrs) {
-            scope.zSeries = [];
-            scope.ySeries = [];
+            scope.seriesx = [];
+            scope.seriesy = [];
             scope.settings = {};
             // scope.column1 = $localStorage.column1;
             // scope.column2 = $localStorage.column2;
             
             scope.assignColumnType = function (col) {
                 ValidationFactory.assignColumnType(scope.data, col);
-                //console.log(scope.xSeries)
+                
                 // $localStorage.column1 = scope.column1;
                 // $localStorage.column2 = scope.column2;
             }; 
