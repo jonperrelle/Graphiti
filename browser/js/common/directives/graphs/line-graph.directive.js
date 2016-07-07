@@ -84,10 +84,7 @@ app.directive('lineGraph', function(d3Service, $window, $state) {
                             return currentLength > prev ? currentLength : prev;
                         }, 0),
                     yLabelLength = 0;
-                    // yLabelLength = filteredData.reduce(function (prev, current) {
-                    //     let currentLength = Math.floor(current[scope.columns[1].name]).toString().length;
-                    //     return currentLength > prev ? currentLength : prev;
-                    // }, 0);
+                 
                     for (let k in dataObj){
                         dataObj[k].forEach(function(elem){
                             let currentLength = elem[1].toString().length;
@@ -116,42 +113,12 @@ app.directive('lineGraph', function(d3Service, $window, $state) {
                         .style('background-color', '#ffffff')
                         .append("g");
 
-                    //check if the data column header may contain date info ??
+                    
                     let x; 
-                        // dateFormat,
-                        // data;
+                       
                     if(scope.seriesx[0].type == 'number') x = d3.scale.linear().range([margin.left, width - margin.right]);
                     else x = d3.time.scale().range([margin.left, width - margin.right]);  
 
-                        // for(let k in dataObj){
-                        //     dataObj[k].forEach(function(dataSet){
-
-                        //     })
-                        // }
-
-                    //     data = [];
-                    //     filteredData.forEach(function(element) {
-                    //         let obj = {};
-                    //         obj[scope.seriesx[0].name] = formatDate.parse(element[scope.columns[0].name]);
-                    //         obj[scope.columns[1].name] = element[scope.columns[1].name];
-                    //         data.push(obj);
-                    //     });
-
-                    //     data = data.sort((a, b) => a[scope.columns[0].name].getTime() - b[scope.columns[0].name].getTime());
-                        
-                    //     x = d3.time.scale().range([margin.left, width - margin.right]);
-                    // } else if (scope.columns[0].type === 'number') {
-                    //     x = d3.scale.linear().range([margin.left, width - margin.right]);
-                    //     data = [];
-                    //     filteredData.forEach(function(element) {
-                    //         let obj = {};
-                    //         obj[scope.columns[0].name] = +(element[scope.columns[0].name]);
-                    //         obj[scope.columns[1].name] = element[scope.columns[1].name];
-                    //         data.push(obj);
-                    //     });
-                    // } else {
-                    //     return;
-                    // }
 
                     let y = d3.scale.linear()
                         .range([height - margin.bottom, margin.top]);
@@ -201,6 +168,7 @@ app.directive('lineGraph', function(d3Service, $window, $state) {
                     y.domain([minY, maxY]);
                    
 
+
                     svg.append("g")
                         .attr("class", "x axis")
                         .attr("transform", "translate(0," + (height - margin.bottom) + ")")
@@ -221,15 +189,16 @@ app.directive('lineGraph', function(d3Service, $window, $state) {
                         .attr("transform", "rotate(-90)translate(" + -((height + margin.bottom + margin.top) / 2) + ", " + -(margin.left - 20) + ")")
                         .text(yAxisLabel);
 
+                    let values = d3.values(dataObj);    
+
                     let yData = svg.selectAll("yData")
-                        .data(dataObj)
+                        .data(values)
                         .enter().append("g")
                         .attr("class", "yData"); 
 
-                    console.log("Here", yData);
+                   
 
                     yData.append("path")
-                        .datum(dataObj)
                         .attr("d", line)
                         .attr('fill', 'none')
                         .attr("stroke", color.domain())
