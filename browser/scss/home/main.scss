@@ -3,6 +3,10 @@
   h1 {
     text-align: center;
     margin-top: -40px;
+    font-family: "Arial Black", "Arial Bold", sans-serif;
+    font-weight: 900;
+    font-size: 64px;
+    color: #3a424c; 
   }
 
   .home-container {
@@ -20,16 +24,20 @@
 
     .home-action {
       padding-top: 200px;
-      button {
-          color: #ffffff;
+      
+
+      .home-btn {
+          border: 3px solid #8ce2a6;
           background: #3a424c;
-          outline: none !important;
+          color: #ffffff;
+          padding: 15px 50px;
+          font-size: 1.8em;
       }
 
-      button:hover {
-        background: #ffffff;
-        color: #3a424c;
-        border: 1px solid #3a424c;
+      .home-btn:hover {
+        background: #8ce2a6;
+        color: #ffffff;
+        border: 3px solid #3a424c;
       }
     }
 
