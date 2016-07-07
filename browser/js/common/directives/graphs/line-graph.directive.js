@@ -3,7 +3,8 @@ app.directive('lineGraph', function(d3Service, $window, $state) {
         restrict: 'E',
         scope: {
             rows: "=",
-            columns: "=",
+            xSeries: "=",
+            ySeries: "=",
             settings: "="
         },
         link: function(scope, ele, attrs) {
@@ -28,13 +29,20 @@ app.directive('lineGraph', function(d3Service, $window, $state) {
                 }, true);
 
                 scope.$watch(function(scope) {
-                    return scope.columns;
+                    return scope.xSeries;
+                }, function() {
+                    scope.render();
+                }, true);
+
+                scope.$watch(function(scope) {
+                    return scope.ySeries;
                 }, function() {
                     scope.render();
                 }, true);
 
                 scope.render = function() {
-
+                    console.log("xseries", scope.xSeries)
+                    console.log("yseries", scope.ySeries)
                     //this doesn't work for line graphs, because line graphs can have a date
                     let filteredData = scope.rows.filter(obj => obj[scope.columns[0].name] 
                             && obj[scope.columns[1].name]

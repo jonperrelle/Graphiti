@@ -69,8 +69,8 @@ module.exports = function (app, db) {
     });
 
     // Each strategy enabled gets registered.
-    ENABLED_AUTH_STRATEGIES.forEach(function (strategyName) {
-        require(path.join(__dirname, strategyName))(app, db);
-    });
+    // ENABLED_AUTH_STRATEGIES.forEach(function (strategyName) {
+    //     require(path.join(__dirname, strategyName))(app, db);
+    // });
 
 };

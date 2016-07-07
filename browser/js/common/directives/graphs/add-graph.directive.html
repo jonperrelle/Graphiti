@@ -9,9 +9,9 @@
 				  		<div class="col-sm-1"></div>
 			          	<div class="column-select-form form-group col-sm-5 col-xs-12">
 				            <div>
-				            	<label for="xSeries" class="control-label">X Axis/Data Point #1</label>
+				            	<label for="zSeries" class="control-label">X Axis/Data Point #1</label>
 					            <div>
-					              <select ng-model="xSeries[0].name"  name="xseries" class="form-control" ng-options="col for col in columns" ng-change="assignColumnType(xSeries[0])"></select>
+					              <select ng-model="zSeries[0].name"  name="zSeries" class="form-control" ng-options="col for col in columns" ng-change="assignColumnType(zSeries[0])"></select>
 					            </div>
 					        </div>
 					    </div>
@@ -23,7 +23,7 @@
 					              <button class='btn btn-primary' type="button" ng-click="addMoreData=true">Add Another Data Point</button>
 					            </div>
 					            <div ng-repeat="data in ySeries" ng-show="addMoreData">
-								    <select ng-model="ySeries[$index].name"  name="yseries" class="form-control" ng-options="col for col in columns" ng-change="assignColumnType(ySeries[$index])"></select>
+								    <select ng-model="ySeries[$index + 1].name"  name="yseries" class="form-control" ng-options="col for col in columns" ng-change="assignColumnType(ySeries[$index + 1])"></select>
 					              	<button class='btn btn-primary' type="button" ng-click="addMoreData=true">Add Another Data Point</button>
 								</div>
 					        </div>
@@ -40,7 +40,7 @@
 					            <i class="fa fa-pie-chart fa-3x" aria-hidden="true"></i>
 					           	<img src='charts-scatter-plot-icon.png'>
 					        </header> -->
-					        <div class="row graph-feedback" ng-if="column1 || column2">
+<!-- 					        <div class="row graph-feedback" ng-if="column1 || column2">
 								<div ng-if="!scatterEnabled()">
 									<p><span>Scatterplot:</span> Not available for these data points.  Please select two quantitative data points.</p>
 								</div>
@@ -53,7 +53,7 @@
 								<div ng-if="!barEnabled()">
 									<p><span>Bar Chart:</span> not available for these data points. Y axis must be quantitative</p>
 								</div>
-							</div>
+							</div> -->
 			          	</div>
 			            <div class="col-sm-2"></div>
 			          </div>
@@ -64,23 +64,23 @@
 		</form>
 	</div>
 	<div class="row graph-previews">
-		<div class="column col-sm-6" ng-if="scatterEnabled()">
+	<!-- 	<div class="column col-sm-6" ng-if="scatterEnabled()">
 			<h4 class="text-center">Scatterplot</h4>
 			<div class="col-sm-1"></div>
 			<div class="col-xs-12 col-sm-10 graph-previews-columns" ng-click="viewSingleGraph('scatterPlot')">
 				<scatterplot-graph settings="settings" rows="data" columns="[column1,column2]"></scatterplot-graph>
 			</div>
 			<div class="col-sm-1"></div>
-		</div>
+		</div> -->
 		<div class="column col-sm-6" ng-if="lineEnabled()">
 			<h4 class="text-center">Line Graph</h4>
 			<div class="col-sm-1"></div>
 			<div class="col-xs-12 col-sm-10 graph-previews-columns" ng-click="viewSingleGraph('lineGraph')">
-				<line-graph settings="settings" rows="data" columns="[column1,column2]"></line-graph>
+				<line-graph settings="settings" rows="data" x-series="zSeries" y-series="ySeries"></line-graph>
 			</div>
 			<div class="col-sm-1"></div>
 		</div>
-		<div class="column col-sm-6" ng-if="pieEnabled() && withinLength()">
+		<!-- <div class="column col-sm-6" ng-if="pieEnabled() && withinLength()">
 			<h4 class="text-center">Pie Chart</h4>
 			<div class="col-sm-1"></div>
 			<div class="col-xs-12 col-sm-10 graph-previews-columns" ng-click="viewSingleGraph('pieChart')">
@@ -95,7 +95,7 @@
 				<bar-chart settings="settings" rows="data" columns="[column1,column2]"></bar-chart>
 			</div>
 			<div class="col-sm-1"></div>
-		</div>
+		</div> -->
 	</div>
 	<!-- <div class="row graph-feedback" ng-if="column1 || column2">
 		<div class="col-xs-3"></div>
