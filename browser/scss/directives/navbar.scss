@@ -1,10 +1,20 @@
-navbar {
+navbar{
 
   .navbar-toggle {
-    border: 1px solid #599ad6;
+    border: 1px solid #3a424c;
   }
+
+p,a {
+    color: #8ce2a6;
+    cursor: pointer;
+  }
+
+  #navLogout {
+    color: red;
+  }
+  
   .icon-bar {
-    background: #599ad6;
+    background: #8ce2a6;
   }
 
   nav {
@@ -13,7 +23,7 @@ navbar {
     width: 100%;
     background: #3a424c;
     height: 70px;
-    }
+  }
 
   .container {
     width: 91%;
@@ -30,4 +40,10 @@ navbar {
   .navbar-collapse {
     float:right;
   }
+
+  #navbarCollapse {
+    background-color: #3a424c;
+  }
+
 }
+
