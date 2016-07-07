@@ -92,7 +92,7 @@ app.directive('lineGraph', function(d3Service, $window, $state) {
                         dataObj[k].forEach(function(elem){
                             let currentLength = elem[1].toString().length;
                             if(currentLength > yLabelLength) yLabelLength = currentLength;
-                        })
+                        });
                     }
 
                     let formatColX = scope.seriesx[0].name.replace(/\_+/g, " "),
@@ -108,6 +108,7 @@ app.directive('lineGraph', function(d3Service, $window, $state) {
                         xAxisLabel = scope.settings.xAxisLabel || formatColX,
                         yAxisLabel = scope.settings.yAxisLabel || formatColY,
                         title = scope.settings.title || (formatColX + " .vs " + formatColY).toUpperCase(),
+                        color = scope.settings.color || d3.scale.category10(),
                         svg = anchor
                         .append('svg')
                         .style('width', width)
@@ -116,9 +117,11 @@ app.directive('lineGraph', function(d3Service, $window, $state) {
                         .append("g");
 
                     //check if the data column header may contain date info ??
-                    let x;                        // dateFormat,
+                    let x; 
+                        // dateFormat,
                         // data;
-
+                    if(scope.seriesx[0].type == 'number') x = d3.scale.linear().range([margin.left, width - margin.right]);
+                    else x = d3.time.scale().range([margin.left, width - margin.right]);  
 
                         // for(let k in dataObj){
                         //     dataObj[k].forEach(function(dataSet){
@@ -163,34 +166,40 @@ app.directive('lineGraph', function(d3Service, $window, $state) {
 
                     let line = d3.svg.line()
                         .x(function(d) {
-                            return x(d[scope.columns[0].name]);
+                            return x(d[0]);
                         })
                         .y(function(d) {
-                            return y(+d[scope.columns[1].name]);
+                            return y(d[1]);
                         });
 
                     // If we don't pass any data, return out of the element
-                    if (!data) return;
+                    
 
                     //Need a better way to adjust minX and maxX if based on date
-
-
-                    let color = scope.settings.color || "steelblue",
-                        minX = (typeof scope.settings.minX === 'number') ? scope.settings.minX : d3.min(data, function(d) {
-                            return d[scope.columns[0].name];
-                        }),
-                        maxX = (typeof scope.settings.maxX === 'number') ? scope.settings.maxX : d3.max(data, function(d) {
-                            return d[scope.columns[0].name];
-                        }),
-                        minY = (typeof scope.settings.minY === 'number') ? scope.settings.minY : d3.min(data, function(d) {
-                            return +d[scope.columns[1].name];
-                        }),
-                        maxY = (typeof scope.settings.maxY === 'number') ? scope.settings.maxY : d3.max(data, function(d) {
-                            return +d[scope.columns[1].name];
-                        });
+                    // let minX;
+                    // var map = d3.values(dataObj).map(function (arr) {
+                    //     minX
+                    // });
+                    let minX,
+                    maxX,
+                    minY,
+                    maxY;
+                    d3.values(dataObj).forEach(function (arr) {
+                        let tempMin = d3.min(arr, function(d) {return d[0]});
+                        let tempMax = d3.max(arr, function(d) {return d[0]});
+                        if(tempMin < minX || typeof minX === 'undefined') minX = tempMin;
+                        if(tempMax > maxX || typeof maxX === 'undefined') maxX = tempMax;
+                    });
+                    d3.values(dataObj).forEach(function (arr) {
+                        let tempMin = d3.min(arr, function(d) {return d[1]});
+                        let tempMax = d3.max(arr, function(d) {return d[1]});
+                        if(tempMin < minY || typeof minY === 'undefined') minY = tempMin;
+                        if(tempMax > maxY || typeof maxY === 'undefined') maxY = tempMax;
+                    });
 
                     x.domain([minX, maxX]);
                     y.domain([minY, maxY]);
+                   
 
                     svg.append("g")
                         .attr("class", "x axis")
@@ -212,11 +221,18 @@ app.directive('lineGraph', function(d3Service, $window, $state) {
                         .attr("transform", "rotate(-90)translate(" + -((height + margin.bottom + margin.top) / 2) + ", " + -(margin.left - 20) + ")")
                         .text(yAxisLabel);
 
-                    svg.append("path")
-                        .datum(data)
+                    let yData = svg.selectAll("yData")
+                        .data(dataObj)
+                        .enter().append("g")
+                        .attr("class", "yData"); 
+
+                    console.log("Here", yData);
+
+                    yData.append("path")
+                        .datum(dataObj)
                         .attr("d", line)
                         .attr('fill', 'none')
-                        .attr("stroke", color)
+                        .attr("stroke", color.domain())
                         .attr("stroke-width", 2);
 
                     svg.append("text")
