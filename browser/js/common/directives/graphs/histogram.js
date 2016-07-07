@@ -80,7 +80,7 @@ app.directive('histogram', function (d3Service, $window) {
                 .data(histogram)
               .enter()
                 .append('g')
-                .attr('class', 'bar')
+                .attr('class', 'bar');
 
               bar.append('rect')
                 .attr("x", d => xScale(d.x))
@@ -107,7 +107,7 @@ app.directive('histogram', function (d3Service, $window) {
         };
       });
     }
-  }
+  };
 });
 
 
