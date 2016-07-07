@@ -43,9 +43,11 @@ app.directive('lineGraph', function(d3Service, $window, $state) {
                 scope.render = function() {
 
                     let dataObj = {};
+
                     scope.seriesy.forEach(s => {
                         dataObj[s.name] = [];
                     });
+                    
                     scope.rows.forEach(row => {
                         for (let k in row) {
                             if (dataObj[k]) {
@@ -58,10 +60,7 @@ app.directive('lineGraph', function(d3Service, $window, $state) {
                         }
                     });
 
-                    
-            
-                    
-                    if(scope.seriesy.length && scope.seriesx[0].type == 'number'){
+                    if(scope.seriesx[0].type == 'number'){
                         for (let k in dataObj) {
                             dataObj[k] = dataObj[k].sort((a, b) => a[0] - b[0]);
                         }
@@ -72,14 +71,23 @@ app.directive('lineGraph', function(d3Service, $window, $state) {
                     let anchor = d3.select(ele[0])
                     anchor.selectAll('*').remove();
 
-                    let xLabelLength = filteredData.reduce(function (prev, current) {
-                            let currentLength = current[scope.columns[0].name].toString().length;
+                    let xLabelLength = dataObj[scope.seriesy[0].name].reduce(function (prev, current) {
+                            let currentLength = current[0].toString().length;
                             return currentLength > prev ? currentLength : prev;
                         }, 0),
-                    yLabelLength = filteredData.reduce(function (prev, current) {
-                        let currentLength = Math.floor(current[scope.columns[1].name]).toString().length;
-                        return currentLength > prev ? currentLength : prev;
-                    }, 0);
+                    yLabelLength = 0;
+                    // yLabelLength = filteredData.reduce(function (prev, current) {
+                    //     let currentLength = Math.floor(current[scope.columns[1].name]).toString().length;
+                    //     return currentLength > prev ? currentLength : prev;
+                    // }, 0);
+                    for (let k in dataObj){
+                        dataObj[k].forEach(function(elem){
+                            let currentLength = elem[1].toString().length;
+                            if(currentLength > yLabelLength) yLabelLength = currentLength;
+                        })
+                    }
+
+                    console.log(xLabelLength, yLabelLength)
 
                     let formatColX = scope.columns[0].name.replace(/\_+/g, " "),
                         formatColY = scope.columns[1].name.replace(/\_+/g, " "),
