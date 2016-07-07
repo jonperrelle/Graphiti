@@ -41,15 +41,33 @@ app.directive('lineGraph', function(d3Service, $window, $state) {
                 }, true);
 
                 scope.render = function() {
-                
-                    let filteredData = scope.rows.filter(obj => obj[scope.columns[0].name] 
-                            && obj[scope.columns[1].name]
-                            && (!!Number(obj[scope.columns[0].name]) || Number(obj[scope.columns[0].name]) === 0 || scope.columns[0].type === 'date')
-                            && (!!Number(obj[scope.columns[1].name]) || Number(obj[scope.columns[1].name]) === 0))
+
+                    let dataObj = {};
+                    scope.seriesy.forEach(s => {
+                        dataObj[s.name] = [];
+                    });
+                    scope.rows.forEach(row => {
+                        for (let k in row) {
+                            if (dataObj[k]) {
+                                if (row[scope.seriesx[0].name] && row[k] && (!!Number(row[scope.seriesx[0].name]) || Number(row[scope.seriesx[0].name]) === 0 || scope.seriesx[0].type === 'date')
+                                        && (!!Number(row[k]) || Number(row[k]) === 0)) {
+
+                                        dataObj[k].push([row[scope.seriesx[0].name], row[k]]);
+                                }
+                            };
+                        }
+                    });
+
                     
-                    if(scope.columns[0].type == 'number'){
-                        filteredData = filteredData.sort((a, b) => a[scope.columns[0].name] - b[scope.columns[0].name]);
+            
+                    
+                    if(scope.seriesy.length && scope.seriesx[0].type == 'number'){
+                        for (let k in dataObj) {
+                            dataObj[k] = dataObj[k].sort((a, b) => a[0] - b[0]);
+                        }
                     }
+
+                    
 
                     let anchor = d3.select(ele[0])
                     anchor.selectAll('*').remove();
