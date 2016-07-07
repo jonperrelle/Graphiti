@@ -3,6 +3,10 @@
   h1 {
     text-align: center;
     margin-top: -40px;
+    font-family: "Arial Black", "Arial Bold", sans-serif;
+    font-weight: 900;
+    font-size: 64px;
+    color: #3a424c; 
   }
 
   .home-container {
@@ -23,15 +27,15 @@
       
 
       .home-btn {
-          border: 3px solid #599ad6;
+          border: 3px solid #8ce2a6;
           background: #3a424c;
           color: #ffffff;
           padding: 25px 80px;
-          font-size: 1.4em;
+          font-size: 1.8em;
       }
 
       .home-btn:hover {
-        background: #599ad6;
+        background: #8ce2a6;
         color: #ffffff;
         border: 3px solid #3a424c;
       }
