@@ -75,9 +75,9 @@ app.directive('lineGraph', function(d3Service, SVGFactory) {
 
                         data = data.sort((a, b) => a[scope.columns[0].name].getTime() - b[scope.columns[0].name].getTime());
                         
-                        x = d3.time.scale().range([margin.left, width - margin.right]);
+                        x = d3.time.scale().range([0, width - margin.left - margin.right]);
                     } else if (scope.columns[0].type === 'number') {
-                        x = d3.scale.linear().range([margin.left, width - margin.right]);
+                        x = d3.scale.linear().range([0, width - margin.left - margin.right]);
                         data = [];
                         filteredData.forEach(function(element) {
                             let obj = {};
@@ -113,7 +113,6 @@ app.directive('lineGraph', function(d3Service, SVGFactory) {
 
                     //Need a better way to adjust minX and maxX if based on date
 
-
                     let color = scope.settings.color || "steelblue",
                         minX = (typeof scope.settings.minX === 'number') ? scope.settings.minX : d3.min(data, function(d) {
                             return d[scope.columns[0].name];
@@ -131,13 +130,7 @@ app.directive('lineGraph', function(d3Service, SVGFactory) {
                     x.domain([minX, maxX]);
                     y.domain([minY, maxY]);
 
-                    svg.append("g")
-                        .attr("class", "x axis")
-                        .attr("transform", "translate(0," + (height - margin.bottom) + ")")
-                        .call(xAxis)
-                        .append("text")
-                        .attr("class", "xlabel")
-                        .text(xAxisLabel);
+                    SVGFactory.appendXAxis(svg, margin, height, xAxis, xAxisLabel);
 
                     svg.select(".xlabel")
                         .attr("transform", "translate(" + (width - margin.left - margin.right) / 2 + ", " + (margin.bottom - 10) + ")");
@@ -154,6 +147,7 @@ app.directive('lineGraph', function(d3Service, SVGFactory) {
                     svg.append("path")
                         .datum(data)
                         .attr("d", line)
+                        .attr("transform", "translate(" + margin.left + ", 0)")
                         .attr('fill', 'none')
                         .attr("stroke", color)
                         .attr("stroke-width", 2);

@@ -64,7 +64,7 @@ app.directive('scatterplotGraph', function(d3Service, SVGFactory) {
                         return +d[scope.columns[0].name]
                     }, // data -> value
                     xScale = d3.scale.linear()
-                    .range([margin.left, width - margin.right]), // value -> display
+                    .range([0, width - margin.left - margin.right]), // value -> display
                     xMap = function(d) {
                         return xScale(xValue(d))
                     }, // data -> display
@@ -117,13 +117,7 @@ app.directive('scatterplotGraph', function(d3Service, SVGFactory) {
                 yScale.domain([minY, maxY]);
 
                 // x-axis
-                svg.append("g")
-                    .attr("class", "x axis")
-                    .attr("transform", "translate(0," + (height - margin.bottom) + ")")
-                    .call(xAxis)
-                    .append("text")
-                    .attr("class", "xlabel")
-                    .text(xAxisLabel);
+                SVGFactory.appendXAxis(svg, margin, height, xAxis, xAxisLabel);
 
                 // svg.selectAll(".x text")
                 //     .attr("transform", "translate(-10, 0)rotate(-45)")
@@ -151,6 +145,7 @@ app.directive('scatterplotGraph', function(d3Service, SVGFactory) {
                     .attr("cx", xMap)
                     .attr("cy", yMap)
                     .attr("fill", color)
+                    .attr("transform", "translate(" + margin.left + ", 0)")
                     .on("mouseover", function(d) {
                         tooltip.transition()
                             .duration(200)

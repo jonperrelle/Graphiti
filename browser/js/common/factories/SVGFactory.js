@@ -40,5 +40,21 @@ app.factory('SVGFactory', function ($window) {
     }
   };
 
+  SVGFactory.appendXAxis = function (svg, margin, height, xAxis, xAxisLabel) {
+    svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(" + margin.left + ", " + (height - margin.bottom) + ")")
+      .call(xAxis)
+      .append("text")
+      .attr("class", "xlabel")
+      .text(xAxisLabel);
+  };
+
+  SVGFactory.rotateXTicks = function (svg) {
+    svg.selectAll(".x text")
+      .attr("transform", "translate(-7,0)rotate(-45)")
+      .style("text-anchor", "end");
+  };
+
   return SVGFactory;
 });

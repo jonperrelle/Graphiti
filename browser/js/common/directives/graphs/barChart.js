@@ -87,17 +87,9 @@ app.directive('barChart', function(d3Service, DataFactory, SVGFactory) {
 
                     y.domain([minY, maxY]);
 
-                    svg.append("g")
-                        .attr("class", "x axis")
-                        .attr("transform", "translate(" + margin.left + ", " + (height - margin.bottom) + ")")
-                        .call(xAxis)
-                        .append("text")
-                        .attr("class", "xlabel")
-                        .text(xAxisLabel);
+                    SVGFactory.appendXAxis(svg, margin, height, xAxis, xAxisLabel);
 
-                    svg.selectAll(".x text")
-                        .attr("transform", "translate(-7,0)rotate(-45)")
-                        .style("text-anchor", "end");
+                    SVGFactory.rotateXTicks(svg);
 
                     svg.select(".xlabel")
                          .attr("transform", "translate(" + ((width - margin.left - margin.right) / 2) + ", " + (margin.bottom - xAxisLabelSize) + ")")
