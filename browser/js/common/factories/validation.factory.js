@@ -52,10 +52,7 @@ app.factory('ValidationFactory', function () {
               });
             },
 
-            validateDateOrNumber: function(col) {
-              if (col) return (col.type === 'number' || col.type === 'date');
-              return false;
-            },
+            
 
 
 

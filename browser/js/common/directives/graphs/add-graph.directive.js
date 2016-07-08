@@ -41,10 +41,23 @@ app.directive('addGraph', function($rootScope, AddGraphFactory, ValidationFactor
                 
                 GraphFilterFactory.filterData(scope.seriesx, scope.seriesy, scope.data)
                 .then(function(values) {
+
+                    let groupedData = DataFactory.groupByCategory(values, scope.seriesx, scope.seriesy, 'total');
+                    
                    
                     scope.values = values;
-                    scope.lineEnable = true;
-                    scope.scatterEnable = true;
+                    if ((scope.seriesx[0].type === 'number' || scope.seresx[0].type === 'date') && scope.seriesy[0].type === 'number' ) {
+                            scope.lineEnable = true;
+                        }
+                    else if (scope.seriesx[0].type === 'number' && scope.seriesy[0].type === 'number' ) {
+                            scope.scatterEnable = true;
+                            // scope.barEnabled = true
+                    }
+
+                    else if (scope.seriesx[0].type === 'string' && scope.seriesy[0].type === 'number' ) {
+                            scope.pieEnable = true;
+                           // scope.barEnabled = true
+                    }
                 });
                 
             };
@@ -58,10 +71,10 @@ app.directive('addGraph', function($rootScope, AddGraphFactory, ValidationFactor
                     allColumns: scope.assignedColumns});
             };
 
-            scope.withinLength = function(){
-                let groupedData = DataFactory.groupByCategory(scope.data, scope.column1.name, scope.column2.name, 'total');
-                return DataFactory.withinLength(groupedData, scope.column1.name, 30);
-            };
+            // scope.withinLength = function(){
+            //     let groupedData = DataFactory.groupByCategory(scope.data, scope.column1.name, scope.column2.name, 'total');
+            //     return DataFactory.withinLength(groupedData, scope.column1.name, 30);
+            // };
 
         }
     };

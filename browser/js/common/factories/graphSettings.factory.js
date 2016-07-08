@@ -54,12 +54,15 @@ app.factory("graphSettingsFactory", function(d3Service){
             savedSettings.height = sets.height || 500;
             savedSettings.xAxisLabel = sets.xAxisLabel || formatColX;
             savedSettings.yAxisLabel = sets.yAxisLabel || formatColY;
+            savedSettings.radius = sets.radius || savedSettings.height / 3;
             savedSettings.title = sets.title || (formatColX + " .vs " + formatColY).toUpperCase();
             savedSettings.color = sets.color || d3.scale.category10();
             savedSettings.minX = sets.minX || getMin(d3, data, 0);
             savedSettings.maxX = sets.maxX || getMax(d3, data, 0);
             savedSettings.minY = sets.minY || getMin(d3, data, 1);
             savedSettings.maxY = sets.maxY || getMax(d3, data, 1);
+            savedSettings.displayType = sets.displayType || 'number';
+            savedSettings.groupType = sets.groupType || 'total';
 
             return savedSettings;
         });

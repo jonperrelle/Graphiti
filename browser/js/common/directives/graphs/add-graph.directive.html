@@ -84,15 +84,15 @@
 			</div>
 			<div class="col-sm-1"></div>
 		</div>
-		<!-- <div class="column col-sm-6" ng-if="pieEnabled() && withinLength()">
+		<div class="column col-sm-6" ng-if="pieEnable && withinLength() && seriesy.length === 1">
 			<h4 class="text-center">Pie Chart</h4>
 			<div class="col-sm-1"></div>
 			<div class="col-xs-12 col-sm-10 graph-previews-columns" ng-click="viewSingleGraph('pieChart')">
-				<pie-chart settings="settings" rows="data" columns="[column1,column2]"></pie-chart>
+				<pie-chart settings="settings" rows="values" seriesy="seriesy" seriesx="seriesx" ></pie-chart>
 			</div>
 			<div class="col-sm-1"></div>
 		</div>
-		<div class="column col-sm-6" ng-if="barEnabled()">
+		<!-- <div class="column col-sm-6" ng-if="barEnabled()">
 			<h4 class="text-center">Bar Chart</h4>
 			<div class="col-sm-1"></div>
 			<div class="col-xs-12 col-sm-10 graph-previews-columns" ng-click="viewSingleGraph('barChart')">

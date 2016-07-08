@@ -23,7 +23,7 @@ app.factory('GraphFilterFactory', function (d3Service, graphSettingsFactory) {
               obj[k] = obj[k].sort((a, b) => a[0] - b[0]);
           }
       } 
-      else  {
+      else if (seriesx[0].type === 'date') {
           for (let k in obj) {
               obj[k] = obj[k].sort((a, b) => a[0].getTime() - b[0].getTime());
           }
@@ -41,12 +41,19 @@ app.factory('GraphFilterFactory', function (d3Service, graphSettingsFactory) {
 
           data.forEach(row => {
               for (let k in row) {
-                if (dataObj[k]) {
-                  if (row[seriesx[0].name] && row[k] && (!!Number(row[seriesx[0].name]) || Number(row[seriesx[0].name]) === 0 || seriesx[0].type === 'date')
+                if (dataObj[k] && seriesx[0].type === 'number') {
+                  if (row[seriesx[0].name] && row[k] && (!!Number(row[seriesx[0].name]) || Number(row[seriesx[0].name]) === 0) 
                       && (!!Number(row[k]) || Number(row[k]) === 0)) {
                       if(formatDate)  dataObj[k].push([formatDate.parse(row[seriesx[0].name]), +row[k]]);
                       else dataObj[k].push([+row[seriesx[0].name], +row[k]]);
-                                    }
+                    }
+                }
+                else if (dataObj[k]) {
+                  if (row[seriesx[0].name] && row[k] && (!!Number(row[k]) || Number(row[k]) === 0)) {
+                      if(formatDate)  dataObj[k].push([formatDate.parse(row[seriesx[0].name]), +row[k]]);
+                      else dataObj[k].push([row[seriesx[0].name], +row[k]]);
+                    
+                  }
                 }
               }
           });
