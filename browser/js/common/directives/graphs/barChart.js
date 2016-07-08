@@ -39,7 +39,7 @@ app.directive('barChart', function(d3Service, DataFactory, SVGFactory) {
                         formatColY = scope.columns[1].name.replace(/\_+/g, " "),
                         graphColor = scope.settings.color || '10',
                         height = scope.settings.height || 500,
-                        titleSize = scope.settings.titleSize || height / 25,
+                        titleSize = scope.settings.titleSize || height / 35,
                         xAxisLabelSize = scope.settings.xAxisLabelSize || height / 30,
                         yAxisLabelSize = scope.settings.yAxisLabelSize || height / 30,
                         margin = {
@@ -110,12 +110,7 @@ app.directive('barChart', function(d3Service, DataFactory, SVGFactory) {
                         })
                         .attr("transform", "translate(" + margin.left + ", 0)");
 
-                    svg.append("text")
-                        .attr("x", (width / 2))             
-                        .attr("y", (margin.top / 2))
-                        .attr("text-anchor", "middle") 
-                        .style("font-size", titleSize)
-                        .text(title);
+                    SVGFactory.appendTitle(svg, margin, width, title, titleSize);
                 };
             });
         }

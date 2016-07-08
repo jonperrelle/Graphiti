@@ -23,6 +23,7 @@ app.directive('pieChart', function(d3Service, DataFactory, SVGFactory) {
                             margin = { top: 30, right: 20, bottom: 30, left: 40 },
                             width = scope.settings.width || ele[0].parentNode.offsetWidth,
                             height = scope.settings.height || 500,
+                            titleSize = scope.settings.titleSize || height / 35,
                             radius = scope.settings.radius || height / 3,
                             title = scope.settings.title || (formatColX + ' vs. ' + formatColY).toUpperCase(),
                             displayType = scope.settings.displayType || 'number';
@@ -47,7 +48,7 @@ app.directive('pieChart', function(d3Service, DataFactory, SVGFactory) {
                             .style('background-color', '#ffffff')
                             .data([groupedData])
                             .append("g")
-                            .attr("transform", "translate(" + (width / 1.75) + "," + (radius *1.5) + ")");
+                            // .attr("transform", "translate(" + (width / 1.75) + "," + (radius *1.5) + ")");
                         let pie = d3.layout.pie().value(function(d) {
                             return +d[scope.columns[1].name];
                         });
@@ -60,7 +61,8 @@ app.directive('pieChart', function(d3Service, DataFactory, SVGFactory) {
                             .data(pie)
                             .enter()
                             .append("g")
-                            .attr("class", "slice");
+                            .attr("class", "slice")
+                            .attr("transform", "translate(" + (width / 1.75) + "," + (radius *1.5) + ")");
 
                         arcs.append("path")
                             .attr("fill", function(d, i) {
@@ -68,17 +70,7 @@ app.directive('pieChart', function(d3Service, DataFactory, SVGFactory) {
                             })
                             .attr("d", arc);
 
-
-
-                        arcs.forEach(function () {
-
-                        });
-
-                        svg.append("text")
-                            .attr("x", 0)             
-                            .attr("y", (radius * -1.5) + margin.top/2)
-                            .attr("text-anchor", "middle")    
-                            .text(title);
+                        SVGFactory.appendTitle(svg, margin, width, title, titleSize);
 
                         //add the text
                         // arcs.append("text").attr("transform", function(d) {
@@ -94,13 +86,12 @@ app.directive('pieChart', function(d3Service, DataFactory, SVGFactory) {
                             else return data;
                         };
 
-
                         let legend = svg.selectAll(".legend")
                             .data(color.domain())
                             .enter().append("g")
                                 .attr("class", "legend")
                                 .attr("transform", function(d, i) { 
-                                    return "translate(" + 0 + "," + i * 20 + ")" 
+                                    return "translate(" + (width / 1.75) + "," + ((radius * 1.5) + (i * 20 + 10)) + ")";
                                 });
 
                         // draw legend colored rectangles

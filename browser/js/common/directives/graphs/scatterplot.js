@@ -44,7 +44,7 @@ app.directive('scatterplotGraph', function(d3Service, SVGFactory) {
                     formatColY = scope.columns[1].name.replace(/\_+/g, " "),
                     width = scope.settings.width || ele[0].parentNode.offsetWidth,
                     height = scope.settings.height || 500,
-                    titleSize = scope.settings.titleSize || height / 25,
+                    titleSize = scope.settings.titleSize || height / 35,
                     xAxisLabelSize = scope.settings.xAxisLabelSize || height / 30,
                     yAxisLabelSize = scope.settings.yAxisLabelSize || height / 30,
                     margin = { top: 30,
@@ -149,12 +149,7 @@ app.directive('scatterplotGraph', function(d3Service, SVGFactory) {
                             .style("opacity", 0);
                     });
 
-                svg.append("text")
-                    .attr("x", (width / 2))             
-                    .attr("y", (margin.top/2))
-                    .attr("text-anchor", "middle")    
-                    .text(title);
-
+                SVGFactory.appendTitle(svg, margin, width, title, titleSize);
             };
         });
     };

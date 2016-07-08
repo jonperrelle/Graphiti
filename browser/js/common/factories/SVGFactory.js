@@ -72,5 +72,14 @@ app.factory('SVGFactory', function ($window) {
       .style("font-size", yAxisLabelSize);
   };
 
+  SVGFactory.appendTitle = function (svg, margin, width, title, titleSize) {
+    svg.append("text")
+      .attr("x", (width / 2))
+      .attr("y", (margin.top / 2))
+      .attr("text-anchor", "middle")
+      .style("font-size", titleSize)
+      .text(title);
+  };
+
   return SVGFactory;
 });
