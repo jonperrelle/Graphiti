@@ -8,7 +8,8 @@ app.config (function ($stateProvider) {
     	graphType: null,
     	settings: null,
     	data: null,
-    	columns: null,
+    	seriesx: null,
+        seriesy: null,
         allColumns: null,
     }
   });
@@ -21,8 +22,11 @@ app.controller('singleGraphCtrl', function ($scope, $stateParams, $timeout, $sta
     $localStorage.graphType = $scope.graphType;
 	$scope.data = $stateParams.data || $localStorage.data;
     $localStorage.data = $scope.data;
-	$scope.columns = $stateParams.columns || $localStorage.columns;
-    $localStorage.columns = $scope.columns;
+    console.log("HERERERERERE", $localStorage.data)
+	$scope.seriesx = $stateParams.seriesx || $localStorage.seriesx;
+    $localStorage.seriesx = $scope.seriesx;
+    $scope.seriesy = $stateParams.seriesy || $localStorage.seriesy;
+    $localStorage.seriesy = $scope.seriesy;
 	$scope.settings = $stateParams.settings || $localStorage.settings;
     $localStorage.settings = $scope.settings;
     $scope.dataset = $stateParams.dataset;
@@ -57,7 +61,13 @@ app.controller('singleGraphCtrl', function ($scope, $stateParams, $timeout, $sta
     }, true);
 
     $scope.$watch(function($scope) {
-        return $scope.columns;
+        return $scope.seriesx;
+    }, function() {
+        $scope.unchanged = false;
+    }, true);
+
+    $scope.$watch(function($scope) {
+        return $scope.seriesy;
     }, function() {
         $scope.unchanged = false;
     }, true);

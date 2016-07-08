@@ -61,7 +61,6 @@ app.factory('GraphFilterFactory', function (d3Service) {
               }
               return obj;
           });
-          console.log(values);
           return values;
         });
 

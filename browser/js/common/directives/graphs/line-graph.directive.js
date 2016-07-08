@@ -31,6 +31,12 @@ app.directive('lineGraph', function(d3Service, $window, $state, GraphFilterFacto
                     if (newVal !== oldVal) scope.render();
                 }, true);
 
+                scope.$watch(function(scope) {
+                    return scope.settings; 
+                }, function(newVal, oldVal) {
+                    if (newVal !== oldVal) scope.render();
+                }, true);
+
                 // scope.$watch(function(scope) {
                 //     return scope.seriesx;
                 // }, function() {
@@ -45,6 +51,8 @@ app.directive('lineGraph', function(d3Service, $window, $state, GraphFilterFacto
 
                 scope.render = function() {    
                    
+                    console.log('hererebhfvbkfj', scope.rows)
+
                     let anchor = d3.select(ele[0])
                     anchor.selectAll('*').remove();                        
 
@@ -126,7 +134,6 @@ app.directive('lineGraph', function(d3Service, $window, $state, GraphFilterFacto
 
                            yData.append("text")
                               .datum(function(d) { 
-                                console.log(d);
                                 return {name: d.name, value: d.values[d.values.length - 1]}; 
                                 })
                               .attr("transform", function(d) { return "translate(" + x(d.value[0]) + "," + y(d.value[1]) + ")"; })
