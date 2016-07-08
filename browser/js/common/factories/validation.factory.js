@@ -1,10 +1,19 @@
 app.factory('ValidationFactory', function () {
    return {
           
+            validateObject: function(data, col) {
+              if (col) {
+                for (let i=0; i < data.length && i < 10; i++) {
+                    if (typeof data[i][col.name] === 'object') return true;
+                }
+                return false;
+              }
+            },
+
             validateNumber: function(data, col) {
               if (col) {
                 for (let i=0; i < data.length && i < 10; i++) {
-                    if (data[i][col.name].trim().length && !isNaN(data[i][col.name])) return true;
+                    if (data[i][col.name] && data[i][col.name].trim().length && !isNaN(data[i][col.name])) return true;
                 }
               }
               return false;
@@ -19,20 +28,28 @@ app.factory('ValidationFactory', function () {
               }
             },
             
-            assignColumnType: function (data, col) {
-              if (this.validateDate(col)) {
-                col.type = 'date';
-                return;
-              }
-              else if (this.validateNumber(data, col)) {
-                col.type = 'number';
-                return;
-              }
-              else {
-                col.type = "string";
-                return;
-              }
-              
+            assignColumnNameAndType: function (data, columns) {
+              return columns.map(col => {
+                let colObj ={}
+                colObj.name = col;
+                if (this.validateObject(data, colObj)) {
+
+                  colObj.type = 'object';
+                  return colObj;
+                }
+                else if (this.validateDate(colObj)) {
+                  colObj.type = 'date';
+                 return colObj;
+                }
+                else if (this.validateNumber(data, colObj)) {
+                  colObj.type = 'number';
+                  return colObj;
+                }
+                else {
+                  colObj.type = "string";
+                  return colObj;
+                }
+              });
             },
 
             validateDateOrNumber: function(col) {

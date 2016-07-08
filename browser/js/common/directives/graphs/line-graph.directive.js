@@ -37,11 +37,11 @@ app.directive('lineGraph', function(d3Service, $window, $state, GraphFilterFacto
                     if (newVal !== oldVal) scope.render();
                 }, true);
 
-                // scope.$watch(function(scope) {
-                //     return scope.seriesx;
-                // }, function() {
-                //     scope.render();
-                // }, true);
+                scope.$watch(function(scope) {
+                    return scope.seriesx;
+                }, function() {
+                    scope.render();
+                }, true);
 
                 // scope.$watch(function(scope) {
                 //     return scope.seriesy;

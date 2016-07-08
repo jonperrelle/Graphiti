@@ -34,11 +34,11 @@ app.factory('GraphFilterFactory', function (d3Service) {
      };  
 
      graphFilter.filterData = function (seriesx, seriesy, data) {
-
+       
         let formatDate;
         let dataObj = setDataObject(seriesy);
         return d3Service.d3().then(function(d3) {
-          if (seriesx[0].type==='date') formatDate = setDateFormat(d3, data, seriesx);
+          if (seriesx[0].type ==='date') formatDate = setDateFormat(d3, data, seriesx);
 
           data.forEach(row => {
               for (let k in row) {
