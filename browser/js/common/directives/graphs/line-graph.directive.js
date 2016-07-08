@@ -3,8 +3,8 @@ app.directive('lineGraph', function(d3Service, $window, $state, GraphFilterFacto
         restrict: 'E',
         scope: {
             rows: "=",
-            seriesx: "=",
-            seriesy: "=",
+            seriesx: '=',
+            seriesy: '=',
             settings: "="
         },
         link: function(scope, ele, attrs) {
@@ -36,18 +36,20 @@ app.directive('lineGraph', function(d3Service, $window, $state, GraphFilterFacto
                     if (newVal !== oldVal) scope.render();
                 }, true);
 
-                scope.$watch(function(scope) {
-                    return scope.seriesx;
-                }, function(newVal, oldVal) {
-                    //console.log(newVal, "HERE");
-                    if (newVal !== oldVal) scope.render();
-                }, true);
+                // scope.$watch(function(scope) {
+                //     return scope.seriesx;
+                // }, function(newVal, oldVal) {
+                //     //console.log(newVal, "HERE");
+                //     if (newVal !== oldVal) scope.render();
+                // }, true);
 
                 // scope.$watch(function(scope) {
                 //     return scope.seriesy;
                 // }, function() {
                 //     scope.render();
                 // }, true);
+
+                //seriesy="seriesy" seriesx="seriesx"
 
                 scope.render = function() {   
 
@@ -65,7 +67,7 @@ app.directive('lineGraph', function(d3Service, $window, $state, GraphFilterFacto
                                 .append("g");
 
                             let x; 
-                               
+
                             if(scope.seriesx[0].type == 'number') x = d3.scale.linear().range([defaultSettings.margin.left, savedSets.width - defaultSettings.margin.right]);
                             else {
                                 x = d3.time.scale().range([defaultSettings.margin.left, savedSets.width - defaultSettings.margin.right])

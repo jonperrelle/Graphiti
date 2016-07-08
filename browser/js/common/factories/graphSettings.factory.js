@@ -35,7 +35,17 @@ app.factory("graphSettingsFactory", function(d3Service){
         return defaultSettings;      
 	};
 
+    // graphSettings.getXScale = function(seriesx, defaultSettings) {
+    //     return d3Service.d3().then(function(d3){
+    //          if(seriesx[0].type == 'number') return d3.scale.linear().range([defaultSettings.margin.left, savedSets.width - defaultSettings.margin.right]);
+    //             else {
+    //                 x = d3.time.scale().range([defaultSettings.margin.left, savedSets.width - defaultSettings.margin.right])
+    //             };  
+    //     })
+    // }
+
 	graphSettings.getSavedSettings = function (sets, ele, data) {
+
 		return d3Service.d3().then(function(d3) {
 			let formatColX = 'X Axis';
 			let formatColY = 'Y Axis';

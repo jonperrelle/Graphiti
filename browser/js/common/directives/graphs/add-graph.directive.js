@@ -29,21 +29,22 @@ app.directive('addGraph', function($rootScope, AddGraphFactory, ValidationFactor
             // };
 
             // scope.scatterEnabled = function(){
-            //     return AddGraphFactory.scatterEnabled(scope.column1, scope.column2);
+            //     return AddGraphFactory.scatterEnabled(scope.seriesx[0], scope.seriesy[0]);
             // };
 
-            scope.lineEnabled = function(){
+            // scope.lineEnabled = function(){
                 
-                return AddGraphFactory.lineEnabled(scope.seriesx[0], scope.seriesy[0]);
-            };
+            //     return AddGraphFactory.lineEnabled(scope.seriesx[0], scope.seriesy[0]);
+            // };
 
             scope.showGraphs = function () {  
                 
                 GraphFilterFactory.filterData(scope.seriesx, scope.seriesy, scope.data)
                 .then(function(values) {
-                    console.log(values)
+                   
                     scope.values = values;
                     scope.lineEnable = true;
+                    scope.scatterEnable = true;
                 });
                 
             };

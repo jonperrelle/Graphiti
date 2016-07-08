@@ -1,7 +1,6 @@
-app.factory('GraphFilterFactory', function (d3Service) {
+app.factory('GraphFilterFactory', function (d3Service, graphSettingsFactory) {
    
     let graphFilter = {};
-    
   
     let setDateFormat = function (d3, data, seriesx) {
          
@@ -66,5 +65,19 @@ app.factory('GraphFilterFactory', function (d3Service) {
 
      };
 
-     return graphFilter;
+     graphFilter.setBounds = function(settings, values){
+         return values.map(obj => {
+
+            obj.values = obj.values.filter(arr => {
+                return (arr[0] >= settings.minX 
+                 && arr[0] <= settings.maxX
+                 && arr[1] >= settings.minY
+                 && arr[1] <= settings.maxY)
+               })
+             return obj;
+           })
+      
+    };
+
+    return graphFilter;
 });
