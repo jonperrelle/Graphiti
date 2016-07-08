@@ -6,9 +6,9 @@ const SequelizeStore = require('connect-session-sequelize')(session.Store);
 
 const ENABLED_AUTH_STRATEGIES = [
     'local',
-    'google',
-    'facebook',
-    'twitter'
+    // 'google',
+    // 'facebook',
+    // 'twitter'
 ];
 
 module.exports = function (app, db) {
@@ -69,8 +69,8 @@ module.exports = function (app, db) {
     });
 
     // Each strategy enabled gets registered.
-    // ENABLED_AUTH_STRATEGIES.forEach(function (strategyName) {
-    //     require(path.join(__dirname, strategyName))(app, db);
-    // });
+    ENABLED_AUTH_STRATEGIES.forEach(function (strategyName) {
+        require(path.join(__dirname, strategyName))(app, db);
+    });
 
 };

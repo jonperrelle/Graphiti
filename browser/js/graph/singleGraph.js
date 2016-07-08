@@ -55,7 +55,8 @@ app.controller('singleGraphCtrl', function ($scope, $stateParams, $timeout, $sta
     if (Session.user) $scope.user = Session.user;
     $scope.saveUserGraph = function () {
         let graphToSave = {};
-        graphToSave.columns = $scope.columns;
+        graphToSave.seriesx = $scope.seriesx;
+        graphToSave.seriesy = $scope.seriesy;
         graphToSave.graphType = $scope.graphType;
         GraphFactory.saveUserGraph($scope.user, $localStorage.dataset, graphToSave, $scope.settings)
             .then(function(data) {

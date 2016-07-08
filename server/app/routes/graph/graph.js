@@ -22,7 +22,7 @@ router.delete('/:graphId', function(req, res, next) {
 router.post('/',function(req,res,next){
 
 	let user = req.requestedUser;
-	req.body.settings.title = req.body.settings.title || req.body.graph.columns.map(col=> col.name).join(" .vs ");
+	req.body.settings.title = req.body.settings.title || [req.body.graph.seriesx,req.body.graph.seriesy[0]].map(col=> col.name).join(" .vs ");
 	
 	Promise.all([Dataset.findById(req.body.dataset.id),
 	        Settings.findOrCreate({where: req.body.settings})])
