@@ -23,12 +23,14 @@
             .home-btn {
                 border: 3px solid #8ce2a6;
                 background: #3a424c;
-                color: #ffffff;
-                padding: 15px 50px;
-                font-size: 1.8em;
+                color: #eee;
+                box-sizing: border-box;
+                width: 80%;
+                padding: 20px 50px;
+                font-size: 1.5em;
                 &:hover {
                     background: #8ce2a6;
-                    color: #ffffff;
+                    color: #eee;
                     border: 3px solid #3a424c;
                 }
             }
@@ -42,7 +44,7 @@
         .low-btn {
             border: 2px solid #8ce2a6;
             background: #3a424c;
-            color: #ffffff;
+            color: #eee;
             padding: 10px 30px;
             font-size: 1.4em;
             margin-bottom: 30px;
@@ -61,13 +63,13 @@
         .odd-div {
             background: #3a424c;
             h4 {
-                color: #ffffff
+                color: #eee
             }
         }
         header {
             padding: 20px 0;
             h3 {
-                color: #ffffff;
+                color: #eee;
             }
         }
         h4 {
