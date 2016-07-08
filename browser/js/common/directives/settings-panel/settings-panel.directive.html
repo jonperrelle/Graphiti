@@ -152,6 +152,17 @@
                 </div>
               </div>
             </div>
+            <div class="row" ng-show="graphType==='histogram'">
+              <div class="form-group col-xs-12">
+                <label for="display" class="control-label">Display units</label>
+                <div>
+                  <select class="form-control" name="display" type="text" ng-model="settings.display">
+                    <option value="total">Total</option>
+                    <option value="percentage">Percentage</option>
+                  </select>
+                </div>
+              </div>
+            </div>
             <div class="row">
               <div class="form-group col-xs-6">
                 <label for="minY" class="control-label">Min Y Value</label>

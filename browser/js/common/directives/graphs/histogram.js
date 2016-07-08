@@ -45,7 +45,8 @@ app.directive('histogram', function (d3Service, $window, DataFactory) {
                   .bins(15)
                   (scope.rows.filter(obj => obj[scope.column.name] 
                     && (!!Number(obj[scope.column.name]) || Number(obj[scope.column.name]) === 0))) : 
-                DataFactory.groupByCategory(scope.rows, scope.column.name, 'frequency', 'number');
+                DataFactory.groupByCategory(scope.rows, scope.column.name, 'frequency', 'number'),
+              total = scope.rows.length;
 
           let xLabelLength = !quantitative ? data.reduce(function (prev, current) {
                   let currentLength = current[scope.column.name].toString().length;
@@ -64,10 +65,12 @@ app.directive('histogram', function (d3Service, $window, DataFactory) {
                 top: titleSize + 20,
                 right: 20,
                 bottom: ((xLabelLength + 6) * 5) + xAxisLabelSize,
-                left: 50
+                left: 60
               },
               xAxisLabel = scope.settings.xAxisLabel || formatColX,
-              yAxisLabel = scope.settings.yAxisLabel || 'frequency',
+              yAxisLabel = scope.settings.yAxisLabel || scope.settings.display === 'percentage' ? 
+                'percentage' :
+                'total',
               title = scope.settings.title || 'frequency for ' + formatColX;
 
           let color,
@@ -133,6 +136,12 @@ app.directive('histogram', function (d3Service, $window, DataFactory) {
                         .scale(xScale)
                         .orient("bottom"),
               yAxis = d3.svg.axis().scale(yScale).orient("left");
+
+          if (scope.settings.display === 'percentage') {
+            yAxis.tickFormat(function (num) {
+              return (+num * 100 / total).toFixed(2);
+            });
+          }
 
           if (quantitative) {
             xAxis.tickFormat(tickType)
