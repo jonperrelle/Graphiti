@@ -3,10 +3,11 @@ app.directive('histogram', function (d3Service, $window, DataFactory) {
     restrict: 'E',
     scope: {
       rows: "=",
-      column: "=",
+      columns: "=",
       settings: "="
     },
     link: function (scope, ele, attrs) {
+      scope.column = scope.columns[0];
       d3Service.d3().then(function (d3) {
         window.onresize = function() {
             scope.$apply();
