@@ -53,7 +53,7 @@ app.directive('addGraph', function($rootScope, AddGraphFactory, ValidationFactor
             };
 
             scope.viewSingleGraph = function (graphType) {
-                $state.go('singleGraph', {graphType, data: scope.data, columns: [scope.column1, scope.column2], settings: scope.settings, allColumns: scope.columns});
+                $state.go('singleGraph', {graphType, data: scope.values, seriesx: scope.seriesx, seriesy: scope.seriesy, settings: scope.settings, allColumns: scope.columns});
             };
 
             scope.withinLength = function(){

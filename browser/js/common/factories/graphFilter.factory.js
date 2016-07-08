@@ -53,8 +53,16 @@ app.factory('GraphFilterFactory', function (d3Service) {
           });
 
           dataObj = sortData(seriesx, dataObj);
-
-          return d3.values(dataObj);
+          let count = 0;
+          let values = d3.values(dataObj).map(arr => {      
+              let obj = {
+                name: seriesy[count++].name.replace(/\_/g, " "), 
+                values: arr
+              }
+              return obj;
+          });
+          console.log(values);
+          return values;
         });
 
      };

@@ -44,11 +44,11 @@ app.directive('lineGraph', function(d3Service, $window, $state, GraphFilterFacto
                 // }, true);
 
                 scope.render = function() {    
-
+                   
                     let anchor = d3.select(ele[0])
                     anchor.selectAll('*').remove();                        
 
-                    graphSettingsFactory.getSavedSettings(scope.settings, ele[0])
+                    graphSettingsFactory.getSavedSettings(scope.settings, ele[0], scope.rows)
                         .then(function (savedSets) {
                             let defaultSettings = graphSettingsFactory.getDefaultSettings();
                             let svg = anchor
@@ -84,33 +84,8 @@ app.directive('lineGraph', function(d3Service, $window, $state, GraphFilterFacto
                                     return y(d[1]);
                                 });
 
-                            
-                            let minX,
-                            maxX,
-                            minY,
-                            maxY;
-                            
-                            scope.rows.forEach(function (arr) {
-            
-                                let tempMin = d3.min(arr, function(d) {return d[0]});
-                                let tempMax = d3.max(arr, function(d) {return d[0]});
-
-                                if(tempMin < minX || typeof minX === 'undefined') minX = tempMin;
-                                if(tempMax > maxX || typeof maxX === 'undefined') maxX = tempMax;
-                            });
-                            scope.rows.forEach(function (arr) {
-                                let tempMin = d3.min(arr, function(d) {return d[1]});
-                                let tempMax = d3.max(arr, function(d) {return d[1]});
-                                if(tempMin < minY || typeof minY === 'undefined') minY = tempMin;
-                                if(tempMax > maxY || typeof maxY === 'undefined') maxY = tempMax;
-                            });
-
-                            
-                            
-
-                            x.domain([minX, maxX]);
-                            y.domain([minY, maxY]);
-
+                            x.domain([savedSets.minX, savedSets.maxX]);
+                            y.domain([savedSets.minY, savedSets.maxY]);
 
                             svg.append("g")
                                 .attr("class", "x axis")
@@ -139,23 +114,32 @@ app.directive('lineGraph', function(d3Service, $window, $state, GraphFilterFacto
 
                             yData.append("path")
                                 .attr("d", function(d){
-                                    return line(d);
+                                   
+                                    return line(d.values);
                                 })
                                 .attr('fill', 'none')
                                 .attr("stroke", function(d, i) {
-                                        if(typeof savedSets.color === 'function') return savedSets.color(i)
-                                        else return savedSets.color;
-                                })//color.domain())
+                                    if(typeof savedSets.color === 'function') return savedSets.color(i)
+                                    else return savedSets.color;
+                                })
                                 .attr("stroke-width", 2);
+
+                           yData.append("text")
+                              .datum(function(d) { 
+                                console.log(d);
+                                return {name: d.name, value: d.values[d.values.length - 1]}; 
+                                })
+                              .attr("transform", function(d) { return "translate(" + x(d.value[0]) + "," + y(d.value[1]) + ")"; })
+                              .attr("x", 3)
+                              .attr("dy", ".35em")
+                              .text(function(d) { return d.name; });       
 
                             svg.append("text")
                                 .attr("x", (savedSets.width / 2))             
                                 .attr("y", defaultSettings.margin.top/2)
                                 .attr("text-anchor", "middle")    
                                 .text(savedSets.title);
-                    
-
-                    
+                            
                     });
                 };
             });

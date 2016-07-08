@@ -2,8 +2,27 @@ app.factory("graphSettingsFactory", function(d3Service){
 	
 	let graphSettings = {};
 
+	let getMin = function (d3, data, idx) {
+		let min, tempMin;
+		data.forEach(function (obj) {
+            tempMin = d3.min(obj.values, function(d) {
+            	return d[idx]
+            });
+            if(tempMin < min || typeof min === 'undefined') min = tempMin;
+        });
+        return min;
+	};
+
+	let getMax = function (d3, data, idx) {
+		let max, tempMax;
+		data.forEach(function (obj) {
+            tempMax = d3.max(obj.values, function(d) {return d[idx]});
+            if(tempMax > max || typeof max === 'undefined') max = tempMax;   
+        });
+        return max;
+	};
+
 	graphSettings.getDefaultSettings = function () {
-		
 		let defaultSettings = {};
 		let yLabelLength = 2;
         let xLabelLength = 3;                
@@ -27,32 +46,13 @@ app.factory("graphSettingsFactory", function(d3Service){
             savedSettings.yAxisLabel = sets.yAxisLabel || formatColY;
             savedSettings.title = sets.title || (formatColX + " .vs " + formatColY).toUpperCase();
             savedSettings.color = sets.color || d3.scale.category10();
-
-            // ifscope.rows.forEach(function (arr) {
-                        
-            //             let tempMin = d3.min(arr, function(d) {return d[0]});
-            //             let tempMax = d3.max(arr, function(d) {return d[0]});
-
-            //             if(tempMin < minX || typeof minX === 'undefined') minX = tempMin;
-            //             if(tempMax > maxX || typeof maxX === 'undefined') maxX = tempMax;
-            //         });
-            //         scope.rows.forEach(function (arr) {
-            //             let tempMin = d3.min(arr, function(d) {return d[1]});
-            //             let tempMax = d3.max(arr, function(d) {return d[1]});
-            //             if(tempMin < minY || typeof minY === 'undefined') minY = tempMin;
-            //             if(tempMax > maxY || typeof maxY === 'undefined') maxY = tempMax;
-            //         });
-
-
-
-
-
-
-
+            savedSettings.minX = sets.minX || getMin(d3, data, 0);
+            savedSettings.maxX = sets.maxX || getMax(d3, data, 0);
+            savedSettings.minY = sets.minY || getMin(d3, data, 1);
+            savedSettings.maxY = sets.maxY || getMax(d3, data, 1);
 
             return savedSettings;
         });
 	};
-
 	return graphSettings;
 });
