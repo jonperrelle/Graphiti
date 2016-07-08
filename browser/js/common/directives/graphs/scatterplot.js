@@ -53,11 +53,6 @@ app.directive('scatterplotGraph', function(d3Service, SVGFactory) {
                     yAxisLabel = scope.settings.yAxisLabel || formatColY,
                     title = scope.settings.title || (formatColX + ' vs. ' + formatColY).toUpperCase(),
                     svg = SVGFactory.appendSVG(anchor, width, height);
-                    // svg = anchor
-                    // .append('svg')
-                    // .attr('width', width)
-                    // .attr('height', height)
-                    // .style('background-color', '#ffffff');
 
                 let xValue = function(d) {
                         return +d[scope.columns[0].name];

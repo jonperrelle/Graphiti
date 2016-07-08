@@ -51,11 +51,6 @@ app.directive('lineGraph', function(d3Service, SVGFactory) {
                         yAxisLabel = scope.settings.yAxisLabel || formatColY,
                         title = scope.settings.title || (formatColX + " .vs " + formatColY).toUpperCase(),
                         svg = SVGFactory.appendSVG(anchor, width, height);
-                        // svg = anchor
-                        // .append('svg')
-                        // .style('width', width)
-                        // .style('height', height)
-                        // .style('background-color', '#ffffff');
 
                     //check if the data column header may contain date info ??
                     let xScale,
