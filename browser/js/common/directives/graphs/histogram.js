@@ -1,4 +1,4 @@
-app.directive('histogram', function (d3Service, $window, DataFactory) {
+app.directive('histogram', function (d3Service, DataFactory, SVGFactory) {
   return {
     restrict: 'E',
     scope: {
@@ -9,31 +9,10 @@ app.directive('histogram', function (d3Service, $window, DataFactory) {
     link: function (scope, ele, attrs) {
       scope.column = scope.columns[0];
       d3Service.d3().then(function (d3) {
-        window.onresize = function() {
-            scope.$apply();
-        };
-
-        // Watch for resize event
-        scope.$watch(function() {
-            return angular.element($window)[0].innerWidth;
-        }, function() {
-            scope.render();
-        });
-
-        scope.$watch(function(scope) {
-            return scope.settings;
-        }, function() {
-            scope.render();
-        }, true);
-
-        scope.$watch(function (scope) {
-          return scope.column;
-        }, function () {
-          scope.render();
-        }, true);
+        //Re-render the graph when user changes settings, data, or window size
+        SVGFactory.watchForChanges(scope);
 
         scope.render = function () {
-
           let anchor = d3.select(ele[0]);
           anchor.selectAll('*').remove();
 
@@ -73,27 +52,7 @@ app.directive('histogram', function (d3Service, $window, DataFactory) {
                 'total',
               title = scope.settings.title || 'frequency for ' + formatColX;
 
-          let color,
-          setColor = function (colorScale) {
-              switch (colorScale) {
-                  case '10':
-                      color = d3.scale.category10();
-                      break;
-                  case '20b':
-                      color = d3.scale.category20b();
-                      break;
-                  case '20c':
-                      color = d3.scale.category20c();
-                      break;
-                  case '20a':
-                      color = d3.scale.category20();
-                      break; 
-                  default: 
-                      color = colorScale;
-              }
-          };
-
-          setColor(graphColor);
+          let color = SVGFactory.setColor(graphColor);
 
           let svg = anchor
               .append('svg')

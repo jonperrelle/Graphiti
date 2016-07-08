@@ -1,4 +1,4 @@
-app.directive('barChart', function(d3Service, $window, DataFactory) {
+app.directive('barChart', function(d3Service, DataFactory, SVGFactory) {
     return {
         restrict: 'E',
         scope: {
@@ -8,30 +8,9 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
         },
         link: function(scope, ele, attrs) {
             d3Service.d3().then(function(d3) {
-                // Browser onresize event
-                window.onresize = function() {
-                    scope.$apply();
-                };
+                //Re-render the graph when user changes settings, data, or window size
+                SVGFactory.watchForChanges(scope);
 
-                // Watch for resize event
-                scope.$watch(function() {
-                    return angular.element($window)[0].innerWidth;
-                }, function() {
-                    scope.render();
-                });
-
-                scope.$watch(function(scope) {
-                    return scope.settings;
-                }, function() {
-                    scope.render();
-                }, true);
-
-                scope.$watch(function (scope) {
-                  return scope.columns;
-                }, function () {  
-                  scope.render();
-                },true);
-                
                 scope.render = function() {
                     if (!scope.columns) return;
 
@@ -97,27 +76,7 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                         .scale(y)
                         .orient("left");
 
-                    let color,
-                    setColor = function (colorScale) {
-                        switch (colorScale) {
-                            case '10':
-                                color = d3.scale.category10();
-                                break;
-                            case '20b':
-                                color = d3.scale.category20b();
-                                break;
-                            case '20c':
-                                color = d3.scale.category20c();
-                                break;
-                            case '20a':
-                                color = d3.scale.category20();
-                                break; 
-                            default: 
-                                color = colorScale;
-                        }
-                    };
-
-                    setColor(graphColor);
+                    let color = SVGFactory.setColor(graphColor);
 
                     let minY = (typeof scope.settings.minY === 'number') ? scope.settings.minY : 0,
                     maxY = (typeof scope.settings.maxY === 'number') ? scope.settings.maxY : d3.max(groupedData, function(d) {

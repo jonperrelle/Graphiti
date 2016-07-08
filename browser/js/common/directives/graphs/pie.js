@@ -1,4 +1,4 @@
-app.directive('pieChart', function(d3Service, $window, DataFactory) {
+app.directive('pieChart', function(d3Service, DataFactory, SVGFactory) {
 
     return {
         restrict: 'E',
@@ -10,27 +10,8 @@ app.directive('pieChart', function(d3Service, $window, DataFactory) {
 
         link: function(scope, ele, attrs) {
             d3Service.d3().then(function(d3) {
-                window.onresize = function() {
-                    scope.$apply();
-                };
-                // Watch for resize event
-                scope.$watch(function() {
-                    return angular.element($window)[0].innerWidth;
-                }, function() {
-                    scope.render();
-                });
-
-                scope.$watch(function(scope) {
-                    return scope.settings;
-                }, function() {
-                    scope.render();
-                }, true);
-
-                scope.$watch(function(scope) {
-                    return scope.columns;
-                }, function() {
-                    scope.render();
-                }, true);
+                //Re-render the graph when user changes settings, data, or window size
+                SVGFactory.watchForChanges(scope);
 
                 scope.render = function() {
                         let anchor = d3.select(ele[0]);
@@ -38,6 +19,7 @@ app.directive('pieChart', function(d3Service, $window, DataFactory) {
 
                         let formatColX = scope.columns[0].name.replace(/\_+/g, " "),
                             formatColY = scope.columns[1].name.replace(/\_+/g, " "),
+                            graphColor = scope.settings.color || '20a',
                             margin = { top: 30, right: 20, bottom: 30, left: 40 },
                             width = scope.settings.width || ele[0].parentNode.offsetWidth,
                             height = scope.settings.height || 500,
@@ -55,24 +37,8 @@ app.directive('pieChart', function(d3Service, $window, DataFactory) {
                         let groupedTotal = 0;
                         groupedData.forEach( a => groupedTotal += a[scope.columns[1].name]);
                         //uses build in d3 method to create color scale
-                        let color;
-                        let setColor = colorScale => {
-                            switch (colorScale) {
-                                case '10':
-                                    color = d3.scale.category10();
-                                    break;
-                                case '20b':
-                                    color = d3.scale.category20b();
-                                    break;
-                                case '20c':
-                                    color = d3.scale.category20c();
-                                    break;
-                                default:
-                                    color = d3.scale.category20();
-                            }
-                        };
-                        
-                        setColor(scope.settings.color);
+
+                        let color = SVGFactory.setColor(graphColor);
 
                         let svg = anchor
                             .append('svg')

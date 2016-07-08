@@ -1,4 +1,4 @@
-app.directive('scatterplotGraph', function(d3Service, $window) {
+app.directive('scatterplotGraph', function(d3Service, SVGFactory) {
     let directive = {};
 
     directive.restrict = 'E';
@@ -11,35 +11,13 @@ app.directive('scatterplotGraph', function(d3Service, $window) {
 
     return directive;
 
-
     function linkFn(scope, ele, attrs) {
         // scope.settings = scope.settings || {};
         d3Service.d3().then(function(d3) {
-            window.onresize = function() {
-                scope.$apply();
-            };
-            // Watch for resize event
-            scope.$watch(function() {
-                return angular.element($window)[0].innerWidth;
-            }, function() {
-                scope.render();
-            });
-
-            scope.$watch(function(scope) {
-                return scope.settings;
-            }, function() {
-                scope.render();
-            }, true);
-
-            scope.$watch(function(scope) {
-                return scope.columns;
-            }, function() {
-                scope.render();
-            }, true);
-
+            //Re-render the graph when user changes settings, data, or window size
+                SVGFactory.watchForChanges(scope);
 
             scope.render = function() {
-
                 // let zoom = d3.behavior.zoom()
                 //    .scaleExtent([1, 5])
                 //    .on("zoom", zooming);

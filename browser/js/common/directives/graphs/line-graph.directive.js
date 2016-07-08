@@ -1,4 +1,4 @@
-app.directive('lineGraph', function(d3Service, $window, $state) {
+app.directive('lineGraph', function(d3Service, SVGFactory) {
     return {
         restrict: 'E',
         scope: {
@@ -7,34 +7,11 @@ app.directive('lineGraph', function(d3Service, $window, $state) {
             settings: "="
         },
         link: function(scope, ele, attrs) {
-
             d3Service.d3().then(function(d3) {
-                // Browser onresize event
-                window.onresize = function() {
-                    scope.$apply();
-                };
-
-                // Watch for resize event
-                scope.$watch(function() {
-                    return angular.element($window)[0].innerWidth;
-                }, function() {
-                    scope.render();
-                });
-
-                scope.$watch(function(scope) {
-                    return scope.settings;
-                }, function() {
-                    scope.render();
-                }, true);
-
-                scope.$watch(function(scope) {
-                    return scope.columns;
-                }, function() {
-                    scope.render();
-                }, true);
+                //Re-render the graph when user changes settings, data, or window size
+                SVGFactory.watchForChanges(scope);
 
                 scope.render = function() {
-
                     //this doesn't work for line graphs, because line graphs can have a date
                     let filteredData = scope.rows.filter(obj => obj[scope.columns[0].name] 
                             && obj[scope.columns[1].name]
