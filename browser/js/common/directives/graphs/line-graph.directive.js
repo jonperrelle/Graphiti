@@ -1,4 +1,4 @@
-app.directive('lineGraph', function(d3Service, $window, $state, GraphFilterFactory) {
+app.directive('lineGraph', function(d3Service, $window, $state, GraphFilterFactory, graphSettingsFactory) {
     return {
         restrict: 'E',
         scope: {
@@ -6,14 +6,17 @@ app.directive('lineGraph', function(d3Service, $window, $state, GraphFilterFacto
             seriesx: "=",
             seriesy: "=",
             settings: "=",
+            rerender: '='
         },
         link: function(scope, ele, attrs) {
 
+
             d3Service.d3().then(function(d3) {
+
                 // Browser onresize event
-                window.onresize = function() {
-                    scope.$apply();
-                };
+                // window.onresize = function() {
+                //     scope.$apply();
+                // };
 
                 // Watch for resize event
                 scope.$watch(function() {
@@ -23,151 +26,137 @@ app.directive('lineGraph', function(d3Service, $window, $state, GraphFilterFacto
                 });
 
                 scope.$watch(function(scope) {
-                    return scope.settings;
-                }, function() {
-                    scope.render();
+                    return scope.rows; 
+                }, function(newVal, oldVal) {
+                    if (newVal !== oldVal) scope.render();
                 }, true);
 
-                scope.$watch(function(scope) {
-                    return scope.seriesx;
-                }, function() {
-                    scope.render();
-                }, true);
+                // scope.$watch(function(scope) {
+                //     return scope.seriesx;
+                // }, function() {
+                //     scope.render();
+                // }, true);
 
-                scope.$watch(function(scope) {
-                    return scope.seriesy;
-                }, function() {
-                    scope.render();
-                }, true);
+                // scope.$watch(function(scope) {
+                //     return scope.seriesy;
+                // }, function() {
+                //     scope.render();
+                // }, true);
 
                 scope.render = function() {    
 
                     let anchor = d3.select(ele[0])
-                    anchor.selectAll('*').remove();
+                    anchor.selectAll('*').remove();                        
 
-                    let yLabelLength = 0,
-                    xLabelLength = 3;                
+                    graphSettingsFactory.getSavedSettings(scope.settings, ele[0])
+                        .then(function (savedSets) {
+                            let defaultSettings = graphSettingsFactory.getDefaultSettings();
+                            let svg = anchor
+                                .append('svg')
+                                .style('width', savedSets.width)
+                                .style('height', savedSets.height)
+                                .style('background-color', '#ffffff')
+                                .append("g");
+
+                            let x; 
+                               
+                            if(scope.seriesx[0].type == 'number') x = d3.scale.linear().range([defaultSettings.margin.left, width - defaultSettings.margin.right]);
+                            else {
+                                x = d3.time.scale().range([defaultSettings.margin.left, savedSets.width - defaultSettings.margin.right])
+                            };  
+
+                            let y = d3.scale.linear()
+                                .range([savedSets.height - defaultSettings.margin.bottom, defaultSettings.margin.top]);
+
+                            let xAxis = d3.svg.axis()
+                                .scale(x)
+                                .orient("bottom");
+
+                            let yAxis = d3.svg.axis()
+                                .scale(y)
+                                .orient("left");
+
+                            let line = d3.svg.line()
+                                .x(function(d) {
+                                    return x(d[0]);
+                                })
+                                .y(function(d) {
+                                    return y(d[1]);
+                                });
+
+                            
+                            let minX,
+                            maxX,
+                            minY,
+                            maxY;
+                            
+                            scope.rows.forEach(function (arr) {
+            
+                                let tempMin = d3.min(arr, function(d) {return d[0]});
+                                let tempMax = d3.max(arr, function(d) {return d[0]});
+
+                                if(tempMin < minX || typeof minX === 'undefined') minX = tempMin;
+                                if(tempMax > maxX || typeof maxX === 'undefined') maxX = tempMax;
+                            });
+                            scope.rows.forEach(function (arr) {
+                                let tempMin = d3.min(arr, function(d) {return d[1]});
+                                let tempMax = d3.max(arr, function(d) {return d[1]});
+                                if(tempMin < minY || typeof minY === 'undefined') minY = tempMin;
+                                if(tempMax > maxY || typeof maxY === 'undefined') maxY = tempMax;
+                            });
+
+                            
+                            
+
+                            x.domain([minX, maxX]);
+                            y.domain([minY, maxY]);
 
 
-                    let formatColX = scope.seriesx[0].name.replace(/\_+/g, " "),
-                        formatColY = "y-axis", //scope.columns[1].name.replace(/\_+/g, " ")
-                        margin = { 
-                            top: 30,
-                            right: 20,
-                            bottom: (xLabelLength + 6) * 5,
-                            left: (yLabelLength + 6) * 7,
-                        },
-                        width = scope.settings.width || ele[0].parentNode.offsetWidth,
-                        height = scope.settings.height || 500,
-                        xAxisLabel = scope.settings.xAxisLabel || formatColX,
-                        yAxisLabel = scope.settings.yAxisLabel || formatColY,
-                        title = scope.settings.title || (formatColX + " .vs " + formatColY).toUpperCase(),
-                        color = scope.settings.color || d3.scale.category10(),
-                        svg = anchor
-                        .append('svg')
-                        .style('width', width)
-                        .style('height', height)
-                        .style('background-color', '#ffffff')
-                        .append("g");
+                            svg.append("g")
+                                .attr("class", "x axis")
+                                .attr("transform", "translate(0," + (savedSets.height - defaultSettings.margin.bottom) + ")")
+                                .call(xAxis)
+                                .append("text")
+                                .attr("class", "xlabel")
+                                .text(savedSets.xAxisLabel);
+
+                            svg.select(".xlabel")
+                                .attr("transform", "translate(" + (savedSets.width - defaultSettings.margin.left - defaultSettings.margin.right) / 2 + ", " + (defaultSettings.margin.bottom - 10) + ")");
+
+                            svg.append("g")
+                                .attr("class", "y axis")
+                                .attr("transform", "translate(" + defaultSettings.margin.left + ",0)")
+                                .call(yAxis)
+                                .append("text")
+                                .attr("class", "ylabel")
+                                .attr("transform", "rotate(-90)translate(" + -((savedSets.height + defaultSettings.margin.bottom + defaultSettings.margin.top) / 2) + ", " + -(defaultSettings.margin.left - 20) + ")")
+                                .text(savedSets.yAxisLabel);
+
+                            let yData = svg.selectAll("yData")
+                                .data(scope.rows)
+                                .enter().append("g")
+                                .attr("class", "yData"); 
+
+                            yData.append("path")
+                                .attr("d", function(d){
+                                    return line(d);
+                                })
+                                .attr('fill', 'none')
+                                .attr("stroke", function(d, i) {
+                                        if(typeof savedSets.color === 'function') return savedSets.color(i)
+                                        else return savedSets.color;
+                                })//color.domain())
+                                .attr("stroke-width", 2);
+
+                            svg.append("text")
+                                .attr("x", (savedSets.width / 2))             
+                                .attr("y", defaultSettings.margin.top/2)
+                                .attr("text-anchor", "middle")    
+                                .text(savedSets.title);
+                    
 
                     
-                    let x; 
-                       
-                    if(scope.seriesx[0].type == 'number') x = d3.scale.linear().range([margin.left, width - margin.right]);
-                    else {
-                        x = d3.time.scale().range([margin.left, width - margin.right])
-                    };  
-
-                    let y = d3.scale.linear()
-                        .range([height - margin.bottom, margin.top]);
-
-                    let xAxis = d3.svg.axis()
-                        .scale(x)
-                        .orient("bottom");
-
-                    let yAxis = d3.svg.axis()
-                        .scale(y)
-                        .orient("left");
-
-                    let line = d3.svg.line()
-                        .x(function(d) {
-                            console.log(d)
-                            return x(d[0]);
-                        })
-                        .y(function(d) {
-                            return y(d[1]);
-                        });
-
-                    
-                    let minX,
-                    maxX,
-                    minY,
-                    maxY;
-                    
-                    scope.rows.forEach(function (arr) {
-                        console.log(arr)
-                        let tempMin = d3.min(arr, function(d) {return d[0]});
-                        let tempMax = d3.max(arr, function(d) {return d[0]});
-
-                        if(tempMin < minX || typeof minX === 'undefined') minX = tempMin;
-                        if(tempMax > maxX || typeof maxX === 'undefined') maxX = tempMax;
                     });
-                    scope.rows.forEach(function (arr) {
-                        let tempMin = d3.min(arr, function(d) {return d[1]});
-                        let tempMax = d3.max(arr, function(d) {return d[1]});
-                        if(tempMin < minY || typeof minY === 'undefined') minY = tempMin;
-                        if(tempMax > maxY || typeof maxY === 'undefined') maxY = tempMax;
-                    });
-
-                    
-                    console.log('values', minX, maxX, minY, maxY);
-
-                    x.domain([minX, maxX]);
-                    y.domain([minY, maxY]);
-
-
-                    svg.append("g")
-                        .attr("class", "x axis")
-                        .attr("transform", "translate(0," + (height - margin.bottom) + ")")
-                        .call(xAxis)
-                        .append("text")
-                        .attr("class", "xlabel")
-                        .text(xAxisLabel);
-
-                    svg.select(".xlabel")
-                        .attr("transform", "translate(" + (width - margin.left - margin.right) / 2 + ", " + (margin.bottom - 10) + ")");
-
-                    svg.append("g")
-                        .attr("class", "y axis")
-                        .attr("transform", "translate(" + margin.left + ",0)")
-                        .call(yAxis)
-                        .append("text")
-                        .attr("class", "ylabel")
-                        .attr("transform", "rotate(-90)translate(" + -((height + margin.bottom + margin.top) / 2) + ", " + -(margin.left - 20) + ")")
-                        .text(yAxisLabel);
-
-                    let yData = svg.selectAll("yData")
-                        .data(scope.rows)
-                        .enter().append("g")
-                        .attr("class", "yData"); 
-
-                    yData.append("path")
-                        .attr("d", function(d){
-                            console.log('HERE', d)
-                                return line(d)
-                        })
-                        .attr('fill', 'none')
-                        .attr("stroke", function(d, i) {
-                                if(typeof color === 'function') return color(i)
-                                else return color;
-                        })//color.domain())
-                        .attr("stroke-width", 2);
-
-                    svg.append("text")
-                        .attr("x", (width / 2))             
-                        .attr("y", margin.top/2)
-                        .attr("text-anchor", "middle")    
-                        .text(title);
                 };
             });
         }

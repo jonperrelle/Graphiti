@@ -1,4 +1,4 @@
-app.directive('addGraph', function(AddGraphFactory, ValidationFactory, DataFactory, GraphFilterFactory, $state, $localStorage) {
+app.directive('addGraph', function($rootScope, AddGraphFactory, ValidationFactory, DataFactory, GraphFilterFactory, $state, $localStorage) {
     return {
         restrict: 'E',
         templateUrl: 'js/common/directives/graphs/add-graph.directive.html',
@@ -11,6 +11,7 @@ app.directive('addGraph', function(AddGraphFactory, ValidationFactory, DataFacto
             scope.seriesx = [];
             scope.seriesy = [];
             scope.settings = {};
+            scope.count = 0;
             // scope.column1 = $localStorage.column1;
             // scope.column2 = $localStorage.column2;
             
@@ -20,6 +21,10 @@ app.directive('addGraph', function(AddGraphFactory, ValidationFactory, DataFacto
                 // $localStorage.column1 = scope.column1;
                 // $localStorage.column2 = scope.column2;
             }; 
+
+            scope.counter = function () {
+                scope.count++;
+            };
         	
             // scope.pieEnabled = function(){
             //     return AddGraphFactory.pieEnabled(scope.data, scope.column1, scope.column2);
@@ -33,17 +38,16 @@ app.directive('addGraph', function(AddGraphFactory, ValidationFactory, DataFacto
             //     return AddGraphFactory.scatterEnabled(scope.column1, scope.column2);
             // };
 
-            // scope.lineEnabled = function(){
-            //     return true;
-            //     //return AddGraphFactory.lineEnabled(scope.column1, scope.column2);
-            // };
+            scope.lineEnabled = function(){
+                
+                return AddGraphFactory.lineEnabled(scope.seriesx[0], scope.seriesy[0]);
+            };
 
             scope.showGraphs = function () {  
                 GraphFilterFactory.filterData(scope.seriesx, scope.seriesy, scope.data)
                 .then(function(values) {
-                        console.log(values);
-                        scope.values = values;
-                        scope.lineEnabled = true;
+                    scope.values = values;
+                    scope.lineEnable = true;
                 });
                 
             };

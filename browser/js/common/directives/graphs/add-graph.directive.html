@@ -20,11 +20,11 @@
 				            	<label for="seriesy" class="control-label">Y Axis/Data Point #2</label>
 					            <div>
 					              <select ng-model="seriesy[0].name"  name="seriesy" class="form-control" ng-options="col for col in columns" ng-change="assignColumnType(seriesy[0])"></select>
-					              <button class='btn btn-primary' type="button" ng-click="addMoreData=true">+</button>
+					              <button class='btn btn-primary' type="button" ng-click="counter()">+</button>
 					            </div>
-					            <div ng-repeat="data in seriesy" ng-show="addMoreData">
+					            <div ng-repeat="data in seriesy" ng-show="$index < count">
 								    <select ng-model="seriesy[$index + 1].name"  name="yseries" class="form-control" ng-options="col for col in columns" ng-change="assignColumnType(seriesy[$index + 1])"></select>
-					              	<button class='btn btn-primary' type="button" ng-click="addMoreData=true">Add Another Data Point</button>
+					              	<button class='btn btn-primary' type="button" ng-click="counter()">Add Another Data Point</button>
 								</div>
 					        </div>
 			          	</div>
@@ -64,7 +64,7 @@
 		</form>
 	</div>
 	<div>
-		<button class='btn btn-primary' ng-click="showGraphs()">Show Graphs</button>
+		<button class='btn btn-primary' ng-click="enableGraphs=!enableGraphs; showGraphs()">Show Graphs</button>
 	</div>
 	<div class="row graph-previews">
 	<!-- 	<div class="column col-sm-6" ng-if="scatterEnabled()">
@@ -75,7 +75,8 @@
 			</div>
 			<div class="col-sm-1"></div>
 		</div> -->
-		<div class="column col-sm-6" ng-if="lineEnabled">
+		
+		<div class="column col-sm-6" ng-if="lineEnable">
 			<h4 class="text-center">Line Graph</h4>
 			<div class="col-sm-1"></div>
 			<div class="col-xs-12 col-sm-10 graph-previews-columns" ng-click="viewSingleGraph('lineGraph')">
