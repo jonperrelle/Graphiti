@@ -60,7 +60,7 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                         formatColY = scope.columns[1].name.replace(/\_+/g, " "),
                         graphColor = scope.settings.color || '10',
                         height = scope.settings.height || 500,
-                        titleSize = scope.settings.titleSize || height / 20,
+                        titleSize = scope.settings.titleSize || height / 25,
                         xAxisLabelSize = scope.settings.xAxisLabelSize || height / 30,
                         yAxisLabelSize = scope.settings.yAxisLabelSize || height / 30,
                         margin = {
@@ -70,7 +70,6 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                         left: ((yLabelLength + 6) * 7) + yAxisLabelSize
                         },
                         width = scope.settings.width || (tooMuchData ? margin.left + margin.right + groupedData.length * 15 : ele[0].parentNode.offsetWidth),
-
                         xAxisLabel = scope.settings.xAxisLabel || formatColX,
                         yAxisLabel = scope.settings.yAxisLabel || formatColY,
                         title = scope.settings.title || (formatColX + ' vs. ' + formatColY).toUpperCase(),
@@ -99,7 +98,7 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                         .orient("left");
 
                     let color,
-                    setColor = colorScale => {
+                    setColor = function (colorScale) {
                         switch (colorScale) {
                             case '10':
                                 color = d3.scale.category10();
@@ -115,7 +114,6 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                                 break; 
                             default: 
                                 color = colorScale;
-                                break;
                         }
                     };
 
@@ -174,7 +172,7 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                         .attr("fill", function(d, i) {
                                 if(typeof color === 'function') return color(i);
                                 else return color;
-                            })
+                        })
                         .attr("transform", "translate(" + margin.left + ", 0)");
 
                     svg.append("text")
