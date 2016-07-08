@@ -42,13 +42,16 @@ app.directive('scatterplotGraph', function(d3Service, SVGFactory) {
 
                 let formatColX = scope.columns[0].name.replace(/\_+/g, " "),
                     formatColY = scope.columns[1].name.replace(/\_+/g, " "),
+                    width = scope.settings.width || ele[0].parentNode.offsetWidth,
+                    height = scope.settings.height || 500,
+                    titleSize = scope.settings.titleSize || height / 25,
+                    xAxisLabelSize = scope.settings.xAxisLabelSize || height / 30,
+                    yAxisLabelSize = scope.settings.yAxisLabelSize || height / 30,
                     margin = { top: 30,
-                        bottom: (xLabelLength + 6) * 5,
+                        bottom: (xLabelLength + 6) * 5 + xAxisLabelSize,
                         left: (yLabelLength + 6) * 7,
                         right: 20
                     },
-                    width = scope.settings.width || ele[0].parentNode.offsetWidth,
-                    height = scope.settings.height || 500,
                     dotRadius = width / 150,
                     xAxisLabel = scope.settings.xAxisLabel || formatColX,
                     yAxisLabel = scope.settings.yAxisLabel || formatColY,
@@ -105,7 +108,7 @@ app.directive('scatterplotGraph', function(d3Service, SVGFactory) {
             //  }
 
                 let cValue = function(d) {
-                        return d
+                        return d;
                     },
                     color = scope.settings.color || 'steelblue';
                 // add the tooltip area to the webpage
@@ -117,24 +120,10 @@ app.directive('scatterplotGraph', function(d3Service, SVGFactory) {
                 yScale.domain([minY, maxY]);
 
                 // x-axis
-                SVGFactory.appendXAxis(svg, margin, height, xAxis, xAxisLabel);
-
-                // svg.selectAll(".x text")
-                //     .attr("transform", "translate(-10, 0)rotate(-45)")
-                //     .style("text-anchor", "end");
-
-                svg.select(".xlabel")
-                        .attr("transform", "translate(" + (width - margin.left - margin.right) / 2 + ", " + (margin.bottom - 10) + ")");
+                SVGFactory.appendXAxis(svg, margin, width, height, xAxis, xAxisLabel, xAxisLabelSize);
 
                 // y-axis
-                svg.append("g")
-                    .attr("class", "y axis")
-                    .attr("transform", "translate(" + margin.left + ",0)")
-                    .call(yAxis)
-                    .append("text")
-                    .attr("class", "ylabel")
-                    .attr("transform", "rotate(-90)translate(" + -((height + margin.bottom + margin.top) / 2) + ", " + -(margin.left - 20) + ")")
-                    .text(yAxisLabel);
+                SVGFactory.appendYAxis(svg, margin, height, yAxis, yAxisLabel, yAxisLabelSize);
 
                 // draw dots
                 let dots = svg.selectAll(".dot")

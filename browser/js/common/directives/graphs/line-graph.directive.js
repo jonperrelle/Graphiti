@@ -36,14 +36,17 @@ app.directive('lineGraph', function(d3Service, SVGFactory) {
 
                     let formatColX = scope.columns[0].name.replace(/\_+/g, " "),
                         formatColY = scope.columns[1].name.replace(/\_+/g, " "),
+                        width = scope.settings.width || ele[0].parentNode.offsetWidth,
+                        height = scope.settings.height || 500,
+                        titleSize = scope.settings.titleSize || height / 25,
+                        xAxisLabelSize = scope.settings.xAxisLabelSize || height / 30,
+                        yAxisLabelSize = scope.settings.yAxisLabelSize || height / 30,
                         margin = { 
                             top: 30,
                             right: 20,
-                            bottom: (xLabelLength + 6) * 5,
+                            bottom: (xLabelLength + 6) * 5 + xAxisLabelSize,
                             left: (yLabelLength + 6) * 7,
                         },
-                        width = scope.settings.width || ele[0].parentNode.offsetWidth,
-                        height = scope.settings.height || 500,
                         xAxisLabel = scope.settings.xAxisLabel || formatColX,
                         yAxisLabel = scope.settings.yAxisLabel || formatColY,
                         title = scope.settings.title || (formatColX + " .vs " + formatColY).toUpperCase(),
@@ -130,19 +133,9 @@ app.directive('lineGraph', function(d3Service, SVGFactory) {
                     x.domain([minX, maxX]);
                     y.domain([minY, maxY]);
 
-                    SVGFactory.appendXAxis(svg, margin, height, xAxis, xAxisLabel);
+                    SVGFactory.appendXAxis(svg, margin, width, height, xAxis, xAxisLabel, xAxisLabelSize);
 
-                    svg.select(".xlabel")
-                        .attr("transform", "translate(" + (width - margin.left - margin.right) / 2 + ", " + (margin.bottom - 10) + ")");
-
-                    svg.append("g")
-                        .attr("class", "y axis")
-                        .attr("transform", "translate(" + margin.left + ",0)")
-                        .call(yAxis)
-                        .append("text")
-                        .attr("class", "ylabel")
-                        .attr("transform", "rotate(-90)translate(" + -((height + margin.bottom + margin.top) / 2) + ", " + -(margin.left - 20) + ")")
-                        .text(yAxisLabel);
+                    SVGFactory.appendYAxis(svg, margin, height, yAxis, yAxisLabel, yAxisLabelSize);
 
                     svg.append("path")
                         .datum(data)

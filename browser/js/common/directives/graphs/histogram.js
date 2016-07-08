@@ -31,7 +31,7 @@ app.directive('histogram', function (d3Service, DataFactory, SVGFactory) {
                   let currentLength = current[scope.column.name].toString().length;
                   return currentLength > prev ? currentLength : prev;
               }, 0) :
-              8;
+              7;
 
           let formatColX = scope.column.name.replace(/\_+/g, " "),
               graphColor = scope.settings.color || '10',
@@ -137,30 +137,14 @@ app.directive('histogram', function (d3Service, DataFactory, SVGFactory) {
                 })
                 .attr("transform", "translate(" + margin.left + ", 0)");
 
-              SVGFactory.appendXAxis(svg, margin, height, xAxis, xAxisLabel);
+              SVGFactory.appendXAxis(svg, margin, width, height, xAxis, xAxisLabel, xAxisLabelSize);
 
-              SVGFactory.rotateXTicks(svg);
-
-              svg.select(".xlabel")
-                   .attr("transform", "translate(" + ((width - margin.left - margin.right) / 2) + ", " + (margin.bottom - xAxisLabelSize) + ")")
-                   .style("text-anchor", "middle")
-                   .style("font-size", xAxisLabelSize);
-
-              svg.append("g")
-                    .attr("class", "y axis")
-                    .attr("transform", "translate(" + margin.left + ",0)")
-                    .call(yAxis)
-                    .append("text")
-                    .attr("class", "ylabel")
-                    .attr("transform", "rotate(-90)translate(" + -((height - margin.bottom) / 2) + ", " + -(margin.left - yAxisLabelSize) + ")")
-                    .text(yAxisLabel)
-                    .style("text-anchor", "middle")
-                    .style("font-size", yAxisLabelSize);
+              SVGFactory.appendYAxis(svg, margin, height, yAxis, yAxisLabel, yAxisLabelSize);
 
               svg.append("text")
-                  .attr("x", (width / 2))             
+                  .attr("x", (width / 2))
                   .attr("y", (margin.top / 2))
-                  .attr("text-anchor", "middle") 
+                  .attr("text-anchor", "middle")
                   .style("font-size", titleSize)
                   .text(title);
         };
