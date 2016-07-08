@@ -53,7 +53,6 @@ app.directive('scatterplotGraph', function(d3Service, $window, GraphFilterFactor
                                 // .call(zoom);
 
                             let xValue = function(d) {
-                                    console.log(d);
                                     return d[0]
                                 }, // data -> value
                                 xScale = d3.scale.linear()

@@ -129,7 +129,7 @@
               <div class="form-group col-xs-6">
                 <label for="minX" class="control-label">Max X Value</label>
                 <div>
-                  <input class="form-control" name="minX" type="number" ng-model="settings.maxX" required>
+                  <input class="form-control" name="minX" type="number" ng-model="settings.maxX" ng-change="showGraphs()" required>
                 </div>
               </div>
             </div>
@@ -162,7 +162,7 @@
               <div class="form-group col-xs-6">
                 <label for="maxY" class="control-label">Max Y Value</label>
                 <div>
-                  <input class="form-control" name="maxY" type="number" ng-model="settings.maxY" required>
+                  <input class="form-control" name="maxY" type="number" ng-model="settings.maxY" ng-change="showGraphs()" required>
                 </div>
               </div>
             </div>
@@ -192,7 +192,7 @@
     <div class="col-xs-12 panel-group">
       <div class="panel settings-panel">
         <div class="panel-heading">
-          <a data-toggle="collapse" data-target="#view-changedata-collapse" href="#"><h5>Change Data</h5></a>
+          <a data-toggle="collapse" data-target="#view-changedata-collapse" href="#"><h5>Change Y-Data</h5></a>
         </div>
         <div id="view-changedata-collapse" class="panel-collapse collapse settings-collapse">
           <div id="general">
