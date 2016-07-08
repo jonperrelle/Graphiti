@@ -1,4 +1,4 @@
-app.directive('settingsPanel', function(ValidationFactory, $localStorage) {
+app.directive('settingsPanel', function(ValidationFactory, GraphFilterFactory, $localStorage) {
     return {
         restrict: 'E',
         templateUrl: 'js/common/directives/settings-panel/settings-panel.directive.html',
@@ -11,15 +11,27 @@ app.directive('settingsPanel', function(ValidationFactory, $localStorage) {
                     scope.$digest();
                 });
             });
-
-            scope.assignColumnType = function(col) {
-                ValidationFactory.assignColumnType(scope.data, col);
-                $localStorage.column1 = scope.column1;
-                $localStorage.column2 = scope.column2;
-            };
+    
+            scope.xColumns = scope.allColumns.filter(function(elem){
+                return elem.type === 'number' || elem.type === 'date';
+            })
+            scope.yColumns = scope.allColumns.filter(function(elem){
+                return elem.type === 'number';
+            })
 
             scope.downloadGraph = function() {
                 saveSvgAsPng(document.querySelector('.graph-container svg'), 'sample.png');
+            };
+
+            scope.showGraphs = function () {  
+                
+                GraphFilterFactory.filterData(scope.seriesx, scope.seriesy, scope.data)
+                .then(function(values) {
+                    console.log(values)
+                    scope.values = values;
+                    scope.lineEnable = true;
+                });
+                
             };
         }
     };

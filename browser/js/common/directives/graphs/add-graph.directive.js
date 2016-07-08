@@ -14,13 +14,8 @@ app.directive('addGraph', function($rootScope, AddGraphFactory, ValidationFactor
             scope.count = 0;
             // scope.column1 = $localStorage.column1;
             // scope.column2 = $localStorage.column2;
-            
-            
             scope.assignedColumns = ValidationFactory.assignColumnNameAndType(scope.data, scope.columns);
-                
-                // $localStorage.column1 = scope.column1;
-                // $localStorage.column2 = scope.column2;
-        
+            
             scope.counter = function () {
                 scope.count++;
             };
@@ -46,6 +41,7 @@ app.directive('addGraph', function($rootScope, AddGraphFactory, ValidationFactor
                 
                 GraphFilterFactory.filterData(scope.seriesx, scope.seriesy, scope.data)
                 .then(function(values) {
+                    console.log(values)
                     scope.values = values;
                     scope.lineEnable = true;
                 });
@@ -53,7 +49,12 @@ app.directive('addGraph', function($rootScope, AddGraphFactory, ValidationFactor
             };
 
             scope.viewSingleGraph = function (graphType) {
-                $state.go('singleGraph', {graphType, data: scope.values, seriesx: scope.seriesx, seriesy: scope.seriesy, settings: scope.settings, allColumns: scope.assignedColumns});
+                $state.go('singleGraph', {graphType, data: scope.data, 
+                    values: scope.values, 
+                    seriesx: scope.seriesx, 
+                    seriesy: scope.seriesy, 
+                    settings: scope.settings, 
+                    allColumns: scope.assignedColumns});
             };
 
             scope.withinLength = function(){

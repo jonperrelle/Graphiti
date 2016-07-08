@@ -5,8 +5,7 @@ app.directive('lineGraph', function(d3Service, $window, $state, GraphFilterFacto
             rows: "=",
             seriesx: "=",
             seriesy: "=",
-            settings: "=",
-            rerender: '='
+            settings: "="
         },
         link: function(scope, ele, attrs) {
 
@@ -40,6 +39,7 @@ app.directive('lineGraph', function(d3Service, $window, $state, GraphFilterFacto
                 scope.$watch(function(scope) {
                     return scope.seriesx;
                 }, function(newVal, oldVal) {
+                    console.log(newVal, "HERE");
                     if (newVal !== oldVal) scope.render();
                 }, true);
 

@@ -133,14 +133,6 @@
                 </div>
               </div>
             </div>
-            <div class="row">
-              <div class="form-group col-xs-12">
-                <label for="groupType" class="control-label">Change Data</label>
-                <div>
-                  <select ng-model="seriesx[0]" name="seriesx" class="form-control" ng-options="col.name for col in allColumns"></select>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -178,27 +170,46 @@
         </div>
       </div>
     </div>
-    <div class="col-xs-12 panel-group" ng-repeat='series in seriesy'>
+    <div class="col-xs-12 panel-group">
+      <div class="panel settings-panel">
+        <div class="panel-heading">
+          <a data-toggle="collapse" data-target="#view-changexdata-collapse" href="#"><h5>Change X-Data</h5></a>
+        </div>
+        <div id="view-changexdata-collapse" class="panel-collapse collapse settings-collapse">
+          <div id="general">
+            <div class="row">
+              <div class="form-group col-xs-12">
+                <label for="xAxis" class="control-label">X Axis/Data Point #1</label>
+                <div>
+                  <select ng-model="seriesx[0]" name="seriesx" class="form-control" ng-options="col.name for col in xColumns" ng-change="showGraphs()"></select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-12 panel-group">
       <div class="panel settings-panel">
         <div class="panel-heading">
           <a data-toggle="collapse" data-target="#view-changedata-collapse" href="#"><h5>Change Data</h5></a>
         </div>
         <div id="view-changedata-collapse" class="panel-collapse collapse settings-collapse">
           <div id="general">
-            <div class="row">
-              <div class="form-group col-xs-12">
-                <label for="xAxis" class="control-label">X Axis/Data Point #1</label>
+            <div class="row" ng-repeat="series in seriesy">
+              <div class="form-group col-xs-9">
+                <label for="yAxis" class="control-label">Y Axis/Data Point #{{$index + 1}}</label>
                 <div>
-                  <select ng-model="columns[0].name" name="column1" class="form-control" ng-options="col for col in allColumns" ng-change="assignColumnType(columns[0])"></select>
+                  <select ng-model="seriesy[$index]" name="column2" class="form-control" ng-options="col.name for col in yColumns" ng-change="showGraphs()"></select>
                 </div>
+              </div>
+              <div class="col-xs-3" ng-show="seriesy.length > 1">
+                <button ng-click="seriesy.splice($index, 1); showGraphs()">X</button>
               </div>
             </div>
             <div class="row">
-              <div class="form-group col-xs-12">
-                <label for="yAxis" class="control-label">Y Axis/Data Point #2</label>
-                <div>
-                  <select ng-model="columns[1].name" name="column2" class="form-control" ng-options="col for col in allColumns" ng-change="assignColumnType(columns[1])"></select>
-                </div>
+              <div class="col-xs-12">
+                <button ng-click="seriesy.push('placeholder')">Add Data</button>
               </div>
             </div>
           </div>

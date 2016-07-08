@@ -11,6 +11,7 @@ app.config (function ($stateProvider) {
     	seriesx: null,
         seriesy: null,
         allColumns: null,
+        values: null
     }
   });
 });
@@ -29,10 +30,11 @@ app.controller('singleGraphCtrl', function ($scope, $stateParams, $timeout, $sta
     $scope.dataset = $stateParams.dataset;
     $scope.allColumns = $stateParams.allColumns || $localStorage.allColumns;
     $localStorage.allColumns = $scope.allColumns;
-  
+    $scope.data = $stateParams.data || $localStorage.data;
+    $localStorage.data = $scope.data;
 
     if ($localStorage.seriesx !== $stateParams.seriesx && $localStorage.seriesx[0].type === 'date') {
-        $scope.data = $stateParams.data || $localStorage.data.map(obj => {
+        $scope.values = $stateParams.values || $localStorage.values.map(obj => {
             return {
                 name: obj.name,
                 values: obj.values.map(arr=> {
@@ -43,10 +45,10 @@ app.controller('singleGraphCtrl', function ($scope, $stateParams, $timeout, $sta
 
     }
     else {
-        $scope.data = $stateParams.data || $localStorage.data;
+        $scope.values = $stateParams.values || $localStorage.values;
     }
     
-    $localStorage.data = $scope.data;
+    $localStorage.values = $scope.values;
 
     $scope.unchanged = false;
     $scope.addedGraph = false;
