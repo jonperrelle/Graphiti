@@ -20,18 +20,33 @@ app.controller('singleGraphCtrl', function ($scope, $stateParams, $timeout, $sta
     $localStorage.graphId = $stateParams.graphId || $localStorage.graphId;
     $scope.graphType = $stateParams.graphType || $localStorage.graphType;
     $localStorage.graphType = $scope.graphType;
-	$scope.data = $stateParams.data || $localStorage.data;
-    $localStorage.data = $scope.data;
-    console.log("HERERERERERE", $localStorage.data)
-	$scope.seriesx = $stateParams.seriesx || $localStorage.seriesx;
+    $scope.seriesx = $stateParams.seriesx || $localStorage.seriesx;
     $localStorage.seriesx = $scope.seriesx;
     $scope.seriesy = $stateParams.seriesy || $localStorage.seriesy;
     $localStorage.seriesy = $scope.seriesy;
-	$scope.settings = $stateParams.settings || $localStorage.settings;
+    $scope.settings = $stateParams.settings || $localStorage.settings;
     $localStorage.settings = $scope.settings;
     $scope.dataset = $stateParams.dataset;
     $scope.allColumns = $stateParams.allColumns || $localStorage.allColumns;
     $localStorage.allColumns = $scope.allColumns;
+  
+
+    if ($localStorage.seriesx !== $stateParams.seriesx && $localStorage.seriesx[0].type === 'date') {
+        $scope.data = $stateParams.data || $localStorage.data.map(obj => {
+            return {
+                name: obj.name,
+                values: obj.values.map(arr=> {
+                    return [new Date(arr[0]), arr[1]];
+                })
+            };
+        });
+
+    }
+    else {
+        $scope.data = $stateParams.data || $localStorage.data;
+    }
+    
+    $localStorage.data = $scope.data;
 
     $scope.unchanged = false;
     $scope.addedGraph = false;

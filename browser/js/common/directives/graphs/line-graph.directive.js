@@ -49,9 +49,7 @@ app.directive('lineGraph', function(d3Service, $window, $state, GraphFilterFacto
                 //     scope.render();
                 // }, true);
 
-                scope.render = function() {    
-                   
-                    console.log('hererebhfvbkfj', scope.rows)
+                scope.render = function() {   
 
                     let anchor = d3.select(ele[0])
                     anchor.selectAll('*').remove();                        
@@ -68,7 +66,7 @@ app.directive('lineGraph', function(d3Service, $window, $state, GraphFilterFacto
 
                             let x; 
                                
-                            if(scope.seriesx[0].type == 'number') x = d3.scale.linear().range([defaultSettings.margin.left, width - defaultSettings.margin.right]);
+                            if(scope.seriesx[0].type == 'number') x = d3.scale.linear().range([defaultSettings.margin.left, savedSets.width - defaultSettings.margin.right]);
                             else {
                                 x = d3.time.scale().range([defaultSettings.margin.left, savedSets.width - defaultSettings.margin.right])
                             };  
