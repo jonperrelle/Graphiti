@@ -1,4 +1,4 @@
-app.directive('addGraph', function(AddGraphFactory, ValidationFactory, DataFactory, $state, $localStorage) {
+app.directive('addGraph', function(AddGraphFactory, ValidationFactory, DataFactory, GraphFilterFactory, $state, $localStorage) {
     return {
         restrict: 'E',
         templateUrl: 'js/common/directives/graphs/add-graph.directive.html',
@@ -21,21 +21,31 @@ app.directive('addGraph', function(AddGraphFactory, ValidationFactory, DataFacto
                 // $localStorage.column2 = scope.column2;
             }; 
         	
-            scope.pieEnabled = function(){
-                return AddGraphFactory.pieEnabled(scope.data, scope.column1, scope.column2);
-            };
+            // scope.pieEnabled = function(){
+            //     return AddGraphFactory.pieEnabled(scope.data, scope.column1, scope.column2);
+            // };
 
-            scope.barEnabled = function(){
-                return AddGraphFactory.barEnabled(scope.data, scope.column1, scope.column2);
-            };
+            // scope.barEnabled = function(){
+            //     return AddGraphFactory.barEnabled(scope.data, scope.column1, scope.column2);
+            // };
 
-            scope.scatterEnabled = function(){
-                return AddGraphFactory.scatterEnabled(scope.column1, scope.column2);
-            };
+            // scope.scatterEnabled = function(){
+            //     return AddGraphFactory.scatterEnabled(scope.column1, scope.column2);
+            // };
 
-            scope.lineEnabled = function(){
-                return true;
-                //return AddGraphFactory.lineEnabled(scope.column1, scope.column2);
+            // scope.lineEnabled = function(){
+            //     return true;
+            //     //return AddGraphFactory.lineEnabled(scope.column1, scope.column2);
+            // };
+
+            scope.showGraphs = function () {  
+                GraphFilterFactory.filterData(scope.seriesx, scope.seriesy, scope.data)
+                .then(function(values) {
+                        console.log(values);
+                        scope.values = values;
+                        scope.lineEnabled = true;
+                });
+                
             };
 
             scope.viewSingleGraph = function (graphType) {

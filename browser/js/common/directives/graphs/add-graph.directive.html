@@ -63,6 +63,9 @@
 			</fieldset>
 		</form>
 	</div>
+	<div>
+		<button class='btn btn-primary' ng-click="showGraphs()">Show Graphs</button>
+	</div>
 	<div class="row graph-previews">
 	<!-- 	<div class="column col-sm-6" ng-if="scatterEnabled()">
 			<h4 class="text-center">Scatterplot</h4>
@@ -72,11 +75,11 @@
 			</div>
 			<div class="col-sm-1"></div>
 		</div> -->
-		<div class="column col-sm-6" ng-if="lineEnabled()">
+		<div class="column col-sm-6" ng-if="lineEnabled">
 			<h4 class="text-center">Line Graph</h4>
 			<div class="col-sm-1"></div>
 			<div class="col-xs-12 col-sm-10 graph-previews-columns" ng-click="viewSingleGraph('lineGraph')">
-				<line-graph rows="data" seriesy="seriesy" seriesx="seriesx" settings="settings" ></line-graph>
+				<line-graph rows="values" seriesy="seriesy" seriesx="seriesx" settings="settings" ></line-graph>
 			</div>
 			<div class="col-sm-1"></div>
 		</div>
