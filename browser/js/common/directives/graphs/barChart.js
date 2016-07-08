@@ -44,7 +44,7 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                     groupedData = DataFactory.orderByCategory(groupedData, scope.columns[0].name, scope.columns[0].type, orderType);
                     
                     let tooMuchData = groupedData.length > 50; //this can be replaced. 
-                    let anchor = d3.select(ele[0])
+                    let anchor = d3.select(ele[0]);
                     anchor.selectAll('*').remove();
 
                     let xLabelLength = groupedData.reduce(function (prev, current) {
@@ -60,7 +60,7 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                         formatColY = scope.columns[1].name.replace(/\_+/g, " "),
                         graphColor = scope.settings.color || '10',
                         height = scope.settings.height || 500,
-                        titleSize = scope.settings.titleSize || height / 20,
+                        titleSize = scope.settings.titleSize || height / 25,
                         xAxisLabelSize = scope.settings.xAxisLabelSize || height / 30,
                         yAxisLabelSize = scope.settings.yAxisLabelSize || height / 30,
                         margin = {
@@ -70,7 +70,6 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                         left: ((yLabelLength + 6) * 7) + yAxisLabelSize
                         },
                         width = scope.settings.width || (tooMuchData ? margin.left + margin.right + groupedData.length * 15 : ele[0].parentNode.offsetWidth),
-
                         xAxisLabel = scope.settings.xAxisLabel || formatColX,
                         yAxisLabel = scope.settings.yAxisLabel || formatColY,
                         title = scope.settings.title || (formatColX + ' vs. ' + formatColY).toUpperCase(),
@@ -98,9 +97,8 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                         .scale(y)
                         .orient("left");
 
-                  
                     let color,
-                    setColor = colorScale => {
+                    setColor = function (colorScale) {
                         switch (colorScale) {
                             case '10':
                                 color = d3.scale.category10();
@@ -116,11 +114,10 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                                 break; 
                             default: 
                                 color = colorScale;
-                                break;
                         }
                     };
-                        
-                        setColor(graphColor);
+
+                    setColor(graphColor);
 
                     let minY = (typeof scope.settings.minY === 'number') ? scope.settings.minY : 0,
                     maxY = (typeof scope.settings.maxY === 'number') ? scope.settings.maxY : d3.max(groupedData, function(d) {
@@ -173,9 +170,9 @@ app.directive('barChart', function(d3Service, $window, DataFactory) {
                             return height - margin.bottom - y(+d[scope.columns[1].name]);
                         })
                         .attr("fill", function(d, i) {
-                                if(typeof color === 'function') return color(i)
+                                if(typeof color === 'function') return color(i);
                                 else return color;
-                            })
+                        })
                         .attr("transform", "translate(" + margin.left + ", 0)");
 
                     svg.append("text")
