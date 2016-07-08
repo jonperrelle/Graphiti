@@ -29,6 +29,14 @@ app.factory('GraphFilterFactory', function (d3Service, graphSettingsFactory) {
           }
 
       }
+      else {
+        for (let k in obj) {
+            obj[k] = obj[k].sort((a, b) => {
+              if (a[0] < b[0]) return -1;
+              else return 1;
+            });
+        }
+      }
       return obj;
      };  
 

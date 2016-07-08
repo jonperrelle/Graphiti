@@ -1,4 +1,4 @@
-app.directive('pieChart', function(d3Service, $window, DataFactory) {
+app.directive('pieChart', function(d3Service, $window, DataFactory, graphSettingsFactory) {
 
     return {
         restrict: 'E',
@@ -36,10 +36,20 @@ app.directive('pieChart', function(d3Service, $window, DataFactory) {
                         let anchor = d3.select(ele[0]);
                         anchor.selectAll('*').remove();
 
-                        console.log('HERERERERERE', scope.rows)
+                        graphSettingsFactory.getSavedSettings(scope.settings, ele[0], scope.rows)
+                            .then(function (savedSets) {
+                                let defaultSettings = graphSettingsFactory.getDefaultSettings();
+                                    let svg = anchor
+                                        .append('svg')
+                                        .attr('width', savedSets.width)
+                                        .attr('height', savedSets.height)
+                                        .style('background-color', '#ffffff')
 
-                        let groupedData = DataFactory.groupByCategory(filteredData, scope.columns[0].name, scope.columns[1].name, groupType);
-                        groupedData = DataFactory.orderByCategory(groupedData, scope.columns[0].name);
+
+
+
+                        let groupedValues = DataFactory.groupByCategory(scope.rows, scope.seriesx, scope.seriesy, savedSets.groupType);
+                        console.log(groupedValues);       
 
                         let groupedTotal = 0;
                         groupedData.forEach( a => groupedTotal += a[scope.columns[1].name]);
@@ -63,12 +73,9 @@ app.directive('pieChart', function(d3Service, $window, DataFactory) {
                         
                         setColor(scope.settings.color);
 
-                        let svg = anchor
-                            .append('svg')
-                            .attr('width', width)
-                            .attr('height', height)
-                            .style('background-color', '#ffffff')
-                            .data([groupedData])
+                        
+                            
+                        svg.data([groupedData])
                             .append("g")
                             .attr("transform", "translate(" + (width / 1.75) + "," + (radius *1.5) + ")");
                         let pie = d3.layout.pie().value(function(d) {
@@ -141,7 +148,8 @@ app.directive('pieChart', function(d3Service, $window, DataFactory) {
                             .text(function(d, i) { 
                                 return groupedData[i][scope.columns[0].name] + " - " + legendDisplay(displayType, +groupedData[i][scope.columns[1].name]);
                             });
-                    };
+                    });
+                };
                     
             });
         }

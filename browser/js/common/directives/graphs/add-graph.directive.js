@@ -42,20 +42,22 @@ app.directive('addGraph', function($rootScope, AddGraphFactory, ValidationFactor
                 GraphFilterFactory.filterData(scope.seriesx, scope.seriesy, scope.data)
                 .then(function(values) {
 
-                    let groupedData = DataFactory.groupByCategory(values, scope.seriesx, scope.seriesy, 'total');
-                    
-                   
                     scope.values = values;
-                    if ((scope.seriesx[0].type === 'number' || scope.seresx[0].type === 'date') && scope.seriesy[0].type === 'number' ) {
+                    scope.withinLength = true;
+                   
+                    if ((scope.seriesx[0].type === 'number' || scope.seriesx[0].type === 'date') && scope.seriesy[0].type === 'number' ) {
                             scope.lineEnable = true;
+
                         }
                     else if (scope.seriesx[0].type === 'number' && scope.seriesy[0].type === 'number' ) {
                             scope.scatterEnable = true;
-                            // scope.barEnabled = true
+                            
                     }
 
                     else if (scope.seriesx[0].type === 'string' && scope.seriesy[0].type === 'number' ) {
                             scope.pieEnable = true;
+                            let groupedData = DataFactory.groupByCategory(values, scope.seriesx, scope.seriesy, 'total');
+                            if (groupedData[0].length > 30) scope.withinLength = false;
                            // scope.barEnabled = true
                     }
                 });
