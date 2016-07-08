@@ -13,11 +13,13 @@ app.directive('settingsPanel', function(ValidationFactory, GraphFilterFactory, $
             });
     
             scope.xColumns = scope.allColumns.filter(function(elem){
-                return elem.type === 'number' || elem.type === 'date';
-            })
+                if (scope.graphType === 'lineGraph') return elem.type === 'number' || elem.type === 'date';
+                else if (scope.graphType === 'scatterPlot') return elem.type === 'number';
+                else if (scope.graphType === 'pieChart' || scope.graphType === 'barChart') return elem.type === 'string';
+            });
             scope.yColumns = scope.allColumns.filter(function(elem){
                 return elem.type === 'number';
-            })
+            });
 
             scope.downloadGraph = function() {
                 saveSvgAsPng(document.querySelector('.graph-container svg'), 'sample.png');

@@ -12,11 +12,7 @@ app.directive('lineGraph', function(d3Service, $window, $state, GraphFilterFacto
 
             d3Service.d3().then(function(d3) {
 
-                // Browser onresize event
-                // window.onresize = function() {
-                //     scope.$apply();
-                // };
-
+               
                 // Watch for resize event
                 scope.$watch(function() {
                     return angular.element($window)[0].innerWidth;

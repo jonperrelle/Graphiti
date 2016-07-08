@@ -39,115 +39,75 @@ app.directive('pieChart', function(d3Service, $window, DataFactory, graphSetting
                         graphSettingsFactory.getSavedSettings(scope.settings, ele[0], scope.rows)
                             .then(function (savedSets) {
                                 let defaultSettings = graphSettingsFactory.getDefaultSettings();
-                                    let svg = anchor
+                                let svg = anchor
                                         .append('svg')
                                         .attr('width', savedSets.width)
                                         .attr('height', savedSets.height)
                                         .style('background-color', '#ffffff')
+                                        .append('g')
+                                        .attr("transform", "translate(" + savedSets.width / 2 + "," + savedSets.height / 2 + ")");
 
+                                let groupedValues = DataFactory.groupByCategory(scope.rows, scope.seriesx, scope.seriesy, savedSets.groupType);
 
-
-
-                        let groupedValues = DataFactory.groupByCategory(scope.rows, scope.seriesx, scope.seriesy, savedSets.groupType);
-                        console.log(groupedValues);       
-
-                        let groupedTotal = 0;
-                        groupedData.forEach( a => groupedTotal += a[scope.columns[1].name]);
-                        //uses build in d3 method to create color scale
-                        let color;
-                        let setColor = colorScale => {
-                            switch (colorScale) {
-                                case '10':
-                                    color = d3.scale.category10();
-                                    break;
-                                case '20b':
-                                    color = d3.scale.category20b();
-                                    break;
-                                case '20c':
-                                    color = d3.scale.category20c();
-                                    break;
-                                default:
-                                    color = d3.scale.category20();
-                            }
-                        };
-                        
-                        setColor(scope.settings.color);
-
-                        
-                            
-                        svg.data([groupedData])
-                            .append("g")
-                            .attr("transform", "translate(" + (width / 1.75) + "," + (radius *1.5) + ")");
-                        let pie = d3.layout.pie().value(function(d) {
-                            return +d[scope.columns[1].name];
-                        });
-
-                        // declare an arc generator function
-                        let arc = d3.svg.arc().outerRadius(radius);
-                     
-                        // select paths, use arc generator to draw
-                        let arcs = svg.selectAll("g.slice")
-                            .data(pie)
-                            .enter()
-                            .append("g")
-                            .attr("class", "slice");
-
-                        arcs.append("path")
-                            .attr("fill", function(d, i) {
-                                return color(i);
-                            })
-                            .attr("d", arc);
-
-
-
-                        arcs.forEach(function () {
-
-                        });
-
-                        svg.append("text")
-                            .attr("x", 0)             
-                            .attr("y", (radius * -1.5) + margin.top/2)
-                            .attr("text-anchor", "middle")    
-                            .text(title);
-
-                        //add the text
-                        // arcs.append("text").attr("transform", function(d) {
-                        //     d.innerRadius = radius+100;
-                        //     d.outerRadius = radius+100;
-                        //     return "translate(" + arc.centroid(d) + ")";
-                        // }).attr("text-anchor", "middle").text(function(d, i) {
-                        //     return groupedData[i][scope.columns[1].name];
-                        // });
-
-                        let legendDisplay = (type, data) => {
-                            if (type === 'percentage') return ((data/groupedTotal) * 100).toFixed(2) + "%";
-                            else return data;
-                        };
-
-
-                        let legend = svg.selectAll(".legend")
-                            .data(color.domain())
-                            .enter().append("g")
-                                .attr("class", "legend")
-                                .attr("transform", function(d, i) { 
-                                    return "translate(" + 0 + "," + i * 20 + ")" 
+                                let groupedTotal = 0;
+                                groupedValues[0].values.forEach( a => groupedTotal += a[1]);
+                                
+                                 
+                                let pie = d3.layout.pie().value(function(d) {
+                                    console.log(d);
+                                    return d[1];
                                 });
 
-                        // draw legend colored rectangles
-                        legend.append("rect")
-                            .attr("x", -width/2 - margin.left/2)
-                            .attr("y", (radius * -1.5) + margin.top/2)
-                            .attr("width", width/100)
-                            .attr("height", height/100)
-                            .style("fill", color);
+                                let arc = d3.svg.arc().outerRadius(savedSets.radius);
 
-                        // draw legend text
-                        legend.append("text")
-                            .attr("x", -width/2)
-                            .attr("y", (radius * -1.5) + margin.top/2 + height/100)
-                            .text(function(d, i) { 
-                                return groupedData[i][scope.columns[0].name] + " - " + legendDisplay(displayType, +groupedData[i][scope.columns[1].name]);
-                            });
+                                let pieChart = svg.selectAll(".arc")
+                                    .data(pie(groupedValues[0].values))
+                                    .enter().append("g")
+                                    .attr("class", "arc");
+
+                                 
+                                pieChart.append("path")
+                                      .attr("d", arc)
+                                      .style("fill", function(d, i) { return savedSets.color(i); })
+
+                                pieChart.append("text")
+                                    .attr("x", 0)             
+                                    .attr("y", (savedSets.radius * -1.5) + defaultSettings.margin.top/2)
+                                    .attr("text-anchor", "middle")    
+                                    .text(savedSets.title);
+
+                    
+
+                                let legendDisplay = (type, data) => {
+                                    if (type === 'percentage') return ((data/groupedTotal) * 100).toFixed(2) + "%";
+                                    else return data;
+                                };
+
+
+                                let legend = svg.selectAll(".legend")
+                                    .data(savedSets.color.domain())
+                                    .enter().append("g")
+                                        .attr("class", "legend")
+                                        .attr("transform", function(d, i) { 
+                                            return "translate(" + 0 + "," + i * 20 + ")" 
+                                        });
+
+                                // draw legend colored rectangles
+                                legend.append("rect")
+                                    .attr("x", -savedSets.width - defaultSettings.margin.left/2)
+                                    .attr("y", (savedSets.radius * -1.5) + defaultSettings.margin.top/2)
+                                    .attr("width", savedSets.width/100)
+                                    .attr("height", savedSets.height/100)
+                                    .style("fill", savedSets.color);
+
+                                // draw legend text
+                                legend.append("text")
+                                    .attr("x", -savedSets.width/2)
+                                    .attr("y", (savedSets.radius * -1.5) + defaultSettings.margin.top/2 + savedSets.height/100)
+                                    .text(function(d, i) { 
+                                        return 'text';
+                                        // return groupedData[i][scope.columns[0].name] + " - " + legendDisplay(savedSets.displayType, +groupedData[i][scope.columns[1].name]);
+                                    });
                     });
                 };
                     
