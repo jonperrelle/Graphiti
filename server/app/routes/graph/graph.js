@@ -6,6 +6,7 @@ const Dataset = db.model('dataset');
 const Graph = db.model('graph');
 const Settings = db.model('settings');
 const Promise = require('bluebird');
+const chalk = require('chalk');
 
 //Security that validates user is authenticated and has proper access control is upstream in the user router
 router.delete('/:graphId', function(req, res, next) {
@@ -22,15 +23,19 @@ router.delete('/:graphId', function(req, res, next) {
 router.post('/',function(req,res,next){
 
 	let user = req.requestedUser;
-	req.body.settings.title = req.body.settings.title || req.body.graph.columns.map(col=> col.name).join(" .vs ");
+	let settings = req.body.settings;
+
+	settings.title = settings.title || req.body.graph.columns.map(col=> col.name).join(" vs. ");
+	
+	if(settings.id) delete settings.id;
 	
 	Promise.all([Dataset.findById(req.body.dataset.id),
-	        Settings.findOrCreate({where: req.body.settings})])
-	.spread(function(dataset,settings){
+	        Settings.create(settings)])
+	.spread(function(dataset,createdSettings){
 		return Graph.create(req.body.graph)
 		.then(function(graph){
 			return Promise.all([
-				graph.setSetting(settings[0]),
+				graph.setSetting(createdSettings),
 				graph.setUser(user),
 				graph.setDataset(dataset)
 			]);
