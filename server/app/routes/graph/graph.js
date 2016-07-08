@@ -6,7 +6,6 @@ const Dataset = db.model('dataset');
 const Graph = db.model('graph');
 const Settings = db.model('settings');
 const Promise = require('bluebird');
-const chalk = require('chalk');
 
 //Security that validates user is authenticated and has proper access control is upstream in the user router
 router.delete('/:graphId', function(req, res, next) {
