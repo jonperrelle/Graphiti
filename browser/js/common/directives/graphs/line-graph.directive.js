@@ -39,8 +39,8 @@ app.directive('lineGraph', function(d3Service, $window, $state, GraphFilterFacto
 
                 scope.$watch(function(scope) {
                     return scope.seriesx;
-                }, function() {
-                    scope.render();
+                }, function(newVal, oldVal) {
+                    if (newVal !== oldVal) scope.render();
                 }, true);
 
                 // scope.$watch(function(scope) {
