@@ -20,7 +20,7 @@
 				            	<label for="seriesy" class="control-label">Y Axis/Data Point #2</label>
 					            <div>
 					              <select ng-model="seriesy[0].name"  name="seriesy" class="form-control" ng-options="col for col in columns" ng-change="assignColumnType(seriesy[0])"></select>
-					              <button class='btn btn-primary' type="button" ng-click="addMoreData=true">Add Another Data Point</button>
+					              <button class='btn btn-primary' type="button" ng-click="addMoreData=true">+</button>
 					            </div>
 					            <div ng-repeat="data in seriesy" ng-show="addMoreData">
 								    <select ng-model="seriesy[$index + 1].name"  name="yseries" class="form-control" ng-options="col for col in columns" ng-change="assignColumnType(seriesy[$index + 1])"></select>
