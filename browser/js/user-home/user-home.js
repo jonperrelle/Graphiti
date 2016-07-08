@@ -17,7 +17,7 @@ app.controller('UserHomeCtrl', function($scope, $state, UploadFactory, Session, 
     $scope.datasets = UserInfo.datasets;
     $scope.graphs = UserInfo.graphs;
 
-
+    
     $scope.goToUserGraph = function(graph) {
         DatasetFactory.getOneUserDataset(graph.dataset, $scope.user)
             .then(rows => {

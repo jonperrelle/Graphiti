@@ -3,7 +3,9 @@ app.directive('uploadModal', function ($uibModal, $state, UploadFactory) {
     return {
         restrict: 'E',
         templateUrl: 'js/common/directives/modals/upload.modal.html',
-
+        scope: {
+            uploadClass: '@',
+        },
         link: function (scope, element) { 
             scope.openFileUpload = function () {
                 let modalInstance = $uibModal.open({
@@ -12,6 +14,7 @@ app.directive('uploadModal', function ($uibModal, $state, UploadFactory) {
                     controller: 'uploadModalInstanceCtrl',
                     scope: scope,
                     windowClass: 'upload-modal'
+
             });
 
             modalInstance.result.then(function (file) {

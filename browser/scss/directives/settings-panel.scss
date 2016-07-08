@@ -14,15 +14,15 @@
 }
 
 .settings-panel {
-    background: #599ad6;
+    background: #3a424c;
     .panel-heading {
         padding: 5px;
         h5 {
-            color: #ffffff;
+            color: #eee;
         }
     }
     a {
-        color: #ffffff;
+        color: #eee;
     }
     a:hover,
     a:focus {
@@ -32,7 +32,7 @@
     .settings-collapse {
         padding: 0 10px;
         label {
-            color: #ffffff;
+            color: #eee;
         }
         
         input {
@@ -45,3 +45,5 @@ input[type=number]::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
+
+
