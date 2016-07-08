@@ -43,6 +43,7 @@ app.factory("graphSettingsFactory", function(d3Service){
     //             };  
     //     })
     // }
+    
 
 	graphSettings.getSavedSettings = function (sets, ele, data) {
 
