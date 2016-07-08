@@ -50,15 +50,15 @@ app.directive('lineGraph', function(d3Service, SVGFactory) {
                         xAxisLabel = scope.settings.xAxisLabel || formatColX,
                         yAxisLabel = scope.settings.yAxisLabel || formatColY,
                         title = scope.settings.title || (formatColX + " .vs " + formatColY).toUpperCase(),
-                        svg = anchor
-                        .append('svg')
-                        .style('width', width)
-                        .style('height', height)
-                        .style('background-color', '#ffffff')
-                        .append("g");
+                        svg = SVGFactory.appendSVG(anchor, width, height);
+                        // svg = anchor
+                        // .append('svg')
+                        // .style('width', width)
+                        // .style('height', height)
+                        // .style('background-color', '#ffffff');
 
                     //check if the data column header may contain date info ??
-                    let x,
+                    let xScale,
                         dateFormat,
                         data;
 
@@ -78,9 +78,9 @@ app.directive('lineGraph', function(d3Service, SVGFactory) {
 
                         data = data.sort((a, b) => a[scope.columns[0].name].getTime() - b[scope.columns[0].name].getTime());
                         
-                        x = d3.time.scale().range([0, width - margin.left - margin.right]);
+                        xScale = d3.time.scale().range([0, width - margin.left - margin.right]);
                     } else if (scope.columns[0].type === 'number') {
-                        x = d3.scale.linear().range([0, width - margin.left - margin.right]);
+                        xScale = d3.scale.linear().range([0, width - margin.left - margin.right]);
                         data = [];
                         filteredData.forEach(function(element) {
                             let obj = {};
@@ -92,23 +92,23 @@ app.directive('lineGraph', function(d3Service, SVGFactory) {
                         return;
                     }
 
-                    let y = d3.scale.linear()
+                    let yScale = d3.scale.linear()
                         .range([height - margin.bottom, margin.top]);
 
                     let xAxis = d3.svg.axis()
-                        .scale(x)
+                        .scale(xScale)
                         .orient("bottom");
 
                     let yAxis = d3.svg.axis()
-                        .scale(y)
+                        .scale(yScale)
                         .orient("left");
 
                     let line = d3.svg.line()
                         .x(function(d) {
-                            return x(d[scope.columns[0].name]);
+                            return xScale(d[scope.columns[0].name]);
                         })
                         .y(function(d) {
-                            return y(+d[scope.columns[1].name]);
+                            return yScale(+d[scope.columns[1].name]);
                         });
 
                     // If we don't pass any data, return out of the element
@@ -130,8 +130,8 @@ app.directive('lineGraph', function(d3Service, SVGFactory) {
                             return +d[scope.columns[1].name];
                         });
 
-                    x.domain([minX, maxX]);
-                    y.domain([minY, maxY]);
+                    xScale.domain([minX, maxX]);
+                    yScale.domain([minY, maxY]);
 
                     SVGFactory.appendXAxis(svg, margin, width, height, xAxis, xAxisLabel, xAxisLabelSize);
 

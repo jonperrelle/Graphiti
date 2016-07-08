@@ -81,5 +81,12 @@ app.factory('SVGFactory', function ($window) {
       .text(title);
   };
 
+  SVGFactory.appendSVG = function (anchor, width, height) {
+    return anchor.append('svg')
+            .style('width', width)
+            .style('height', height)
+            .style('background-color', '#ffffff');
+  };
+
   return SVGFactory;
 });

@@ -54,12 +54,7 @@ app.directive('histogram', function (d3Service, DataFactory, SVGFactory) {
 
           let color = SVGFactory.setColor(graphColor);
 
-          let svg = anchor
-              .append('svg')
-              .style('width', width)
-              .style('height', height)
-              .style('background-color', '#ffffff')
-              .append("g");
+          let svg = SVGFactory.appendSVG(anchor, width, height);
 
           let xScale,
               tickType;
@@ -74,10 +69,10 @@ app.directive('histogram', function (d3Service, DataFactory, SVGFactory) {
             }
           } else {
             xScale = d3.scale.ordinal()
-                .domain(data.map(function(d) {
-                          return d[scope.column.name]; 
-                        }))
-                .rangeBands([0, width - margin.left - margin.right], 0.1);
+              .domain(data.map(function(d) {
+                        return d[scope.column.name]; 
+                      }))
+              .rangeBands([0, width - margin.left - margin.right], 0.1);
           }
 
           let tickVals = data.map(d => d.x);

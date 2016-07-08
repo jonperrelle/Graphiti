@@ -41,14 +41,9 @@ app.directive('pieChart', function(d3Service, DataFactory, SVGFactory) {
 
                         let color = SVGFactory.setColor(graphColor);
 
-                        let svg = anchor
-                            .append('svg')
-                            .attr('width', width)
-                            .attr('height', height)
-                            .style('background-color', '#ffffff')
-                            .data([groupedData])
-                            .append("g")
-                            // .attr("transform", "translate(" + (width / 1.75) + "," + (radius *1.5) + ")");
+                        let svg = SVGFactory.appendSVG(anchor, width, height);
+                        svg.data([groupedData]);
+
                         let pie = d3.layout.pie().value(function(d) {
                             return +d[scope.columns[1].name];
                         });
@@ -57,7 +52,7 @@ app.directive('pieChart', function(d3Service, DataFactory, SVGFactory) {
                         let arc = d3.svg.arc().outerRadius(radius);
                      
                         // select paths, use arc generator to draw
-                        let arcs = svg.selectAll("g.slice")
+                        let arcs = svg.selectAll("slice")
                             .data(pie)
                             .enter()
                             .append("g")

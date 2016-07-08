@@ -54,12 +54,13 @@ app.directive('barChart', function(d3Service, DataFactory, SVGFactory) {
                         title = scope.settings.title || (formatColX + ' vs. ' + formatColY).toUpperCase(),
                         barSpace = 0.1;
 
-                    let svg = anchor
-                        .append('svg')
-                        .style('width', width)
-                        .style('height', height)
-                        .style('background-color', '#ffffff')
-                        .append("g");
+                    let svg = SVGFactory.appendSVG(anchor, width, height);
+                    // let svg = anchor
+                    //     .append('svg')
+                    //     .style('width', width)
+                    //     .style('height', height)
+                    //     .style('background-color', '#ffffff')
+                    //     .append("g");
 
                     //create the rectangles for the bar chart
                     let x = d3.scale.ordinal()

@@ -18,11 +18,7 @@ app.directive('scatterplotGraph', function(d3Service, SVGFactory) {
                 SVGFactory.watchForChanges(scope);
 
             scope.render = function() {
-                // let zoom = d3.behavior.zoom()
-                //    .scaleExtent([1, 5])
-                //    .on("zoom", zooming);
-
-                let anchor = d3.select(ele[0])
+                let anchor = d3.select(ele[0]);
                 anchor.selectAll('*').remove();
 
                 let filteredData = scope.rows.filter(obj => obj[scope.columns[0].name] 
@@ -56,29 +52,29 @@ app.directive('scatterplotGraph', function(d3Service, SVGFactory) {
                     xAxisLabel = scope.settings.xAxisLabel || formatColX,
                     yAxisLabel = scope.settings.yAxisLabel || formatColY,
                     title = scope.settings.title || (formatColX + ' vs. ' + formatColY).toUpperCase(),
-                    svg = anchor
-                    .append('svg')
-                    .attr('width', width)
-                    .attr('height', height)
-                    .style('background-color', '#ffffff')
-                    // .call(zoom);
+                    svg = SVGFactory.appendSVG(anchor, width, height);
+                    // svg = anchor
+                    // .append('svg')
+                    // .attr('width', width)
+                    // .attr('height', height)
+                    // .style('background-color', '#ffffff');
 
                 let xValue = function(d) {
-                        return +d[scope.columns[0].name]
+                        return +d[scope.columns[0].name];
                     }, // data -> value
                     xScale = d3.scale.linear()
                     .range([0, width - margin.left - margin.right]), // value -> display
                     xMap = function(d) {
-                        return xScale(xValue(d))
+                        return xScale(xValue(d));
                     }, // data -> display
                     xAxis = d3.svg.axis().scale(xScale).orient("bottom");
 
                 let yValue = function(d) {
-                        return +d[scope.columns[1].name]
+                        return +d[scope.columns[1].name];
                     }, // data -> value
                     yScale = d3.scale.linear().range([height - margin.bottom, margin.top]), // value -> display
                     yMap = function(d) {
-                        return yScale(yValue(d))
+                        return yScale(yValue(d));
                     }, // data -> display
                     yAxis = d3.svg.axis().scale(yScale).orient("left");
 
@@ -92,20 +88,6 @@ app.directive('scatterplotGraph', function(d3Service, SVGFactory) {
                     && Number(obj[scope.columns[1].name]) >= minY
                     && Number(obj[scope.columns[1].name]) <= maxY
                     );
-
-            // function zooming() {
-            //    let e = d3.event;
-            //    let tx = Math.min(0, Math.max(e.translate[0], width - width * e.scale));
-            //    let ty = Math.min(0, Math.max(e.translate[1], height - height * e.scale));
-
-            //    zoom.translate([tx, ty]);
-
-            //    dots.attr("transform", ["translate(" + [tx, ty] + ")", "scale(" + e.scale + ")"].join(" "));
-            //   // xAxis.attr("transform", ["translate(" + [tx, ty] + ")", "scale(" + e.scale + ")"].join(" "));
-            //   // yAxis.attr("transform", ["translate(" + [tx, ty] + ")", "scale(" + e.scale + ")"].join(" "));
-            //    svg.attr("transform", ["translate(" + [tx, ty] + ")", "scale(" + e.scale + ")"].join(" "));
-            //    // circles.attr("transform", ["translate(" + [tx, ty] + ")", "scale(" + e.scale + ")"].join(" "));
-            //  }
 
                 let cValue = function(d) {
                         return d;
