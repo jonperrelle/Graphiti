@@ -92,14 +92,14 @@
 			</div>
 			<div class="col-sm-1"></div>
 		</div>
-		<!-- <div class="column col-sm-6" ng-if="barEnabled()">
+		<div class="column col-sm-6" ng-if="barEnable">
 			<h4 class="text-center">Bar Chart</h4>
 			<div class="col-sm-1"></div>
 			<div class="col-xs-12 col-sm-10 graph-previews-columns" ng-click="viewSingleGraph('barChart')">
-				<bar-chart settings="settings" rows="data" columns="[column1,column2]"></bar-chart>
+				<bar-chart settings="settings" rows="barvalues" seriesy="seriesy" seriesx="seriesx" ></bar-chart>
 			</div>
 			<div class="col-sm-1"></div>
-		</div> -->
+		</div>
 	</div>
 	<!-- <div class="row graph-feedback" ng-if="column1 || column2">
 		<div class="col-xs-3"></div>

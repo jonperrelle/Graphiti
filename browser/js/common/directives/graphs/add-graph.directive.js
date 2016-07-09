@@ -24,19 +24,27 @@ app.directive('addGraph', function($rootScope, AddGraphFactory, ValidationFactor
                 
                 GraphFilterFactory.filterData(scope.seriesx, scope.seriesy, scope.data)
                 .then(function(values) {
-
                     scope.values = values;
                     scope.withinLength = true;
-                   
                     if (scope.seriesx[0].type === 'date' && scope.seriesy[0].type === 'number' ) {
                             scope.lineEnable = true;
                             scope.pieEnable = false;
                             scope.scatterEnable = false;
+                            GraphFilterFactory.filterBarData(scope.seriesx, scope.seriesy, scope.data)
+                            .then(function(barValues) {
+                                scope.barvalues = barValues;
+                                scope.barEnable = true;
+                            });
 
                         }
                     else if (scope.seriesx[0].type === 'number' && scope.seriesy[0].type === 'number' ) {
                             scope.scatterEnable = true;
                             scope.lineEnable = true;
+                            GraphFilterFactory.filterBarData(scope.seriesx, scope.seriesy, scope.data)
+                            .then(function(barValues) {
+                                scope.barvalues = barValues;
+                                scope.barEnable = true;
+                            });
 
                     }
 
@@ -44,6 +52,11 @@ app.directive('addGraph', function($rootScope, AddGraphFactory, ValidationFactor
                             scope.pieEnable = true;
                             scope.scatterEnable = false;
                             scope.lineEnable = false;
+                            GraphFilterFactory.filterBarData(scope.seriesx, scope.seriesy, scope.data)
+                            .then(function(barValues) {
+                                scope.barvalues = barValues;
+                                scope.barEnable = true;
+                            });
                             let groupedData = DataFactory.groupByCategory(values, scope.seriesx, scope.seriesy, 'total');
                             if (groupedData[0].length > 30) scope.withinLength = false;
                            // scope.barEnabled = true

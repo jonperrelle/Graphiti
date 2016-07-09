@@ -54,7 +54,6 @@ app.directive('pieChart', function(d3Service, $window, DataFactory, graphSetting
                                 
                                  
                                 let pie = d3.layout.pie().value(function(d) {
-                                    console.log(d);
                                     return d[1];
                                 });
 

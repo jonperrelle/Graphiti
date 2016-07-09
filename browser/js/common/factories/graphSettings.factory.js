@@ -54,8 +54,11 @@ app.factory("graphSettingsFactory", function(d3Service){
             savedSettings.height = sets.height || 500;
             savedSettings.xAxisLabel = sets.xAxisLabel || formatColX;
             savedSettings.yAxisLabel = sets.yAxisLabel || formatColY;
+            savedSettings.xAxisLabelSize = sets.xAxisLabelSize || 8;
+            savedSettings.yAxisLabelSize = sets.yAxisLabelSize || 8;
             savedSettings.radius = sets.radius || savedSettings.height / 3;
             savedSettings.title = sets.title || (formatColX + " .vs " + formatColY).toUpperCase();
+            savedSettings.titleSize = sets.titleSize || 14;
             savedSettings.color = sets.color || d3.scale.category10();
             savedSettings.minX = sets.minX || getMin(d3, data, 0);
             savedSettings.maxX = sets.maxX || getMax(d3, data, 0);
@@ -63,6 +66,7 @@ app.factory("graphSettingsFactory", function(d3Service){
             savedSettings.maxY = sets.maxY || getMax(d3, data, 1);
             savedSettings.displayType = sets.displayType || 'number';
             savedSettings.groupType = sets.groupType || 'total';
+            savedSettings.orderType = sets.orderType || 'sort';
 
             return savedSettings;
         });

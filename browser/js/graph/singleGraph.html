@@ -10,7 +10,7 @@
 				  <scatterplot-graph settings="settings" ng-if="graphType === 'scatterPlot'" rows="values" seriesy="seriesy" seriesx="seriesx"></scatterplot-graph>
 				  <line-graph ng-if="graphType === 'lineGraph'" rows="values" seriesy="seriesy" seriesx="seriesx" settings="settings"></line-graph>
 				  <pie-chart settings="settings" ng-if="graphType === 'pieChart'" rows="values" seriesy="seriesy" seriesx="seriesx" ></pie-chart>
-				  <bar-chart settings="settings" rows="data" columns="columns" ng-if="graphType === 'barChart'"></bar-chart>
+				  <bar-chart settings="settings" rows="values" seriesy="seriesy" seriesx="seriesx" ng-if="graphType === 'barChart'"></bar-chart>
 			</div>
 			<div class="col-sm-3 col-xs-12 settings-container">
 				<settings-panel></settings-panel>

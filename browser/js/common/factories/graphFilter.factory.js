@@ -15,7 +15,7 @@ app.factory('GraphFilterFactory', function (d3Service, graphSettingsFactory) {
           obj[s.name] = [];
         });
         return obj;
-     }; 
+     };
 
      let sortData = function (seriesx, obj) {
       if(seriesx[0].type === 'number'){
@@ -40,8 +40,95 @@ app.factory('GraphFilterFactory', function (d3Service, graphSettingsFactory) {
       return obj;
      };  
 
+     let sortBarData = function (seriesx, obj) {
+      let sortArr = [];
+      let newObj = {};
+      if(seriesx[0].type === 'number'){
+          for (let k in obj) {
+            sortArr.push([k, obj[k]]);
+            sortArr.sort((a, b) => a[0] - b[0]);
+          }
+          sortArr.forEach( arr => {
+            newObj[arr[0]] = arr[1];
+          });
+      } 
+      else if (seriesx[0].type === 'date') {
+          for (let k in obj) {
+            sortArr.push([k, obj[k]]);
+            sortArr.sort((a, b) => a[0].getTime() - b[0].getTime());
+          }
+          sortArr.forEach( arr => {
+            newObj[arr[0]] = arr[1];
+          });
+      }
+      else {
+          for (let k in obj) {
+            sortArr.push([k, obj[k]])
+            sortArr.sort((a, b) => {
+              if (a[0] < b[0]) return -1;
+              else return 1;
+            });
+          }
+          
+          sortArr.forEach( arr => {
+            newObj[arr[0]] = arr[1];
+          });
+      }
+      return newObj;
+     }; 
+
+     graphFilter.filterBarData = function(seriesx, seriesy, data) {
+        let xVal= seriesx[0].name;
+        let formatDate;
+        return d3Service.d3().then(function(d3) {
+          if (seriesx[0].type ==='date') formatDate = setDateFormat(d3, data, seriesx);
+          let filteredArr = seriesy.map(obj => obj.name);
+          let filteredData = {};
+          data.forEach(row => {
+              let newRow = {};
+              for (let k in row) {
+
+                  if (seriesx[0].type === 'number') {
+                    if (filteredArr.indexOf(k) > -1 && row[xVal] && (!!Number(row[xVal]) || Number(row[xVal]) === 0)
+                      && row[k] && (!!Number(row[k]) || Number(row[k]) === 0)) {
+                          if (!filteredData[+row[xVal]]) filteredData[+row[xVal]] = [];
+                          filteredData[+row[xVal]].push([k, +row[k]]);
+                    }
+                  }
+                  else {
+                    if (filteredArr.indexOf(k) > -1 && row[xVal]
+                      && row[k] && (!!Number(row[k]) || Number(row[k]) === 0)) {
+                          if(formatDate) {
+                            if (!filteredData[formatDate.parse(row[xVal])]) filteredData[formatDate.parse(row[xVal])] = [];
+                            filteredData[formatDate.parse(row[xVal])].push([k, +row[k]]);
+                          }
+                          else  {
+                            if (!filteredData[row[xVal]]) filteredData[row[xVal]] = [];
+                            filteredData[row[xVal]].push([k, +row[k]]);
+                          }     
+                    }
+                  }
+              }
+          
+          });
+          filteredData = sortBarData(seriesx, filteredData);
+          console.log(filteredData);
+          let values = []
+          for (let k in filteredData) {
+            values.push( {
+              name: k,
+              values: filteredData[k]
+            });
+          }
+          
+          return values;
+
+
+        });
+     };
+
      graphFilter.filterData = function (seriesx, seriesy, data) {
-       
+      
         let formatDate;
         let dataObj = setDataObject(seriesy);
         return d3Service.d3().then(function(d3) {
@@ -52,8 +139,7 @@ app.factory('GraphFilterFactory', function (d3Service, graphSettingsFactory) {
                 if (dataObj[k] && seriesx[0].type === 'number') {
                   if (row[seriesx[0].name] && row[k] && (!!Number(row[seriesx[0].name]) || Number(row[seriesx[0].name]) === 0) 
                       && (!!Number(row[k]) || Number(row[k]) === 0)) {
-                      if(formatDate)  dataObj[k].push([formatDate.parse(row[seriesx[0].name]), +row[k]]);
-                      else dataObj[k].push([+row[seriesx[0].name], +row[k]]);
+                      dataObj[k].push([+row[seriesx[0].name], +row[k]]);
                     }
                 }
                 else if (dataObj[k]) {
@@ -69,7 +155,7 @@ app.factory('GraphFilterFactory', function (d3Service, graphSettingsFactory) {
           dataObj = sortData(seriesx, dataObj);
           let count = 0;
           let values = d3.values(dataObj).map(arr => {      
-              let obj = {
+          let obj = {
                 name: seriesy[count++].name.replace(/\_/g, " "), 
                 values: arr
               }
