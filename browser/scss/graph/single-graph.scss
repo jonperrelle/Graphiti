@@ -24,7 +24,7 @@ header.graph-alert-header {
 
 .graph-container {
 	padding: 0;
-	overflow: scroll;
+	overflow: hidden;
 }
 
 
@@ -32,5 +32,7 @@ header.graph-alert-header {
 	margin-bottom: 20px;
 }
 
-
+.scrolling {
+	overflow: scroll;
+}
 	  
