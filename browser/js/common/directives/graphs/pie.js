@@ -1,4 +1,4 @@
-app.directive('pieChart', function(d3Service, $window, DataFactory) {
+app.directive('pieChart', function(d3Service, DataFactory, SVGFactory) {
 
     return {
         restrict: 'E',
@@ -10,27 +10,8 @@ app.directive('pieChart', function(d3Service, $window, DataFactory) {
 
         link: function(scope, ele, attrs) {
             d3Service.d3().then(function(d3) {
-                window.onresize = function() {
-                    scope.$apply();
-                };
-                // Watch for resize event
-                scope.$watch(function() {
-                    return angular.element($window)[0].innerWidth;
-                }, function() {
-                    scope.render();
-                });
-
-                scope.$watch(function(scope) {
-                    return scope.settings;
-                }, function() {
-                    scope.render();
-                }, true);
-
-                scope.$watch(function(scope) {
-                    return scope.columns;
-                }, function() {
-                    scope.render();
-                }, true);
+                //Re-render the graph when user changes settings, data, or window size
+                SVGFactory.watchForChanges(scope);
 
                 scope.render = function() {
                         let anchor = d3.select(ele[0]);
@@ -38,9 +19,11 @@ app.directive('pieChart', function(d3Service, $window, DataFactory) {
 
                         let formatColX = scope.columns[0].name.replace(/\_+/g, " "),
                             formatColY = scope.columns[1].name.replace(/\_+/g, " "),
+                            graphColor = scope.settings.color || '20a',
                             margin = { top: 30, right: 20, bottom: 30, left: 40 },
                             width = scope.settings.width || ele[0].parentNode.offsetWidth,
                             height = scope.settings.height || 500,
+                            titleSize = scope.settings.titleSize || height / 35,
                             radius = scope.settings.radius || height / 3,
                             title = scope.settings.title || (formatColX + ' vs. ' + formatColY).toUpperCase(),
                             displayType = scope.settings.displayType || 'number';
@@ -55,33 +38,12 @@ app.directive('pieChart', function(d3Service, $window, DataFactory) {
                         let groupedTotal = 0;
                         groupedData.forEach( a => groupedTotal += a[scope.columns[1].name]);
                         //uses build in d3 method to create color scale
-                        let color;
-                        let setColor = colorScale => {
-                            switch (colorScale) {
-                                case '10':
-                                    color = d3.scale.category10();
-                                    break;
-                                case '20b':
-                                    color = d3.scale.category20b();
-                                    break;
-                                case '20c':
-                                    color = d3.scale.category20c();
-                                    break;
-                                default:
-                                    color = d3.scale.category20();
-                            }
-                        };
-                        
-                        setColor(scope.settings.color);
 
-                        let svg = anchor
-                            .append('svg')
-                            .attr('width', width)
-                            .attr('height', height)
-                            .style('background-color', '#ffffff')
-                            .data([groupedData])
-                            .append("g")
-                            .attr("transform", "translate(" + (width / 1.75) + "," + (radius *1.5) + ")");
+                        let color = SVGFactory.setColor(graphColor);
+
+                        let svg = SVGFactory.appendSVG(anchor, width, height);
+                        svg.data([groupedData]);
+
                         let pie = d3.layout.pie().value(function(d) {
                             return +d[scope.columns[1].name];
                         });
@@ -90,11 +52,12 @@ app.directive('pieChart', function(d3Service, $window, DataFactory) {
                         let arc = d3.svg.arc().outerRadius(radius);
                      
                         // select paths, use arc generator to draw
-                        let arcs = svg.selectAll("g.slice")
+                        let arcs = svg.selectAll("slice")
                             .data(pie)
                             .enter()
                             .append("g")
-                            .attr("class", "slice");
+                            .attr("class", "slice")
+                            .attr("transform", "translate(" + (width / 1.75) + "," + (radius *1.5) + ")");
 
                         arcs.append("path")
                             .attr("fill", function(d, i) {
@@ -102,17 +65,7 @@ app.directive('pieChart', function(d3Service, $window, DataFactory) {
                             })
                             .attr("d", arc);
 
-
-
-                        arcs.forEach(function () {
-
-                        });
-
-                        svg.append("text")
-                            .attr("x", 0)             
-                            .attr("y", (radius * -1.5) + margin.top/2)
-                            .attr("text-anchor", "middle")    
-                            .text(title);
+                        SVGFactory.appendTitle(svg, margin, width, title, titleSize);
 
                         //add the text
                         // arcs.append("text").attr("transform", function(d) {
@@ -128,13 +81,12 @@ app.directive('pieChart', function(d3Service, $window, DataFactory) {
                             else return data;
                         };
 
-
                         let legend = svg.selectAll(".legend")
                             .data(color.domain())
                             .enter().append("g")
                                 .attr("class", "legend")
                                 .attr("transform", function(d, i) { 
-                                    return "translate(" + 0 + "," + i * 20 + ")" 
+                                    return "translate(" + (width / 1.75) + "," + ((radius * 1.5) + (i * 20 + 10)) + ")";
                                 });
 
                         // draw legend colored rectangles

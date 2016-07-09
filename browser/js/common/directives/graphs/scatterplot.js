@@ -1,4 +1,4 @@
-app.directive('scatterplotGraph', function(d3Service, $window) {
+app.directive('scatterplotGraph', function(d3Service, SVGFactory) {
     let directive = {};
 
     directive.restrict = 'E';
@@ -11,40 +11,14 @@ app.directive('scatterplotGraph', function(d3Service, $window) {
 
     return directive;
 
-
     function linkFn(scope, ele, attrs) {
         // scope.settings = scope.settings || {};
         d3Service.d3().then(function(d3) {
-            window.onresize = function() {
-                scope.$apply();
-            };
-            // Watch for resize event
-            scope.$watch(function() {
-                return angular.element($window)[0].innerWidth;
-            }, function() {
-                scope.render();
-            });
-
-            scope.$watch(function(scope) {
-                return scope.settings;
-            }, function() {
-                scope.render();
-            }, true);
-
-            scope.$watch(function(scope) {
-                return scope.columns;
-            }, function() {
-                scope.render();
-            }, true);
-
+            //Re-render the graph when user changes settings, data, or window size
+                SVGFactory.watchForChanges(scope);
 
             scope.render = function() {
-
-                // let zoom = d3.behavior.zoom()
-                //    .scaleExtent([1, 5])
-                //    .on("zoom", zooming);
-
-                let anchor = d3.select(ele[0])
+                let anchor = d3.select(ele[0]);
                 anchor.selectAll('*').remove();
 
                 let filteredData = scope.rows.filter(obj => obj[scope.columns[0].name] 
@@ -64,40 +38,38 @@ app.directive('scatterplotGraph', function(d3Service, $window) {
 
                 let formatColX = scope.columns[0].name.replace(/\_+/g, " "),
                     formatColY = scope.columns[1].name.replace(/\_+/g, " "),
+                    width = scope.settings.width || ele[0].parentNode.offsetWidth,
+                    height = scope.settings.height || 500,
+                    titleSize = scope.settings.titleSize || height / 35,
+                    xAxisLabelSize = scope.settings.xAxisLabelSize || height / 30,
+                    yAxisLabelSize = scope.settings.yAxisLabelSize || height / 30,
                     margin = { top: 30,
-                        bottom: (xLabelLength + 6) * 5,
+                        bottom: (xLabelLength + 6) * 5 + xAxisLabelSize,
                         left: (yLabelLength + 6) * 7,
                         right: 20
                     },
-                    width = scope.settings.width || ele[0].parentNode.offsetWidth,
-                    height = scope.settings.height || 500,
                     dotRadius = width / 150,
                     xAxisLabel = scope.settings.xAxisLabel || formatColX,
                     yAxisLabel = scope.settings.yAxisLabel || formatColY,
                     title = scope.settings.title || (formatColX + ' vs. ' + formatColY).toUpperCase(),
-                    svg = anchor
-                    .append('svg')
-                    .attr('width', width)
-                    .attr('height', height)
-                    .style('background-color', '#ffffff')
-                    // .call(zoom);
+                    svg = SVGFactory.appendSVG(anchor, width, height);
 
                 let xValue = function(d) {
-                        return +d[scope.columns[0].name]
+                        return +d[scope.columns[0].name];
                     }, // data -> value
                     xScale = d3.scale.linear()
-                    .range([margin.left, width - margin.right]), // value -> display
+                    .range([0, width - margin.left - margin.right]), // value -> display
                     xMap = function(d) {
-                        return xScale(xValue(d))
+                        return xScale(xValue(d));
                     }, // data -> display
                     xAxis = d3.svg.axis().scale(xScale).orient("bottom");
 
                 let yValue = function(d) {
-                        return +d[scope.columns[1].name]
+                        return +d[scope.columns[1].name];
                     }, // data -> value
                     yScale = d3.scale.linear().range([height - margin.bottom, margin.top]), // value -> display
                     yMap = function(d) {
-                        return yScale(yValue(d))
+                        return yScale(yValue(d));
                     }, // data -> display
                     yAxis = d3.svg.axis().scale(yScale).orient("left");
 
@@ -112,22 +84,8 @@ app.directive('scatterplotGraph', function(d3Service, $window) {
                     && Number(obj[scope.columns[1].name]) <= maxY
                     );
 
-            // function zooming() {
-            //    let e = d3.event;
-            //    let tx = Math.min(0, Math.max(e.translate[0], width - width * e.scale));
-            //    let ty = Math.min(0, Math.max(e.translate[1], height - height * e.scale));
-
-            //    zoom.translate([tx, ty]);
-
-            //    dots.attr("transform", ["translate(" + [tx, ty] + ")", "scale(" + e.scale + ")"].join(" "));
-            //   // xAxis.attr("transform", ["translate(" + [tx, ty] + ")", "scale(" + e.scale + ")"].join(" "));
-            //   // yAxis.attr("transform", ["translate(" + [tx, ty] + ")", "scale(" + e.scale + ")"].join(" "));
-            //    svg.attr("transform", ["translate(" + [tx, ty] + ")", "scale(" + e.scale + ")"].join(" "));
-            //    // circles.attr("transform", ["translate(" + [tx, ty] + ")", "scale(" + e.scale + ")"].join(" "));
-            //  }
-
                 let cValue = function(d) {
-                        return d
+                        return d;
                     },
                     color = scope.settings.color || 'steelblue';
                 // add the tooltip area to the webpage
@@ -139,30 +97,10 @@ app.directive('scatterplotGraph', function(d3Service, $window) {
                 yScale.domain([minY, maxY]);
 
                 // x-axis
-                svg.append("g")
-                    .attr("class", "x axis")
-                    .attr("transform", "translate(0," + (height - margin.bottom) + ")")
-                    .call(xAxis)
-                    .append("text")
-                    .attr("class", "xlabel")
-                    .text(xAxisLabel);
-
-                // svg.selectAll(".x text")
-                //     .attr("transform", "translate(-10, 0)rotate(-45)")
-                //     .style("text-anchor", "end");
-
-                svg.select(".xlabel")
-                        .attr("transform", "translate(" + (width - margin.left - margin.right) / 2 + ", " + (margin.bottom - 10) + ")");
+                SVGFactory.appendXAxis(svg, margin, width, height, xAxis, xAxisLabel, xAxisLabelSize);
 
                 // y-axis
-                svg.append("g")
-                    .attr("class", "y axis")
-                    .attr("transform", "translate(" + margin.left + ",0)")
-                    .call(yAxis)
-                    .append("text")
-                    .attr("class", "ylabel")
-                    .attr("transform", "rotate(-90)translate(" + -((height + margin.bottom + margin.top) / 2) + ", " + -(margin.left - 20) + ")")
-                    .text(yAxisLabel);
+                SVGFactory.appendYAxis(svg, margin, height, yAxis, yAxisLabel, yAxisLabelSize);
 
                 // draw dots
                 let dots = svg.selectAll(".dot")
@@ -173,6 +111,7 @@ app.directive('scatterplotGraph', function(d3Service, $window) {
                     .attr("cx", xMap)
                     .attr("cy", yMap)
                     .attr("fill", color)
+                    .attr("transform", "translate(" + margin.left + ", 0)")
                     .on("mouseover", function(d) {
                         tooltip.transition()
                             .duration(200)
@@ -187,12 +126,7 @@ app.directive('scatterplotGraph', function(d3Service, $window) {
                             .style("opacity", 0);
                     });
 
-                svg.append("text")
-                    .attr("x", (width / 2))             
-                    .attr("y", (margin.top/2))
-                    .attr("text-anchor", "middle")    
-                    .text(title);
-
+                SVGFactory.appendTitle(svg, margin, width, title, titleSize);
             };
         });
     };
