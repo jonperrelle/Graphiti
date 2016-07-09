@@ -5,6 +5,13 @@
 
 }
 
+#searchFilter {
+	li {
+		cursor: pointer;
+	}
+
+}
+
 .category-item {
 	font-size: .7em
 }

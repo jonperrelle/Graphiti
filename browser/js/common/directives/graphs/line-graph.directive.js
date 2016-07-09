@@ -1,4 +1,4 @@
-app.directive('lineGraph', function(d3Service, $window, $state) {
+app.directive('lineGraph', function(d3Service, SVGFactory) {
     return {
         restrict: 'E',
         scope: {
@@ -7,34 +7,11 @@ app.directive('lineGraph', function(d3Service, $window, $state) {
             settings: "="
         },
         link: function(scope, ele, attrs) {
-
             d3Service.d3().then(function(d3) {
-                // Browser onresize event
-                window.onresize = function() {
-                    scope.$apply();
-                };
-
-                // Watch for resize event
-                scope.$watch(function() {
-                    return angular.element($window)[0].innerWidth;
-                }, function() {
-                    scope.render();
-                });
-
-                scope.$watch(function(scope) {
-                    return scope.settings;
-                }, function() {
-                    scope.render();
-                }, true);
-
-                scope.$watch(function(scope) {
-                    return scope.columns;
-                }, function() {
-                    scope.render();
-                }, true);
+                //Re-render the graph when user changes settings, data, or window size
+                SVGFactory.watchForChanges(scope);
 
                 scope.render = function() {
-
                     //this doesn't work for line graphs, because line graphs can have a date
                     let filteredData = scope.rows.filter(obj => obj[scope.columns[0].name] 
                             && obj[scope.columns[1].name]
@@ -59,26 +36,24 @@ app.directive('lineGraph', function(d3Service, $window, $state) {
 
                     let formatColX = scope.columns[0].name.replace(/\_+/g, " "),
                         formatColY = scope.columns[1].name.replace(/\_+/g, " "),
+                        width = scope.settings.width || ele[0].parentNode.offsetWidth,
+                        height = scope.settings.height || 500,
+                        titleSize = scope.settings.titleSize || height / 35,
+                        xAxisLabelSize = scope.settings.xAxisLabelSize || height / 30,
+                        yAxisLabelSize = scope.settings.yAxisLabelSize || height / 30,
                         margin = { 
                             top: 30,
                             right: 20,
-                            bottom: (xLabelLength + 6) * 5,
+                            bottom: (xLabelLength + 6) * 5 + xAxisLabelSize,
                             left: (yLabelLength + 6) * 7,
                         },
-                        width = scope.settings.width || ele[0].parentNode.offsetWidth,
-                        height = scope.settings.height || 500,
                         xAxisLabel = scope.settings.xAxisLabel || formatColX,
                         yAxisLabel = scope.settings.yAxisLabel || formatColY,
                         title = scope.settings.title || (formatColX + " .vs " + formatColY).toUpperCase(),
-                        svg = anchor
-                        .append('svg')
-                        .style('width', width)
-                        .style('height', height)
-                        .style('background-color', '#ffffff')
-                        .append("g");
+                        svg = SVGFactory.appendSVG(anchor, width, height);
 
                     //check if the data column header may contain date info ??
-                    let x,
+                    let xScale,
                         dateFormat,
                         data;
 
@@ -98,9 +73,9 @@ app.directive('lineGraph', function(d3Service, $window, $state) {
 
                         data = data.sort((a, b) => a[scope.columns[0].name].getTime() - b[scope.columns[0].name].getTime());
                         
-                        x = d3.time.scale().range([margin.left, width - margin.right]);
+                        xScale = d3.time.scale().range([0, width - margin.left - margin.right]);
                     } else if (scope.columns[0].type === 'number') {
-                        x = d3.scale.linear().range([margin.left, width - margin.right]);
+                        xScale = d3.scale.linear().range([0, width - margin.left - margin.right]);
                         data = [];
                         filteredData.forEach(function(element) {
                             let obj = {};
@@ -112,30 +87,29 @@ app.directive('lineGraph', function(d3Service, $window, $state) {
                         return;
                     }
 
-                    let y = d3.scale.linear()
+                    let yScale = d3.scale.linear()
                         .range([height - margin.bottom, margin.top]);
 
                     let xAxis = d3.svg.axis()
-                        .scale(x)
+                        .scale(xScale)
                         .orient("bottom");
 
                     let yAxis = d3.svg.axis()
-                        .scale(y)
+                        .scale(yScale)
                         .orient("left");
 
                     let line = d3.svg.line()
                         .x(function(d) {
-                            return x(d[scope.columns[0].name]);
+                            return xScale(d[scope.columns[0].name]);
                         })
                         .y(function(d) {
-                            return y(+d[scope.columns[1].name]);
+                            return yScale(+d[scope.columns[1].name]);
                         });
 
                     // If we don't pass any data, return out of the element
                     if (!data) return;
 
                     //Need a better way to adjust minX and maxX if based on date
-
 
                     let color = scope.settings.color || "steelblue",
                         minX = (typeof scope.settings.minX === 'number') ? scope.settings.minX : d3.min(data, function(d) {
@@ -151,41 +125,22 @@ app.directive('lineGraph', function(d3Service, $window, $state) {
                             return +d[scope.columns[1].name];
                         });
 
-                    x.domain([minX, maxX]);
-                    y.domain([minY, maxY]);
+                    xScale.domain([minX, maxX]);
+                    yScale.domain([minY, maxY]);
 
-                    svg.append("g")
-                        .attr("class", "x axis")
-                        .attr("transform", "translate(0," + (height - margin.bottom) + ")")
-                        .call(xAxis)
-                        .append("text")
-                        .attr("class", "xlabel")
-                        .text(xAxisLabel);
+                    SVGFactory.appendXAxis(svg, margin, width, height, xAxis, xAxisLabel, xAxisLabelSize);
 
-                    svg.select(".xlabel")
-                        .attr("transform", "translate(" + (width - margin.left - margin.right) / 2 + ", " + (margin.bottom - 10) + ")");
-
-                    svg.append("g")
-                        .attr("class", "y axis")
-                        .attr("transform", "translate(" + margin.left + ",0)")
-                        .call(yAxis)
-                        .append("text")
-                        .attr("class", "ylabel")
-                        .attr("transform", "rotate(-90)translate(" + -((height + margin.bottom + margin.top) / 2) + ", " + -(margin.left - 20) + ")")
-                        .text(yAxisLabel);
+                    SVGFactory.appendYAxis(svg, margin, height, yAxis, yAxisLabel, yAxisLabelSize);
 
                     svg.append("path")
                         .datum(data)
                         .attr("d", line)
+                        .attr("transform", "translate(" + margin.left + ", 0)")
                         .attr('fill', 'none')
                         .attr("stroke", color)
                         .attr("stroke-width", 2);
 
-                    svg.append("text")
-                        .attr("x", (width / 2))             
-                        .attr("y", margin.top/2)
-                        .attr("text-anchor", "middle")    
-                        .text(title);
+                    SVGFactory.appendTitle(svg, margin, width, title, titleSize);
                 };
             });
         }

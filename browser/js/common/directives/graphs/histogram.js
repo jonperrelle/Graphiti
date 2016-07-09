@@ -1,4 +1,4 @@
-app.directive('histogram', function (d3Service, $window, DataFactory) {
+app.directive('histogram', function (d3Service, DataFactory, SVGFactory) {
   return {
     restrict: 'E',
     scope: {
@@ -9,31 +9,10 @@ app.directive('histogram', function (d3Service, $window, DataFactory) {
     link: function (scope, ele, attrs) {
       scope.column = scope.columns[0];
       d3Service.d3().then(function (d3) {
-        window.onresize = function() {
-            scope.$apply();
-        };
-
-        // Watch for resize event
-        scope.$watch(function() {
-            return angular.element($window)[0].innerWidth;
-        }, function() {
-            scope.render();
-        });
-
-        scope.$watch(function(scope) {
-            return scope.settings;
-        }, function() {
-            scope.render();
-        }, true);
-
-        scope.$watch(function (scope) {
-          return scope.column;
-        }, function () {
-          scope.render();
-        }, true);
+        //Re-render the graph when user changes settings, data, or window size
+        SVGFactory.watchForChanges(scope);
 
         scope.render = function () {
-
           let anchor = d3.select(ele[0]);
           anchor.selectAll('*').remove();
 
@@ -52,13 +31,13 @@ app.directive('histogram', function (d3Service, $window, DataFactory) {
                   let currentLength = current[scope.column.name].toString().length;
                   return currentLength > prev ? currentLength : prev;
               }, 0) :
-              8;
+              7;
 
           let formatColX = scope.column.name.replace(/\_+/g, " "),
               graphColor = scope.settings.color || '10',
               width = scope.settings.width || ele[0].parentNode.offsetWidth,
               height = scope.settings.height || 500,
-              titleSize = scope.settings.titleSize || height / 25,
+              titleSize = scope.settings.titleSize || height / 35,
               xAxisLabelSize = scope.settings.xAxisLabelSize || height / 30,
               yAxisLabelSize = scope.settings.yAxisLabelSize || height / 30,
               margin = {
@@ -73,34 +52,9 @@ app.directive('histogram', function (d3Service, $window, DataFactory) {
                 'total',
               title = scope.settings.title || 'frequency for ' + formatColX;
 
-          let color,
-          setColor = function (colorScale) {
-              switch (colorScale) {
-                  case '10':
-                      color = d3.scale.category10();
-                      break;
-                  case '20b':
-                      color = d3.scale.category20b();
-                      break;
-                  case '20c':
-                      color = d3.scale.category20c();
-                      break;
-                  case '20a':
-                      color = d3.scale.category20();
-                      break; 
-                  default: 
-                      color = colorScale;
-              }
-          };
+          let color = SVGFactory.setColor(graphColor);
 
-          setColor(graphColor);
-
-          let svg = anchor
-              .append('svg')
-              .style('width', width)
-              .style('height', height)
-              .style('background-color', '#ffffff')
-              .append("g");
+          let svg = SVGFactory.appendSVG(anchor, width, height);
 
           let xScale,
               tickType;
@@ -115,10 +69,10 @@ app.directive('histogram', function (d3Service, $window, DataFactory) {
             }
           } else {
             xScale = d3.scale.ordinal()
-                .domain(data.map(function(d) {
-                          return d[scope.column.name]; 
-                        }))
-                .rangeBands([0, width - margin.left - margin.right], 0.1);
+              .domain(data.map(function(d) {
+                        return d[scope.column.name]; 
+                      }))
+              .rangeBands([0, width - margin.left - margin.right], 0.1);
           }
 
           let tickVals = data.map(d => d.x);
@@ -178,40 +132,11 @@ app.directive('histogram', function (d3Service, $window, DataFactory) {
                 })
                 .attr("transform", "translate(" + margin.left + ", 0)");
 
-              svg.append("g")
-                    .attr("class", "x axis")
-                    .attr("transform", "translate(" + margin.left + ", " + (height - margin.bottom) + ")")
-                    .call(xAxis)
-                    .append("text")
-                    .attr("class", "xlabel")
-                    .text(xAxisLabel);
+              SVGFactory.appendXAxis(svg, margin, width, height, xAxis, xAxisLabel, xAxisLabelSize);
 
-              svg.selectAll(".x text")
-                    .attr("transform", "translate(-7,0)rotate(-45)")
-                    .style("text-anchor", "end");
+              SVGFactory.appendYAxis(svg, margin, height, yAxis, yAxisLabel, yAxisLabelSize);
 
-              svg.select(".xlabel")
-                   .attr("transform", "translate(" + ((width - margin.left - margin.right) / 2) + ", " + (margin.bottom - xAxisLabelSize) + ")")
-                   .style("text-anchor", "middle")
-                   .style("font-size", xAxisLabelSize);
-
-              svg.append("g")
-                    .attr("class", "y axis")
-                    .attr("transform", "translate(" + margin.left + ",0)")
-                    .call(yAxis)
-                    .append("text")
-                    .attr("class", "ylabel")
-                    .attr("transform", "rotate(-90)translate(" + -((height - margin.bottom) / 2) + ", " + -(margin.left - yAxisLabelSize) + ")")
-                    .text(yAxisLabel)
-                    .style("text-anchor", "middle")
-                    .style("font-size", yAxisLabelSize);
-
-              svg.append("text")
-                  .attr("x", (width / 2))             
-                  .attr("y", (margin.top / 2))
-                  .attr("text-anchor", "middle") 
-                  .style("font-size", titleSize)
-                  .text(title);
+              SVGFactory.appendTitle(svg, margin, width, title, titleSize);
         };
       });
     }
