@@ -8,7 +8,6 @@ require('./models/settings')(db);
 require('./models/graph')(db);
 require('./models/dataset')(db);
 
-
 const User = db.model('user');
 const Settings = db.model('settings');
 const Graph = db.model('graph');

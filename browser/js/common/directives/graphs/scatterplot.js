@@ -1,4 +1,6 @@
-app.directive('scatterplotGraph', function(d3Service, $window, GraphFilterFactory, graphSettingsFactory) {
+
+app.directive('scatterplotGraph', function(d3Service, $window, GraphFilterFactory, graphSettingsFactory, SVGFactory) {
+
     let directive = {};
 
     directive.restrict = 'E';
@@ -12,30 +14,11 @@ app.directive('scatterplotGraph', function(d3Service, $window, GraphFilterFactor
 
     return directive;
 
-
     function linkFn(scope, ele, attrs) {
         // scope.settings = scope.settings || {};
         d3Service.d3().then(function(d3) {
-            
-            // Watch for resize event
-                scope.$watch(function() {
-                    return angular.element($window)[0].innerWidth;
-                }, function() {
-                    scope.render();
-                });
 
-                scope.$watch(function(scope) {
-                    return scope.rows; 
-                }, function(newVal, oldVal) {
-                    if (newVal !== oldVal) scope.render();
-                }, true);
-
-                scope.$watch(function(scope) {
-                    return scope.settings; 
-                }, function(newVal, oldVal) {
-                    if (newVal !== oldVal) scope.render();
-                }, true);
-
+            SVGFactory.watchForChanges(scope);
 
             scope.render = function() {
 
@@ -45,12 +28,7 @@ app.directive('scatterplotGraph', function(d3Service, $window, GraphFilterFactor
                 graphSettingsFactory.getSavedSettings(scope.settings, ele[0], scope.rows)
                     .then(function (savedSets) {
                         let defaultSettings = graphSettingsFactory.getDefaultSettings();
-                            let svg = anchor
-                                .append('svg')
-                                .attr('width', savedSets.width)
-                                .attr('height', savedSets.height)
-                                .style('background-color', '#ffffff')
-                                // .call(zoom);
+                        let svg = SVGFactory.appendSVG(anchor, savedSets.width, savedSets.height);
 
                             let xValue = function(d) {
                                     return d[0]
@@ -88,13 +66,14 @@ app.directive('scatterplotGraph', function(d3Service, $window, GraphFilterFactor
                             yScale.domain([savedSets.minY, savedSets.maxY]);
 
                             // x-axis
-                            svg.append("g")
-                                .attr("class", "x axis")
-                                .attr("transform", "translate(0," + (savedSets.height - defaultSettings.margin.bottom) + ")")
-                                .call(xAxis)
-                                .append("text")
-                                .attr("class", "xlabel")
-                                .text(savedSets.xAxisLabel);
+                            SVGFactory.appendXAxis(svg, defaultSettings.margin, savedSets.width, savedSets.height, xAxis, savedSets.xAxisLabel, savedSets.xAxisLabelSize);
+                            // svg.append("g")
+                            //     .attr("class", "x axis")
+                            //     .attr("transform", "translate(0," + (savedSets.height - defaultSettings.margin.bottom) + ")")
+                            //     .call(xAxis)
+                            //     .append("text")
+                            //     .attr("class", "xlabel")
+                            //     .text(savedSets.xAxisLabel);
 
                             // svg.selectAll(".x text")
                             //     .attr("transform", "translate(-10, 0)rotate(-45)")
@@ -104,21 +83,19 @@ app.directive('scatterplotGraph', function(d3Service, $window, GraphFilterFactor
                                     .attr("transform", "translate(" + (savedSets.width - defaultSettings.margin.left - defaultSettings.margin.right) / 2 + ", " + (defaultSettings.margin.bottom - 10) + ")");
 
                             // y-axis
-                            svg.append("g")
-                                .attr("class", "y axis")
-                                .attr("transform", "translate(" + defaultSettings.margin.left + ",0)")
-                                .call(yAxis)
-                                .append("text")
-                                .attr("class", "ylabel")
-                                .attr("transform", "rotate(-90)translate(" + -((savedSets.height + defaultSettings.margin.bottom + defaultSettings.margin.top) / 2) + ", " + -(defaultSettings.margin.left - 20) + ")")
-                                .text(savedSets.yAxisLabel);
+                            SVGFactory.appendYAxis(svg, defaultSettings.margin, savedSets.height, yAxis, savedSets.yAxisLabel, savedSets.yAxisLabelSize);
+                            // svg.append("g")
+                            //     .attr("class", "y axis")
+                            //     .attr("transform", "translate(" + defaultSettings.margin.left + ",0)")
+                            //     .call(yAxis)
+                            //     .append("text")
+                            //     .attr("class", "ylabel")
+                            //     .attr("transform", "rotate(-90)translate(" + -((savedSets.height + defaultSettings.margin.bottom + defaultSettings.margin.top) / 2) + ", " + -(defaultSettings.margin.left - 20) + ")")
+                            //     .text(savedSets.yAxisLabel);
 
                             // draw 
                             
-                           // let yData = svg.selectAll("yData")
-                           //      .data(filteredValues)
-                           //      .enter().append("g")
-                           //      .attr("class", "yData");  
+                        
 
                             let dotRadius = savedSets.height/100;
 
@@ -152,16 +129,15 @@ app.directive('scatterplotGraph', function(d3Service, $window, GraphFilterFactor
                                     });
                             });
 
-                            svg.append("text")
-                                .attr("x", (savedSets.width / 2))             
-                                .attr("y", (defaultSettings.margin.top/2))
-                                .attr("text-anchor", "middle")    
-                                .text(savedSets.title);
-                    })
-
-              
-               
+                            //title
+                            SVGFactory.appendTitle(svg, defaultSettings.margin, savedSets.width, savedSets.title, savedSets.titleSize);
+                            // svg.append("text")
+                            //     .attr("x", (savedSets.width / 2))             
+                            //     .attr("y", (defaultSettings.margin.top/2))
+                            //     .attr("text-anchor", "middle")    
+                            //     .text(savedSets.title);
+                    });
             };
         });
-    };
+    }
 });

@@ -1,27 +1,23 @@
-<nav class="navbar navbar-fixed-top">
+<div class="row nav1">
+  <nav class="navbar navbar-fixed-top" id="top-menu" role="navigation">
     <div class="container">
-        <div class="navbar-header">  
-            <button type="button" class="btn navbar-toggle" data-toggle="collapse" data-target="#navbarCollapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span> 
-            </button>
-            <button ui-sref-active="active" ui-sref="home" class="btn navbar-button">Home</button>
-        </div>
+      <div class="navbar-header">
+        <span class="navbar-brand"><p ui-sref="home" class="brand">GRAPHITI  <i class="fa fa-bar-chart fa-lg"></p></i></span>
+        <button type="button" class="navbar-toggle" data-target="#navbarCollapse" data-toggle="collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+      </div>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="nav navbar-nav">
-            <li><button ui-sref-active="active" ui-sref="about" class="btn navbar-button">About Us</button></li>
+          <li><a ui-sref="userHome({userId: user.id})" ng-show="isLoggedIn()">MY ACCOUNT</a></li>
+          <li><a ui-sref="login" ng-show="!isLoggedIn()">LOGIN</a></li>
+          <li><a ui-sref="signup" ng-show="!isLoggedIn()">SIGN UP</a></li>
+          <li>
+            <a ng-click="logout()" ng-show="isLoggedIn()" id="navLogout">LOGOUT</a></li>
         </ul>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class='nav navbar-right'>
-                <div ng-show="isLoggedIn()">
-                    <button ui-sref="userHome({userId: user.id})" class="btn navbar-button">My Account</button>
-                    <button ng-click="logout()" class="btn navbar-button">Logout</button>
-                </div>
-                <div ng-show="!isLoggedIn()">
-                    <button ui-sref="login" class="btn navbar-button">Login</button>
-                    <button ui-sref="signup" class="btn navbar-button">Sign Up</button>
-                </div>
-            </ul>
-        </div>
+      </div>
     </div>
-</nav>
+  </nav>
+</div>

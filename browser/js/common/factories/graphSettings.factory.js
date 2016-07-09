@@ -22,6 +22,21 @@ app.factory("graphSettingsFactory", function(d3Service){
         return max;
 	};
 
+    let setColor = function (color) {
+        switch (colorScale) {
+          case '10':
+            return d3.scale.category10();
+          case '20a':
+            return d3.scale.category20();
+          case '20b':
+            return d3.scale.category20b();
+          case '20c':
+            return d3.scale.category20c();
+          default: 
+            return colorScale;
+        }
+      };
+
 	graphSettings.getDefaultSettings = function () {
 		let defaultSettings = {};
 		let yLabelLength = 2;
@@ -50,7 +65,7 @@ app.factory("graphSettingsFactory", function(d3Service){
             savedSettings.radius = sets.radius || savedSettings.height / 3;
             savedSettings.title = sets.title || (formatColX + " .vs " + formatColY).toUpperCase();
             savedSettings.titleSize = sets.titleSize || 14;
-            savedSettings.color = sets.color || d3.scale.category10(); 
+            savedSettings.color = setColor(sets.color) || d3.scale.category10(); 
             savedSettings.minX = (sets.minX || sets.minX === 0) ? sets.minX : getMin(d3, data, 0);
             savedSettings.maxX = (sets.maxX || sets.maxX === 0) ? sets.maxX : getMax(d3, data, 0);
             savedSettings.minY = (sets.minY || sets.minY === 0) ? sets.minY : getMin(d3, data, 1);

@@ -1,5 +1,6 @@
 app.factory('DataFactory', function () {
   return {
+
     groupByCategory: function (values, seriesx, seriesy, type) {
       if(type === 'none') return values; 
      

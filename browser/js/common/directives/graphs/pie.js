@@ -1,4 +1,6 @@
-app.directive('pieChart', function(d3Service, $window, DataFactory, graphSettingsFactory) {
+
+app.directive('pieChart', function(d3Service, $window, SVGFactory, graphSettingsFactory) {
+
 
     return {
         restrict: 'E',
@@ -10,27 +12,9 @@ app.directive('pieChart', function(d3Service, $window, DataFactory, graphSetting
 
         link: function(scope, ele, attrs) {
             d3Service.d3().then(function(d3) {
-                window.onresize = function() {
-                    scope.$apply();
-                };
-                // Watch for resize event
-                scope.$watch(function() {
-                    return angular.element($window)[0].innerWidth;
-                }, function() {
-                    scope.render();
-                });
 
-                scope.$watch(function(scope) {
-                    return scope.rows; 
-                }, function(newVal, oldVal) {
-                    if (newVal !== oldVal) scope.render();
-                }, true);
-
-                scope.$watch(function(scope) {
-                    return scope.settings; 
-                }, function(newVal, oldVal) {
-                    if (newVal !== oldVal) scope.render();
-                }, true);
+                //Re-render the graph when user changes settings, data, or window size
+                SVGFactory.watchForChanges(scope);
 
                 scope.render = function() {
                         let anchor = d3.select(ele[0]);
@@ -39,13 +23,14 @@ app.directive('pieChart', function(d3Service, $window, DataFactory, graphSetting
                         graphSettingsFactory.getSavedSettings(scope.settings, ele[0], scope.rows)
                             .then(function (savedSets) {
                                 let defaultSettings = graphSettingsFactory.getDefaultSettings();
-                                let svg = anchor
-                                        .append('svg')
-                                        .attr('width', savedSets.width)
-                                        .attr('height', savedSets.height)
-                                        .style('background-color', '#ffffff')
-                                        .append('g')
-                                        .attr("transform", "translate(" + savedSets.width / 2 + "," + savedSets.height / 2 + ")");
+                                let svg = SVGFactory.appendSVG(anchor, savedSets.width, savedSets.height);
+                                // let svg = anchor
+                                //         .append('svg')
+                                //         .attr('width', savedSets.width)
+                                //         .attr('height', savedSets.height)
+                                //         .style('background-color', '#ffffff')
+                                //         .append('g')
+                                //         .attr("transform", "translate(" + savedSets.width / 2 + "," + savedSets.height / 2 + ")");
 
                                 let groupedTotal = 0;
                             
@@ -54,8 +39,8 @@ app.directive('pieChart', function(d3Service, $window, DataFactory, graphSetting
                                  
                                 let pie = d3.layout.pie().value(function(d) {
                                     return d.values[0][1];
-                                });
-
+                                });        
+                                
                                 let arc = d3.svg.arc().outerRadius(savedSets.radius);
 
                                 let pieChart = svg.selectAll(".arc")
@@ -68,11 +53,7 @@ app.directive('pieChart', function(d3Service, $window, DataFactory, graphSetting
                                       .attr("d", arc)
                                       .style("fill", function(d, i) { return savedSets.color(i); })
 
-                                svg.append("text")
-                                    .attr("x", 0)             
-                                    .attr("y", (savedSets.radius * -1.5) + defaultSettings.margin.top/2)
-                                    .attr("text-anchor", "middle")    
-                                    .text(savedSets.title);
+                                SVGFactory.appendTitle(svg, defaultSettings.margin, savedSets.width, savedSets.title, savedSets.titleSize);
 
                     
 
@@ -87,7 +68,7 @@ app.directive('pieChart', function(d3Service, $window, DataFactory, graphSetting
                                     .enter().append("g")
                                         .attr("class", "legend")
                                         .attr("transform", function(d, i) { 
-                                            return "translate(" + 0 + "," + i * 20 + ")" 
+                                            return "translate(" + (savedSets.width / 1.75) + "," + ((savedSets.radius * 1.5) + (i * 20 + 10)) + ")";
                                         });
 
                                 // draw legend colored rectangles
@@ -106,6 +87,7 @@ app.directive('pieChart', function(d3Service, $window, DataFactory, graphSetting
                                         return 'text';
                                         // return groupedData[i][scope.columns[0].name] + " - " + legendDisplay(savedSets.displayType, +groupedData[i][scope.columns[1].name]);
                                     });
+
                     });
                 };
                     

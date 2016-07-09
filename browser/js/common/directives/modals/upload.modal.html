@@ -1,10 +1,10 @@
 <section>
-  <button type="button" class="home-btn" ng-click="openFileUpload()">Upload a dataset</button> 
+  <button type="button" class="{{uploadClass}}" ng-click="openFileUpload()">Upload a dataset</button> 
   <script type="text/ng-template" id="upload.modal.html">
     <form name="form" class="embed-modal modal-dialog">
       <h4 class="text-center">Select Your File to Upload</h4>
       <div class="text-center">
-        <button class="btn btn-success" ng-show="!file" ngf-select ng-model="file">Select File</button>
+        <button class="btn btn-home" ng-show="!file" ngf-select ng-model="file">Select File</button>
         <p class="file-upload" ng-show="file">{{file.name}}</p>
         <button ng-show="file" class="btn btn-success" type="submit" ng-click="submit()">Upload</button>
         <button class="btn btn-danger" type="submit" ng-click="cancel()">Cancel</button>

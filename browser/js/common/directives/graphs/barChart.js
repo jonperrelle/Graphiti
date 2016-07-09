@@ -1,4 +1,5 @@
-app.directive('barChart', function(d3Service, $window, DataFactory, graphSettingsFactory) {
+
+app.directive('barChart', function(d3Service, graphSettingsFactory, SVGFactory) {
     return {
         restrict: 'E',
         scope: {
@@ -9,26 +10,10 @@ app.directive('barChart', function(d3Service, $window, DataFactory, graphSetting
         },
         link: function(scope, ele, attrs) {
             d3Service.d3().then(function(d3) {
-               
+   
                 // Watch for resize event
 
-                scope.$watch(function() {
-                    return angular.element($window)[0].innerWidth;
-                }, function() {
-                    scope.render();
-                });
-
-                scope.$watch(function(scope) {
-                    return scope.rows; 
-                }, function(newVal, oldVal) {
-                    if (newVal !== oldVal) scope.render();
-                }, true);
-
-                scope.$watch(function(scope) {
-                    return scope.settings; 
-                }, function(newVal, oldVal) {
-                    if (newVal !== oldVal) scope.render();
-                }, true);
+                SVGFactory.watchForChanges(scope);
                 
                 scope.render = function() {
 
@@ -40,12 +25,7 @@ app.directive('barChart', function(d3Service, $window, DataFactory, graphSetting
                         graphSettingsFactory.getSavedSettings(scope.settings, ele[0], scope.rows)
                             .then(function (savedSets) {
                                 let defaultSettings = graphSettingsFactory.getDefaultSettings();
-                                let svg = anchor
-                                    .append('svg')
-                                    .style('width', savedSets.width)
-                                    .style('height', savedSets.height)
-                                    .style('background-color', '#ffffff')
-                                    .append("g");
+                                let svg = SVGFactory.appendSVG(anchor, savedSets.width, savedSets.height);
 
 
 
@@ -94,13 +74,14 @@ app.directive('barChart', function(d3Service, $window, DataFactory, graphSetting
                                 x2Scale.domain(groupCats).rangeRoundBands([0, x1Scale.rangeBand()]);
                                 yScale.domain([savedSets.minY, savedSets.maxY]);
 
-                                svg.append("g")
-                                    .attr("class", "x axis")
-                                    .attr("transform", "translate(" + defaultSettings.margin.left + ", " + (savedSets.height - defaultSettings.margin.bottom) + ")")
-                                    .call(xAxis)
-                                    .append("text")
-                                    .attr("class", "xlabel")
-                                    .text(savedSets.xAxisLabel);
+                                // svg.append("g")
+                                //     .attr("class", "x axis")
+                                //     .attr("transform", "translate(" + defaultSettings.margin.left + ", " + (savedSets.height - defaultSettings.margin.bottom) + ")")
+                                //     .call(xAxis)
+                                //     .append("text")
+                                //     .attr("class", "xlabel")
+                                //     .text(savedSets.xAxisLabel);
+                                SVGFactory.appendXAxis(svg, defaultSettings.margin, savedSets.width, savedSets.height, xAxis, savedSets.xAxisLabel, savedSets.xAxisLabelSize);
 
                                 svg.selectAll(".x text")
                                     .attr("transform", "translate(-7,0)rotate(-45)")
@@ -111,16 +92,18 @@ app.directive('barChart', function(d3Service, $window, DataFactory, graphSetting
                                      .style("text-anchor", "middle")
                                      .style("font-size", savedSets.xAxisLabelSize);
 
-                                svg.append("g")
-                                    .attr("class", "y axis")
-                                    .attr("transform", "translate(" + defaultSettings.margin.left + ",0)")
-                                    .call(yAxis)
-                                    .append("text")
-                                    .attr("class", "ylabel")
-                                    .attr("transform", "rotate(-90)translate(" + -((savedSets.height - defaultSettings.margin.bottom) / 2) + ", " + -(defaultSettings.margin.left - savedSets.yAxisLabelSize) + ")")
-                                    .text(savedSets.yAxisLabel)
-                                    .style("text-anchor", "middle")
-                                    .style("font-size", savedSets.yAxisLabelSize);
+                                SVGFactory.appendYAxis(svg, defaultSettings.margin, savedSets.height, yAxis, savedSets.yAxisLabel, savedSets.yAxisLabelSize);
+
+                                // svg.append("g")
+                                //     .attr("class", "y axis")
+                                //     .attr("transform", "translate(" + defaultSettings.margin.left + ",0)")
+                                //     .call(yAxis)
+                                //     .append("text")
+                                //     .attr("class", "ylabel")
+                                //     .attr("transform", "rotate(-90)translate(" + -((savedSets.height - defaultSettings.margin.bottom) / 2) + ", " + -(defaultSettings.margin.left - savedSets.yAxisLabelSize) + ")")
+                                //     .text(savedSets.yAxisLabel)
+                                //     .style("text-anchor", "middle")
+                                //     .style("font-size", savedSets.yAxisLabelSize);
 
 
                                 var yData = svg.selectAll("yData")
@@ -152,12 +135,13 @@ app.directive('barChart', function(d3Service, $window, DataFactory, graphSetting
                                         })
                                     .attr("transform", "translate(" + defaultSettings.margin.left + ", 0)");
 
-                                svg.append("text")
-                                    .attr("x", (savedSets.width / 2))             
-                                    .attr("y", (defaultSettings.margin.top / 2))
-                                    .attr("text-anchor", "middle") 
-                                    .style("font-size", savedSets.titleSize)
-                                    .text(savedSets.title);
+                                SVGFactory.appendTitle(svg, defaultSettings.margin, savedSets.width, savedSets.title, savedSets.titleSize);
+                                // svg.append("text")
+                                //     .attr("x", (savedSets.width / 2))             
+                                //     .attr("y", (defaultSettings.margin.top / 2))
+                                //     .attr("text-anchor", "middle") 
+                                //     .style("font-size", savedSets.titleSize)
+                                //     .text(savedSets.title);
 
                     });
                 };

@@ -1,4 +1,6 @@
-app.directive('lineGraph', function(d3Service, $window, $state, GraphFilterFactory, graphSettingsFactory) {
+
+app.directive('lineGraph', function(d3Service, SVGFactory, graphSettingsFactory) {
+
     return {
         restrict: 'E',
         scope: {
@@ -9,43 +11,9 @@ app.directive('lineGraph', function(d3Service, $window, $state, GraphFilterFacto
         },
         link: function(scope, ele, attrs) {
 
-
             d3Service.d3().then(function(d3) {
-
-               
                 // Watch for resize event
-                scope.$watch(function() {
-                    return angular.element($window)[0].innerWidth;
-                }, function() {
-                    scope.render();
-                });
-
-                scope.$watch(function(scope) {
-                    return scope.rows; 
-                }, function(newVal, oldVal) {
-                    if (newVal !== oldVal) scope.render();
-                }, true);
-
-                scope.$watch(function(scope) {
-                    return scope.settings; 
-                }, function(newVal, oldVal) {
-                    if (newVal !== oldVal) scope.render();
-                }, true);
-
-                // scope.$watch(function(scope) {
-                //     return scope.seriesx;
-                // }, function(newVal, oldVal) {
-                //     //console.log(newVal, "HERE");
-                //     if (newVal !== oldVal) scope.render();
-                // }, true);
-
-                // scope.$watch(function(scope) {
-                //     return scope.seriesy;
-                // }, function() {
-                //     scope.render();
-                // }, true);
-
-                //seriesy="seriesy" seriesx="seriesx"
+                SVGFactory.watchForChanges(scope);
 
                 scope.render = function() {   
 
@@ -55,12 +23,7 @@ app.directive('lineGraph', function(d3Service, $window, $state, GraphFilterFacto
                     graphSettingsFactory.getSavedSettings(scope.settings, ele[0], scope.rows)
                         .then(function (savedSets) {
                             let defaultSettings = graphSettingsFactory.getDefaultSettings();
-                            let svg = anchor
-                                .append('svg')
-                                .style('width', savedSets.width)
-                                .style('height', savedSets.height)
-                                .style('background-color', '#ffffff')
-                                .append("g");
+                            let svg = SVGFactory.appendSVG(anchor, savedSets.width, savedSets.height);
 
                             let x; 
 
@@ -91,25 +54,32 @@ app.directive('lineGraph', function(d3Service, $window, $state, GraphFilterFacto
                             x.domain([savedSets.minX, savedSets.maxX]);
                             y.domain([savedSets.minY, savedSets.maxY]);
 
-                            svg.append("g")
-                                .attr("class", "x axis")
-                                .attr("transform", "translate(0," + (savedSets.height - defaultSettings.margin.bottom) + ")")
-                                .call(xAxis)
-                                .append("text")
-                                .attr("class", "xlabel")
-                                .text(savedSets.xAxisLabel);
+                            //xAxis
+                            SVGFactory.appendXAxis(svg, defaultsettings.margin, savedSets.width, savedSets.height, xAxis, savedSets.xAxisLabel, savedSets.xAxisLabelSize);
+
+                    
+
+                            // svg.append("g")
+                            //     .attr("class", "x axis")
+                            //     .attr("transform", "translate(0," + (savedSets.height - defaultSettings.margin.bottom) + ")")
+                            //     .call(xAxis)
+                            //     .append("text")
+                            //     .attr("class", "xlabel")
+                            //     .text(savedSets.xAxisLabel);
 
                             svg.select(".xlabel")
                                 .attr("transform", "translate(" + (savedSets.width - defaultSettings.margin.left - defaultSettings.margin.right) / 2 + ", " + (defaultSettings.margin.bottom - 10) + ")");
 
-                            svg.append("g")
-                                .attr("class", "y axis")
-                                .attr("transform", "translate(" + defaultSettings.margin.left + ",0)")
-                                .call(yAxis)
-                                .append("text")
-                                .attr("class", "ylabel")
-                                .attr("transform", "rotate(-90)translate(" + -((savedSets.height + defaultSettings.margin.bottom + defaultSettings.margin.top) / 2) + ", " + -(defaultSettings.margin.left - 20) + ")")
-                                .text(savedSets.yAxisLabel);
+                            //yAxis
+                            SVGFactory.appendYAxis(svg, defaultSettings.margin, savedSets.height, yAxis, savedSets.yAxisLabel, savedSets.yAxisLabelSize);
+                            // svg.append("g")
+                            //     .attr("class", "y axis")
+                            //     .attr("transform", "translate(" + defaultSettings.margin.left + ",0)")
+                            //     .call(yAxis)
+                            //     .append("text")
+                            //     .attr("class", "ylabel")
+                            //     .attr("transform", "rotate(-90)translate(" + -((savedSets.height + defaultSettings.margin.bottom + defaultSettings.margin.top) / 2) + ", " + -(defaultSettings.margin.left - 20) + ")")
+                            //     .text(savedSets.yAxisLabel);
 
                             let yData = svg.selectAll("yData")
                                 .data(scope.rows)
@@ -137,11 +107,12 @@ app.directive('lineGraph', function(d3Service, $window, $state, GraphFilterFacto
                               .attr("dy", ".35em")
                               .text(function(d) { return d.name; });       
 
-                            svg.append("text")
-                                .attr("x", (savedSets.width / 2))             
-                                .attr("y", defaultSettings.margin.top/2)
-                                .attr("text-anchor", "middle")    
-                                .text(savedSets.title);
+                            SVGFactory.appendTitle(svg, defaultSettings.margin, savedSets.width, savedSets.title, savedSets.titleSize);
+                            // svg.append("text")
+                            //     .attr("x", (savedSets.width / 2))             
+                            //     .attr("y", defaultSettings.margin.top/2)
+                            //     .attr("text-anchor", "middle")    
+                            //     .text(savedSets.title);
                             
                     });
                 };
