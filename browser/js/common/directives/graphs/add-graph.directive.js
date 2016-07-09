@@ -19,14 +19,15 @@ app.directive('addGraph', function($rootScope, AddGraphFactory, ValidationFactor
             scope.counter = function () {
                 scope.count++;
             };
+
         
             scope.showGraphs = function () {  
-                
+
                 GraphFilterFactory.filterData(scope.seriesx, scope.seriesy, scope.data)
                 .then(function(values) {
                     scope.values = values;
                     scope.withinLength = true;
-                    if (scope.seriesx[0].type === 'date' && scope.seriesy[0].type === 'number' ) {
+                    if (scope.seriesy.length > 0 && scope.seriesx[0].type === 'date' && scope.seriesy[0].type === 'number' ) {
                             scope.lineEnable = true;
                             scope.pieEnable = false;
                             scope.scatterEnable = false;
@@ -37,7 +38,7 @@ app.directive('addGraph', function($rootScope, AddGraphFactory, ValidationFactor
                             });
 
                         }
-                    else if (scope.seriesx[0].type === 'number' && scope.seriesy[0].type === 'number' ) {
+                    else if (scope.seriesy.length > 0 && scope.seriesx[0].type === 'number' && scope.seriesy[0].type === 'number' ) {
                             scope.scatterEnable = true;
                             scope.lineEnable = true;
                             GraphFilterFactory.filterBarData(scope.seriesx, scope.seriesy, scope.data)
@@ -48,7 +49,7 @@ app.directive('addGraph', function($rootScope, AddGraphFactory, ValidationFactor
 
                     }
 
-                    else if (scope.seriesx[0].type === 'string' && scope.seriesy[0].type === 'number' ) {
+                    else if (scope.seriesy.length > 0 && scope.seriesx[0].type === 'string' && scope.seriesy[0].type === 'number' ) {
                             scope.pieEnable = true;
                             scope.scatterEnable = false;
                             scope.lineEnable = false;
@@ -66,8 +67,12 @@ app.directive('addGraph', function($rootScope, AddGraphFactory, ValidationFactor
             };
 
             scope.viewSingleGraph = function (graphType) {
+                let sendValues;
+                if (graphType === 'barChart') sendValues = scope.barvalues;
+                else sendValues = scope.values;
+                console.log(sendValues);
                 $state.go('singleGraph', {graphType, data: scope.data, 
-                    values: scope.values, 
+                    values: sendValues, 
                     seriesx: scope.seriesx, 
                     seriesy: scope.seriesy, 
                     settings: scope.settings, 

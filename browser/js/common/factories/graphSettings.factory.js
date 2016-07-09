@@ -35,15 +35,6 @@ app.factory("graphSettingsFactory", function(d3Service){
         return defaultSettings;      
 	};
 
-    // graphSettings.getXScale = function(seriesx, defaultSettings) {
-    //     return d3Service.d3().then(function(d3){
-    //          if(seriesx[0].type == 'number') return d3.scale.linear().range([defaultSettings.margin.left, savedSets.width - defaultSettings.margin.right]);
-    //             else {
-    //                 x = d3.time.scale().range([defaultSettings.margin.left, savedSets.width - defaultSettings.margin.right])
-    //             };  
-    //     })
-    // }
-
 	graphSettings.getSavedSettings = function (sets, ele, data) {
 
 		return d3Service.d3().then(function(d3) {
@@ -59,11 +50,11 @@ app.factory("graphSettingsFactory", function(d3Service){
             savedSettings.radius = sets.radius || savedSettings.height / 3;
             savedSettings.title = sets.title || (formatColX + " .vs " + formatColY).toUpperCase();
             savedSettings.titleSize = sets.titleSize || 14;
-            savedSettings.color = sets.color || d3.scale.category10();
-            savedSettings.minX = sets.minX || getMin(d3, data, 0);
-            savedSettings.maxX = sets.maxX || getMax(d3, data, 0);
-            savedSettings.minY = sets.minY || getMin(d3, data, 1);
-            savedSettings.maxY = sets.maxY || getMax(d3, data, 1);
+            savedSettings.color = sets.color || d3.scale.category10(); 
+            savedSettings.minX = (sets.minX || sets.minX === 0) ? sets.minX : getMin(d3, data, 0);
+            savedSettings.maxX = (sets.maxX || sets.maxX === 0) ? sets.maxX : getMax(d3, data, 0);
+            savedSettings.minY = (sets.minY || sets.minY === 0) ? sets.minY : getMin(d3, data, 1);
+            savedSettings.maxY = (sets.maxY || sets.maxY === 0) ? sets.maxY : getMax(d3, data, 1);
             savedSettings.displayType = sets.displayType || 'number';
             savedSettings.groupType = sets.groupType || 'total';
             savedSettings.orderType = sets.orderType || 'sort';

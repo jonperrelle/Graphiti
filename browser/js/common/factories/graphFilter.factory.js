@@ -27,7 +27,6 @@ app.factory('GraphFilterFactory', function (d3Service, graphSettingsFactory) {
           for (let k in obj) {
               obj[k] = obj[k].sort((a, b) => a[0].getTime() - b[0].getTime());
           }
-
       }
       else {
         for (let k in obj) {
@@ -40,7 +39,7 @@ app.factory('GraphFilterFactory', function (d3Service, graphSettingsFactory) {
       return obj;
      };  
 
-     let sortBarData = function (seriesx, obj) {
+    let sortBarData = function (seriesx, obj) {
       let sortArr = [];
       let newObj = {};
       if(seriesx[0].type === 'number'){
@@ -52,15 +51,6 @@ app.factory('GraphFilterFactory', function (d3Service, graphSettingsFactory) {
             newObj[arr[0]] = arr[1];
           });
       } 
-      else if (seriesx[0].type === 'date') {
-          for (let k in obj) {
-            sortArr.push([k, obj[k]]);
-            sortArr.sort((a, b) => a[0].getTime() - b[0].getTime());
-          }
-          sortArr.forEach( arr => {
-            newObj[arr[0]] = arr[1];
-          });
-      }
       else {
           for (let k in obj) {
             sortArr.push([k, obj[k]])
@@ -77,17 +67,34 @@ app.factory('GraphFilterFactory', function (d3Service, graphSettingsFactory) {
       return newObj;
      }; 
 
+     let groupBarData = function(filteredData) {
+        let groupedData ={};
+        for (var k in filteredData) {
+          let groupedObj = {};
+          filteredData[k].forEach(arr => {
+            if (!groupedObj[arr[0]]) {
+              groupedObj[arr[0]] = [arr[1], 1];
+            } else {
+              groupedObj[arr[0]][0] += arr[1];
+              groupedObj[arr[0]][1]++;
+            }
+          groupedData[k] = Object.keys(groupedObj).map(key => {
+            return [key, groupedObj[key][0], groupedObj[key][1]];  
+          });
+        });
+       }  
+       return groupedData;
+    };
+
      graphFilter.filterBarData = function(seriesx, seriesy, data) {
         let xVal= seriesx[0].name;
         let formatDate;
         return d3Service.d3().then(function(d3) {
-          if (seriesx[0].type ==='date') formatDate = setDateFormat(d3, data, seriesx);
           let filteredArr = seriesy.map(obj => obj.name);
           let filteredData = {};
           data.forEach(row => {
               let newRow = {};
               for (let k in row) {
-
                   if (seriesx[0].type === 'number') {
                     if (filteredArr.indexOf(k) > -1 && row[xVal] && (!!Number(row[xVal]) || Number(row[xVal]) === 0)
                       && row[k] && (!!Number(row[k]) || Number(row[k]) === 0)) {
@@ -98,21 +105,16 @@ app.factory('GraphFilterFactory', function (d3Service, graphSettingsFactory) {
                   else {
                     if (filteredArr.indexOf(k) > -1 && row[xVal]
                       && row[k] && (!!Number(row[k]) || Number(row[k]) === 0)) {
-                          if(formatDate) {
-                            if (!filteredData[formatDate.parse(row[xVal])]) filteredData[formatDate.parse(row[xVal])] = [];
-                            filteredData[formatDate.parse(row[xVal])].push([k, +row[k]]);
-                          }
-                          else  {
-                            if (!filteredData[row[xVal]]) filteredData[row[xVal]] = [];
-                            filteredData[row[xVal]].push([k, +row[k]]);
-                          }     
+                          if (!filteredData[row[xVal]]) filteredData[row[xVal]] = [];
+                          filteredData[row[xVal]].push([k, +row[k]]);
+                      }     
                     }
                   }
-              }
+
+              });
           
-          });
           filteredData = sortBarData(seriesx, filteredData);
-          console.log(filteredData);
+          filteredData = groupBarData(filteredData);
           let values = []
           for (let k in filteredData) {
             values.push( {
@@ -120,9 +122,7 @@ app.factory('GraphFilterFactory', function (d3Service, graphSettingsFactory) {
               values: filteredData[k]
             });
           }
-          
           return values;
-
 
         });
      };

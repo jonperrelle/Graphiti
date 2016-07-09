@@ -4,26 +4,27 @@ app.factory('DataFactory', function () {
       if(type === 'none') return values; 
      
       let groupedObj = {};  
-      return values.map(function (obj) {
-
+      let groupedData = [];
+      values.forEach(function (obj) {
+          let newObj= {name: obj.name}
           obj.values.forEach(function(arr) {
               if (!groupedObj[arr[0]]) {
                   groupedObj[arr[0]] = [arr[1], 1];
                 } else {
                   groupedObj[arr[0]][0] += arr[1];
-                  groupedObj[arr[0]][1]++
+                  groupedObj[arr[0]][1]++;
                 }
           });
       
-          obj.values = Object.keys(groupedObj).map(key => {
+          newObj.values = Object.keys(groupedObj).map(key => {
             if (type === 'total') return [key, groupedObj[key][0]];
             else if (type === 'mean') return [key, groupedObj[key][0]/groupedObj[key][1]];
           });
 
-          return obj;
+          groupedData.push(newObj);
 
         });
-     
+      return groupedData;
     },
 
     orderByCategory: function (data, category, type, orderStyle = 'sort') {

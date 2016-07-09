@@ -21,11 +21,21 @@ app.controller('UserHomeCtrl', function($scope, $state, UploadFactory, Session, 
     $scope.goToUserGraph = function(graph) {
         DatasetFactory.getOneUserDataset(graph.dataset, $scope.user)
             .then(rows => {
-                GraphFilterFactory.filterData(graph.seriesx, graph.seriesy, rows)
-                .then(function(values) {
-                    let allColumns = Object.keys(rows[0]);
-                    $state.go('userSingleGraph', { userId: $scope.user.id, graphId: graph.id, dataset: graph.dataset, graphType: graph.graphType, settings: graph.setting, data: rows, seriesx: graph.seriesx, seriesy: graph.seriesy, allColumns: allColumns, values: values });
-                });
+                let sendValues;
+                if (graph.graphType === 'barChart') {
+                    GraphFilterFactory.filterBarData(graph.seriesx, graph.seriesy, rows)
+                    .then(function (values) {
+                        sendValues = values;
+                    });
+                }
+                else { 
+                    GraphFilterFactory.filterData(graph.seriesx, graph.seriesy, rows)
+                    .then(function(values) {
+                        sendValues = values;
+                    });
+                }
+                let allColumns = Object.keys(rows[0]);
+                $state.go('userSingleGraph', { userId: $scope.user.id, graphId: graph.id, dataset: graph.dataset, graphType: graph.graphType, settings: graph.setting, data: rows, seriesx: graph.seriesx, seriesy: graph.seriesy, allColumns: allColumns, values: sendValues });
             })
             .catch();
     };

@@ -11,6 +11,7 @@ app.directive('barChart', function(d3Service, $window, DataFactory, graphSetting
             d3Service.d3().then(function(d3) {
                
                 // Watch for resize event
+
                 scope.$watch(function() {
                     return angular.element($window)[0].innerWidth;
                 }, function() {
@@ -46,9 +47,12 @@ app.directive('barChart', function(d3Service, $window, DataFactory, graphSetting
                                     .style('background-color', '#ffffff')
                                     .append("g");
 
+
+
                                 let barSpace = 0.1,
-                                groupedValues = DataFactory.groupByCategory(scope.rows, scope.seriesx, scope.seriesy, savedSets.groupType),
-                                tooMuchData = groupedValues[0].values.length > 50; //this can be replaced. 
+                               
+                                tooMuchData = scope.rows[0].values.length > 50; //this can be replaced. 
+                                
                                 
 
                                 // let xLabelLength = groupedData.reduce(function (prev, current) {
@@ -79,10 +83,10 @@ app.directive('barChart', function(d3Service, $window, DataFactory, graphSetting
 
                                 let xAxisNames = [],
                                 groupCats = []
-                                groupedValues.forEach(obj => {
-                                    groupCats.push(obj.name);
+                                scope.rows.forEach(obj => {
+                                    xAxisNames.push(obj.name);
                                     obj.values.forEach(arr => {
-                                        if (xAxisNames.indexOf(arr[0]) === -1) xAxisNames.push(arr[0]);
+                                        if (groupCats.indexOf(arr[0]) === -1) groupCats.push(arr[0]);
                                     });
                                 });
 
@@ -120,52 +124,37 @@ app.directive('barChart', function(d3Service, $window, DataFactory, graphSetting
 
 
                                 var yData = svg.selectAll("yData")
-                                    .data(groupedValues[0].values)
+                                    .data(scope.rows)
                                     .enter().append("g")
                                     .attr("class", "yData")
                                     .attr("transform", function(d) { 
-                                        return "translate(" + x1Scale(d[0]) + ",0)"; 
+                                        return "translate(" + x1Scale(d.name) + ",0)"; 
                                     });
 
-
-                                yData.selectAll(".bar")
-                                    .data(d => {
-                                        console.log(d);
+                                 yData.selectAll(".bar")
+                                    .data(d =>  {
+                                        return d.values;
                                     })
                                     .enter().append("rect")
-                                    // .attr("width", x1.rangeBand())
-                                    // .attr("x", function(d) { return x1(d.name); })
-                                    // .attr("y", function(d) { return y(d.value); })
-                                    // .attr("height", function(d) { return height - y(d.value); })
-                                    // .style("fill", function(d) { return color(d.name); });
-
-
-
-
-
-
-                                // svg.selectAll(".bar")
-                                //     .data(groupedValues)
-                                //     .enter().append("rect")
-                                //     .attr("class", "bar")
-                                //     .attr("x", function(d) {
-                                //         return x(d[0]); })
-                                //     .attr("width", tooMuchData ? 10 : x.rangeBand())
-                                //     .attr("y", function(d) {
-                                //         return y(d[1]);
-                                //     })
-                                //     .attr("height", function(d) {
-                                //         return savedSets.height - defaultSettings.margin.bottom - y(d[1]);
-                                //     })
-                                //     .attr("fill", function(d, i) {
-                                //             if(typeof savedSets.color === 'function') return color(i)
-                                //             else return savedSets.color;
-                                //         })
-                                //     .attr("transform", "translate(" + defaultSettings.margin.left + ", 0)");
+                                    .attr("class", "bar")
+                                    .attr("x", function(d) {
+                                        return x2Scale(d[0]); })
+                                    .attr("width", tooMuchData ? 10 : x2Scale.rangeBand())
+                                    .attr("y", function(d) {
+                                        return yScale(d[1]);
+                                    })
+                                    .attr("height", function(d) {
+                                        return savedSets.height - defaultSettings.margin.bottom - yScale(d[1]);
+                                    })
+                                    .attr("fill", function(d, i) {
+                                            if(typeof savedSets.color === 'function') return savedSets.color(i)
+                                            else return savedSets.color;
+                                        })
+                                    .attr("transform", "translate(" + defaultSettings.margin.left + ", 0)");
 
                                 svg.append("text")
                                     .attr("x", (savedSets.width / 2))             
-                                    .attr("y", (savedSets.margin.top / 2))
+                                    .attr("y", (defaultSettings.margin.top / 2))
                                     .attr("text-anchor", "middle") 
                                     .style("font-size", savedSets.titleSize)
                                     .text(savedSets.title);
