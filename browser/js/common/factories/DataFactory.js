@@ -1,25 +1,19 @@
 app.factory('DataFactory', function () {
   return {
 
-    groupByCategory: function (values, seriesx, seriesy, type) {
-      if(type === 'none') return values; 
-     
-      let groupedObj = {};  
+    groupByMean: function (values) {
       let groupedData = [];
       values.forEach(function (obj) {
-          let newObj= {name: obj.name}
+          let newObj= {name: obj.name};
+          let groupedObj = {};
           obj.values.forEach(function(arr) {
-              if (!groupedObj[arr[0]]) {
-                  groupedObj[arr[0]] = [arr[1], 1];
-                } else {
-                  groupedObj[arr[0]][0] += arr[1];
-                  groupedObj[arr[0]][1]++;
-                }
+            groupedObj[arr[0]] = [arr[1]/arr[2], arr[2]];
+                
           });
+          console.log(groupedObj);
       
           newObj.values = Object.keys(groupedObj).map(key => {
-            if (type === 'total') return [key, groupedObj[key][0]];
-            else if (type === 'mean') return [key, groupedObj[key][0]/groupedObj[key][1]];
+            return [key, groupedObj[key][0], groupedObj[key][1]];
           });
 
           groupedData.push(newObj);

@@ -16,11 +16,16 @@ app.directive('pieChart', function(d3Service, $window, SVGFactory, graphSettings
                 //Re-render the graph when user changes settings, data, or window size
                 SVGFactory.watchForChanges(scope);
 
+                let values = [];
+                
+                if (scope.settings.groupType === 'mean') values = DataFactory.groupByMean(scope.rows)
+                else values = scope.rows;
+
                 scope.render = function() {
                         let anchor = d3.select(ele[0]);
                         anchor.selectAll('*').remove();
 
-                        graphSettingsFactory.getSavedSettings(scope.settings, ele[0], scope.rows)
+                        graphSettingsFactory.getSavedSettings(scope.settings, ele[0], values)
                             .then(function (savedSets) {
                                 let defaultSettings = graphSettingsFactory.getDefaultSettings();
                                 let svg = SVGFactory.appendSVG(anchor, savedSets.width, savedSets.height);
@@ -34,7 +39,7 @@ app.directive('pieChart', function(d3Service, $window, SVGFactory, graphSettings
 
                                 let groupedTotal = 0;
                             
-                                scope.rows.forEach( a => groupedTotal += a.values[0][1]);
+                                values.forEach( a => groupedTotal += a.values[0][1]);
                                 
                                  
                                 let pie = d3.layout.pie().value(function(d) {
@@ -44,7 +49,7 @@ app.directive('pieChart', function(d3Service, $window, SVGFactory, graphSettings
                                 let arc = d3.svg.arc().outerRadius(savedSets.radius);
 
                                 let pieChart = svg.selectAll(".arc")
-                                    .data(pie(scope.rows))
+                                    .data(pie(values))
                                     .enter().append("g")
                                     .attr("class", "arc");
 

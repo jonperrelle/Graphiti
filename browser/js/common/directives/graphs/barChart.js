@@ -1,5 +1,5 @@
 
-app.directive('barChart', function(d3Service, graphSettingsFactory, SVGFactory) {
+app.directive('barChart', function(d3Service, graphSettingsFactory, DataFactory, SVGFactory) {
     return {
         restrict: 'E',
         scope: {
@@ -21,18 +21,18 @@ app.directive('barChart', function(d3Service, graphSettingsFactory, SVGFactory) 
 
                     let anchor = d3.select(ele[0]);
                         anchor.selectAll('*').remove();
-
+                    let values = [];
                     let tooMuchData = scope.rows.length > 50;
                     let defaultSettings = graphSettingsFactory.getDefaultSettings();
+                    if (scope.settings.groupType === 'mean') values = DataFactory.groupByMean(scope.rows)
+                    else values = scope.rows;
 
-                        graphSettingsFactory.getSavedSettings(scope.settings, ele[0], scope.rows, tooMuchData, defaultSettings)
+                        graphSettingsFactory.getSavedSettings(scope.settings, ele[0], values, tooMuchData, defaultSettings)
                             .then(function (savedSets) {
                                 
                                 let svg = SVGFactory.appendSVG(anchor, savedSets.width, savedSets.height);
 
-
                                 let barSpace = 0.1;
-                               
 
                                 // let xLabelLength = groupedData.reduce(function (prev, current) {
                                 //         let currentLength = current[scope.columns[0].name].toString().length;
@@ -62,7 +62,7 @@ app.directive('barChart', function(d3Service, graphSettingsFactory, SVGFactory) 
 
                                 let xAxisNames = [],
                                 groupCats = []
-                                scope.rows.forEach(obj => {
+                                values.forEach(obj => {
                                     xAxisNames.push(obj.name);
                                     obj.values.forEach(arr => {
                                         if (groupCats.indexOf(arr[0]) === -1) groupCats.push(arr[0]);
@@ -106,7 +106,7 @@ app.directive('barChart', function(d3Service, graphSettingsFactory, SVGFactory) 
 
 
                                 var yData = svg.selectAll("yData")
-                                    .data(scope.rows)
+                                    .data(values)
                                     .enter().append("g")
                                     .attr("class", "yData")
                                     .attr("transform", function(d) { 

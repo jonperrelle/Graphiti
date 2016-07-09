@@ -14,7 +14,7 @@ app.directive('settingsPanel', function(ValidationFactory, GraphFilterFactory, $
     
             
             scope.xColumns = scope.allColumns.filter(function(elem){
-                console.log(elem);
+                
                 if (scope.graphType === 'lineGraph') return elem.type === 'number' || elem.type === 'date';
                 else if (scope.graphType === 'barChart') return elem.type === 'number' || elem.type === 'date' || elem.type === 'string';
                 else if (scope.graphType === 'scatterPlot') return elem.type === 'number';

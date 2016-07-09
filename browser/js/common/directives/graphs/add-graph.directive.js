@@ -57,13 +57,12 @@ app.directive('addGraph', function($rootScope, AddGraphFactory, ValidationFactor
                             scope.lineEnable = false;
                             GraphFilterFactory.filterBarData(scope.seriesx, scope.seriesy, scope.data)
                             .then(function(barValues) {
+                                if (barValues.length > 30) scope.withinLength = false;
                                 scope.barvalues = barValues;
                                 scope.barEnable = true;
                                 scope.pieEnable = true;
                             });
-                            let groupedData = DataFactory.groupByCategory(values, scope.seriesx, scope.seriesy, 'total');
-                            if (groupedData[0].length > 30) scope.withinLength = false;
-                           // scope.barEnabled = true
+                        
                     }
                 });
                 
