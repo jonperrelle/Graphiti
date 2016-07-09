@@ -23,6 +23,10 @@ app.directive('barChart', function(d3Service, DataFactory, SVGFactory) {
                     groupedData = DataFactory.orderByCategory(groupedData, scope.columns[0].name, scope.columns[0].type, orderType);
                     
                     let tooMuchData = groupedData.length > 50; //this can be replaced. 
+                    if (tooMuchData) {
+                        d3.select(ele[0].parentElement)
+                            .classed("scrolling", true);
+                    }
                     let anchor = d3.select(ele[0]);
                     anchor.selectAll('*').remove();
 
