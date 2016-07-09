@@ -3,11 +3,12 @@ app.directive('histogram', function (d3Service, DataFactory, SVGFactory) {
     restrict: 'E',
     scope: {
       rows: "=",
-      columns: "=",
+      seriesx: '=',
+      seriesy: '=',
       settings: "="
     },
     link: function (scope, ele, attrs) {
-      scope.column = scope.columns[0];
+      scope.column = scope.seriesx[0];
       d3Service.d3().then(function (d3) {
         //Re-render the graph when user changes settings, data, or window size
         SVGFactory.watchForChanges(scope);

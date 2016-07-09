@@ -23,7 +23,7 @@ app.factory("graphSettingsFactory", function(d3Service){
 	};
 
     let setColor = function (color) {
-        switch (colorScale) {
+        switch (color) {
           case '10':
             return d3.scale.category10();
           case '20a':
@@ -33,7 +33,7 @@ app.factory("graphSettingsFactory", function(d3Service){
           case '20c':
             return d3.scale.category20c();
           default: 
-            return colorScale;
+            return color;
         }
       };
 
@@ -50,13 +50,13 @@ app.factory("graphSettingsFactory", function(d3Service){
         return defaultSettings;      
 	};
 
-	graphSettings.getSavedSettings = function (sets, ele, data) {
+	graphSettings.getSavedSettings = function (sets, ele, data, tooMuchData, defaultSettings) {
 
 		return d3Service.d3().then(function(d3) {
 			let formatColX = 'X Axis';
 			let formatColY = 'Y Axis';
 			let savedSettings = {};
-			savedSettings.width = sets.width || ele.parentNode.offsetWidth;
+			savedSettings.width = sets.width || (tooMuchData ? defaultSettings.margin.left + defaultSettings.margin.right + data.length * 15 : ele.parentNode.offsetWidth);
             savedSettings.height = sets.height || 500;
             savedSettings.xAxisLabel = sets.xAxisLabel || formatColX;
             savedSettings.yAxisLabel = sets.yAxisLabel || formatColY;

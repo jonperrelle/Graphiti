@@ -11,7 +11,7 @@ app.config(function($stateProvider) {
     });
 });
 
-app.controller('UserHomeCtrl', function($scope, $state, UploadFactory, Session, DatasetFactory, GraphFactory, UserInfo, GraphFilterFactory, $localStorage) {
+app.controller('UserHomeCtrl', function($scope, $state, UploadFactory, Session, DatasetFactory, GraphFactory, UserInfo, ValidationFactory, GraphFilterFactory, $localStorage) {
 
     $scope.user = UserInfo.user;
     $scope.datasets = UserInfo.datasets;
@@ -20,7 +20,7 @@ app.controller('UserHomeCtrl', function($scope, $state, UploadFactory, Session, 
     $scope.goToUserGraph = function(graph) {
         DatasetFactory.getOneUserDataset(graph.dataset, $scope.user)
             .then(rows => {
-                let allColumns = Object.keys(rows[0]);
+                let allColumns = ValidationFactory.assignColumnNameAndType(rows, Object.keys(rows[0]));
                 if (graph.graphType === 'barChart' || graph.graphType === 'pieChart') {
                     GraphFilterFactory.filterBarData(graph.seriesx, graph.seriesy, rows)
                     .then(function (values) {

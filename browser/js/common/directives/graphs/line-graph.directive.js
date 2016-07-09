@@ -55,7 +55,7 @@ app.directive('lineGraph', function(d3Service, SVGFactory, graphSettingsFactory)
                             y.domain([savedSets.minY, savedSets.maxY]);
 
                             //xAxis
-                            SVGFactory.appendXAxis(svg, defaultsettings.margin, savedSets.width, savedSets.height, xAxis, savedSets.xAxisLabel, savedSets.xAxisLabelSize);
+                            SVGFactory.appendXAxis(svg, defaultSettings.margin, savedSets.width, savedSets.height, xAxis, savedSets.xAxisLabel, savedSets.xAxisLabelSize);
 
                     
 

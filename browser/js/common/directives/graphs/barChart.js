@@ -22,18 +22,17 @@ app.directive('barChart', function(d3Service, graphSettingsFactory, SVGFactory) 
                     let anchor = d3.select(ele[0]);
                         anchor.selectAll('*').remove();
 
-                        graphSettingsFactory.getSavedSettings(scope.settings, ele[0], scope.rows)
+                    let tooMuchData = scope.rows.length > 50;
+                    let defaultSettings = graphSettingsFactory.getDefaultSettings();
+
+                        graphSettingsFactory.getSavedSettings(scope.settings, ele[0], scope.rows, tooMuchData, defaultSettings)
                             .then(function (savedSets) {
-                                let defaultSettings = graphSettingsFactory.getDefaultSettings();
+                                
                                 let svg = SVGFactory.appendSVG(anchor, savedSets.width, savedSets.height);
 
 
-
-                                let barSpace = 0.1,
+                                let barSpace = 0.1;
                                
-                                tooMuchData = scope.rows[0].values.length > 50; //this can be replaced. 
-                                
-                                
 
                                 // let xLabelLength = groupedData.reduce(function (prev, current) {
                                 //         let currentLength = current[scope.columns[0].name].toString().length;
@@ -122,7 +121,7 @@ app.directive('barChart', function(d3Service, graphSettingsFactory, SVGFactory) 
                                     .attr("class", "bar")
                                     .attr("x", function(d) {
                                         return x2Scale(d[0]); })
-                                    .attr("width", tooMuchData ? 10 : x2Scale.rangeBand())
+                                    .attr("width", tooMuchData ? 10/scope.seriesy.length : x2Scale.rangeBand())
                                     .attr("y", function(d) {
                                         return yScale(d[1]);
                                     })

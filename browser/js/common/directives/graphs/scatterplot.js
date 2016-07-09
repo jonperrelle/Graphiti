@@ -52,7 +52,7 @@ app.directive('scatterplotGraph', function(d3Service, $window, GraphFilterFactor
 
                             let filteredValues = GraphFilterFactory.setBounds(savedSets, scope.rows);
 
-                            console.log(filteredValues);
+                            
                             let cValue = function(d) {
                                     return d
                             };
