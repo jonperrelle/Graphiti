@@ -19,7 +19,7 @@ module.exports = function (app, db) {
 
         User.findOne({
                 where: {
-                    google_id: profile.id
+                    email: profile._json.email
                 }
             })
             .then(function (user) {
