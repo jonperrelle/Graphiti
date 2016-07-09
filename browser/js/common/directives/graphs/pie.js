@@ -47,20 +47,19 @@ app.directive('pieChart', function(d3Service, $window, DataFactory, graphSetting
                                         .append('g')
                                         .attr("transform", "translate(" + savedSets.width / 2 + "," + savedSets.height / 2 + ")");
 
-                                let groupedValues = DataFactory.groupByCategory(scope.rows, scope.seriesx, scope.seriesy, savedSets.groupType);
-
                                 let groupedTotal = 0;
-                                groupedValues[0].values.forEach( a => groupedTotal += a[1]);
+                            
+                                scope.rows.forEach( a => groupedTotal += a.values[0][1]);
                                 
                                  
                                 let pie = d3.layout.pie().value(function(d) {
-                                    return d[1];
+                                    return d.values[0][1];
                                 });
 
                                 let arc = d3.svg.arc().outerRadius(savedSets.radius);
 
                                 let pieChart = svg.selectAll(".arc")
-                                    .data(pie(groupedValues[0].values))
+                                    .data(pie(scope.rows))
                                     .enter().append("g")
                                     .attr("class", "arc");
 
@@ -69,7 +68,7 @@ app.directive('pieChart', function(d3Service, $window, DataFactory, graphSetting
                                       .attr("d", arc)
                                       .style("fill", function(d, i) { return savedSets.color(i); })
 
-                                pieChart.append("text")
+                                svg.append("text")
                                     .attr("x", 0)             
                                     .attr("y", (savedSets.radius * -1.5) + defaultSettings.margin.top/2)
                                     .attr("text-anchor", "middle")    

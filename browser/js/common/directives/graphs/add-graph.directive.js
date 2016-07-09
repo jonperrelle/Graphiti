@@ -10,10 +10,9 @@ app.directive('addGraph', function($rootScope, AddGraphFactory, ValidationFactor
         link: function(scope, ele, attrs) {
             scope.seriesx = [];
             scope.seriesy = [];
+            
             scope.settings = {};
             scope.count = 0;
-            // scope.column1 = $localStorage.column1;
-            // scope.column2 = $localStorage.column2;
             scope.assignedColumns = ValidationFactory.assignColumnNameAndType(scope.data, scope.columns);
             
             scope.counter = function () {
@@ -26,6 +25,9 @@ app.directive('addGraph', function($rootScope, AddGraphFactory, ValidationFactor
                 GraphFilterFactory.filterData(scope.seriesx, scope.seriesy, scope.data)
                 .then(function(values) {
                     scope.values = values;
+                    // $localStorage.values = scope.values;
+                    // $localStorage.seriesx = scope.seriesx;
+                    // $localStorage.seriesy = scope.seriesy;
                     scope.withinLength = true;
                     if (scope.seriesy.length > 0 && scope.seriesx[0].type === 'date' && scope.seriesy[0].type === 'number' ) {
                             scope.lineEnable = true;
@@ -41,6 +43,7 @@ app.directive('addGraph', function($rootScope, AddGraphFactory, ValidationFactor
                     else if (scope.seriesy.length > 0 && scope.seriesx[0].type === 'number' && scope.seriesy[0].type === 'number' ) {
                             scope.scatterEnable = true;
                             scope.lineEnable = true;
+                            scope.pieEnable = false;
                             GraphFilterFactory.filterBarData(scope.seriesx, scope.seriesy, scope.data)
                             .then(function(barValues) {
                                 scope.barvalues = barValues;
@@ -50,13 +53,13 @@ app.directive('addGraph', function($rootScope, AddGraphFactory, ValidationFactor
                     }
 
                     else if (scope.seriesy.length > 0 && scope.seriesx[0].type === 'string' && scope.seriesy[0].type === 'number' ) {
-                            scope.pieEnable = true;
                             scope.scatterEnable = false;
                             scope.lineEnable = false;
                             GraphFilterFactory.filterBarData(scope.seriesx, scope.seriesy, scope.data)
                             .then(function(barValues) {
                                 scope.barvalues = barValues;
                                 scope.barEnable = true;
+                                scope.pieEnable = true;
                             });
                             let groupedData = DataFactory.groupByCategory(values, scope.seriesx, scope.seriesy, 'total');
                             if (groupedData[0].length > 30) scope.withinLength = false;
@@ -68,9 +71,8 @@ app.directive('addGraph', function($rootScope, AddGraphFactory, ValidationFactor
 
             scope.viewSingleGraph = function (graphType) {
                 let sendValues;
-                if (graphType === 'barChart') sendValues = scope.barvalues;
+                if (graphType === 'barChart' || graphType === 'pieChart') sendValues = scope.barvalues;
                 else sendValues = scope.values;
-                console.log(sendValues);
                 $state.go('singleGraph', {graphType, data: scope.data, 
                     values: sendValues, 
                     seriesx: scope.seriesx, 
