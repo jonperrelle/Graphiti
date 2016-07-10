@@ -22,18 +22,18 @@ app.factory("graphSettingsFactory", function(d3Service){
         return max;
 	};
 
-	graphSettings.getDefaultSettings = function () {
-		let defaultSettings = {};
-		let yLabelLength = 2;
-        let xLabelLength = 3;                
-            defaultSettings.margin = { 
-                top: 30,
-                right: 20,
-                bottom: (xLabelLength + 6) * 5,
-                left: (yLabelLength + 6) * 7,
-            };
-        return defaultSettings;      
-	};
+	// graphSettings.getDefaultSettings = function () {
+	// 	let defaultSettings = {};
+	// 	let yLabelLength = 2;
+ //     let xLabelLength = 3;                
+ //            defaultSettings.margin = { 
+ //                top: 30,
+ //                right: 20,
+ //                bottom: (xLabelLength + 6) * 5,
+ //                left: (yLabelLength + 6) * 7,
+ //            };
+ //        return defaultSettings;      
+	// };
 
     // graphSettings.getXScale = function(seriesx, defaultSettings) {
     //     return d3Service.d3().then(function(d3){
@@ -43,28 +43,35 @@ app.factory("graphSettingsFactory", function(d3Service){
     //             };  
     //     })
     // }
-    
 
 	graphSettings.getSavedSettings = function (sets, ele, data) {
-
 		return d3Service.d3().then(function(d3) {
 			let formatColX = 'X Axis';
 			let formatColY = 'Y Axis';
 			let savedSettings = {};
+            let yLabelLength = 2;
+            let xLabelLength = 3;  
 			savedSettings.width = sets.width || ele.parentNode.offsetWidth;
             savedSettings.height = sets.height || 500;
             savedSettings.xAxisLabel = sets.xAxisLabel || formatColX;
+            savedSettings.xAxisTitleSize =  sets.xAxisTitleSize || 12;
             savedSettings.yAxisLabel = sets.yAxisLabel || formatColY;
-            savedSettings.radius = sets.radius || savedSettings.height / 3;
+            savedSettings.yAxisTitleSize =  sets.yAxisTitleSize || 12;
             savedSettings.title = sets.title || (formatColX + " .vs " + formatColY).toUpperCase();
+            savedSettings.titleSize = sets.titleSize || 16;
             savedSettings.color = sets.color || d3.scale.category10();
             savedSettings.minX = sets.minX || getMin(d3, data, 0);
             savedSettings.maxX = sets.maxX || getMax(d3, data, 0);
             savedSettings.minY = sets.minY || getMin(d3, data, 1);
             savedSettings.maxY = sets.maxY || getMax(d3, data, 1);
-            savedSettings.displayType = sets.displayType || 'number';
-            savedSettings.groupType = sets.groupType || 'total';
-
+            savedSettings.xLabelLength = 3;
+            savedSettings.yLabelLength = 2;              
+            savedSettings.margin = { 
+                top: savedSettings.titleSize * 1.5,
+                right: 20,
+                bottom: (xLabelLength + 6) * 5 + Number(savedSettings.xAxisTitleSize), 
+                left: (yLabelLength + 6) * 5 + Number(savedSettings.yAxisTitleSize)
+            };
             return savedSettings;
         });
 	};

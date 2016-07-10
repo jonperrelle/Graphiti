@@ -45,13 +45,13 @@ app.directive('addGraph', function($rootScope, AddGraphFactory, ValidationFactor
                     scope.values = values;
                     scope.withinLength = true;
                    
-                    if ((scope.seriesx[0].type === 'number' || scope.seriesx[0].type === 'date') && scope.seriesy[0].type === 'number' ) {
+                    if ((scope.seriesx[0].type === 'date') && scope.seriesy[0].type === 'number' ) {
                             scope.lineEnable = true;
 
                         }
                     else if (scope.seriesx[0].type === 'number' && scope.seriesy[0].type === 'number' ) {
                             scope.scatterEnable = true;
-                            
+                            scope.lineEnable = true; 
                     }
 
                     else if (scope.seriesx[0].type === 'string' && scope.seriesy[0].type === 'number' ) {

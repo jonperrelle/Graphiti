@@ -44,7 +44,8 @@ app.directive('scatterplotGraph', function(d3Service, $window, GraphFilterFactor
 
                 graphSettingsFactory.getSavedSettings(scope.settings, ele[0], scope.rows)
                     .then(function (savedSets) {
-                        let defaultSettings = graphSettingsFactory.getDefaultSettings();
+                        console.log('in scatter', savedSets)
+                        //let savedSets = graphSettingsFactory.getsavedSets();
                             let svg = anchor
                                 .append('svg')
                                 .attr('width', savedSets.width)
@@ -56,7 +57,7 @@ app.directive('scatterplotGraph', function(d3Service, $window, GraphFilterFactor
                                     return d[0]
                                 }, // data -> value
                                 xScale = d3.scale.linear()
-                                .range([defaultSettings.margin.left, savedSets.width - defaultSettings.margin.right]), // value -> display
+                                .range([savedSets.margin.left, savedSets.width - savedSets.margin.right]), // value -> display
                                 xMap = function(d) {
                                     
                                     return xScale(xValue(d))
@@ -66,7 +67,7 @@ app.directive('scatterplotGraph', function(d3Service, $window, GraphFilterFactor
                             let yValue = function(d) {
                                     return d[1]
                                 }, // data -> value
-                                yScale = d3.scale.linear().range([savedSets.height - defaultSettings.margin.bottom, defaultSettings.margin.top]), // value -> display
+                                yScale = d3.scale.linear().range([savedSets.height - savedSets.margin.bottom, savedSets.margin.top]), // value -> display
                                 yMap = function(d) {
                                     return yScale(yValue(d))
                                 }, // data -> display
@@ -90,10 +91,11 @@ app.directive('scatterplotGraph', function(d3Service, $window, GraphFilterFactor
                             // x-axis
                             svg.append("g")
                                 .attr("class", "x axis")
-                                .attr("transform", "translate(0," + (savedSets.height - defaultSettings.margin.bottom) + ")")
+                                .attr("transform", "translate(0," + (savedSets.height - savedSets.margin.bottom) + ")")
                                 .call(xAxis)
                                 .append("text")
                                 .attr("class", "xlabel")
+                                .style("font-size", savedSets.xAxisTitleSize)
                                 .text(savedSets.xAxisLabel);
 
                             // svg.selectAll(".x text")
@@ -101,16 +103,17 @@ app.directive('scatterplotGraph', function(d3Service, $window, GraphFilterFactor
                             //     .style("text-anchor", "end");
 
                             svg.select(".xlabel")
-                                    .attr("transform", "translate(" + (savedSets.width - defaultSettings.margin.left - defaultSettings.margin.right) / 2 + ", " + (defaultSettings.margin.bottom - 10) + ")");
+                                    .attr("transform", "translate(" + (savedSets.width - savedSets.margin.left - savedSets.margin.right) / 2 + ", " + (savedSets.margin.bottom - 10) + ")");
 
                             // y-axis
                             svg.append("g")
                                 .attr("class", "y axis")
-                                .attr("transform", "translate(" + defaultSettings.margin.left + ",0)")
+                                .attr("transform", "translate(" + savedSets.margin.left + ",0)")
                                 .call(yAxis)
                                 .append("text")
                                 .attr("class", "ylabel")
-                                .attr("transform", "rotate(-90)translate(" + -((savedSets.height + defaultSettings.margin.bottom + defaultSettings.margin.top) / 2) + ", " + -(defaultSettings.margin.left - 20) + ")")
+                                .attr("transform", "rotate(-90)translate(" + -((savedSets.height + savedSets.margin.bottom + savedSets.margin.top) / 2) + ", " + -(savedSets.margin.left - 20) + ")")
+                                .style("font-size", savedSets.yAxisTitleSize)
                                 .text(savedSets.yAxisLabel);
 
                             // draw 
@@ -154,8 +157,9 @@ app.directive('scatterplotGraph', function(d3Service, $window, GraphFilterFactor
 
                             svg.append("text")
                                 .attr("x", (savedSets.width / 2))             
-                                .attr("y", (defaultSettings.margin.top/2))
-                                .attr("text-anchor", "middle")    
+                                .attr("y", (savedSets.margin.top/1.5))
+                                .attr("text-anchor", "middle") 
+                                .style("font-size", savedSets.titleSize)   
                                 .text(savedSets.title);
                     })
 

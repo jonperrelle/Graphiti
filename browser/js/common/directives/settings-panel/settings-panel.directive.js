@@ -19,17 +19,20 @@ app.directive('settingsPanel', function(ValidationFactory, GraphFilterFactory, $
                 return elem.type === 'number';
             })
 
+            scope.fontSizes = [8, 10, 12, 14, 16, 20, 24, 32, 48];
+
             scope.downloadGraph = function() {
                 saveSvgAsPng(document.querySelector('.graph-container svg'), 'sample.png');
             };
 
             scope.showGraphs = function () {  
-                
+                console.log(scope.settings)
                 GraphFilterFactory.filterData(scope.seriesx, scope.seriesy, scope.data)
                 .then(function(values) {
                     console.log(values)
                     scope.values = values;
                     scope.lineEnable = true;
+                    scope.scatterEnable = true;
                 });
                 
             };
