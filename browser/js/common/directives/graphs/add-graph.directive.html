@@ -1,65 +1,91 @@
 <section>
 	<div class="row">
 		<form name="submitGraph" class="graph-form" role="form" novalidate>
-			<legend><h3 class="text-center">Select the Data Points to Graph</h3></legend>
+			<legend><h3 class="text-center">Select the Data to Graph</h3></legend>
 		    <fieldset>
 				<div class="row">
 				  <div class="form-group col-xs-12">
-				  	<div class="row">
-			          	<div class="column-select-form form-group col-sm-4 col-xs-12">
-				            <div>
-				            	<label for="seriesx" class="control-label">X Axis/Data Point #1</label>
-					            <div class='col-xs-10'>
-					              <select ng-model="seriesx[0]"  name="seriesx" class="form-control" ng-options="col.name for col in assignedColumns" ng-change="showGraphs()"></select>
+			          	<div class="column-select-form form-group col-sm-5 col-xs-12">
+				            <div class="row">
+				            	<label for="seriesx" class="control-label">X Axis Data</label>
+				            	<div class="row col-xs-12">
+						            <div class='col-xs-9'>
+						              <select ng-model="seriesx[0]"  name="seriesx" class="form-control" ng-options="col.name for col in assignedColumns" ng-change="showGraphs()"></select>
+						            </div>
+					            	<div class="col-xs-3"></div>
 					            </div>
-					            <div class="col-xs-2"></div>
 					        </div>
-					    </div>
-					    <div class="column-select-form form-group col-sm-4 col-xs-12">
-					        <div>
-				            	<label for="seriesy" class="control-label">Y Axis/Data Point #2</label>
-					            <div>
-					            	<div class="col-xs-10">
+					        <div class="row">
+				            	<label for="seriesy" class="control-label">Y Axis Data</label>
+					            <div class="row col-xs-12">
+					            	<div class="col-xs-9">
 						              <select ng-model="seriesy[0]"  name="seriesy" class="form-control" ng-options="col.name for col in assignedColumns" ng-change="showGraphs()"></select>
 						            </div>
-						            <div class="col-xs-2">
-						              <button class='btn download-btn' type="button" ng-click="counter()"><i class="fa fa-2x fa-plus-circle download-icon" aria-hidden="true"></i></button>
+						            <div class="col-xs-3">
+						              <button class='data-btn' type="button" ng-click="increaseCount()"><i class="fa fa-2x fa-plus-circle add-data-icon" aria-hidden="true"></i></button>
 						            </div>
 					            </div>
-					            <div ng-repeat="data in seriesy" ng-show="$index < count">
-					            	<div class="col-xs-10">
+					            <div class='row col-xs-12 seriesy-select' ng-repeat="data in seriesy" ng-show="$index < count">
+					            	<div class="col-xs-9">
 									    <select ng-model="seriesy[$index + 1]"  name="yseries" class="form-control" ng-options="col.name for col in assignedColumns" ng-change="showGraphs()"></select>
 					              	</div>
-					              	<div class="col-xs-2">
-						              <button class='btn download-btn' type="button" ng-click="counter()"><i class="fa fa-2x fa-plus-circle download-icon" aria-hidden="true"></i></button>
+					              	<div class="col-xs-3">
+						              <button class='data-btn' type="button"><i class="fa fa-2x fa-plus-circle add-data-icon" aria-hidden="true" ng-click="increaseCount()"></i></button>
+						              <button class="data-btn" ng-click="seriesy.splice($index, 1); showGraphs(); decreaseCount()"><i class="fa fa-2x fa-times remove-data-icon" aria-hidden="true"></i></button>
 						            </div>
 								</div>
 					        </div>
 					    </div>
-			          	
-		          		<div class="column-select-form form-group col-sm-3 col-xs-12" ng-if="seriesx.length > 0 || seriesy.length > 0">
-					        <div class="row graph-feedback">
-								<div ng-if="!scatterEnable">
-									<p><span>Scatterplot:</span> Not available for these data points.  Please select two quantitative data points.</p>
+					    <div class="col-sm-1"></div>
+		          		<div class="column-select-form form-group col-sm-5 col-xs-12" ng-if="seriesx.length > 0 || seriesy.length > 0">
+					        <div class="graph-feedback">
+					        	<div ng-if="!histogramEnable">
+									<p><span>Histogram:</span> Only available when a single X data is selected</p>
 								</div>
-								<div ng-if="!lineEnable">
-									<p><span>Line Graph:</span> Not available for these data points.  X value must be a date or quantitative value.  Y values must be quantitative.</p>
-								</div>
-								<div ng-if="!pieEnable || !withinLength">
-									<p><span>Pie Chart:</span> Not recommended for these data points.</p>
+					        	<div ng-if="!pieEnable || !withinLength">
+									<p><span>Pie Chart:</span> Not recommended for this data.</p>
 								</div>
 								<div ng-if="!barEnable">
-									<p><span>Bar Chart:</span> Not available for these data points. Y values must be quantitative</p>
+									<p><span>Bar Chart:</span> Not available for this data. Y data must be quantitative</p>
+								</div>
+								<div ng-if="!scatterEnable">
+									<p><span>Scatterplot:</span> Not available for this data.  X and Y Axis data must be quantitative.</p>
+								</div>
+								<div ng-if="!lineEnable">
+									<p><span>Line Graph:</span> Not available for this data.  X Axis data must be a date or quantitative value.  Y Axis data must be quantitative.</p>
 								</div>
 							</div>
 			          	</div>
-			        </div>
 				  </div>
 				</div>
 			</fieldset>
 		</form>
 	</div>
 	<div class="row graph-previews">
+		<div class="column col-sm-6" ng-if="histogramEnable">
+			<h4 class="text-center">Histogram</h4>
+			<div class="col-sm-1"></div>
+			<div class="col-xs-12 col-sm-10 graph-previews-columns" ng-click="viewSingleGraph('histogram')">
+				<histogram settings="settings" rows="histogramvalues" seriesy="seriesy" seriesx="seriesx"></histogram>
+			</div>
+			<div class="col-sm-1"></div>
+		</div>
+		<div class="column col-sm-6" ng-if="pieEnable && withinLength && seriesy.length === 1">
+			<h4 class="text-center">Pie Chart</h4>
+			<div class="col-sm-1"></div>
+			<div class="col-xs-12 col-sm-10 graph-previews-columns" ng-click="viewSingleGraph('pieChart')">
+				<pie-chart settings="settings" rows="barvalues"></pie-chart>
+			</div>
+			<div class="col-sm-1"></div>
+		</div>
+		<div class="column col-sm-6" ng-if="barEnable">
+			<h4 class="text-center">Bar Chart</h4>
+			<div class="col-sm-1"></div>
+			<div class="col-xs-12 col-sm-10 graph-previews-columns" ng-click="viewSingleGraph('barChart')">
+				<bar-chart settings="settings" rows="barvalues" seriesy="seriesy" seriesx="seriesx" ></bar-chart>
+			</div>
+			<div class="col-sm-1"></div>
+		</div>
 		<div class="column col-sm-6" ng-if="scatterEnable">
 			<h4 class="text-center">Scatterplot</h4>
 			<div class="col-sm-1"></div>
@@ -72,31 +98,7 @@
 			<h4 class="text-center">Line Graph</h4>
 			<div class="col-sm-1"></div>
 			<div class="col-xs-12 col-sm-10 graph-previews-columns" ng-click="viewSingleGraph('lineGraph')">
-				<line-graph rows="values" seriesy="seriesy" seriesx="seriesx" settings="settings" ></line-graph>
-			</div>
-			<div class="col-sm-1"></div>
-		</div>
-		<div class="column col-sm-6" ng-if="pieEnable && withinLength && seriesy.length === 1">
-			<h4 class="text-center">Pie Chart</h4>
-			<div class="col-sm-1"></div>
-			<div class="col-xs-12 col-sm-10 graph-previews-columns" ng-click="viewSingleGraph('pieChart')">
-				<pie-chart settings="settings" rows="barvalues" seriesy="seriesy" seriesx="seriesx" ></pie-chart>
-			</div>
-			<div class="col-sm-1"></div>
-		</div>
-		<div class="column col-sm-6" ng-if="barEnable">
-			<h4 class="text-center">Bar Chart</h4>
-			<div class="col-sm-1"></div>
-			<div class="col-xs-12 col-sm-10 graph-previews-columns" ng-click="viewSingleGraph('barChart')">
-				<bar-chart settings="settings" rows="barvalues" seriesy="seriesy" seriesx="seriesx" ></bar-chart>
-			</div>
-			<div class="col-sm-1"></div>
-		</div>
-		<div class="column col-sm-6" ng-if="column1.type === 'number' || column1.type === 'string'">
-			<h4 class="text-center">Histogram</h4>
-			<div class="col-sm-1"></div>
-			<div class="col-xs-12 col-sm-10 graph-previews-columns" ng-click="viewSingleGraph('histogram')">
-				<histogram settings="settings" rows="data" columns="[column1, column2]"></histogram>
+				<line-graph rows="values" seriesx="seriesx" settings="settings" ></line-graph>
 			</div>
 			<div class="col-sm-1"></div>
 		</div>

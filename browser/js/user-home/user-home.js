@@ -27,6 +27,12 @@ app.controller('UserHomeCtrl', function($scope, $state, UploadFactory, Session, 
                         $state.go('userSingleGraph', { userId: $scope.user.id, graphId: graph.id, dataset: graph.dataset, graphType: graph.graphType, settings: graph.setting, data: rows, seriesx: graph.seriesx, seriesy: graph.seriesy, allColumns: allColumns, values: values });
                     });
                 }
+                else if (graph.graphType === 'histogram') {
+                    GraphFilterFactory.filterHistogramData(graph.seriesx, rows)
+                    .then(function (values) {
+                        $state.go('userSingleGraph', { userId: $scope.user.id, graphId: graph.id, dataset: graph.dataset, graphType: graph.graphType, settings: graph.setting, data: rows, seriesx: graph.seriesx, allColumns: allColumns, values: values });
+                    });
+                }
                 else { 
                     GraphFilterFactory.filterData(graph.seriesx, graph.seriesy, rows)
                     .then(function(values) {

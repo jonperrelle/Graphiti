@@ -119,7 +119,7 @@
                 </div>
               </div>
             </div>
-            <div class="row" ng-hide="graphType==='barChart'">
+            <div class="row" ng-hide="graphType==='barChart' || graphType==='histogram'">
               <div class="form-group col-xs-6">
                 <label for="maxX" class="control-label">Min X Value</label>
                 <div>
@@ -163,11 +163,11 @@
                 </div>
               </div>
             </div>
-            <div class="row">
+            <div class="row" ng-hide="graphType==='histogram'">
               <div class="form-group col-xs-6">
                 <label for="minY" class="control-label">Min Y Value</label>
                 <div>
-                  <input class="form-control" name="minY" type="number" ng-model="settings.minY" required>
+                  <input class="form-control" name="minY" type="number" ng-model="settings.minY" ng-change="showGraphs()" required>
                 </div>
               </div>
               <div class="form-group col-xs-6">
@@ -200,7 +200,7 @@
         </div>
       </div>
     </div>
-    <div class="col-xs-12 panel-group">
+    <div class="col-xs-12 panel-group" ng-hide="graphType==='histogram'">
       <div class="panel settings-panel">
         <div class="panel-heading">
           <a data-toggle="collapse" data-target="#view-changedata-collapse" href="#"><h5>Change Y-Data</h5></a>
@@ -214,13 +214,13 @@
                   <select ng-model="seriesy[$index]" name="column2" class="form-control" ng-options="col.name for col in yColumns" ng-change="showGraphs()"></select>
                 </div>
               </div>
-              <div class="col-xs-3" ng-show="seriesy.length > 1">
-                <button ng-click="seriesy.splice($index, 1); showGraphs()">X</button>
+              <div class="form-group col-xs-3" ng-show="seriesy.length > 1">
+                <button class='settings-panel-data-btn' ng-click="seriesy.splice($index, 1); showGraphs()"><i class="fa fa-2x fa-times remove-data-icon" aria-hidden="true"></i></button>
               </div>
             </div>
             <div class="row">
               <div class="col-xs-12">
-                <button ng-click="seriesy.push('placeholder')">Add Data</button>
+                <button class='data-btn' type="button"><i class="fa fa-2x fa-plus-circle settings-panel-add-data-icon" aria-hidden="true" ng-click="seriesy.push('placeholder')"></i></button>
               </div>
             </div>
           </div>

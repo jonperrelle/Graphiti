@@ -1,4 +1,4 @@
-app.factory('GraphFilterFactory', function (d3Service, graphSettingsFactory) {
+app.factory('GraphFilterFactory', function (d3Service, graphSettingsFactory, DataFactory) {
    
     let graphFilter = {};
   
@@ -67,7 +67,7 @@ app.factory('GraphFilterFactory', function (d3Service, graphSettingsFactory) {
       return newObj;
      }; 
 
-     let groupBarData = function(filteredData) {
+     let groupBarData = function(filteredData, dataName) {
         let groupedData ={};
         for (var k in filteredData) {
           let groupedObj = {};
@@ -86,51 +86,33 @@ app.factory('GraphFilterFactory', function (d3Service, graphSettingsFactory) {
        return groupedData;
     };
 
-     graphFilter.filterBarData = function(seriesx, seriesy, data) {
-        let xVal= seriesx[0].name;
-        let formatDate;
-        return d3Service.d3().then(function(d3) {
-          let filteredArr = seriesy.map(obj => obj.name);
-          let filteredData = {};
-          data.forEach(row => {
-              let newRow = {};
-              for (let k in row) {
-                  if (seriesx[0].type === 'number') {
-                    if (filteredArr.indexOf(k) > -1 && row[xVal] && (!!Number(row[xVal]) || Number(row[xVal]) === 0)
-                      && row[k] && (!!Number(row[k]) || Number(row[k]) === 0)) {
-                          if (!filteredData[+row[xVal]]) filteredData[+row[xVal]] = [];
-                          filteredData[+row[xVal]].push([k, +row[k]]);
-                    }
-                  }
-                  else {
-                    if (filteredArr.indexOf(k) > -1 && row[xVal]
-                      && row[k] && (!!Number(row[k]) || Number(row[k]) === 0)) {
-                          if (!filteredData[row[xVal]]) filteredData[row[xVal]] = [];
-                          filteredData[row[xVal]].push([k, +row[k]]);
-                      }     
-                    }
-                  }
-
-              });
-          
-          filteredData = sortBarData(seriesx, filteredData);
-          filteredData = groupBarData(filteredData);
-          let values = []
-          for (let k in filteredData) {
-            values.push( {
-              name: k,
-              values: filteredData[k]
-            });
-          }
-          return values;
-
+    let groupHistData = function(data, dataName) {
+        let groupedData = [];
+        let groupedObj = {};
+        data.forEach( obj => {
+            if (!groupedObj[obj[dataName]]) {
+              groupedObj[obj[dataName]] = 1;
+            } else {
+              groupedObj[obj[dataName]]++;
+            }
         });
-     };
+      
+      for (let key in groupedObj) {
+        if (groupedObj.hasOwnProperty(key)) {
+          let obj = {};
+          obj[dataName] = key;
+          obj.frequency = groupedObj[key];
+          groupedData.push(obj);
+        }
+      } 
+
+      return groupedData;
+    };
 
      graphFilter.filterData = function (seriesx, seriesy, data) {
       
-        let formatDate;
-        let dataObj = setDataObject(seriesy);
+        let formatDate,
+        dataObj = setDataObject(seriesy);
         return d3Service.d3().then(function(d3) {
           if (seriesx[0].type ==='date') formatDate = setDateFormat(d3, data, seriesx);
 
@@ -162,6 +144,59 @@ app.factory('GraphFilterFactory', function (d3Service, graphSettingsFactory) {
               return obj;
           });
           return values;
+        });
+    };
+
+     graphFilter.filterBarData = function(seriesx, seriesy, data) {
+        let xVal= seriesx[0].name,
+        formatDate;
+        return d3Service.d3().then(function(d3) {
+          let filteredArr = seriesy.map(obj => obj.name);
+          let filteredData = {};
+          data.forEach(row => {
+              let newRow = {};
+              for (let k in row) {
+                  if (seriesx[0].type === 'number') {
+                    if (filteredArr.indexOf(k) > -1 && row[xVal] && (!!Number(row[xVal]) || Number(row[xVal]) === 0)
+                      && row[k] && (!!Number(row[k]) || Number(row[k]) === 0)) {
+                          if (!filteredData[+row[xVal]]) filteredData[+row[xVal]] = [];
+                          filteredData[+row[xVal]].push([k, +row[k]]);
+                    }
+                  }
+                  else {
+                    if (filteredArr.indexOf(k) > -1 && row[xVal]
+                      && row[k] && (!!Number(row[k]) || Number(row[k]) === 0)) {
+                          if (!filteredData[row[xVal]]) filteredData[row[xVal]] = [];
+                          filteredData[row[xVal]].push([k, +row[k]]);
+                      }     
+                    }
+                  }
+
+              });
+          
+          filteredData = sortBarData(seriesx, filteredData);
+          filteredData = groupBarData(filteredData);
+          let values = [];
+          for (let k in filteredData) {
+            values.push( {
+              name: k,
+              values: filteredData[k]
+            });
+          }
+          return values;
+
+        });
+     };
+
+     graphFilter.filterHistogramData = function (seriesx, data) {
+
+        return d3Service.d3().then(function(d3) {    
+          let dataName = seriesx[0].name
+          let quantitative = seriesx[0].type === 'number';
+          let filteredData = data.filter(obj => obj[dataName] && (!!Number(obj[dataName]) || Number(obj[dataName]) === 0))
+          let groupedData = groupHistData(data, dataName);
+
+          return quantitative ? d3.layout.histogram().value(d => +d[dataName]).bins(15)(filteredData) : groupedData;
         });
 
      };

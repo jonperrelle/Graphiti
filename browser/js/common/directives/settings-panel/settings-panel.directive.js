@@ -16,6 +16,7 @@ app.directive('settingsPanel', function(ValidationFactory, GraphFilterFactory, $
             scope.xColumns = scope.allColumns.filter(function(elem){
                 
                 if (scope.graphType === 'lineGraph') return elem.type === 'number' || elem.type === 'date';
+                else if (scope.graphType === 'histogram') return elem.type === 'number' || elem.type === 'string';
                 else if (scope.graphType === 'barChart') return elem.type === 'number' || elem.type === 'date' || elem.type === 'string';
                 else if (scope.graphType === 'scatterPlot') return elem.type === 'number';
                 else if (scope.graphType === 'pieChart') return elem.type === 'string';
@@ -34,13 +35,17 @@ app.directive('settingsPanel', function(ValidationFactory, GraphFilterFactory, $
                     GraphFilterFactory.filterData(scope.seriesx, scope.seriesy, scope.data)
                     .then(function(values) {
                         scope.values = values;
-                        
+                    });
+                }
+                else if (scope.graphType === 'histogram') {
+                    GraphFilterFactory.filterHistogramData(scope.seriesx, scope.data)
+                    .then(function(values) {
+                        scope.values = values;
                     });
                 }
                 else {
                     GraphFilterFactory.filterBarData(scope.seriesx, scope.seriesy, scope.data)
                     .then(function(values) {
-                        
                         scope.values = values;
                     });
                      

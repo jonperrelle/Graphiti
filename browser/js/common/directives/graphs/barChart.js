@@ -27,7 +27,7 @@ app.directive('barChart', function(d3Service, graphSettingsFactory, DataFactory,
                     if (scope.settings.groupType === 'mean') values = DataFactory.groupByMean(scope.rows)
                     else values = scope.rows;
 
-                        graphSettingsFactory.getSavedSettings(scope.settings, ele[0], values, tooMuchData, defaultSettings)
+                        graphSettingsFactory.getSavedSettings(scope.settings, ele[0], values, null, tooMuchData, defaultSettings)
                             .then(function (savedSets) {
                                 
                                 let svg = SVGFactory.appendSVG(anchor, savedSets.width, savedSets.height);

@@ -50,7 +50,7 @@ app.factory("graphSettingsFactory", function(d3Service){
         return defaultSettings;      
 	};
 
-	graphSettings.getSavedSettings = function (sets, ele, data, tooMuchData, defaultSettings) {
+	graphSettings.getSavedSettings = function (sets, ele, data, hist, tooMuchData, defaultSettings) {
 
 		return d3Service.d3().then(function(d3) {
 			let formatColX = 'X Axis';
@@ -63,13 +63,16 @@ app.factory("graphSettingsFactory", function(d3Service){
             savedSettings.xAxisLabelSize = sets.xAxisLabelSize || 8;
             savedSettings.yAxisLabelSize = sets.yAxisLabelSize || 8;
             savedSettings.radius = sets.radius || savedSettings.height / 3;
-            savedSettings.title = sets.title || (formatColX + " .vs " + formatColY).toUpperCase();
+            savedSettings.title = sets.title || (formatColX + " vs. " + formatColY).toUpperCase();
             savedSettings.titleSize = sets.titleSize || 14;
             savedSettings.color = setColor(sets.color) || d3.scale.category10(); 
-            savedSettings.minX = (sets.minX || sets.minX === 0) ? sets.minX : getMin(d3, data, 0);
-            savedSettings.maxX = (sets.maxX || sets.maxX === 0) ? sets.maxX : getMax(d3, data, 0);
-            savedSettings.minY = (sets.minY || sets.minY === 0) ? sets.minY : getMin(d3, data, 1);
-            savedSettings.maxY = (sets.maxY || sets.maxY === 0) ? sets.maxY : getMax(d3, data, 1);
+            if (hist !== 'histogram') {
+                savedSettings.minX = (sets.minX || sets.minX === 0) ? sets.minX : getMin(d3, data, 0);
+                savedSettings.maxX = (sets.maxX || sets.maxX === 0) ? sets.maxX : getMax(d3, data, 0);
+                savedSettings.minY = (sets.minY || sets.minY === 0) ? sets.minY : getMin(d3, data, 1);
+                savedSettings.maxY = (sets.maxY || sets.maxY === 0) ? sets.maxY : getMax(d3, data, 1);
+            }
+            savedSettings.display = sets.display || 'total';
             savedSettings.displayType = sets.displayType || 'number';
             savedSettings.groupType = sets.groupType || 'total';
             savedSettings.orderType = sets.orderType || 'sort';
