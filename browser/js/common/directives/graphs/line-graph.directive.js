@@ -1,5 +1,5 @@
 
-app.directive('lineGraph', function(d3Service, SVGFactory, graphSettingsFactory) {
+app.directive('lineGraph', function(d3Service, SVGFactory, GraphFilterFactory, graphSettingsFactory) {
 
     return {
         restrict: 'E',
@@ -54,6 +54,7 @@ app.directive('lineGraph', function(d3Service, SVGFactory, graphSettingsFactory)
                             x.domain([savedSets.minX, savedSets.maxX]);
                             y.domain([savedSets.minY, savedSets.maxY]);
 
+                            let filteredValues = GraphFilterFactory.setBounds(savedSets, scope.rows);
                             //xAxis
                             SVGFactory.appendXAxis(svg, defaultSettings.margin, savedSets.width, savedSets.height, xAxis, savedSets.xAxisLabel, savedSets.xAxisLabelSize);
 
@@ -82,7 +83,7 @@ app.directive('lineGraph', function(d3Service, SVGFactory, graphSettingsFactory)
                             //     .text(savedSets.yAxisLabel);
 
                             let yData = svg.selectAll("yData")
-                                .data(scope.rows)
+                                .data(filteredValues)
                                 .enter().append("g")
                                 .attr("class", "yData"); 
 
@@ -92,27 +93,40 @@ app.directive('lineGraph', function(d3Service, SVGFactory, graphSettingsFactory)
                                     return line(d.values);
                                 })
                                 .attr('fill', 'none')
+                                .attr("data-legend",function(d) { 
+                                    return d.name
+                                })
                                 .attr("stroke", function(d, i) {
                                     if(typeof savedSets.color === 'function') return savedSets.color(i)
                                     else return savedSets.color;
                                 })
                                 .attr("stroke-width", 2);
 
-                           yData.append("text")
-                              .datum(function(d) { 
-                                return {name: d.name, value: d.values[d.values.length - 1]}; 
-                                })
-                              .attr("transform", function(d) { return "translate(" + x(d.value[0]) + "," + y(d.value[1]) + ")"; })
-                              .attr("x", 3)
-                              .attr("dy", ".35em")
-                              .text(function(d) { return d.name; });       
+
+                           
+                            let longestData = 0;
+                            filteredValues.forEach( obj => {
+                                  let currentLength = obj.name.toString().length;
+                                  if (currentLength > longestData) longestData = currentLength;
+                            }); 
+
+                            if (longestData < 7) longestData = 7;
+
+                            
+                                          
+                           
+                           let legend = svg.selectAll(".legend")
+                                    .data(savedSets.color.domain())
+                                    .enter().append("g")
+                                        .attr("class", "legend")
+                                        .attr("transform", function(d, i) { 
+                                            return "translate(30," + (i * 15) + ")";
+                                        })
+                                        .attr('opacity', 0.7);
+
+                             SVGFactory.appendLegend(legend, filteredValues, savedSets, longestData);      
 
                             SVGFactory.appendTitle(svg, defaultSettings.margin, savedSets.width, savedSets.title, savedSets.titleSize);
-                            // svg.append("text")
-                            //     .attr("x", (savedSets.width / 2))             
-                            //     .attr("y", defaultSettings.margin.top/2)
-                            //     .attr("text-anchor", "middle")    
-                            //     .text(savedSets.title);
                             
                     });
                 };

@@ -26,6 +26,7 @@ app.factory('SVGFactory', function ($window) {
   };
 
   SVGFactory.appendXAxis = function (svg, margin, width, height, xAxis, xAxisLabel, xAxisLabelSize) {
+    // translate for line and scatterPlot should be 0, height-margin.bottom
     svg.append("g")
       .attr("class", "x axis")
       .attr("transform", "translate(" + margin.left + ", " + (height - margin.bottom) + ")")
@@ -72,6 +73,25 @@ app.factory('SVGFactory', function ($window) {
             .style('height', height)
             .style('background-color', '#ffffff');
   };
+
+  SVGFactory.appendLegend = function(legend, data, settings, longestData, type) {
+
+            legend.append("rect")
+                .attr("x", settings.width - (92 + ((longestData - 7) * 5)))
+                .attr("y", "30")
+                .attr("width", settings.width/100)
+                .attr("height", settings.height/100)
+                .style("fill", function(d, i) { return settings.color(i); });
+
+           
+            legend.append("text")
+                .attr("x", settings.width - (82 + ((longestData - 7) * 5)))
+                .attr("y", "35")
+                .style("font-size", "1.2em")
+                .text(function(d, i) {
+                    return data[i].name;
+                });
+  }
 
   return SVGFactory;
 });

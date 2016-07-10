@@ -134,13 +134,28 @@ app.directive('barChart', function(d3Service, graphSettingsFactory, DataFactory,
                                         })
                                     .attr("transform", "translate(" + defaultSettings.margin.left + ", 0)");
 
+                                
+                                let longestData = 0;
+                                scope.seriesy.forEach( arr => {
+                                      let currentLength = arr.name.toString().length;
+                                      if (currentLength > longestData) longestData = currentLength;
+                                }); 
+
+                                if (longestData < 7) longestData = 7;
+
+                                let legend = svg.selectAll(".legend")
+                                    .data(savedSets.color.domain())
+                                    .enter().append("g")
+                                        .attr("class", "legend")
+                                        .attr("transform", function(d, i) { 
+                                            return "translate(30," + (i * 15) + ")";
+                                        })
+                                        .attr('opacity', 0.7);
+                           
+                                SVGFactory.appendLegend(legend, scope.seriesy, savedSets, longestData);
+
                                 SVGFactory.appendTitle(svg, defaultSettings.margin, savedSets.width, savedSets.title, savedSets.titleSize);
-                                // svg.append("text")
-                                //     .attr("x", (savedSets.width / 2))             
-                                //     .attr("y", (defaultSettings.margin.top / 2))
-                                //     .attr("text-anchor", "middle") 
-                                //     .style("font-size", savedSets.titleSize)
-                                //     .text(savedSets.title);
+                            
 
                     });
                 };

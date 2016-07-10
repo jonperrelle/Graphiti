@@ -22,20 +22,22 @@ app.factory('DataFactory', function () {
       return groupedData;
     },
 
-    orderByCategory: function (data, category, type, orderStyle = 'sort') {
-      if (orderStyle === 'none') return data;
-      if (type === 'number') {
-        return data.sort(function (a, b) {
-          return +a[category] - +b[category];
-        });
-      }
-      else {
-        return data.sort(function (a, b) {
-          if (a[category] < b[category]) return -1;
-          else return 1;
-        });
-      }
-    },
+    
+
+    // orderByCategory: function (data, category, type, orderStyle = 'sort') {
+    //   if (orderStyle === 'none') return data;
+    //   if (type === 'number') {
+    //     return data.sort(function (a, b) {
+    //       return +a[category] - +b[category];
+    //     });
+    //   }
+    //   else {
+    //     return data.sort(function (a, b) {
+    //       if (a[category] < b[category]) return -1;
+    //       else return 1;
+    //     });
+    //   }
+    // },
 
     // withinLength: function(data, col, length){
     //     let repeatTable = {};

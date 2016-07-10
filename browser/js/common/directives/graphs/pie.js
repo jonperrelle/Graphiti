@@ -53,7 +53,7 @@ app.directive('pieChart', function(d3Service, $window, SVGFactory, graphSettings
                                     .data(pie(values))
                                     .enter().append("g")
                                     .attr("class", "arc")
-                                    .attr("transform", "translate(" + savedSets.width / 2 + "," + savedSets.height / 2 + ")");
+                                    .attr("transform", "translate(" + savedSets.width / 2 + "," + savedSets.height / 1.4 + ")");
 
                                  
                                 pieChart.append("path")
@@ -61,8 +61,6 @@ app.directive('pieChart', function(d3Service, $window, SVGFactory, graphSettings
                                       .style("fill", function(d, i) { return savedSets.color(i); })
 
                                 SVGFactory.appendTitle(svg, defaultSettings.margin, savedSets.width, savedSets.title, savedSets.titleSize);
-
-                    
 
                                 let legendDisplay = (type, data) => {
                                     if (type === 'percentage') return ((data[1]/groupedTotal) * 100).toFixed(2) + "%";
@@ -75,6 +73,7 @@ app.directive('pieChart', function(d3Service, $window, SVGFactory, graphSettings
                                     .enter().append("g")
                                         .attr("class", "legend")
                                         .attr("transform", function(d, i) { 
+                                            console.log()
                                             return "translate(" + (savedSets.width / 1.75) + "," + ((savedSets.radius * 1.5) + (i * 20 + 10)) + ")";
                                         });
 

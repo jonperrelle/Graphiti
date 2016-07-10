@@ -52,10 +52,7 @@ app.directive('scatterplotGraph', function(d3Service, $window, GraphFilterFactor
 
                             let filteredValues = GraphFilterFactory.setBounds(savedSets, scope.rows);
 
-                            
-                            let cValue = function(d) {
-                                    return d
-                            };
+        
                             
                             // add the tooltip area to the webpage
                             let tooltip = d3.select("body").append("div")
@@ -129,13 +126,27 @@ app.directive('scatterplotGraph', function(d3Service, $window, GraphFilterFactor
                                     });
                             });
 
-                            //title
+                            let longestData = 0;
+                            filteredValues.forEach( obj => {
+                                  let currentLength = obj.name.toString().length;
+                                  if (currentLength > longestData) longestData = currentLength;
+                            }); 
+
+                            if (longestData < 7) longestData = 7;
+                            
+                            let legend = svg.selectAll(".legend")
+                                    .data(savedSets.color.domain())
+                                    .enter().append("g")
+                                        .attr("class", "legend")
+                                        .attr("transform", function(d, i) { 
+                                            return "translate(30," + (i * 15) + ")";
+                                        })
+                                        .attr('opacity', 0.7);
+
+                            SVGFactory.appendLegend(legend, filteredValues, savedSets, longestData);      
+
                             SVGFactory.appendTitle(svg, defaultSettings.margin, savedSets.width, savedSets.title, savedSets.titleSize);
-                            // svg.append("text")
-                            //     .attr("x", (savedSets.width / 2))             
-                            //     .attr("y", (defaultSettings.margin.top/2))
-                            //     .attr("text-anchor", "middle")    
-                            //     .text(savedSets.title);
+                
                     });
             };
         });
