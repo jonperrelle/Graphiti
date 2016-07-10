@@ -134,6 +134,7 @@ app.directive('lineGraph', function(d3Service, $window, $state, GraphFilterFacto
                                 })
                                 .attr("stroke-width", 2);
 
+                            //we should make this a legend instead.
                            yData.append("text")
                               .datum(function(d) { 
                                 return {name: d.name, value: d.values[d.values.length - 1]}; 

@@ -4,7 +4,8 @@ app.directive('pieChart', function(d3Service, $window, DataFactory, graphSetting
         restrict: 'E',
         scope: {
             rows: "=",
-            columns: "=",
+            seriesx: "=",
+            seriesy: "=",
             settings: "="
         },
 

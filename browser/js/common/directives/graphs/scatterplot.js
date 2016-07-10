@@ -14,7 +14,6 @@ app.directive('scatterplotGraph', function(d3Service, $window, GraphFilterFactor
 
 
     function linkFn(scope, ele, attrs) {
-        // scope.settings = scope.settings || {};
         d3Service.d3().then(function(d3) {
             
             // Watch for resize event
