@@ -44,8 +44,6 @@ app.directive('scatterplotGraph', function(d3Service, $window, GraphFilterFactor
 
                 graphSettingsFactory.getSavedSettings(scope.settings, ele[0], scope.rows)
                     .then(function (savedSets) {
-                        console.log('in scatter', savedSets)
-                        //let savedSets = graphSettingsFactory.getsavedSets();
                             let svg = anchor
                                 .append('svg')
                                 .attr('width', savedSets.width)
@@ -74,8 +72,6 @@ app.directive('scatterplotGraph', function(d3Service, $window, GraphFilterFactor
                                 yAxis = d3.svg.axis().scale(yScale).orient("left");
 
                             let filteredValues = GraphFilterFactory.setBounds(savedSets, scope.rows);
-
-                            console.log(filteredValues);
                             let cValue = function(d) {
                                     return d
                             };

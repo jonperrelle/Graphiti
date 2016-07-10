@@ -38,7 +38,7 @@ app.directive('pieChart', function(d3Service, $window, DataFactory, graphSetting
 
                         graphSettingsFactory.getSavedSettings(scope.settings, ele[0], scope.rows)
                             .then(function (savedSets) {
-                                let defaultSettings = graphSettingsFactory.getDefaultSettings();
+                                //let defaultSettings = graphSettingsFactory.getDefaultSettings();
                                     let svg = anchor
                                         .append('svg')
                                         .attr('width', savedSets.width)
@@ -48,11 +48,11 @@ app.directive('pieChart', function(d3Service, $window, DataFactory, graphSetting
 
 
 
-                        let groupedValues = DataFactory.groupByCategory(scope.rows, scope.seriesx, scope.seriesy, savedSets.groupType);
-                        console.log(groupedValues);       
+                        let groupedData = DataFactory.groupByCategory(scope.rows, scope.seriesx, scope.seriesy, savedSets.groupType);
+                        console.log(groupedData);       
 
                         let groupedTotal = 0;
-                        groupedData.forEach( a => groupedTotal += a[scope.columns[1].name]);
+                        groupedData.forEach( a => groupedTotal += a[scope.seriesx[1].name]);
                         //uses build in d3 method to create color scale
                         let color;
                         let setColor = colorScale => {
@@ -98,16 +98,15 @@ app.directive('pieChart', function(d3Service, $window, DataFactory, graphSetting
                             })
                             .attr("d", arc);
 
-
-
                         arcs.forEach(function () {
 
                         });
 
                         svg.append("text")
                             .attr("x", 0)             
-                            .attr("y", (radius * -1.5) + margin.top/2)
+                            .attr("y", (radius * -1.5) + savedSets.margin.top/2)
                             .attr("text-anchor", "middle")    
+                            .style("font-size", savedSets.titleSize) 
                             .text(title);
 
                         //add the text
@@ -145,9 +144,11 @@ app.directive('pieChart', function(d3Service, $window, DataFactory, graphSetting
                         legend.append("text")
                             .attr("x", -width/2)
                             .attr("y", (radius * -1.5) + margin.top/2 + height/100)
+                            .style("font-size", savedSets.xAxisTitleSize) 
                             .text(function(d, i) { 
                                 return groupedData[i][scope.columns[0].name] + " - " + legendDisplay(displayType, +groupedData[i][scope.columns[1].name]);
                             });
+
                     });
                 };
                     

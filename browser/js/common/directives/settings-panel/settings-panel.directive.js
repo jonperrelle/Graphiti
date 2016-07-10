@@ -29,7 +29,6 @@ app.directive('settingsPanel', function(ValidationFactory, GraphFilterFactory, $
                 console.log(scope.settings)
                 GraphFilterFactory.filterData(scope.seriesx, scope.seriesy, scope.data)
                 .then(function(values) {
-                    console.log(values)
                     scope.values = values;
                     scope.lineEnable = true;
                     scope.scatterEnable = true;
