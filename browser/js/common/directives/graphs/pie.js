@@ -29,6 +29,7 @@ app.directive('pieChart', function(d3Service, $window, SVGFactory, graphSettings
                             .then(function (savedSets) {
                                 let defaultSettings = graphSettingsFactory.getDefaultSettings();
                                 let svg = SVGFactory.appendSVG(anchor, savedSets.width, savedSets.height);
+
                                 // let svg = anchor
                                 //         .append('svg')
                                 //         .attr('width', savedSets.width)
@@ -51,7 +52,8 @@ app.directive('pieChart', function(d3Service, $window, SVGFactory, graphSettings
                                 let pieChart = svg.selectAll(".arc")
                                     .data(pie(values))
                                     .enter().append("g")
-                                    .attr("class", "arc");
+                                    .attr("class", "arc")
+                                    .attr("transform", "translate(" + savedSets.width / 2 + "," + savedSets.height / 2 + ")");
 
                                  
                                 pieChart.append("path")
@@ -63,8 +65,8 @@ app.directive('pieChart', function(d3Service, $window, SVGFactory, graphSettings
                     
 
                                 let legendDisplay = (type, data) => {
-                                    if (type === 'percentage') return ((data/groupedTotal) * 100).toFixed(2) + "%";
-                                    else return data;
+                                    if (type === 'percentage') return ((data[1]/groupedTotal) * 100).toFixed(2) + "%";
+                                    else return data[1];
                                 };
 
 
@@ -78,19 +80,18 @@ app.directive('pieChart', function(d3Service, $window, SVGFactory, graphSettings
 
                                 // draw legend colored rectangles
                                 legend.append("rect")
-                                    .attr("x", -savedSets.width - defaultSettings.margin.left/2)
+                                    .attr("x", -savedSets.width/2 - defaultSettings.margin.left/2)
                                     .attr("y", (savedSets.radius * -1.5) + defaultSettings.margin.top/2)
                                     .attr("width", savedSets.width/100)
                                     .attr("height", savedSets.height/100)
-                                    .style("fill", savedSets.color);
+                                    .style("fill", function(d, i) { return savedSets.color(i); });
 
                                 // draw legend text
                                 legend.append("text")
                                     .attr("x", -savedSets.width/2)
                                     .attr("y", (savedSets.radius * -1.5) + defaultSettings.margin.top/2 + savedSets.height/100)
                                     .text(function(d, i) { 
-                                        return 'text';
-                                        // return groupedData[i][scope.columns[0].name] + " - " + legendDisplay(savedSets.displayType, +groupedData[i][scope.columns[1].name]);
+                                        return values[i].name + " - " + legendDisplay(savedSets.displayType, values[i].values[0]);
                                     });
 
                     });
