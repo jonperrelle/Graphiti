@@ -30,14 +30,6 @@ app.directive('pieChart', function(d3Service, $window, SVGFactory, graphSettings
                                 let defaultSettings = graphSettingsFactory.getDefaultSettings();
                                 let svg = SVGFactory.appendSVG(anchor, savedSets.width, savedSets.height);
 
-                                // let svg = anchor
-                                //         .append('svg')
-                                //         .attr('width', savedSets.width)
-                                //         .attr('height', savedSets.height)
-                                //         .style('background-color', '#ffffff')
-                                //         .append('g')
-                                //         .attr("transform", "translate(" + savedSets.width / 2 + "," + savedSets.height / 2 + ")");
-
                                 let groupedTotal = 0;
                             
                                 values.forEach( a => groupedTotal += a.values[0][1]);
@@ -54,8 +46,7 @@ app.directive('pieChart', function(d3Service, $window, SVGFactory, graphSettings
                                     .enter().append("g")
                                     .attr("class", "arc")
                                     .attr("transform", "translate(" + savedSets.width / 2 + "," + savedSets.height / 1.4 + ")");
-
-                                 
+ 
                                 pieChart.append("path")
                                       .attr("d", arc)
                                       .style("fill", function(d, i) { return savedSets.color(i); })

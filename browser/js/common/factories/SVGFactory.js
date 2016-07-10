@@ -91,7 +91,7 @@ app.factory('SVGFactory', function ($window) {
                 .text(function(d, i) {
                     return data[i].name;
                 });
-  }
+  };
 
   return SVGFactory;
 });
