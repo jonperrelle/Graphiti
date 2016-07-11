@@ -95,8 +95,9 @@ app.directive('lineGraph', function(d3Service, SVGFactory, GraphFilterFactory, g
 
                             
                                           
-                           
-                           let legend = svg.selectAll(".legend")
+                            if (scope.seriesy.length > 1) { 
+                                if (typeof savedSets.color !== 'function') savedSets.color = d3.scale.category10();
+                                let legend = svg.selectAll(".legend")
                                     .data(savedSets.color.domain())
                                     .enter().append("g")
                                         .attr("class", "legend")
@@ -105,7 +106,8 @@ app.directive('lineGraph', function(d3Service, SVGFactory, GraphFilterFactory, g
                                         })
                                         .attr('opacity', 0.7);
 
-                            SVGFactory.appendLegend(legend, filteredValues, savedSets, longestData);      
+                                SVGFactory.appendLegend(legend, filteredValues, savedSets, longestData);      
+                            }
 
                             SVGFactory.appendTitle(svg, savedSets);
                             

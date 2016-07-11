@@ -8,7 +8,7 @@ app.directive('settingsPanel', function(ValidationFactory, GraphFilterFactory, $
                 cp2.colorpicker();
                 cp2.on('changeColor', function(e) {
                     scope.settings.color = cp2.colorpicker('getValue');
-                    scope.$digest();
+                    scope.showGraphs();
                 });
             });
     

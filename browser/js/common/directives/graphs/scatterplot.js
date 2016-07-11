@@ -136,7 +136,9 @@ app.directive('scatterplotGraph', function(d3Service, $window, GraphFilterFactor
 
                             if (longestData < 7) longestData = 7;
                             
-                            let legend = svg.selectAll(".legend")
+                            if (scope.seriesy && scope.seriesy.length > 1)  {
+                                if (typeof savedSets.color !== 'function') savedSets.color = d3.scale.category10();
+                                let legend = svg.selectAll(".legend")
                                     .data(savedSets.color.domain())
                                     .enter().append("g")
                                         .attr("class", "legend")
@@ -145,7 +147,8 @@ app.directive('scatterplotGraph', function(d3Service, $window, GraphFilterFactor
                                         })
                                         .attr('opacity', 0.7);
 
-                            SVGFactory.appendLegend(legend, filteredValues, savedSets, longestData);      
+                                SVGFactory.appendLegend(legend, filteredValues, savedSets, longestData);      
+                            }
 
                             SVGFactory.appendTitle(svg, savedSets);
                 

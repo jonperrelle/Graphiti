@@ -137,16 +137,19 @@ app.directive('barChart', function(d3Service, graphSettingsFactory, DataFactory,
 
                                 if (longestData < 7) longestData = 7;
 
-                                let legend = svg.selectAll(".legend")
-                                    .data(savedSets.color.domain())
-                                    .enter().append("g")
-                                        .attr("class", "legend")
-                                        .attr("transform", function(d, i) { 
-                                            return "translate(30," + (i * 15) + ")";
-                                        })
-                                        .attr('opacity', 0.7);
-                           
-                                SVGFactory.appendLegend(legend, scope.seriesy, savedSets, longestData);
+                                if (scope.seriesy && scope.seriesy.length > 1) {
+                                    if (typeof savedSets.color !== 'function') savedSets.color = d3.scale.category10();
+                                    let legend = svg.selectAll(".legend")
+                                        .data(savedSets.color.domain())
+                                        .enter().append("g")
+                                            .attr("class", "legend")
+                                            .attr("transform", function(d, i) { 
+                                                return "translate(30," + (i * 15) + ")";
+                                            })
+                                            .attr('opacity', 0.7);
+                               
+                                    SVGFactory.appendLegend(legend, scope.seriesy, savedSets, longestData);
+                                }
 
                                 SVGFactory.appendTitle(svg, savedSets);
                             
