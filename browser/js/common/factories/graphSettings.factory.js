@@ -22,21 +22,6 @@ app.factory("graphSettingsFactory", function(d3Service){
         return max;
 	};
 
-
-	// graphSettings.getDefaultSettings = function () {
-	// 	let defaultSettings = {};
-	// 	let yLabelLength = 2;
- //     let xLabelLength = 3;                
- //            defaultSettings.margin = { 
- //                top: 30,
- //                right: 20,
- //                bottom: (xLabelLength + 6) * 5,
- //                left: (yLabelLength + 6) * 7,
- //            };
- //        return defaultSettings;      
-	// };
-
-
     let setColor = function (color) {
         switch (color) {
           case '10':
@@ -52,14 +37,59 @@ app.factory("graphSettingsFactory", function(d3Service){
         }
       };
 
-	graphSettings.getSavedSettings = function (sets, ele, data, hist, tooMuchData) {
+    let getLabelLengths = function (data, type, seriesx, seriesy) {
+        
+        let xLength = 0,
+        yLength = 0;
+        if (!seriesx || type === 'pie') xLength = 2;
+        else {
+            if (type === 'histogram') {
+                console.log(data[0])
+                if (Array.isArray(data[0])) xLength = data[data.length-1].x.toString().length;
+                else data.forEach( obj => {
+                    let currentXLength = obj[seriesx[0].name].toString().length;
+                    if (currentXLength > xLength) xLength = currentXLength;
+                });
+            }
+            else if (type === 'bar') {
+                data.forEach( obj => {
+                    let currentXLength = obj.name.toString().length;
+                    if (currentXLength > xLength) xLength = currentXLength;
+                });
+            }      
+        }
+        if (!seriesy || type === 'pie') yLength = 3;
+        else {
 
+            if (type === 'bar') {
+                data.forEach(obj => {
+                    let currentYLength = obj.values[0][1].toString().length;
+                    if (currentYLength > yLength) yLength = currentYLength;
+                })
+            }
+
+            else {
+                data.forEach(obj => {
+                    let currentYLength = obj[0][1].toString().length;
+                    if (currentYLength > yLength) yLength = currentYLength;
+                })
+            }
+        }
+        return [xLength, yLength];
+    };
+
+
+	graphSettings.getSavedSettings = function (sets, ele, data, seriesx, seriesy, type, tooMuchData) {
+        
 		return d3Service.d3().then(function(d3) {
-			let formatColX = 'X Axis';
-			let formatColY = 'Y Axis';
-			let savedSettings = {};
-            let yLabelLength = 2;
-            let xLabelLength = 3;  
+			let formatColX = 'X Axis',
+			formatColY = 'Y Axis',
+			savedSettings = {},
+            labelLengths = getLabelLengths(data, type, seriesx, seriesy),
+            xLabelLength = labelLengths[0],
+            yLabelLength = labelLengths[1]; 
+            
+
             savedSettings.height = sets.height || 500;
             savedSettings.xAxisLabel = sets.xAxisLabel || formatColX;
             savedSettings.xAxisTitleSize =  sets.xAxisTitleSize || 12;
@@ -70,13 +100,13 @@ app.factory("graphSettingsFactory", function(d3Service){
             savedSettings.margin = { 
                 top: savedSettings.titleSize * 1.5,
                 right: 20,
-                bottom: (xLabelLength + 6) * 5 + Number(savedSettings.xAxisTitleSize), 
-                left: (yLabelLength + 6) * 5 + Number(savedSettings.yAxisTitleSize)
+                bottom: (xLabelLength + 8) * 4 + Number(savedSettings.xAxisTitleSize), 
+                left: (yLabelLength + 6) * 4 + Number(savedSettings.yAxisTitleSize)
             };
             savedSettings.width = sets.width || (tooMuchData ? savedSettings.margin.left + savedSettings.margin.right + data.length * 15 : ele.parentNode.offsetWidth);
             savedSettings.radius = sets.radius || savedSettings.height / 3;
             savedSettings.color = setColor(sets.color) || d3.scale.category10(); 
-            if (hist !== 'histogram') {
+            if (type !== 'histogram') {
                 savedSettings.minX = (sets.minX || sets.minX === 0) ? sets.minX : getMin(d3, data, 0);
                 savedSettings.maxX = (sets.maxX || sets.maxX === 0) ? sets.maxX : getMax(d3, data, 0);
                 savedSettings.minY = (sets.minY || sets.minY === 0) ? sets.minY : getMin(d3, data, 1);

@@ -16,9 +16,7 @@ app.directive('histogram', function (d3Service, DataFactory, SVGFactory, graphSe
           let anchor = d3.select(ele[0]);
           anchor.selectAll('*').remove();
 
-         
-
-          graphSettingsFactory.getSavedSettings(scope.settings, ele[0], scope.rows, 'histogram')
+          graphSettingsFactory.getSavedSettings(scope.settings, ele[0], scope.rows, scope.seriesx, scope.seriesy, 'histogram')
               .then(function (savedSets) {
 
               let data = scope.rows,

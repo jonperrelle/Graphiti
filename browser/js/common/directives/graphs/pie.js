@@ -25,11 +25,10 @@ app.directive('pieChart', function(d3Service, $window, SVGFactory, graphSettings
 
                         let values = [];
 
-                        if (scope.settings.groupType === 'mean') values = DataFactory.groupByMean(scope.rows)
+                        if (scope.settings.groupType === 'mean') values = DataFactory.groupByMean(scope.rows);
                         else values = scope.rows;
 
-
-                        graphSettingsFactory.getSavedSettings(scope.settings, ele[0], values)
+                        graphSettingsFactory.getSavedSettings(scope.settings, ele[0], values, scope.seriesx, scope.seriesy, 'pie')
                             .then(function (savedSets) {
 
                                 let svg = SVGFactory.appendSVG(anchor, savedSets);

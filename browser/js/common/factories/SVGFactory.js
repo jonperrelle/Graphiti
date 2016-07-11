@@ -38,7 +38,7 @@ app.factory('SVGFactory', function ($window) {
       .text(savedSets.xAxisLabel);
 
     svg.selectAll(".x text")
-      .attr("transform", "translate(-7,0)rotate(-45)")
+      .attr("transform", "translate(-10,4)rotate(-75)")
       .style("text-anchor", "end");
 
 
