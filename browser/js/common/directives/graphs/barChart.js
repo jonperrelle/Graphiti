@@ -43,6 +43,10 @@ app.directive('barChart', function(d3Service, graphSettingsFactory, DataFactory,
                         anchor.selectAll('*').remove();
                     let values = [];
                     let tooMuchData = scope.rows.length > 50;
+                    if (tooMuchData) {
+                        d3.select(ele[0].parentElement)
+                            .classed("scrolling", true);
+                    }
                     
                     if (scope.settings.groupType === 'mean') values = DataFactory.groupByMean(scope.rows);
                     else values = scope.rows; 
