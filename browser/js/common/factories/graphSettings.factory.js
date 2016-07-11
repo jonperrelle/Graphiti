@@ -56,12 +56,18 @@ app.factory("graphSettingsFactory", function(d3Service){
                     let currentXLength = obj.name.toString().length;
                     if (currentXLength > xLength) xLength = currentXLength;
                 });
-            }      
+            }   
+            else {
+                data.forEach( obj => {
+                    let currentXLength = obj.values[0][0].toString().length;
+                    if (currentXLength > xLength) xLength = currentXLength;
+                });
+            }   
         }
         if (!seriesy || type === 'pie') yLength = 3;
         else {
 
-            if (type === 'bar') {
+            if (type === 'bar' || type === 'scatter') {
                 data.forEach(obj => {
                     let currentYLength = obj.values[0][1].toString().length;
                     if (currentYLength > yLength) yLength = currentYLength;
@@ -70,6 +76,7 @@ app.factory("graphSettingsFactory", function(d3Service){
 
             else {
                 data.forEach(obj => {
+                    console.log(obj);
                     let currentYLength = obj[0][1].toString().length;
                     if (currentYLength > yLength) yLength = currentYLength;
                 })
