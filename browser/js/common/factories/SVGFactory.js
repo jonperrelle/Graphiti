@@ -80,7 +80,7 @@ app.factory('SVGFactory', function ($window) {
   SVGFactory.appendLegend = function(legend, data, savedSets, longestData, type) {
 
             legend.append("rect")
-                .attr("x", savedSets.width - (92 + ((longestData - 7) * 7)))
+                .attr("x", savedSets.width - (120 + ((longestData - 7) * 6)))
                 .attr("y", "30")
                 .attr("width", savedSets.width/100)
                 .attr("height", savedSets.height/100)
@@ -88,7 +88,7 @@ app.factory('SVGFactory', function ($window) {
 
            
             legend.append("text")
-                .attr("x", savedSets.width - (82 + ((longestData - 7) * 7)))
+                .attr("x", savedSets.width - (105 + ((longestData - 7) * 6)))
                 .attr("y", "35")
                 .style("font-size", "1.2em")
                 .text(function(d, i) {

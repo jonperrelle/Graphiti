@@ -38,27 +38,7 @@ app.directive('barChart', function(d3Service, graphSettingsFactory, DataFactory,
     };
 
                 scope.render = function() {
-<<<<<<< HEAD
-
                     if (!scope.seriesy) return;
-
-=======
-                    if (!scope.columns) return;
-
-                    let filteredData = scope.rows.filter(obj => obj[scope.columns[0].name] 
-                        && obj[scope.columns[1].name]
-                        && (!!Number(obj[scope.columns[1].name]) || Number(obj[scope.columns[1].name]) === 0));
-                    let groupType = scope.settings.groupType || 'total';
-                    let orderType = scope.settings.orderType || 'sort'; 
-                    let groupedData = DataFactory.groupByCategory(filteredData, scope.columns[0].name, scope.columns[1].name, groupType);
-                    groupedData = DataFactory.orderByCategory(groupedData, scope.columns[0].name, scope.columns[0].type, orderType);
-                    
-                    let tooMuchData = groupedData.length > 50; //this can be replaced. 
-                    if (tooMuchData) {
-                        d3.select(ele[0].parentElement)
-                            .classed("scrolling", true);
-                    }
->>>>>>> master
                     let anchor = d3.select(ele[0]);
                         anchor.selectAll('*').remove();
                     let values = [];

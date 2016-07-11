@@ -58,10 +58,15 @@ app.factory("graphSettingsFactory", function(d3Service){
                 });
             }   
             else {
-                data.forEach( obj => {
-                    let currentXLength = obj.values[0][0].toString().length;
-                    if (currentXLength > xLength) xLength = currentXLength;
-                });
+               data.forEach( obj => {
+                   let currentXLength;
+                   if (seriesx[0].type === 'date') {
+                       xLength = 6;
+                   } else {
+                       currentXLength = obj.values[0][0].toString().length;
+                       if (currentXLength > xLength) xLength = currentXLength;
+                   }
+               });
             }   
         }
         if (!seriesy || type === 'pie') yLength = 3;
