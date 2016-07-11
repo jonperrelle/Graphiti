@@ -13,7 +13,7 @@ app.factory('ValidationFactory', function () {
             validateNumber: function(data, col) {
               if (col) {
                 for (let i=0; i < data.length && i < 10; i++) {
-                    if (data[i][col.name] && data[i][col.name].trim().length && !isNaN(data[i][col.name])) return true;
+                    if (data[i][col.name] && !isNaN(data[i][col.name])) return true;
                 }
               }
               return false;
