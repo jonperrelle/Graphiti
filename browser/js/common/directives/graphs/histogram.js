@@ -37,8 +37,8 @@ app.directive('histogram', function (d3Service, DataFactory, SVGFactory, graphSe
           //     }, 0) :
           //     7;
 
-              if (savedSets.yAxisLabel === 'Y Axis') savedSets.yAxisLabel = 'total';
-              if (savedSets.title === 'X AXIS vs. Y AXIS') savedSets.title = 'frequency for ' + savedSets.xAxisLabel;
+              if (savedSets.yAxisLabel === 'Y Axis') savedSets.yAxisLabel = 'Total';
+              if (savedSets.title === 'X AXIS vs. Y AXIS') savedSets.title = 'Frequency for ' + savedSets.xAxisLabel;
               
 
               let xScale,
@@ -122,9 +122,9 @@ app.directive('histogram', function (d3Service, DataFactory, SVGFactory, graphSe
                     })
                     .attr("transform", "translate(" +savedSets.margin.left + ", 0)");
 
-                  SVGFactory.appendXAxis(svg, savedSets.margin, savedSets.width, savedSets.height, xAxis, savedSets.xAxisLabel, savedSets.xAxisLabelSize);
+                  SVGFactory.appendXAxis(svg, savedSets.margin, savedSets.width, savedSets.height, xAxis, savedSets.xAxisLabel, savedSets.xAxisTitleSize);
 
-                  SVGFactory.appendYAxis(svg, savedSets.margin, savedSets.height, yAxis, savedSets.yAxisLabel, savedSets.yAxisLabelSize);
+                  SVGFactory.appendYAxis(svg, savedSets.margin, savedSets.height, yAxis, savedSets.yAxisLabel, savedSets.yAxisTitleSize);
 
                   SVGFactory.appendTitle(svg, savedSets.margin, savedSets.width, savedSets.title, savedSets.titleSize);
           });

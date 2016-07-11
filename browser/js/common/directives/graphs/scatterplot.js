@@ -62,7 +62,7 @@ app.directive('scatterplotGraph', function(d3Service, $window, GraphFilterFactor
 
                             // x-axis
 
-                            SVGFactory.appendXAxis(svg, savedSets.margin, savedSets.width, savedSets.height, xAxis, savedSets.xAxisLabel, savedSets.xAxisLabelSize);
+                            SVGFactory.appendXAxis(svg, savedSets.margin, savedSets.width, savedSets.height, xAxis, savedSets.xAxisLabel, savedSets.xAxisTitleSize);
                             // svg.append("g")
                             //     .attr("class", "x axis")
                             //     .attr("transform", "translate(0," + (savedSets.height - defaultSettings.margin.bottom) + ")")
@@ -81,7 +81,7 @@ app.directive('scatterplotGraph', function(d3Service, $window, GraphFilterFactor
 
                             // y-axis
 
-                            SVGFactory.appendYAxis(svg, savedSets.margin, savedSets.height, yAxis, savedSets.yAxisLabel, savedSets.yAxisLabelSize);
+                            SVGFactory.appendYAxis(svg, savedSets.margin, savedSets.height, yAxis, savedSets.yAxisLabel, savedSets.yAxisTitleSize);
                             // svg.append("g")
                             //     .attr("class", "y axis")
                             //     .attr("transform", "translate(" + defaultSettings.margin.left + ",0)")

@@ -10,12 +10,10 @@ app.factory('DataFactory', function () {
             groupedObj[arr[0]] = [arr[1]/arr[2], arr[2]];
                 
           });
-          console.log(groupedObj);
-      
+          
           newObj.values = Object.keys(groupedObj).map(key => {
             return [key, groupedObj[key][0], groupedObj[key][1]];
           });
-
           groupedData.push(newObj);
 
         });

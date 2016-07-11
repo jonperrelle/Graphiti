@@ -1,5 +1,5 @@
 
-app.directive('pieChart', function(d3Service, $window, SVGFactory, graphSettingsFactory) {
+app.directive('pieChart', function(d3Service, $window, SVGFactory, graphSettingsFactory, DataFactory) {
 
 
     return {
@@ -17,14 +17,17 @@ app.directive('pieChart', function(d3Service, $window, SVGFactory, graphSettings
                 //Re-render the graph when user changes settings, data, or window size
                 SVGFactory.watchForChanges(scope);
 
-                let values = [];
+              
                 
-                if (scope.settings.groupType === 'mean') values = DataFactory.groupByMean(scope.rows)
-                else values = scope.rows;
-
                 scope.render = function() {
                         let anchor = d3.select(ele[0]);
                         anchor.selectAll('*').remove();
+
+                        let values = [];
+
+                        if (scope.settings.groupType === 'mean') values = DataFactory.groupByMean(scope.rows)
+                        else values = scope.rows;
+
 
                         graphSettingsFactory.getSavedSettings(scope.settings, ele[0], values)
                             .then(function (savedSets) {
@@ -46,7 +49,7 @@ app.directive('pieChart', function(d3Service, $window, SVGFactory, graphSettings
                                     .data(pie(values))
                                     .enter().append("g")
                                     .attr("class", "arc")
-                                    .attr("transform", "translate(" + savedSets.width / 2 + "," + savedSets.height / 1.4 + ")");
+                                    .attr("transform", "translate(" + savedSets.width / 2 + "," + savedSets.height / 2 + ")");
  
                                 pieChart.append("path")
                                       .attr("d", arc)

@@ -79,18 +79,9 @@ app.directive('barChart', function(d3Service, graphSettingsFactory, DataFactory,
                                 //     .append("text")
                                 //     .attr("class", "xlabel")
                                 //     .text(savedSets.xAxisLabel);
-                                SVGFactory.appendXAxis(svg, savedSets.margin, savedSets.width, savedSets.height, xAxis, savedSets.xAxisLabel, savedSets.xAxisLabelSize);
+                                SVGFactory.appendXAxis(svg, savedSets.margin, savedSets.width, savedSets.height, xAxis, savedSets.xAxisLabel, savedSets.xAxisTitleSize);
 
-                                svg.selectAll(".x text")
-                                    .attr("transform", "translate(-7,0)rotate(-45)")
-                                    .style("text-anchor", "end");
-
-                                svg.select(".xlabel")
-                                     .attr("transform", "translate(" + ((savedSets.width - savedSets.margin.left - savedSets.margin.right) / 2) + ", " + (savedSets.margin.bottom - savedSets.xAxisLabelSize) + ")")
-                                     .style("text-anchor", "middle")
-                                     .style("font-size", savedSets.xAxisLabelSize);
-
-                                SVGFactory.appendYAxis(svg, savedSets.margin, savedSets.height, yAxis, savedSets.yAxisLabel, savedSets.yAxisLabelSize);
+                                SVGFactory.appendYAxis(svg, savedSets.margin, savedSets.height, yAxis, savedSets.yAxisLabel, savedSets.yAxisTitleSize);
 
                                 // svg.append("g")
                                 //     .attr("class", "y axis")

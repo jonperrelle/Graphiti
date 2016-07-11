@@ -66,12 +66,7 @@ app.factory("graphSettingsFactory", function(d3Service){
             savedSettings.yAxisLabel = sets.yAxisLabel || formatColY;
             savedSettings.yAxisTitleSize =  sets.yAxisTitleSize || 12;
             savedSettings.title = sets.title || (formatColX + " .vs " + formatColY).toUpperCase();
-            savedSettings.titleSize = sets.titleSize || 16;
-            savedSettings.color = sets.color || d3.scale.category10();
-            savedSettings.minX = sets.minX || getMin(d3, data, 0);
-            savedSettings.maxX = sets.maxX || getMax(d3, data, 0);
-            savedSettings.minY = sets.minY || getMin(d3, data, 1);
-            savedSettings.maxY = sets.maxY || getMax(d3, data, 1);            
+            savedSettings.titleSize = sets.titleSize || 16;          
             savedSettings.margin = { 
                 top: savedSettings.titleSize * 1.5,
                 right: 20,
@@ -79,8 +74,6 @@ app.factory("graphSettingsFactory", function(d3Service){
                 left: (yLabelLength + 6) * 5 + Number(savedSettings.yAxisTitleSize)
             };
             savedSettings.width = sets.width || (tooMuchData ? savedSettings.margin.left + savedSettings.margin.right + data.length * 15 : ele.parentNode.offsetWidth);
-            savedSettings.xAxisLabelSize = sets.xAxisLabelSize || 8;
-            savedSettings.yAxisLabelSize = sets.yAxisLabelSize || 8;
             savedSettings.radius = sets.radius || savedSettings.height / 3;
             savedSettings.color = setColor(sets.color) || d3.scale.category10(); 
             if (hist !== 'histogram') {

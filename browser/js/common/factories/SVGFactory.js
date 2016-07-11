@@ -25,7 +25,7 @@ app.factory('SVGFactory', function ($window) {
       }, true);
   };
 
-  SVGFactory.appendXAxis = function (svg, margin, width, height, xAxis, xAxisLabel, xAxisLabelSize) {
+  SVGFactory.appendXAxis = function (svg, margin, width, height, xAxis, xAxisLabel, xAxisTitleSize) {
     // translate for line and scatterPlot should be 0, height-margin.bottom
     svg.append("g")
       .attr("class", "x axis")
@@ -39,23 +39,24 @@ app.factory('SVGFactory', function ($window) {
       .attr("transform", "translate(-7,0)rotate(-45)")
       .style("text-anchor", "end");
 
+
     svg.select(".xlabel")
-      .attr("transform", "translate(" + ((width - margin.left - margin.right) / 2) + ", " + (margin.bottom - xAxisLabelSize) + ")")
+      .attr("transform", "translate(" + ((width - margin.left - margin.right) / 2) + ", " + (margin.bottom - xAxisTitleSize) + ")")
       .style("text-anchor", "middle")
-      .style("font-size", xAxisLabelSize);
+      .style("font-size", xAxisTitleSize);
   };
 
-  SVGFactory.appendYAxis = function (svg, margin, height, yAxis, yAxisLabel, yAxisLabelSize) {
+  SVGFactory.appendYAxis = function (svg, margin, height, yAxis, yAxisLabel, yAxisTitleSize) {
     svg.append("g")
       .attr("class", "y axis")
       .attr("transform", "translate(" + margin.left + ",0)")
       .call(yAxis)
       .append("text")
       .attr("class", "ylabel")
-      .attr("transform", "rotate(-90)translate(" + -((height - margin.bottom) / 2) + ", " + -(margin.left - yAxisLabelSize) + ")")
+      .attr("transform", "rotate(-90)translate(" + -((height - margin.bottom) / 2) + ", " + -(margin.left - yAxisTitleSize) + ")")
       .text(yAxisLabel)
       .style("text-anchor", "middle")
-      .style("font-size", yAxisLabelSize);
+      .style("font-size", yAxisTitleSize);
   };
 
   SVGFactory.appendTitle = function (svg, margin, width, title, titleSize) {

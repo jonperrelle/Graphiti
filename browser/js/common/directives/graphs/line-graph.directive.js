@@ -56,13 +56,13 @@ app.directive('lineGraph', function(d3Service, SVGFactory, GraphFilterFactory, g
 
                             let filteredValues = GraphFilterFactory.setBounds(savedSets, scope.rows);
                             //xAxis
-                            SVGFactory.appendXAxis(svg, savedSets.margin, savedSets.width, savedSets.height, xAxis, savedSets.xAxisLabel, savedSets.xAxisLabelSize);
+                            SVGFactory.appendXAxis(svg, savedSets.margin, savedSets.width, savedSets.height, xAxis, savedSets.xAxisLabel, savedSets.xAxisTitleSize);
 
                             svg.select(".xlabel")
                                 .attr("transform", "translate(" + (savedSets.width - savedSets.margin.left - savedSets.margin.right) / 2 + ", " + (savedSets.margin.bottom - 10) + ")");
 
                             //yAxis
-                            SVGFactory.appendYAxis(svg, savedSets.margin, savedSets.height, yAxis, savedSets.yAxisLabel, savedSets.yAxisLabelSize);
+                            SVGFactory.appendYAxis(svg, savedSets.margin, savedSets.height, yAxis, savedSets.yAxisLabel, savedSets.yAxisTitleSize);
 
                             let yData = svg.selectAll("yData")
                                 .data(filteredValues)

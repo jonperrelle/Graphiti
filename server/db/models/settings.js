@@ -53,6 +53,9 @@ module.exports = function (db) {
         maxY: {
             type: Sequelize.INTEGER
         },
+        display: {
+            type: Sequelize.ENUM('percentage', 'total') 
+        },
         displayType: {
             type: Sequelize.ENUM('percentage', 'number')
         },
