@@ -25,6 +25,9 @@ app.directive('settingsPanel', function(ValidationFactory, GraphFilterFactory, $
                 return elem.type === 'number';
             });
 
+            scope.fontSizes = [8, 10, 12, 14, 16, 20, 24, 32];
+            scope.titleFontSizes = scope.fontSizes.concat([48, 64, 96]);
+
             scope.downloadGraph = function() {
                 saveSvgAsPng(document.querySelector('.graph-container svg'), 'sample.png');
             };

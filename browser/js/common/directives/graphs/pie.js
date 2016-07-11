@@ -6,7 +6,8 @@ app.directive('pieChart', function(d3Service, $window, SVGFactory, graphSettings
         restrict: 'E',
         scope: {
             rows: "=",
-            columns: "=",
+            seriesx: "=",
+            seriesy: "=",
             settings: "="
         },
 
@@ -27,7 +28,7 @@ app.directive('pieChart', function(d3Service, $window, SVGFactory, graphSettings
 
                         graphSettingsFactory.getSavedSettings(scope.settings, ele[0], values)
                             .then(function (savedSets) {
-                                let defaultSettings = graphSettingsFactory.getDefaultSettings();
+
                                 let svg = SVGFactory.appendSVG(anchor, savedSets.width, savedSets.height);
 
                                 let groupedTotal = 0;
@@ -51,7 +52,7 @@ app.directive('pieChart', function(d3Service, $window, SVGFactory, graphSettings
                                       .attr("d", arc)
                                       .style("fill", function(d, i) { return savedSets.color(i); })
 
-                                SVGFactory.appendTitle(svg, defaultSettings.margin, savedSets.width, savedSets.title, savedSets.titleSize);
+                                SVGFactory.appendTitle(svg, savedSets.margin, savedSets.width, savedSets.title, savedSets.titleSize);
 
                                 let legendDisplay = (type, data) => {
                                     if (type === 'percentage') return ((data[1]/groupedTotal) * 100).toFixed(2) + "%";
@@ -70,8 +71,8 @@ app.directive('pieChart', function(d3Service, $window, SVGFactory, graphSettings
 
                                 // draw legend colored rectangles
                                 legend.append("rect")
-                                    .attr("x", -savedSets.width/2 - defaultSettings.margin.left/2)
-                                    .attr("y", (savedSets.radius * -1.5) + defaultSettings.margin.top/2)
+                                    .attr("x", -savedSets.width/2 - savedSets.margin.left/2)
+                                    .attr("y", (savedSets.radius * -1.5) + savedSets.margin.top/2)
                                     .attr("width", savedSets.width/100)
                                     .attr("height", savedSets.height/100)
                                     .style("fill", function(d, i) { return savedSets.color(i); });
@@ -79,7 +80,7 @@ app.directive('pieChart', function(d3Service, $window, SVGFactory, graphSettings
                                 // draw legend text
                                 legend.append("text")
                                     .attr("x", -savedSets.width/2)
-                                    .attr("y", (savedSets.radius * -1.5) + defaultSettings.margin.top/2 + savedSets.height/100)
+                                    .attr("y", (savedSets.radius * -1.5) + savedSets.margin.top/2 + savedSets.height/100)
                                     .text(function(d, i) { 
                                         return values[i].name + " - " + legendDisplay(savedSets.displayType, values[i].values[0]);
                                     });

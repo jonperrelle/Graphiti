@@ -23,11 +23,10 @@ app.directive('barChart', function(d3Service, graphSettingsFactory, DataFactory,
                         anchor.selectAll('*').remove();
                     let values = [];
                     let tooMuchData = scope.rows.length > 50;
-                    let defaultSettings = graphSettingsFactory.getDefaultSettings();
-                    if (scope.settings.groupType === 'mean') values = DataFactory.groupByMean(scope.rows)
+                    if (scope.settings.groupType === 'mean') values = DataFactory.groupByMean(scope.rows);
                     else values = scope.rows;
 
-                        graphSettingsFactory.getSavedSettings(scope.settings, ele[0], values, null, tooMuchData, defaultSettings)
+                        graphSettingsFactory.getSavedSettings(scope.settings, ele[0], values, null, tooMuchData)
                             .then(function (savedSets) {
                                 
                                 let svg = SVGFactory.appendSVG(anchor, savedSets.width, savedSets.height);
@@ -45,12 +44,12 @@ app.directive('barChart', function(d3Service, graphSettingsFactory, DataFactory,
 
                                 //create the rectangles for the bar chart
                                 let x1Scale = d3.scale.ordinal()
-                                    .rangeBands([0, savedSets.width - defaultSettings.margin.left - defaultSettings.margin.right], barSpace);
+                                    .rangeBands([0, savedSets.width - savedSets.margin.left - savedSets.margin.right], barSpace);
 
                                 let x2Scale = d3.scale.ordinal();
 
                                 let yScale = d3.scale.linear()
-                                    .range([savedSets.height - defaultSettings.margin.bottom, defaultSettings.margin.top]);
+                                    .range([savedSets.height - savedSets.margin.bottom, savedSets.margin.top]);
 
                                 let xAxis = d3.svg.axis()
                                     .scale(x1Scale)
@@ -75,31 +74,31 @@ app.directive('barChart', function(d3Service, graphSettingsFactory, DataFactory,
 
                                 // svg.append("g")
                                 //     .attr("class", "x axis")
-                                //     .attr("transform", "translate(" + defaultSettings.margin.left + ", " + (savedSets.height - defaultSettings.margin.bottom) + ")")
+                                //     .attr("transform", "translate(" + savedSets.margin.left + ", " + (savedSets.height - savedSets.margin.bottom) + ")")
                                 //     .call(xAxis)
                                 //     .append("text")
                                 //     .attr("class", "xlabel")
                                 //     .text(savedSets.xAxisLabel);
-                                SVGFactory.appendXAxis(svg, defaultSettings.margin, savedSets.width, savedSets.height, xAxis, savedSets.xAxisLabel, savedSets.xAxisLabelSize);
+                                SVGFactory.appendXAxis(svg, savedSets.margin, savedSets.width, savedSets.height, xAxis, savedSets.xAxisLabel, savedSets.xAxisLabelSize);
 
                                 svg.selectAll(".x text")
                                     .attr("transform", "translate(-7,0)rotate(-45)")
                                     .style("text-anchor", "end");
 
                                 svg.select(".xlabel")
-                                     .attr("transform", "translate(" + ((savedSets.width - defaultSettings.margin.left - defaultSettings.margin.right) / 2) + ", " + (defaultSettings.margin.bottom - savedSets.xAxisLabelSize) + ")")
+                                     .attr("transform", "translate(" + ((savedSets.width - savedSets.margin.left - savedSets.margin.right) / 2) + ", " + (savedSets.margin.bottom - savedSets.xAxisLabelSize) + ")")
                                      .style("text-anchor", "middle")
                                      .style("font-size", savedSets.xAxisLabelSize);
 
-                                SVGFactory.appendYAxis(svg, defaultSettings.margin, savedSets.height, yAxis, savedSets.yAxisLabel, savedSets.yAxisLabelSize);
+                                SVGFactory.appendYAxis(svg, savedSets.margin, savedSets.height, yAxis, savedSets.yAxisLabel, savedSets.yAxisLabelSize);
 
                                 // svg.append("g")
                                 //     .attr("class", "y axis")
-                                //     .attr("transform", "translate(" + defaultSettings.margin.left + ",0)")
+                                //     .attr("transform", "translate(" + savedSets.margin.left + ",0)")
                                 //     .call(yAxis)
                                 //     .append("text")
                                 //     .attr("class", "ylabel")
-                                //     .attr("transform", "rotate(-90)translate(" + -((savedSets.height - defaultSettings.margin.bottom) / 2) + ", " + -(defaultSettings.margin.left - savedSets.yAxisLabelSize) + ")")
+                                //     .attr("transform", "rotate(-90)translate(" + -((savedSets.height - savedSets.margin.bottom) / 2) + ", " + -(savedSets.margin.left - savedSets.yAxisLabelSize) + ")")
                                 //     .text(savedSets.yAxisLabel)
                                 //     .style("text-anchor", "middle")
                                 //     .style("font-size", savedSets.yAxisLabelSize);
@@ -126,13 +125,13 @@ app.directive('barChart', function(d3Service, graphSettingsFactory, DataFactory,
                                         return yScale(d[1]);
                                     })
                                     .attr("height", function(d) {
-                                        return savedSets.height - defaultSettings.margin.bottom - yScale(d[1]);
+                                        return savedSets.height - savedSets.margin.bottom - yScale(d[1]);
                                     })
                                     .attr("fill", function(d, i) {
                                             if(typeof savedSets.color === 'function') return savedSets.color(i)
                                             else return savedSets.color;
                                         })
-                                    .attr("transform", "translate(" + defaultSettings.margin.left + ", 0)");
+                                    .attr("transform", "translate(" + savedSets.margin.left + ", 0)");
 
                                 
                                 let longestData = 0;
@@ -154,7 +153,7 @@ app.directive('barChart', function(d3Service, graphSettingsFactory, DataFactory,
                            
                                 SVGFactory.appendLegend(legend, scope.seriesy, savedSets, longestData);
 
-                                SVGFactory.appendTitle(svg, defaultSettings.margin, savedSets.width, savedSets.title, savedSets.titleSize);
+                                SVGFactory.appendTitle(svg, savedSets.margin, savedSets.width, savedSets.title, savedSets.titleSize);
                             
 
                     });

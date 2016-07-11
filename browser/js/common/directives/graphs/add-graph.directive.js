@@ -58,8 +58,8 @@ app.directive('addGraph', function($rootScope, AddGraphFactory, ValidationFactor
                                     scope.barvalues = barValues;
                                     scope.barEnable = true;
                                 });
+                        }
 
-                            }
                         else if (scope.seriesy.length > 0 && scope.seriesx[0].type === 'number' && scope.seriesy[0].type === 'number' ) {
                                 scope.scatterEnable = true;
                                 scope.lineEnable = true;
@@ -69,7 +69,6 @@ app.directive('addGraph', function($rootScope, AddGraphFactory, ValidationFactor
                                     scope.barvalues = barValues;
                                     scope.barEnable = true;
                                 });
-
                         }
 
                         else if (scope.seriesy.length > 0 && scope.seriesx[0].type === 'string' && scope.seriesy[0].type === 'number' ) {
@@ -81,8 +80,7 @@ app.directive('addGraph', function($rootScope, AddGraphFactory, ValidationFactor
                                     scope.barvalues = barValues;
                                     scope.barEnable = true;
                                     scope.pieEnable = scope.seriesy.length === 1;
-                                });
-                            
+                                });    
                         }
                     });
                 }

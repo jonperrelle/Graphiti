@@ -9,10 +9,16 @@
         <div id="view-gensettings-collapse" class="panel-collapse collapse settings-collapse">
           <div id="general">
             <div class="row">
-              <div class="form-group col-xs-12">
+              <div class="form-group col-xs-10">
                 <label for="title" class="control-label">Title</label>
                 <div>
                   <input class="form-control" name="title" type="text" ng-model="settings.title" required>
+                </div>
+              </div>
+              <div class="form-group col-xs-2">
+                <label for="yAxis" class="control-label">Size</label>
+                <div>
+                  <select ng-model="settings.titleSize" name="title-size" class="form-control" ng-options="n for n in titleFontSizes" ng-change="showGraphs()"></select>
                 </div>
               </div>
             </div>
@@ -101,10 +107,16 @@
         <div id="view-xsettings-collapse" class="panel-collapse collapse settings-collapse">
           <div id="general">
             <div class="row">
-              <div class="form-group col-xs-12">
+              <div class="form-group col-xs-10">
                 <label for="xAxisLabel" class="control-label">X Axis Label</label>
                 <div>
                   <input class="form-control" name="xAxisLabel" type="text" ng-model="settings.xAxisLabel" required>
+                </div>
+              </div>
+              <div class="form-group col-xs-2">
+                <label for="xAxisTitleSize" class="control-label">Size</label>
+                <div>
+                  <select ng-model="settings.xAxisTitleSize" name="x-axis-title-size" class="form-control" ng-options="n for n in fontSizes" ng-change="showGraphs()"></select>
                 </div>
               </div>
             </div>
@@ -145,10 +157,16 @@
         <div id="view-ysettings-collapse" class="panel-collapse collapse settings-collapse">
           <div id="general">
             <div class="row">
-              <div class="form-group col-xs-12">
+              <div class="form-group col-xs-10">
                 <label for="yAxisLabel" class="control-label">Y Axis Label</label>
                 <div>
                   <input class="form-control" name="yAxisLabel" type="text" ng-model="settings.yAxisLabel" required>
+                </div>
+              </div>
+              <div class="form-group col-xs-2">
+                <label for="yAxisTitleSize" class="control-label">Size</label>
+                <div>
+                  <select ng-model="settings.yAxisTitleSize" name="y-axis-title-size" class="form-control" ng-options="n for n in fontSizes" ng-change="showGraphs()"></select>
                 </div>
               </div>
             </div>

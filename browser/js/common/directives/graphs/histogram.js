@@ -23,7 +23,6 @@ app.directive('histogram', function (d3Service, DataFactory, SVGFactory, graphSe
 
               let data = scope.rows,
               xCol = scope.seriesx[0],
-              defaultSettings = graphSettingsFactory.getDefaultSettings(),
               svg = SVGFactory.appendSVG(anchor, savedSets.width, savedSets.height),
               quantitative = xCol.type === 'number',
               total = 0;
@@ -47,7 +46,7 @@ app.directive('histogram', function (d3Service, DataFactory, SVGFactory, graphSe
               if (quantitative) {
                 xScale = d3.scale.linear()
                       .domain([d3.min(data, d => d.x), d3.max(data, d => d.x + d.dx)])
-                      .range([0, savedSets.width - defaultSettings.margin.left - defaultSettings.margin.right]);
+                      .range([0, savedSets.width - savedSets.margin.left - savedSets.margin.right]);
                 if (data[0][0][xCol.name] % 1) {
                   tickType = d3.format('.2f');
                 } else {
@@ -58,13 +57,13 @@ app.directive('histogram', function (d3Service, DataFactory, SVGFactory, graphSe
                   .domain(data.map(function(d) {
                             return d[xCol.name]; 
                           }))
-                  .rangeBands([0, savedSets.width - defaultSettings.margin.left - defaultSettings.margin.right], 0.1);
+                  .rangeBands([0, savedSets.width - savedSets.margin.left - savedSets.margin.right], 0.1);
               }
 
               let tickVals = data.map(d => d.x);
 
               let yScale = d3.scale.linear()
-                    .range([savedSets.height - defaultSettings.margin.bottom, defaultSettings.margin.top]);
+                    .range([savedSets.height - savedSets.margin.bottom, savedSets.margin.top]);
 
               if (quantitative) {
                 yScale.domain([0, d3.max(data, d => d.y)]);
@@ -115,19 +114,19 @@ app.directive('histogram', function (d3Service, DataFactory, SVGFactory, graphSe
                       })) - 1) : xScale.rangeBand();
                     })
                     .attr('height', function (d) {
-                      return quantitative ? (savedSets.height - defaultSettings.margin.bottom - yScale(d.y)) : (savedSets.height - defaultSettings.margin.bottom - yScale(d.frequency));
+                      return quantitative ? (savedSets.height - savedSets.margin.bottom - yScale(d.y)) : (savedSets.height - savedSets.margin.bottom - yScale(d.frequency));
                     })
                     .attr("fill", function(d, i) {
                             if(typeof savedSets.color === 'function') return savedSets.color(i);
                             else return savedSets.color;
                     })
-                    .attr("transform", "translate(" +defaultSettings.margin.left + ", 0)");
+                    .attr("transform", "translate(" +savedSets.margin.left + ", 0)");
 
-                  SVGFactory.appendXAxis(svg, defaultSettings.margin, savedSets.width, savedSets.height, xAxis, savedSets.xAxisLabel, savedSets.xAxisLabelSize);
+                  SVGFactory.appendXAxis(svg, savedSets.margin, savedSets.width, savedSets.height, xAxis, savedSets.xAxisLabel, savedSets.xAxisLabelSize);
 
-                  SVGFactory.appendYAxis(svg, defaultSettings.margin, savedSets.height, yAxis, savedSets.yAxisLabel, savedSets.yAxisLabelSize);
+                  SVGFactory.appendYAxis(svg, savedSets.margin, savedSets.height, yAxis, savedSets.yAxisLabel, savedSets.yAxisLabelSize);
 
-                  SVGFactory.appendTitle(svg, defaultSettings.margin, savedSets.width, savedSets.title, savedSets.titleSize);
+                  SVGFactory.appendTitle(svg, savedSets.margin, savedSets.width, savedSets.title, savedSets.titleSize);
           });
         }
       });
