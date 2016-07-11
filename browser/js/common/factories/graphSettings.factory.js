@@ -67,20 +67,12 @@ app.factory("graphSettingsFactory", function(d3Service){
         if (!seriesy || type === 'pie') yLength = 3;
         else {
 
-            if (type === 'bar' || type === 'scatter') {
+            
                 data.forEach(obj => {
                     let currentYLength = obj.values[0][1].toString().length;
                     if (currentYLength > yLength) yLength = currentYLength;
                 })
-            }
-
-            else {
-                data.forEach(obj => {
-                    console.log(obj);
-                    let currentYLength = obj[0][1].toString().length;
-                    if (currentYLength > yLength) yLength = currentYLength;
-                })
-            }
+            
         }
         return [xLength, yLength];
     };
@@ -89,6 +81,7 @@ app.factory("graphSettingsFactory", function(d3Service){
 	graphSettings.getSavedSettings = function (sets, ele, data, seriesx, seriesy, type, tooMuchData) {
         
 		return d3Service.d3().then(function(d3) {
+
 			let formatColX = 'X Axis',
 			formatColY = 'Y Axis',
 			savedSettings = {},
@@ -112,7 +105,7 @@ app.factory("graphSettingsFactory", function(d3Service){
             };
             savedSettings.width = sets.width || (tooMuchData ? savedSettings.margin.left + savedSettings.margin.right + data.length * 15 : ele.parentNode.offsetWidth);
             savedSettings.radius = sets.radius || savedSettings.height / 3;
-            savedSettings.color = setColor(sets.color) || d3.scale.category10(); 
+            savedSettings.color = sets.color ?  setColor(sets.color) : setColor('10'); 
             if (type !== 'histogram') {
                 savedSettings.minX = (sets.minX || sets.minX === 0) ? sets.minX : getMin(d3, data, 0);
                 savedSettings.maxX = (sets.maxX || sets.maxX === 0) ? sets.maxX : getMax(d3, data, 0);

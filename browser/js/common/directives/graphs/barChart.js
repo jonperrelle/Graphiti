@@ -117,7 +117,7 @@ app.directive('barChart', function(d3Service, graphSettingsFactory, DataFactory,
                                 //     .style("text-anchor", "middle")
                                 //     .style("font-size", savedSets.yAxisLabelSize);
 
-
+                                let idx = 0
                                 var yData = svg.selectAll("yData")
                                     .data(values)
                                     .enter().append("g")
@@ -142,7 +142,7 @@ app.directive('barChart', function(d3Service, graphSettingsFactory, DataFactory,
                                         return savedSets.height - savedSets.margin.bottom - yScale(d[1]);
                                     })
                                     .attr("fill", function(d, i) {
-                                            if(typeof savedSets.color === 'function') return savedSets.color(i)
+                                            if(typeof savedSets.color === 'function') return savedSets.color(i);
                                             else return savedSets.color;
                                         })
                                     .attr("transform", "translate(" + savedSets.margin.left + ", 0)");
