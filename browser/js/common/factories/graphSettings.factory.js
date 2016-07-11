@@ -22,6 +22,7 @@ app.factory("graphSettingsFactory", function(d3Service){
         return max;
 	};
 
+
 	// graphSettings.getDefaultSettings = function () {
 	// 	let defaultSettings = {};
 	// 	let yLabelLength = 2;
@@ -35,23 +36,30 @@ app.factory("graphSettingsFactory", function(d3Service){
  //        return defaultSettings;      
 	// };
 
-    // graphSettings.getXScale = function(seriesx, defaultSettings) {
-    //     return d3Service.d3().then(function(d3){
-    //          if(seriesx[0].type == 'number') return d3.scale.linear().range([defaultSettings.margin.left, savedSets.width - defaultSettings.margin.right]);
-    //             else {
-    //                 x = d3.time.scale().range([defaultSettings.margin.left, savedSets.width - defaultSettings.margin.right])
-    //             };  
-    //     })
-    // }
 
-	graphSettings.getSavedSettings = function (sets, ele, data) {
+    let setColor = function (color) {
+        switch (color) {
+          case '10':
+            return d3.scale.category10();
+          case '20a':
+            return d3.scale.category20();
+          case '20b':
+            return d3.scale.category20b();
+          case '20c':
+            return d3.scale.category20c();
+          default: 
+            return color;
+        }
+      };
+
+	graphSettings.getSavedSettings = function (sets, ele, data, hist, tooMuchData) {
+
 		return d3Service.d3().then(function(d3) {
 			let formatColX = 'X Axis';
 			let formatColY = 'Y Axis';
 			let savedSettings = {};
             let yLabelLength = 2;
             let xLabelLength = 3;  
-			savedSettings.width = sets.width || ele.parentNode.offsetWidth;
             savedSettings.height = sets.height || 500;
             savedSettings.xAxisLabel = sets.xAxisLabel || formatColX;
             savedSettings.xAxisTitleSize =  sets.xAxisTitleSize || 12;
@@ -63,15 +71,29 @@ app.factory("graphSettingsFactory", function(d3Service){
             savedSettings.minX = sets.minX || getMin(d3, data, 0);
             savedSettings.maxX = sets.maxX || getMax(d3, data, 0);
             savedSettings.minY = sets.minY || getMin(d3, data, 1);
-            savedSettings.maxY = sets.maxY || getMax(d3, data, 1);
-            savedSettings.xLabelLength = 3;
-            savedSettings.yLabelLength = 2;              
+            savedSettings.maxY = sets.maxY || getMax(d3, data, 1);            
             savedSettings.margin = { 
                 top: savedSettings.titleSize * 1.5,
                 right: 20,
                 bottom: (xLabelLength + 6) * 5 + Number(savedSettings.xAxisTitleSize), 
                 left: (yLabelLength + 6) * 5 + Number(savedSettings.yAxisTitleSize)
             };
+            savedSettings.width = sets.width || (tooMuchData ? savedSettings.margin.left + savedSettings.margin.right + data.length * 15 : ele.parentNode.offsetWidth);
+            savedSettings.xAxisLabelSize = sets.xAxisLabelSize || 8;
+            savedSettings.yAxisLabelSize = sets.yAxisLabelSize || 8;
+            savedSettings.radius = sets.radius || savedSettings.height / 3;
+            savedSettings.color = setColor(sets.color) || d3.scale.category10(); 
+            if (hist !== 'histogram') {
+                savedSettings.minX = (sets.minX || sets.minX === 0) ? sets.minX : getMin(d3, data, 0);
+                savedSettings.maxX = (sets.maxX || sets.maxX === 0) ? sets.maxX : getMax(d3, data, 0);
+                savedSettings.minY = (sets.minY || sets.minY === 0) ? sets.minY : getMin(d3, data, 1);
+                savedSettings.maxY = (sets.maxY || sets.maxY === 0) ? sets.maxY : getMax(d3, data, 1);
+            }
+            savedSettings.display = sets.display || 'total';
+            savedSettings.displayType = sets.displayType || 'number';
+            savedSettings.groupType = sets.groupType || 'total';
+            savedSettings.orderType = sets.orderType || 'sort';
+
             return savedSettings;
         });
 	};

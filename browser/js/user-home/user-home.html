@@ -2,10 +2,9 @@
   <div class="row">
     <div class="col-sm-4 col-xs-12 dataset-account-info">
       <header>
-        <h3>Hi {{user.fullName}}!</h3>
+        <h3>Hi {{user.fullName}}!</h3> 
       </header>
       <hr/>
-      <h5>Edit Account Information</h5>
       <div class="panel-group">
         <div class="panel home-panel">
           <a data-toggle="collapse" data-target="#new-dataset-collapse" href="#" ng-click="newDatasetOpen=!newDatasetOpen">
@@ -20,7 +19,7 @@
                 Search Available Datasets
               </button></li>
               <li class="list-group-item">
-                <upload-modal></upload-modal>
+                <upload-modal upload-class="btn"></upload-modal>
               </li>
             </ul>
           </div>

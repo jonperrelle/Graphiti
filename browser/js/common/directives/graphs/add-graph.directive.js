@@ -10,73 +10,94 @@ app.directive('addGraph', function($rootScope, AddGraphFactory, ValidationFactor
         link: function(scope, ele, attrs) {
             scope.seriesx = [];
             scope.seriesy = [];
+            
             scope.settings = {};
             scope.count = 0;
-            // scope.column1 = $localStorage.column1;
-            // scope.column2 = $localStorage.column2;
             scope.assignedColumns = ValidationFactory.assignColumnNameAndType(scope.data, scope.columns);
             
-            scope.counter = function () {
+            scope.increaseCount = function () {
                 scope.count++;
             };
-        	
-            // scope.pieEnabled = function(){
-            //     return AddGraphFactory.pieEnabled(scope.data, scope.column1, scope.column2);
-            // };
 
-            // scope.barEnabled = function(){
-            //     return AddGraphFactory.barEnabled(scope.data, scope.column1, scope.column2);
-            // };
+            scope.decreaseCount = function () {
+                scope.count--;
+            };
 
-            // scope.scatterEnabled = function(){
-            //     return AddGraphFactory.scatterEnabled(scope.seriesx[0], scope.seriesy[0]);
-            // };
-
-            // scope.lineEnabled = function(){
-                
-            //     return AddGraphFactory.lineEnabled(scope.seriesx[0], scope.seriesy[0]);
-            // };
-
+        
             scope.showGraphs = function () {  
-                
-                GraphFilterFactory.filterData(scope.seriesx, scope.seriesy, scope.data)
-                .then(function(values) {
 
-                    scope.values = values;
-                    scope.withinLength = true;
-                   
-                    if ((scope.seriesx[0].type === 'date') && scope.seriesy[0].type === 'number' ) {
-                            scope.lineEnable = true;
+                if ((scope.seriesx[0].type === 'number' || scope.seriesx[0].type === 'string') && scope.seriesy.length === 0) {
+                    scope.lineEnable = false;
+                    scope.pieEnable = false;
+                    scope.scatterEnable = false;
+                    scope.barEnable = false;
+                    GraphFilterFactory.filterHistogramData(scope.seriesx, scope.data)
+                    .then(function (histogramValues) {
 
+                        scope.histogramvalues = histogramValues;
+                        scope.histogramEnable = true;
+                    });
+                }
+               
+                else if (scope.seriesx.length > 0 && scope.seriesy.length > 0 ) {
+                    scope.histogramEnable = false;
+
+                    GraphFilterFactory.filterData(scope.seriesx, scope.seriesy, scope.data)
+                    .then(function(values) {
+                        scope.values = values;
+                        // $localStorage.values = scope.values;
+                        // $localStorage.seriesx = scope.seriesx;
+                        // $localStorage.seriesy = scope.seriesy;
+                        scope.withinLength = true;
+                        if (scope.seriesy.length > 0 && scope.seriesx[0].type === 'date' && scope.seriesy[0].type === 'number' ) {
+                                scope.lineEnable = true;
+                                scope.pieEnable = false;
+                                scope.scatterEnable = false;
+                                GraphFilterFactory.filterBarData(scope.seriesx, scope.seriesy, scope.data)
+                                .then(function(barValues) {
+                                    scope.barvalues = barValues;
+                                    scope.barEnable = true;
+                                });
                         }
-                    else if (scope.seriesx[0].type === 'number' && scope.seriesy[0].type === 'number' ) {
-                            scope.scatterEnable = true;
-                            scope.lineEnable = true; 
-                    }
 
-                    else if (scope.seriesx[0].type === 'string' && scope.seriesy[0].type === 'number' ) {
-                            scope.pieEnable = true;
-                            let groupedData = DataFactory.groupByCategory(values, scope.seriesx, scope.seriesy, 'total');
-                            if (groupedData[0].length > 30) scope.withinLength = false;
-                           // scope.barEnabled = true
-                    }
-                });
-                
+                        else if (scope.seriesy.length > 0 && scope.seriesx[0].type === 'number' && scope.seriesy[0].type === 'number' ) {
+                                scope.scatterEnable = true;
+                                scope.lineEnable = true;
+                                scope.pieEnable = false;
+                                GraphFilterFactory.filterBarData(scope.seriesx, scope.seriesy, scope.data)
+                                .then(function(barValues) {
+                                    scope.barvalues = barValues;
+                                    scope.barEnable = true;
+                                });
+                        }
+
+                        else if (scope.seriesy.length > 0 && scope.seriesx[0].type === 'string' && scope.seriesy[0].type === 'number' ) {
+                                scope.scatterEnable = false;
+                                scope.lineEnable = false;
+                                GraphFilterFactory.filterBarData(scope.seriesx, scope.seriesy, scope.data)
+                                .then(function(barValues) {
+                                    if (barValues.length > 30) scope.withinLength = false;
+                                    scope.barvalues = barValues;
+                                    scope.barEnable = true;
+                                    scope.pieEnable = scope.seriesy.length === 1;
+                                });    
+                        }
+                    });
+                }
             };
 
             scope.viewSingleGraph = function (graphType) {
+                let sendValues;
+                if (graphType === 'histogram') sendValues = scope.histogramvalues;
+                else if (graphType === 'barChart' || graphType === 'pieChart') sendValues = scope.barvalues;
+                else sendValues = scope.values;
                 $state.go('singleGraph', {graphType, data: scope.data, 
-                    values: scope.values, 
+                    values: sendValues, 
                     seriesx: scope.seriesx, 
                     seriesy: scope.seriesy, 
                     settings: scope.settings, 
                     allColumns: scope.assignedColumns});
             };
-
-            // scope.withinLength = function(){
-            //     let groupedData = DataFactory.groupByCategory(scope.data, scope.column1.name, scope.column2.name, 'total');
-            //     return DataFactory.withinLength(groupedData, scope.column1.name, 30);
-            // };
 
         }
     };
