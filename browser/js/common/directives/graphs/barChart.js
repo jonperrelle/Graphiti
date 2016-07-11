@@ -16,31 +16,9 @@ app.directive('barChart', function(d3Service, graphSettingsFactory, DataFactory,
                 SVGFactory.watchForChanges(scope);
                
 
-               let getLabelLengths = function (data, seriesx, seriesy) {
-        
-        let xLength = 0,
-        yLength = 0;
-        if (seriesx === undefined || seriesx === null) xLength = 2;
-        else {
-            
-            xLength = data.reduce(function (prev, current) {
-                    let currentLength = current[seriesx[0].name].toString().length;
-                    return currentLength > prev ? currentLength : prev;
-                }, 0);
-        }
-        if (seriesy === undefined) yLength = 3;
-        else {
-            yLength = data.forEach(obj => {
-                
-            })
-        }
-        return [xLength, yLength];
-    };
-
                 scope.render = function() {
                     if (!scope.seriesy) return;
                     let anchor = d3.select(ele[0]);
-                        anchor.selectAll('*').remove();
                     let values = [];
                     let tooMuchData = scope.rows.length > 50;
                     if (tooMuchData) {
@@ -54,6 +32,7 @@ app.directive('barChart', function(d3Service, graphSettingsFactory, DataFactory,
                         graphSettingsFactory.getSavedSettings(scope.settings, ele[0], values, scope.seriesx, scope.seriesy, 'bar', tooMuchData)
                             .then(function (savedSets) {
                                 
+                                anchor.selectAll('*').remove();
                                 let svg = SVGFactory.appendSVG(anchor, savedSets);
 
                                 let barSpace = 0.1;

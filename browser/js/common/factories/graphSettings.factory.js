@@ -69,10 +69,8 @@ app.factory("graphSettingsFactory", function(d3Service){
                });
             }   
         }
-        if (!seriesy || type === 'pie') yLength = 3;
+        if (!seriesy || type === 'pie' || !data[0].values[0]) yLength = 3;
         else {
-
-            
                 data.forEach(obj => {
                     let currentYLength = obj.values[0][1].toString().length;
                     if (currentYLength > yLength) yLength = currentYLength;

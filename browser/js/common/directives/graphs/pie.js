@@ -21,7 +21,7 @@ app.directive('pieChart', function(d3Service, $window, SVGFactory, graphSettings
                 
                 scope.render = function() {
                         let anchor = d3.select(ele[0]);
-                        anchor.selectAll('*').remove();
+                        
 
                         let values = [];
 
@@ -30,7 +30,7 @@ app.directive('pieChart', function(d3Service, $window, SVGFactory, graphSettings
 
                         graphSettingsFactory.getSavedSettings(scope.settings, ele[0], values, scope.seriesx, scope.seriesy, 'pie')
                             .then(function (savedSets) {
-
+                                anchor.selectAll('*').remove();
                                 let svg = SVGFactory.appendSVG(anchor, savedSets);
 
                                 let groupedTotal = 0;

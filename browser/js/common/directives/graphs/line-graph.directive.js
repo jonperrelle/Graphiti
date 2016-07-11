@@ -18,11 +18,11 @@ app.directive('lineGraph', function(d3Service, SVGFactory, GraphFilterFactory, g
                 scope.render = function() {   
 
                     let anchor = d3.select(ele[0])
-                    anchor.selectAll('*').remove();                        
+                                          
 
                     graphSettingsFactory.getSavedSettings(scope.settings, ele[0], scope.rows, scope.seriesx, scope.seriesy, 'line')
                         .then(function (savedSets) {
-
+                            anchor.selectAll('*').remove(); 
                             let svg = SVGFactory.appendSVG(anchor, savedSets);
 
                             let x; 

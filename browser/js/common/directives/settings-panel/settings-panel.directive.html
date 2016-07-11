@@ -18,7 +18,7 @@
               <div class="form-group col-xs-3">
                 <label for="yAxis" class="control-label">Size</label>
                 <div>
-                  <select ng-model="settings.titleSize" name="title-size" class="form-control" ng-options="n for n in titleFontSizes" ng-change="showGraphs()"></select>
+                  <select ng-model="settings.titleSize" name="title-size" class="form-control" ng-options="n for n in titleFontSizes"></select>
                 </div>
               </div>
             </div>
@@ -116,7 +116,7 @@
               <div class="form-group col-xs-3">
                 <label for="xAxisTitleSize" class="control-label">Size</label>
                 <div>
-                  <select ng-model="settings.xAxisTitleSize" name="x-axis-title-size" class="form-control" ng-options="n for n in fontSizes" ng-change="showGraphs()"></select>
+                  <select ng-model="settings.xAxisTitleSize" name="x-axis-title-size" class="form-control" ng-options="n for n in fontSizes"></select>
                 </div>
               </div>
             </div>
@@ -131,11 +131,11 @@
                 </div>
               </div>
             </div>
-            <div class="row" ng-hide="graphType==='barChart' || graphType==='histogram'">
+            <div class="row" ng-hide="graphType==='barChart' || graphType==='histogram' || seriesx[0].type === 'date'">
               <div class="form-group col-xs-6">
                 <label for="maxX" class="control-label">Min X Value</label>
                 <div>
-                  <input class="form-control" name="maxX" type="number" ng-model="settings.minX" required>
+                  <input class="form-control" name="maxX" type="number" ng-model="settings.minX" ng-change="showGraphs()" required>
                 </div>
               </div>
               <div class="form-group col-xs-6">
@@ -166,7 +166,7 @@
               <div class="form-group col-xs-3">
                 <label for="yAxisTitleSize" class="control-label">Size</label>
                 <div>
-                  <select ng-model="settings.yAxisTitleSize" name="y-axis-title-size" class="form-control" ng-options="n for n in fontSizes" ng-change="showGraphs()"></select>
+                  <select ng-model="settings.yAxisTitleSize" name="y-axis-title-size" class="form-control" ng-options="n for n in fontSizes"></select>
                 </div>
               </div>
             </div>

@@ -14,11 +14,13 @@ app.directive('histogram', function (d3Service, DataFactory, SVGFactory, graphSe
 
         scope.render = function () {
           let anchor = d3.select(ele[0]);
-          anchor.selectAll('*').remove();
+          
 
           graphSettingsFactory.getSavedSettings(scope.settings, ele[0], scope.rows, scope.seriesx, scope.seriesy, 'histogram')
               .then(function (savedSets) {
 
+              anchor.selectAll('*').remove();
+              
               let data = scope.rows,
               xCol = scope.seriesx[0],
               svg = SVGFactory.appendSVG(anchor, savedSets),
