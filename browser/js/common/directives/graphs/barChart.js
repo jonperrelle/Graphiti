@@ -29,7 +29,7 @@ app.directive('barChart', function(d3Service, graphSettingsFactory, DataFactory,
                         graphSettingsFactory.getSavedSettings(scope.settings, ele[0], values, null, tooMuchData)
                             .then(function (savedSets) {
                                 
-                                let svg = SVGFactory.appendSVG(anchor, savedSets.width, savedSets.height);
+                                let svg = SVGFactory.appendSVG(anchor, savedSets);
 
                                 let barSpace = 0.1;
 
@@ -79,9 +79,9 @@ app.directive('barChart', function(d3Service, graphSettingsFactory, DataFactory,
                                 //     .append("text")
                                 //     .attr("class", "xlabel")
                                 //     .text(savedSets.xAxisLabel);
-                                SVGFactory.appendXAxis(svg, savedSets.margin, savedSets.width, savedSets.height, xAxis, savedSets.xAxisLabel, savedSets.xAxisTitleSize);
+                                SVGFactory.appendXAxis(svg, savedSets, xAxis, 'bar');
 
-                                SVGFactory.appendYAxis(svg, savedSets.margin, savedSets.height, yAxis, savedSets.yAxisLabel, savedSets.yAxisTitleSize);
+                                SVGFactory.appendYAxis(svg, savedSets, yAxis);
 
                                 // svg.append("g")
                                 //     .attr("class", "y axis")
@@ -144,7 +144,7 @@ app.directive('barChart', function(d3Service, graphSettingsFactory, DataFactory,
                            
                                 SVGFactory.appendLegend(legend, scope.seriesy, savedSets, longestData);
 
-                                SVGFactory.appendTitle(svg, savedSets.margin, savedSets.width, savedSets.title, savedSets.titleSize);
+                                SVGFactory.appendTitle(svg, savedSets);
                             
 
                     });

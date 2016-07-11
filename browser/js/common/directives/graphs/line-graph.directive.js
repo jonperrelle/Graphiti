@@ -23,7 +23,7 @@ app.directive('lineGraph', function(d3Service, SVGFactory, GraphFilterFactory, g
                     graphSettingsFactory.getSavedSettings(scope.settings, ele[0], scope.rows)
                         .then(function (savedSets) {
 
-                            let svg = SVGFactory.appendSVG(anchor, savedSets.width, savedSets.height);
+                            let svg = SVGFactory.appendSVG(anchor, savedSets);
 
                             let x; 
 
@@ -56,13 +56,13 @@ app.directive('lineGraph', function(d3Service, SVGFactory, GraphFilterFactory, g
 
                             let filteredValues = GraphFilterFactory.setBounds(savedSets, scope.rows);
                             //xAxis
-                            SVGFactory.appendXAxis(svg, savedSets.margin, savedSets.width, savedSets.height, xAxis, savedSets.xAxisLabel, savedSets.xAxisTitleSize);
+                            SVGFactory.appendXAxis(svg, savedSets, xAxis);
 
                             svg.select(".xlabel")
                                 .attr("transform", "translate(" + (savedSets.width - savedSets.margin.left - savedSets.margin.right) / 2 + ", " + (savedSets.margin.bottom - 10) + ")");
 
                             //yAxis
-                            SVGFactory.appendYAxis(svg, savedSets.margin, savedSets.height, yAxis, savedSets.yAxisLabel, savedSets.yAxisTitleSize);
+                            SVGFactory.appendYAxis(svg, savedSets, yAxis);
 
                             let yData = svg.selectAll("yData")
                                 .data(filteredValues)
@@ -107,7 +107,7 @@ app.directive('lineGraph', function(d3Service, SVGFactory, GraphFilterFactory, g
 
                             SVGFactory.appendLegend(legend, filteredValues, savedSets, longestData);      
 
-                            SVGFactory.appendTitle(svg, savedSets.margin, savedSets.width, savedSets.title, savedSets.titleSize);
+                            SVGFactory.appendTitle(svg, savedSets);
                             
 
                     });

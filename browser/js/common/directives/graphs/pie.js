@@ -32,7 +32,7 @@ app.directive('pieChart', function(d3Service, $window, SVGFactory, graphSettings
                         graphSettingsFactory.getSavedSettings(scope.settings, ele[0], values)
                             .then(function (savedSets) {
 
-                                let svg = SVGFactory.appendSVG(anchor, savedSets.width, savedSets.height);
+                                let svg = SVGFactory.appendSVG(anchor, savedSets);
 
                                 let groupedTotal = 0;
                             
@@ -55,7 +55,7 @@ app.directive('pieChart', function(d3Service, $window, SVGFactory, graphSettings
                                       .attr("d", arc)
                                       .style("fill", function(d, i) { return savedSets.color(i); })
 
-                                SVGFactory.appendTitle(svg, savedSets.margin, savedSets.width, savedSets.title, savedSets.titleSize);
+                                SVGFactory.appendTitle(svg, savedSets);
 
                                 let legendDisplay = (type, data) => {
                                     if (type === 'percentage') return ((data[1]/groupedTotal) * 100).toFixed(2) + "%";

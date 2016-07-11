@@ -23,7 +23,7 @@ app.directive('histogram', function (d3Service, DataFactory, SVGFactory, graphSe
 
               let data = scope.rows,
               xCol = scope.seriesx[0],
-              svg = SVGFactory.appendSVG(anchor, savedSets.width, savedSets.height),
+              svg = SVGFactory.appendSVG(anchor, savedSets),
               quantitative = xCol.type === 'number',
               total = 0;
 
@@ -122,13 +122,13 @@ app.directive('histogram', function (d3Service, DataFactory, SVGFactory, graphSe
                     })
                     .attr("transform", "translate(" +savedSets.margin.left + ", 0)");
 
-                  SVGFactory.appendXAxis(svg, savedSets.margin, savedSets.width, savedSets.height, xAxis, savedSets.xAxisLabel, savedSets.xAxisTitleSize);
+                  SVGFactory.appendXAxis(svg, savedSets, xAxis, 'histogram');
 
-                  SVGFactory.appendYAxis(svg, savedSets.margin, savedSets.height, yAxis, savedSets.yAxisLabel, savedSets.yAxisTitleSize);
+                  SVGFactory.appendYAxis(svg, savedSets, yAxis);
 
-                  SVGFactory.appendTitle(svg, savedSets.margin, savedSets.width, savedSets.title, savedSets.titleSize);
+                  SVGFactory.appendTitle(svg, savedSets);
           });
-        }
+        };
       });
     }
   };

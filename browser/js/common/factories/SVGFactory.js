@@ -25,15 +25,17 @@ app.factory('SVGFactory', function ($window) {
       }, true);
   };
 
-  SVGFactory.appendXAxis = function (svg, margin, width, height, xAxis, xAxisLabel, xAxisTitleSize) {
+  SVGFactory.appendXAxis = function (svg, savedSets, xAxis, type) {
     // translate for line and scatterPlot should be 0, height-margin.bottom
+    let translateXAxis = 0;
+    if (type === 'bar' || type === 'histogram') translateXAxis = savedSets.margin.left;
     svg.append("g")
       .attr("class", "x axis")
-      .attr("transform", "translate(" + margin.left + ", " + (height - margin.bottom) + ")")
+      .attr("transform", "translate(" + translateXAxis + ", " + (savedSets.height - savedSets.margin.bottom) + ")")
       .call(xAxis)
       .append("text")
       .attr("class", "xlabel")
-      .text(xAxisLabel);
+      .text(savedSets.xAxisLabel);
 
     svg.selectAll(".x text")
       .attr("transform", "translate(-7,0)rotate(-45)")
@@ -41,52 +43,52 @@ app.factory('SVGFactory', function ($window) {
 
 
     svg.select(".xlabel")
-      .attr("transform", "translate(" + ((width - margin.left - margin.right) / 2) + ", " + (margin.bottom - xAxisTitleSize) + ")")
+      .attr("transform", "translate(" + ((savedSets.width - savedSets.margin.left - savedSets.margin.right) / 2) + ", " + (savedSets.margin.bottom - savedSets.xAxisTitleSize) + ")")
       .style("text-anchor", "middle")
-      .style("font-size", xAxisTitleSize);
+      .style("font-size", savedSets.xAxisTitleSize);
   };
 
-  SVGFactory.appendYAxis = function (svg, margin, height, yAxis, yAxisLabel, yAxisTitleSize) {
+  SVGFactory.appendYAxis = function (svg, savedSets, yAxis) {
     svg.append("g")
       .attr("class", "y axis")
-      .attr("transform", "translate(" + margin.left + ",0)")
+      .attr("transform", "translate(" + savedSets.margin.left + ",0)")
       .call(yAxis)
       .append("text")
       .attr("class", "ylabel")
-      .attr("transform", "rotate(-90)translate(" + -((height - margin.bottom) / 2) + ", " + -(margin.left - yAxisTitleSize) + ")")
-      .text(yAxisLabel)
+      .attr("transform", "rotate(-90)translate(" + -((savedSets.height - savedSets.margin.bottom) / 2) + ", " + -(savedSets.margin.left - savedSets.yAxisTitleSize) + ")")
+      .text(savedSets.yAxisLabel)
       .style("text-anchor", "middle")
-      .style("font-size", yAxisTitleSize);
+      .style("font-size", savedSets.yAxisTitleSize);
   };
 
-  SVGFactory.appendTitle = function (svg, margin, width, title, titleSize) {
+  SVGFactory.appendTitle = function (svg, savedSets) {
     svg.append("text")
-      .attr("x", (width / 2))
-      .attr("y", (margin.top / 2))
+      .attr("x", (savedSets.width / 2))
+      .attr("y", (savedSets.margin.top / 2))
       .attr("text-anchor", "middle")
-      .style("font-size", titleSize)
-      .text(title);
+      .style("font-size", savedSets.titleSize)
+      .text(savedSets.title);
   };
 
-  SVGFactory.appendSVG = function (anchor, width, height) {
+  SVGFactory.appendSVG = function (anchor, savedSets) {
     return anchor.append('svg')
-            .style('width', width)
-            .style('height', height)
+            .style('width', savedSets.width)
+            .style('height', savedSets.height)
             .style('background-color', '#ffffff');
   };
 
-  SVGFactory.appendLegend = function(legend, data, settings, longestData, type) {
+  SVGFactory.appendLegend = function(legend, data, savedSets, longestData, type) {
 
             legend.append("rect")
-                .attr("x", settings.width - (92 + ((longestData - 7) * 5)))
+                .attr("x", savedSets.width - (92 + ((longestData - 7) * 5)))
                 .attr("y", "30")
-                .attr("width", settings.width/100)
-                .attr("height", settings.height/100)
-                .style("fill", function(d, i) { return settings.color(i); });
+                .attr("width", savedSets.width/100)
+                .attr("height", savedSets.height/100)
+                .style("fill", function(d, i) { return savedSets.color(i); });
 
            
             legend.append("text")
-                .attr("x", settings.width - (82 + ((longestData - 7) * 5)))
+                .attr("x", savedSets.width - (82 + ((longestData - 7) * 5)))
                 .attr("y", "35")
                 .style("font-size", "1.2em")
                 .text(function(d, i) {
