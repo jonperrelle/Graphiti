@@ -134,7 +134,6 @@ app.factory('GraphFilterFactory', function (d3Service, graphSettingsFactory, Dat
               }
           });
 
-          console.log(dataObj);
           dataObj = sortLineAndScatterData(seriesx, dataObj);
           let count = 0;
           let values = d3.values(dataObj).map(arr => {      
