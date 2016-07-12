@@ -88,7 +88,7 @@ app.factory("graphSettingsFactory", function(d3Service){
         
 		return d3Service.d3().then(function(d3) {
             let formatColX, formatColY;
-            if(seriesx.length === 1){
+            if(seriesy && seriesy.length===1){
                 formatColX = seriesx[0].name.replace(/\_/g, ' ');
                 formatColY = seriesy[0].name.replace(/\_/g, ' ');
             }
