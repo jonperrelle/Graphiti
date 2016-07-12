@@ -86,10 +86,16 @@ app.factory("graphSettingsFactory", function(d3Service){
 	graphSettings.getSavedSettings = function (sets, ele, data, seriesx, seriesy, type, tooMuchData) {
         
 		return d3Service.d3().then(function(d3) {
-
-			let formatColX = 'X Axis',
-			formatColY = 'Y Axis',
-			savedSettings = {},
+            let formatColX, formatColY;
+            if(seriesx.length === 1){
+                formatColX = seriesx[0].name;
+                formatColY = seriesy[0].name;
+            }
+            else {
+                formatColX = 'X Axis'
+                formatColY = 'Y Axis'
+            }
+			let savedSettings = {},
             labelLengths = getLabelLengths(data, type, seriesx, seriesy),
             xLabelLength = labelLengths[0],
             yLabelLength = labelLengths[1]; 
