@@ -22,7 +22,7 @@ app.controller('UserHomeCtrl', function($scope, $state, UploadFactory, Session, 
             .then(rows => {
                 let allColumns = ValidationFactory.assignColumnNameAndType(rows, Object.keys(rows[0]));
                 if (graph.graphType === 'barChart' || graph.graphType === 'pieChart') {
-                    GraphFilterFactory.filterBarData(graph.seriesx, graph.seriesy, rows)
+                    GraphFilterFactory.filterBarAndPieData(graph.seriesx, graph.seriesy, rows)
                     .then(function (values) {
                         $state.go('userSingleGraph', { userId: $scope.user.id, graphId: graph.id, dataset: graph.dataset, graphType: graph.graphType, settings: graph.setting, data: rows, seriesx: graph.seriesx, seriesy: graph.seriesy, allColumns: allColumns, values: values });
                     });
@@ -34,7 +34,7 @@ app.controller('UserHomeCtrl', function($scope, $state, UploadFactory, Session, 
                     });
                 }
                 else { 
-                    GraphFilterFactory.filterData(graph.seriesx, graph.seriesy, rows)
+                    GraphFilterFactory.filterLineAndScatterData(graph.seriesx, graph.seriesy, rows)
                     .then(function(values) {
                         $state.go('userSingleGraph', { userId: $scope.user.id, graphId: graph.id, dataset: graph.dataset, graphType: graph.graphType, settings: graph.setting, data: rows, seriesx: graph.seriesx, seriesy: graph.seriesy, allColumns: allColumns, values: values });
                     });

@@ -12,7 +12,6 @@ app.directive('settingsPanel', function(ValidationFactory, GraphFilterFactory, $
                 });
             });
     
-            
             scope.xColumns = scope.allColumns.filter(function(elem){
                 
                 if (scope.graphType === 'lineGraph') return elem.type === 'number' || elem.type === 'date';
@@ -29,13 +28,13 @@ app.directive('settingsPanel', function(ValidationFactory, GraphFilterFactory, $
             scope.titleFontSizes = scope.fontSizes.concat([48, 64, 96]);
 
             scope.downloadGraph = function() {
-                saveSvgAsPng(document.querySelector('.graph-container svg'), 'sample.png');
+                saveSvgAsPng(document.querySelector('.graph-container svg'), 'graph.png');
             };
 
             scope.showGraphs = function () {  
                 
                 if (scope.graphType === 'lineGraph' || scope.graphType === 'scatterPlot') {
-                    GraphFilterFactory.filterData(scope.seriesx, scope.seriesy, scope.data)
+                    GraphFilterFactory.filterLineAndScatterData(scope.seriesx, scope.seriesy, scope.data)
                     .then(function(values) {
                         scope.values = values;
                     });
@@ -47,7 +46,7 @@ app.directive('settingsPanel', function(ValidationFactory, GraphFilterFactory, $
                     });
                 }
                 else {
-                    GraphFilterFactory.filterBarData(scope.seriesx, scope.seriesy, scope.data)
+                    GraphFilterFactory.filterBarAndPieData(scope.seriesx, scope.seriesy, scope.data)
                     .then(function(values) {
                         scope.values = values;
                     });

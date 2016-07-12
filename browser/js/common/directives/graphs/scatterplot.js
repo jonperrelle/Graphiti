@@ -1,5 +1,5 @@
 
-app.directive('scatterplotGraph', function(d3Service, $window, GraphFilterFactory, graphSettingsFactory, SVGFactory) {
+app.directive('scatterplotGraph', function(d3Service, GraphFilterFactory, graphSettingsFactory, SVGFactory) {
 
     let directive = {};
 
@@ -61,39 +61,10 @@ app.directive('scatterplotGraph', function(d3Service, $window, GraphFilterFactor
                             yScale.domain([savedSets.minY, savedSets.maxY]);
 
                             // x-axis
-
                             SVGFactory.appendXAxis(svg, savedSets, xAxis);
 
-                            SVGFactory.appendYAxis(svg, savedSets, yAxis);
-
-                                 
-                            // svg.append("g")
-                            //     .attr("class", "x axis")
-                            //     .attr("transform", "translate(0," + (savedSets.height - defaultSettings.margin.bottom) + ")")
-                            //     .call(xAxis)
-                            //     .append("text")
-                            //     .attr("class", "xlabel")
-                            //     .text(savedSets.xAxisLabel);
-
-
-                            // svg.selectAll(".x text")
-                            //     .attr("transform", "translate(-10, 0)rotate(-45)")
-                            //     .style("text-anchor", "end");
-
-                            // svg.select(".xlabel")
-                            //         .attr("transform", "translate(" + (savedSets.width - savedSets.margin.left - savedSets.margin.right) / 2 + ", " + (savedSets.margin.bottom - 10) + ")");
-
                             // y-axis
-
-                           
-                            //     .attr("class", "y axis")
-                            //     .attr("transform", "translate(" + defaultSettings.margin.left + ",0)")
-                            //     .call(yAxis)
-                            //     .append("text")
-                            //     .attr("class", "ylabel")
-                            //     .attr("transform", "rotate(-90)translate(" + -((savedSets.height + defaultSettings.margin.bottom + defaultSettings.margin.top) / 2) + ", " + -(defaultSettings.margin.left - 20) + ")")
-                            //     .text(savedSets.yAxisLabel);
-                        
+                            SVGFactory.appendYAxis(svg, savedSets, yAxis);
 
                             let dotRadius = savedSets.height/100;
 
