@@ -82,8 +82,8 @@ app.factory('SVGFactory', function ($window) {
             legend.append("rect")
                 .attr("x", savedSets.width - (120 + ((longestData - 7) * 6)))
                 .attr("y", "30")
-                .attr("width", savedSets.width/100)
-                .attr("height", savedSets.height/100)
+                .attr("width", 5)
+                .attr("height", 5)
                 .style("fill", function(d, i) { return savedSets.color(i); });
 
            

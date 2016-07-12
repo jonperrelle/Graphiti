@@ -11,11 +11,8 @@ app.directive('barChart', function(d3Service, graphSettingsFactory, DataFactory,
         link: function(scope, ele, attrs) {
             d3Service.d3().then(function(d3) {
    
-                // Watch for resize event
-
                 SVGFactory.watchForChanges(scope);
                
-
                 scope.render = function() {
                     if (!scope.seriesy) return;
                     let anchor = d3.select(ele[0]);
@@ -31,22 +28,12 @@ app.directive('barChart', function(d3Service, graphSettingsFactory, DataFactory,
                     
                         graphSettingsFactory.getSavedSettings(scope.settings, ele[0], values, scope.seriesx, scope.seriesy, 'bar', tooMuchData)
                             .then(function (savedSets) {
-                                
+
                                 anchor.selectAll('*').remove();
                                 let svg = SVGFactory.appendSVG(anchor, savedSets);
 
                                 let barSpace = 0.1;
 
-                                // let xLabelLength = groupedData.reduce(function (prev, current) {
-                                //         let currentLength = current[scope.columns[0].name].toString().length;
-                                //         return currentLength > prev ? currentLength : prev;
-                                //     }, 0),
-                                //     yLabelLength = groupedData.reduce(function (prev, current) {
-                                //         let currentLength = Math.floor(current[scope.columns[1].name]).toString().length;
-                                //         return currentLength > prev ? currentLength : prev;
-                                //     }, 0);
-
-                                //create the rectangles for the bar chart
                                 let x1Scale = d3.scale.ordinal()
                                     .rangeBands([0, savedSets.width - savedSets.margin.left - savedSets.margin.right], barSpace);
 
@@ -76,27 +63,11 @@ app.directive('barChart', function(d3Service, graphSettingsFactory, DataFactory,
                                 x2Scale.domain(groupCats).rangeRoundBands([0, x1Scale.rangeBand()]);
                                 yScale.domain([savedSets.minY, savedSets.maxY]);
 
-                                // svg.append("g")
-                                //     .attr("class", "x axis")
-                                //     .attr("transform", "translate(" + savedSets.margin.left + ", " + (savedSets.height - savedSets.margin.bottom) + ")")
-                                //     .call(xAxis)
-                                //     .append("text")
-                                //     .attr("class", "xlabel")
-                                //     .text(savedSets.xAxisLabel);
                                 SVGFactory.appendXAxis(svg, savedSets, xAxis, 'bar');
 
                                 SVGFactory.appendYAxis(svg, savedSets, yAxis);
 
-                                // svg.append("g")
-                                //     .attr("class", "y axis")
-                                //     .attr("transform", "translate(" + savedSets.margin.left + ",0)")
-                                //     .call(yAxis)
-                                //     .append("text")
-                                //     .attr("class", "ylabel")
-                                //     .attr("transform", "rotate(-90)translate(" + -((savedSets.height - savedSets.margin.bottom) / 2) + ", " + -(savedSets.margin.left - savedSets.yAxisLabelSize) + ")")
-                                //     .text(savedSets.yAxisLabel)
-                                //     .style("text-anchor", "middle")
-                                //     .style("font-size", savedSets.yAxisLabelSize);
+                                SVGFactory.appendTitle(svg, savedSets);
 
                                 let idx = 0
                                 var yData = svg.selectAll("yData")
@@ -150,10 +121,7 @@ app.directive('barChart', function(d3Service, graphSettingsFactory, DataFactory,
                                
                                     SVGFactory.appendLegend(legend, scope.seriesy, savedSets, longestData);
                                 }
-
-                                SVGFactory.appendTitle(svg, savedSets);
                             
-
                     });
                 };
             });

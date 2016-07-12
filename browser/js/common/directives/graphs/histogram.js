@@ -1,4 +1,4 @@
-app.directive('histogram', function (d3Service, DataFactory, SVGFactory, graphSettingsFactory) {
+app.directive('histogram', function (d3Service, SVGFactory, graphSettingsFactory) {
   return {
     restrict: 'E',
     scope: {
@@ -9,7 +9,7 @@ app.directive('histogram', function (d3Service, DataFactory, SVGFactory, graphSe
     link: function (scope, ele, attrs) {
       scope.column = scope.seriesx[0];
       d3Service.d3().then(function (d3) {
-        //Re-render the graph when user changes settings, data, or window size
+        
         SVGFactory.watchForChanges(scope);
 
         scope.render = function () {
@@ -30,12 +30,6 @@ app.directive('histogram', function (d3Service, DataFactory, SVGFactory, graphSe
               data.forEach( obj => {
                 total += obj.frequency;
               });
-
-          // let xLabelLength = !quantitative ? data.reduce(function (prev, current) {
-          //         let currentLength = current[scope.column.name].toString().length;
-          //         return currentLength > prev ? currentLength : prev;
-          //     }, 0) :
-          //     7;
 
               if (savedSets.yAxisLabel === 'Y Axis') savedSets.yAxisLabel = 'Total';
               if (savedSets.title === 'X AXIS vs. Y AXIS') savedSets.title = 'Frequency for ' + savedSets.xAxisLabel;

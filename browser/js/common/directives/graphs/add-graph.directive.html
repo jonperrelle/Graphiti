@@ -23,6 +23,7 @@
 						            </div>
 						            <div class="col-xs-3">
 						              <button class='data-btn' type="button" ng-click="increaseCount()"><i class="fa fa-2x fa-plus-circle add-data-icon" aria-hidden="true"></i></button>
+						              <button class="data-btn" ng-click="seriesy.splice($index, 1); showGraphs(); decreaseCount()"><i class="fa fa-2x fa-times remove-data-icon" aria-hidden="true" ng-show="seriesy.length > 1"></i></button>
 						            </div>
 					            </div>
 					            <div class='row col-xs-12 seriesy-select' ng-repeat="data in seriesy" ng-show="$index < count">

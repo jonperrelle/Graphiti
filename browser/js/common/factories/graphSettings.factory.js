@@ -44,7 +44,6 @@ app.factory("graphSettingsFactory", function(d3Service){
         if (!seriesx || type === 'pie') xLength = 2;
         else {
             if (type === 'histogram') {
-                console.log(data[0])
                 if (Array.isArray(data[0])) xLength = data[data.length-1].x.toString().length;
                 else data.forEach( obj => {
                     let currentXLength = obj[seriesx[0].name].toString().length;
@@ -69,14 +68,18 @@ app.factory("graphSettingsFactory", function(d3Service){
                });
             }   
         }
+        
         if (!seriesy || type === 'pie' || !data[0].values[0]) yLength = 3;
         else {
+
                 data.forEach(obj => {
+
                     let currentYLength = obj.values[0][1].toString().length;
                     if (currentYLength > yLength) yLength = currentYLength;
                 })
             
         }
+        
         return [xLength, yLength];
     };
 
@@ -104,7 +107,7 @@ app.factory("graphSettingsFactory", function(d3Service){
                 top: savedSettings.titleSize * 1.5,
                 right: 20,
                 bottom: (xLabelLength + 8) * 4 + Number(savedSettings.xAxisTitleSize), 
-                left: (yLabelLength + 6) * 4 + Number(savedSettings.yAxisTitleSize)
+                left: (yLabelLength + 8) * 4 + Number(savedSettings.yAxisTitleSize)
             };
             savedSettings.width = sets.width || (tooMuchData ? savedSettings.margin.left + savedSettings.margin.right + data.length * 15 : ele.parentNode.offsetWidth);
             savedSettings.radius = sets.radius || savedSettings.height / 3;

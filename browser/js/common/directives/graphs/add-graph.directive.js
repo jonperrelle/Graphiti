@@ -1,4 +1,4 @@
-app.directive('addGraph', function($rootScope, AddGraphFactory, ValidationFactory, DataFactory, GraphFilterFactory, $state, $localStorage) {
+app.directive('addGraph', function(ValidationFactory, GraphFilterFactory, $state, $localStorage) {
     return {
         restrict: 'E',
         templateUrl: 'js/common/directives/graphs/add-graph.directive.html',
@@ -42,7 +42,7 @@ app.directive('addGraph', function($rootScope, AddGraphFactory, ValidationFactor
                 else if (scope.seriesx.length > 0 && scope.seriesy.length > 0 ) {
                     scope.histogramEnable = false;
 
-                    GraphFilterFactory.filterData(scope.seriesx, scope.seriesy, scope.data)
+                    GraphFilterFactory.filterLineAndScatterData(scope.seriesx, scope.seriesy, scope.data)
                     .then(function(values) {
                         scope.values = values;
                         // $localStorage.values = scope.values;
@@ -53,7 +53,7 @@ app.directive('addGraph', function($rootScope, AddGraphFactory, ValidationFactor
                                 scope.lineEnable = true;
                                 scope.pieEnable = false;
                                 scope.scatterEnable = false;
-                                GraphFilterFactory.filterBarData(scope.seriesx, scope.seriesy, scope.data)
+                                GraphFilterFactory.filterBarAndPieData(scope.seriesx, scope.seriesy, scope.data)
                                 .then(function(barValues) {
                                     scope.barvalues = barValues;
                                     scope.barEnable = true;
@@ -64,7 +64,7 @@ app.directive('addGraph', function($rootScope, AddGraphFactory, ValidationFactor
                                 scope.scatterEnable = true;
                                 scope.lineEnable = true;
                                 scope.pieEnable = false;
-                                GraphFilterFactory.filterBarData(scope.seriesx, scope.seriesy, scope.data)
+                                GraphFilterFactory.filterBarAndPieData(scope.seriesx, scope.seriesy, scope.data)
                                 .then(function(barValues) {
                                     scope.barvalues = barValues;
                                     scope.barEnable = true;
@@ -74,7 +74,7 @@ app.directive('addGraph', function($rootScope, AddGraphFactory, ValidationFactor
                         else if (scope.seriesy.length > 0 && scope.seriesx[0].type === 'string' && scope.seriesy[0].type === 'number' ) {
                                 scope.scatterEnable = false;
                                 scope.lineEnable = false;
-                                GraphFilterFactory.filterBarData(scope.seriesx, scope.seriesy, scope.data)
+                                GraphFilterFactory.filterBarAndPieData(scope.seriesx, scope.seriesy, scope.data)
                                 .then(function(barValues) {
                                     if (barValues.length > 30) scope.withinLength = false;
                                     scope.barvalues = barValues;

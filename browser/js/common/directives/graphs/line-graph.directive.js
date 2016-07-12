@@ -12,7 +12,7 @@ app.directive('lineGraph', function(d3Service, SVGFactory, GraphFilterFactory, g
         link: function(scope, ele, attrs) {
 
             d3Service.d3().then(function(d3) {
-                // Watch for resize event
+             
                 SVGFactory.watchForChanges(scope);
 
                 scope.render = function() {   
@@ -27,10 +27,12 @@ app.directive('lineGraph', function(d3Service, SVGFactory, GraphFilterFactory, g
 
                             let x; 
 
+                            //create scales and x/y axes
                             if(scope.seriesx[0].type == 'number') x = d3.scale.linear().range([savedSets.margin.left, savedSets.width - savedSets.margin.right]);
                             else {
                                 x = d3.time.scale().range([savedSets.margin.left, savedSets.width - savedSets.margin.right])
                             };  
+
 
                             let y = d3.scale.linear()
                                 .range([savedSets.height - savedSets.margin.bottom, savedSets.margin.top]);
@@ -54,7 +56,9 @@ app.directive('lineGraph', function(d3Service, SVGFactory, GraphFilterFactory, g
                             x.domain([savedSets.minX, savedSets.maxX]);
                             y.domain([savedSets.minY, savedSets.maxY]);
 
+                            //filter values to remain within min and max values of graph
                             let filteredValues = GraphFilterFactory.setBounds(savedSets, scope.rows);
+
                             //xAxis
                             SVGFactory.appendXAxis(svg, savedSets, xAxis);
 
@@ -84,7 +88,7 @@ app.directive('lineGraph', function(d3Service, SVGFactory, GraphFilterFactory, g
                                 })
                                 .attr("stroke-width", 2);
 
-                           
+                           // find longest string for setting legend x attribute
                             let longestData = 0;
                             filteredValues.forEach( obj => {
                                   let currentLength = obj.name.toString().length;
@@ -92,10 +96,9 @@ app.directive('lineGraph', function(d3Service, SVGFactory, GraphFilterFactory, g
                             }); 
 
                             if (longestData < 7) longestData = 7;
-
-                            
-                                          
-                            if (scope.seriesy.length > 1) { 
+             
+                            // create legend if it is a multi-series graph
+                            if (scope.seriesy && scope.seriesy.length > 1)  { 
                                 if (typeof savedSets.color !== 'function') savedSets.color = d3.scale.category10();
                                 let legend = svg.selectAll(".legend")
                                     .data(savedSets.color.domain())

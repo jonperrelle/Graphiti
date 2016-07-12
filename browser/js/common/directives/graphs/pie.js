@@ -1,5 +1,5 @@
 
-app.directive('pieChart', function(d3Service, $window, SVGFactory, graphSettingsFactory, DataFactory) {
+app.directive('pieChart', function(d3Service, SVGFactory, graphSettingsFactory, DataFactory) {
 
 
     return {
@@ -17,12 +17,9 @@ app.directive('pieChart', function(d3Service, $window, SVGFactory, graphSettings
                 //Re-render the graph when user changes settings, data, or window size
                 SVGFactory.watchForChanges(scope);
 
-              
-                
                 scope.render = function() {
                         let anchor = d3.select(ele[0]);
                         
-
                         let values = [];
 
                         if (scope.settings.groupType === 'mean') values = DataFactory.groupByMean(scope.rows);
