@@ -89,12 +89,12 @@ app.factory("graphSettingsFactory", function(d3Service){
 		return d3Service.d3().then(function(d3) {
             let formatColX, formatColY;
             if(seriesx.length === 1){
-                formatColX = seriesx[0].name;
-                formatColY = seriesy[0].name;
+                formatColX = seriesx[0].name.replace(/\_/g, ' ');
+                formatColY = seriesy[0].name.replace(/\_/g, ' ');
             }
             else {
-                formatColX = 'X Axis'
-                formatColY = 'Y Axis'
+                formatColX = 'X Axis';
+                formatColY = 'Y Axis';
             }
 			let savedSettings = {},
             labelLengths = getLabelLengths(data, type, seriesx, seriesy),
