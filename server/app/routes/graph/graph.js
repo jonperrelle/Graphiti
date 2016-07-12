@@ -25,10 +25,9 @@ router.post('/',function(req,res,next){
 
 	let settings = req.body.settings;
 
-	settings.title = settings.title || 'X Axis v. Y Axis';
+	settings.title = settings.title || settings.xAxisLabel + 'vs.' + settings.yAxisLabel;
 	
 	if(settings.id) delete settings.id;
-
 	
 	Promise.all([Dataset.findById(req.body.dataset.id),
 	        Settings.create(settings)])
