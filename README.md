@@ -27,4 +27,4 @@ Graphiti allows you to download your graphs as PNG files or embed them as HTML i
 + AngularJS 
 + D3.js
 
-#### Get started at [graphiti.us](https://www.graphiti.us)
+#### Get started at [graphiti.us](http://www.graphiti.us)
